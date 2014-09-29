@@ -1,0 +1,7 @@
+The libraries ikvm-api.jar and mscorlib.jar are used in order to write java code that can 
+load .NET assemblies when it is translated into an .exe with IKVM.NET (ikvmc).
+In Java those libraries are used only at compile time to satisfy javac but they are not 
+required at runtime because their use is conditioned from the fact that the code is executing 
+on the .NET platform (System.getProperty("java.vm.name").equals("IKVM.NET") == true).
+
+So: DON'T PUT ikvm-api.jar AND mscorlib.jar FILES IN THE JAVA RELEASE, THEY ARE NOT REQUIRED.

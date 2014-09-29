@@ -1,0 +1,2065 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<title>Atomic term processing</title>
+</head>
+
+<body>
+
+<h1>Atomic term processing</h1>
+
+<p>These predicates enable atomic terms to be processed as a sequence of characters and character codes. Facilities exist to split and join atoms, to convert a single character to and from the corresponding character code, and to convert a number to and from a list of characters.</p>
+
+<h2>1. <code>atom_length/2</code></h2>
+
+<p><code>atom_length(Atom, Length)</code> is true iff integer <var>Length</var> equals the number of characters of the name of the atom <var>Atom</var>.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+atom_length(+atom, ?integer)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success or failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>atom_length('scarlet', 5).</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>Now we run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_length('enchanted evening', N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>N</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>17</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_length('enchanted\<br>
+    evening', N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>N</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>17</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_length('', N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>N</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>0</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_length(Atom, 4).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_length(1.23, 4).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(atom, 1.23)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_length(atom, '4').</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(integer, '4')</td>
+  </tr>
+</table>
+
+<h2>2. <code>atom_concat/3</code></h2>
+
+<p><code>atom_concat(Atom_1, Atom_2, Atom_12)</code> is true iff characters of the name of the atom <var>Atom_12</var> are the result of concatenating the characters of the name of the atom <var>Atom_2</var> to the characters of the name of the atom <var>Atom_1</var>.</p>
+
+<p><code>atom_concat(Atom_1, Atom_2, Atom_12)</code> is re-executable.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+atom_concat(?atom, ?atom, +atom)
+atom_concat(+atom, +atom, -atom)
+</pre>
+
+<h3>2.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success or failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>atom_concat('hello', 'world', 'small world').</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>Now we run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_concat('hello', 'world', S3).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S3</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'helloworld'</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_concat('small', T, 'smallworld').</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'world'</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_concat(T, 'world', 'smallworld').</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'small'</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_concat(T1, T2, 'hello').</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T1</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>''</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T2</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'hello'</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T1</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'h'</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T2</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'ello'</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T1</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'he'</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T2</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'llo'</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T1</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'hel'</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T2</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'lo'</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T1</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'hell'</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T2</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'o'</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T1</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'hello'</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T2</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>''</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_concat(small, V2, V4).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+</table>
+
+<h2>3. <code>sub_atom/5</code></h2>
+
+<p><code>sub_atom(Atom, Before, Length, After, Sub_atom)</code> is true iff atom <var>Atom</var> can be broken into three pieces, <var>AtomL</var>, <var>Sub_atom</var> and <var>AtomR</var> such that <var>Before</var> is the number of characters of the name of <var>AtomL</var>, <var>Length</var> is the number of characters of the name of <var>Sub_atom</var> and <var>After</var> is the number of characters of the name of <var>AtomR</var>.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+sub_atom(+atom, ?integer, ?integer, ?integer, ?atom)
+</pre>
+
+<p><code>sub_atom(Atom, Before, Length, After, Sub_atom)</code> is re-executable.</p>
+
+<h3>3.1 Example tests</h3>
+
+<p>We run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>sub_atom(abracadabra, 0, 5, _, S2).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S2</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'abrac'</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>sub_atom(abracadabra, _, 5, 0, S2).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S2</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'dabra'</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>sub_atom(abracadabra, 3, L, 3, S2).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>5</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S2</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'acada'</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>sub_atom(abracadabra, B, 2, A, ab).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>B</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>9</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>B</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>7</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>2</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>sub_atom('Banana', 3, 2, _, S2).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S2</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'an'</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>sub_atom('charity', _, 3, _, S2).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S2</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'cha'</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S2</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'har'</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S2</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'ari'</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S2</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'rit'</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S2</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'ity'</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Start</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Length</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Sub_atom</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>''</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Start</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Length</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Sub_atom</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'a'</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Start</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Length</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Sub_atom</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'ab'</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Start</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Length</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Sub_atom</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>''</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Start</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Length</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Sub_atom</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'b'</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Start</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Length</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Sub_atom</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>''</td>
+  </tr>
+</table>
+
+<p>Note that there are no tests covering the cases when an error or exception is thrown by the engine while solving a query using this predicate.</p>
+
+<h2>4. <code>atom_chars/2</code></h2>
+
+<p><code>atom_chars(Atom, List)</code> is true iff <var>List</var> is a list whose elements are the one-char atoms whose names are the successive characters of the name of atom <var>Atom</var>.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+atom_chars(+atom, ?character_list)
+atom_chars(-atom, +character_list)
+</pre>
+
+<h3>4.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success or failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>atom_chars('soap', ['s', 'o', 'p']).</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>We now run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_chars('', L).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_chars([], L).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>['[', ']']</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_chars('''', L).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>['''']</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_chars('ant', L).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>['a', 'n', 't']</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_chars(Str, ['s', 'o', 'p']).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Str</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'sop'</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_chars('North', ['N' | X]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>['o', 'r', 't', 'h']</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_chars(X, Y).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+</table>
+
+<h2>5. <code>atom_codes/2</code></h2>
+
+<p><code>atom_codes(Atom, List)</code> is true iff <var>List</var> is a list whose elements correspond to the successive characters of the name <var>Atom</var>, and the value of each element is the character code for the corresponding character of the name.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+atom_codes(+atom, ?character_code_list)
+atom_codes(-atom, +character_code_list)
+</pre>
+
+<h3>5.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success or failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>atom_codes('soap', [0's, 0'o, 0'p]).</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>We now run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_codes('', L).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_codes([], L).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[0'[, 0']]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_codes('''', L).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[0''']</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_codes('ant', L).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[0'a, 0'n, 0't]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_codes(Str, [0's, 0'o, 0'p]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Str</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'sop'</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_codes('North', [0'N | X]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[0'o, 0'r, 0't, 0'h]</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>atom_codes(X, Y).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+</table>
+
+<h2>6. <code>char_code/2</code></h2>
+
+<p><code>char_code(Char, Code)</code> is true iff the character code for the one-char atom <var>Char</var> is <var>Code</var>.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+char_code(+character, ?character_code)
+char_code(-character, +character_code)
+</pre>
+
+<h3>6.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success or failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>char_code('b', 84).</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>We now run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>char_code('a', Code).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Code</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>97</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>char_code(Str, 99).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Str</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>c</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>char_code(Str, 0'c).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Str</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>c</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>char_code(Str, 163).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Str</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'£'</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>char_code('ab', Int).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(character, ab)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>char_code(C, I).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+</table>
+
+<h2>7. <code>number_chars/2</code></h2>
+
+<p><code>number_chars(Number, List)</code> is true iff <var>List</var> is a list whose elements are the one-char atoms corresponding to a character sequence of <var>Number</var> which could be output.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+number_chars(+number, ?character_list)
+number_chars(-number, +character_list)
+</pre>
+
+<h3>7.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success or failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>number_chars(33, ['3', '3']).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>number_chars(3.3, ['3', '.', '3']).</td>
+    <td>true</td>
+  </tr>
+</table>
+
+<p>We now run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_chars(33, L).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>['3', '3']</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_chars(33.0, L).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>['3', '3', '.', '0']</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_chars(X, ['3', '.', '3', 'E', '+', '0']).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>3.3</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_chars(A, ['-', '2', '5']).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>-25</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_chars(A, ['\t','\n', ' ', '3']).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>3</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_chars(A, ['0', x, f]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>15</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_chars(A, ['0', '''''', a]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>97</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_chars(A, ['4', '.', '2']).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>4.2</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_chars(A, ['4', '2', '.', '0', 'e', '-', '1']).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>4.2</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_chars(A, ['\t','3', 'g',' ']).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>syntax_error</td>
+  </tr>
+   <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_chars(A, ['\t','3', 'g','4']).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>syntax_error</td>
+  </tr>
+   <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_chars(A, ['\t','3', '4','g', '5']).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>syntax_error</td>
+  </tr>
+   <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_chars(A, ['\t', '3', '5', '-', '6']).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>syntax_error</td>
+  </tr>
+</table>
+
+<h2>8. <code>number_codes/2</code></h2>
+
+<p><code>number_codes(Number, List)</code> is true iff <var>List</var> is a list whose elements are the character codes corresponding to a character sequence of <var>Number</var> which could be output.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+number_codes(+number, ?character_code_list)
+number_codes(-number, +character_code_list)
+</pre>
+
+<h3>8.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success or failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>number_codes(33, [0'3, 0'3]).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>number_codes(3.3, [0'3, 0'., 0'3]).</td>
+    <td>true</td>
+  </tr>
+</table>
+
+<p>We now run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_codes(33, L).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[0'3, 0'3]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_codes(33.0, L).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[0'3, 0'3, 0'., 0'0]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_codes(A, [0'-, 0'2, 0'5]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>-25</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_codes(A, [0' , 0'3]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>3</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_codes(A, [0'0, 0'x, 0'f]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>15</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_codes(A, [0'0, 0''''', 0'a]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>97</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_codes(A, [0'4, 0'., 0'2]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>4.2</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>number_codes(A, [0'4, 0'2, 0'., 0'0, 0'e, 0'-, 0'1]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>4.2</td>
+  </tr>
+</table>
+
+<p>Note that there are no tests covering the cases when an error or exception is thrown by the engine while solving a query using this predicate.</p>
+
+<p><a href="../cgi-bin/fit.cgi">Run</a> the tests!</p>
+
+<hr>
+
+<p>The results of the tests for <em>Atomic term processing</em> are as follows:</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><td>fit.Summary</td></tr>
+</table>
+
+</body>
+</html>

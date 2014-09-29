@@ -1,0 +1,19 @@
+K 10
+svn:ignore
+V 2
+*
+
+K 13
+svn:mergeinfo
+V 556
+/2p/branches/TB-sabbioni/doc/javadoc:40-255
+/2p/branches/TH-BenedettiSocketLibrary/doc/javadoc:692-753
+/2p/branches/TH-CauMultitasking/doc/javadoc:660-791
+/2p/branches/TH-Librenti/doc/javadoc:1268-1450
+/2p/branches/TRY-LibraryManagerURLSupport/doc/javadoc:667-680
+/2p/branches/TRY-ManninoClassLoading/doc/javadoc:496-652
+/2p/branches/TRY-RobertaRefactoring-BagOf/doc/javadoc:1080-1448
+/2p/branches/TRY-RobertaRefactoring/doc/javadoc:1035-1079
+/2p/branches/TRY-SpecificVersionHandling/doc/javadoc:381-387
+/2p/branches/TRY-neworganization/doc/javadoc:126-182
+END

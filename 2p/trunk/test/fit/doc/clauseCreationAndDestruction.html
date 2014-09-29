@@ -1,0 +1,849 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<title>Clause creation and destruction</title>
+</head>
+
+<body>
+
+<h1>Clause creation and destruction</h1>
+
+<p>These predicates enable the database to be altered during execution.</p>
+
+<h2>1. <code>asserta/1</code></h2>
+
+<p><code>asserta(Clause)</code> is true.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+asserta(@clause)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>The examples defined in this subsection assume the database has been created from the following Prolog text.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      <p>
+      :- dynamic(legs/2).<br>
+      legs(A, 6) :- insect(A).
+      </p>
+      <p>
+      :- dynamic(insect/1).<br>
+      insect(ant).<br>
+      insect(bee).
+      </p>
+    </td>
+  </tr>
+</table>
+
+<p>Let's then ask the engine to solve a query against the database, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>asserta(legs(octopus, 8)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>asserta((legs(A, 4) :- animal(A))).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>asserta((foo(X) :- X, call(X))).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>asserta(_).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>asserta(4).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(callable, 4)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>asserta((foo :- 4)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(callable, 4)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>asserta((atom(_) :- true)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>permission_error(modify, static_procedure, atom/1)</td>
+  </tr>
+</table>
+
+<p>After these examples, the database could have been created from the following Prolog text.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>getTheory</td>
+    <td>
+      <p>
+      :- dynamic(legs/2).<br>
+      legs(A, 4) :- animal(A).<br>
+      legs(octopus, 8).<br>
+      legs(A, 6) :- insect(A).
+      </p>
+      <p>
+      :- dynamic(insect/1).<br>
+      insect(ant).<br>
+      insect(bee).
+      </p>
+      <p>
+      :- dynamic(foo/1).<br>
+      foo(X) :- call(X), call(X).
+      </p>
+    </td>
+  </tr>
+</table>
+
+<h2>2. <code>assertz/1</code></h2>
+
+<p><code>assertz(Clause)</code> is true.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+assertz(@clause)
+</pre>
+
+<h3>2.1 Example tests</h3>
+
+<p>The examples defined in this subsection assume the database has been created from the following Prolog text.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      <p>
+      :- dynamic(legs/2).<br>
+      legs(A, 4) :- animal(A).<br>
+      legs(octopus, 8).<br>
+      legs(A, 6) :- insect(A).
+      </p>
+      <p>
+      :- dynamic(insect/1).<br>
+      insect(ant).<br>
+      insect(bee).
+      </p>
+      <p>
+      :- dynamic(foo/1).<br>
+      foo(X) :- call(X), call(X).
+      </p>
+    </td>
+  </tr>
+</table>
+
+<p>Let's then ask the engine to solve a query against the database, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>assertz(legs(spider, 8)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>assertz((legs(B, 2) :- bird(B))).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>assertz((foo(X) :- X -> call(X))).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>assertz(_).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>assertz(4).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(callable, 4)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>assertz((foo :- 4)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(callable, 4)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>assertz((atom(_) :- true)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>permission_error(modify, static_procedure, atom/1)</td>
+  </tr>
+</table>
+
+<p>After these examples, the database could have been created from the following Prolog text.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>getTheory</td>
+    <td>
+      <p>
+      :- dynamic(legs/2).<br>
+      legs(A, 4) :- animal(A).<br>
+      legs(octopus, 8).<br>
+      legs(A, 6) :- insect(A).<br>
+      legs(spider, 8).<br>
+      legs(B, 2) :- bird(B).
+      </p>
+      <p>
+      :- dynamic(insect/1).<br>
+      insect(ant).<br>
+      insect(bee).
+      </p>
+      <p>
+      :- dynamic(foo/1).<br>
+      foo(X) :- call(X), call(X).<br>
+      foo(X) :- call(X) -> call(X).
+      </p>
+    </td>
+  </tr>
+</table>
+
+<h2>3. <code>retract/1</code></h2>
+
+<p><code>retract(Clause)</code> is true iff the database contains at least one dynamic procedure with a clause <code>Clause</code> which unifies with <code>Head :- Body</code>.</p>
+
+<p><code>retract(Clause)</code> is re-executable.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+retract(+clause)
+</pre>
+
+<h3>3.1 Example tests</h3>
+
+<p>The examples defined in this subsection assume the database has been created from the following Prolog text.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      <p>
+      :- dynamic(legs/2).<br>
+      legs(A, 4) :- animal(A).<br>
+      legs(octopus, 8).<br>
+      legs(A, 6) :- insect(A).<br>
+      legs(spider, 8).<br>
+      legs(B, 2) :- bird(B).
+      </p>
+      <p>
+      :- dynamic(insect/1).<br>
+      insect(ant).<br>
+      insect(bee).
+      </p>
+      <p>
+      :- dynamic(foo/1).<br>
+      foo(X) :- call(X), call(X).<br>
+      foo(X) :- call(X) -> call(X).
+      </p>
+    </td>
+  </tr>
+</table>
+
+<p>Let's then ask the engine to solve a query against the database, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>retract(legs(octopus, 8)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+    <td>Retracts the clause: legs(octopus, 8).</td> <!-- Comment -->
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>retract(legs(spider, 6)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>retract((legs(X, 2) :- T)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+    <td>Retracts the clause: legs(B, 2) :- bird(B).</td> <!-- Comment -->
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>bird(X)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>retract((legs(X, Y) :- Z)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+    <td>Retracts the clause: legs(A, 4) :- animal(A).</td> <!-- Comment -->
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Z</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>animal(X)</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+    <td>Retracts the clause: legs(A, 6) :- insect(A).</td> <!-- Comment -->
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>6</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Z</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>insect(X)</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+    <td>Retracts the clause: legs(spider, 8).</td> <!-- Comment -->
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>8</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>spider</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Z</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>false</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>retract((legs(X, Y) :- Z)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+    <td>Now there are no legs/2 clauses in the database.</td> <!-- Comment -->
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>retract(insect(I)), write(I), retract(insect(bee)), fail.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+    <td>Outputs <samp>ant</samp> and retracts the clause: insect(ant). And the clause: insect(bee).</td> <!-- Comment -->
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>false</td>
+    <td>Fails on the choice point for: retract(insect(bee)).</td> <!-- Comment -->
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>false</td>
+    <td>Fails on the choice point for: write(I).</td> <!-- Comment -->
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>false</td>
+    <td>Fails on the execution of: retract(insect(bee)).</td> <!-- Comment -->
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>false</td>
+    <td>Fails on the choice point for: write(I).</td> <!-- Comment -->
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>false</td>
+    <td>Fails on the choice point for: retract(insect(I)).</td> <!-- Comment -->
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>false</td>
+    <td>No more solutions.</td> <!-- Comment -->
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>retract((foo(A) :- A, call(A))).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>retract((foo(C) :- A -> B)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+    <td>Retracts the clause: foo(X) :- call(X) -> call(X).</td> <!-- Comment -->
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>call(C)</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>B</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>call(C)</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>retract((X :- in_eec(Y))).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>retract((4 :- X)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(callable, 4)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>retract((atom(X) :- X == '[]')).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>permission_error(modify, static_procedure, atom/1)</td>
+  </tr>
+</table>
+
+<h2>4. <code>abolish/1</code></h2>
+
+<p><code>abolish(Pred)</code> is true.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+abolish(@predicate_indicator)
+</pre>
+
+<h3>4.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>abolish(foo/2).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+    <td>Also undefines <code>foo/2</code> if there exists a dynamic procedure with predicate indicator foo/2.</td> <!-- Comment -->
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>abolish(foo/_).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>abolish(foo).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(predicate_indicator, foo)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>abolish(foo(_)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(predicate_indicator, foo(_))</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>abolish(abolish/1).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>permission_error(modify, static_procedure, abolish/1)</td>
+  </tr>
+</table>
+
+<p><a href="../cgi-bin/fit.cgi">Run</a> the tests!</p>
+
+<hr>
+
+<p>The results of the tests for <em>Clause creation and destruction</em> are as follows:</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><td>fit.Summary</td></tr>
+</table>
+
+</body>
+</html>

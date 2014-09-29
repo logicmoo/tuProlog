@@ -1,0 +1,296 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<title>Logic and control</title>
+</head>
+
+<body>
+
+<h1>Logic and control</h1>
+
+<p>These predicates are simply derived from the control constructs and provide additional facilities for affecting the control flow during execution.</p>
+
+<h2>1. <code>\+/1</code> (not provable)</h2>
+
+<p><code>'\+'(Term)</code> is true iff <code>call(Term)</code> is false.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+'\+'(@callable_term)
+</pre>
+
+<p>Note that <code>\+</code> is a predefined operator.</p>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success or failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>'\+'(true).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>\+(!).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'\+'((!, false)).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'\+'(4 = 5).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'\+'(X = f(X)).</td>
+    <td>true</td>
+  </tr>
+</table>
+
+<p>Now we run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>(X=1; X=2), \+((!, fail)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>2</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>\+(3).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(callable, 3)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'\+'(X).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+</table>
+
+<h2>2. <code>once/1</code></h2>
+
+<p><code>once(Term)</code> is true iff <code>call(Term)</code> is true.</p>
+
+<p><code>once(Term)</code> behaves as <code>call(Goal)</code> but it is not re-executable.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+once(+callable_term)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success or failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>once(!).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>once(repeat).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>once(fail).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>once(X = f(X)).</td>
+    <td>flase</td>
+  </tr>
+</table>
+
+<p>Now we run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>once(!), (X=1; X=2).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>2</td>
+  </tr>
+</table>
+
+<p>Note that there are no tests covering the cases when an error or exception is thrown by the engine while solving a query using this predicate.</p>
+
+<h2>3. <code>repeat/0</code></h2>
+
+<p><code>repeat</code> is true.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+repeat
+</pre>
+
+<p>Note that <code>repeat</code> is re-executable.</p>
+
+<h3>3.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success or failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>repeat, !, fail.</td>
+    <td>false</td>
+  </tr>
+  <!--
+    What about an example like: repeat, write('hello'), fail
+    which outputs 'hello' indefinitely?
+  -->
+</table>
+
+<p><a href="../cgi-bin/fit.cgi">Run</a> the tests!</p>
+
+<hr>
+
+<p>The results of the tests for <em>Logic and control</em> are as follows:</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><td>fit.Summary</td></tr>
+</table>
+
+</body>
+</html>

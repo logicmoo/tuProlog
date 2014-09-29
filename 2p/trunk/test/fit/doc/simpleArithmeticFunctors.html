@@ -1,0 +1,776 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<title>Simple arithmetic functors</title>
+</head>
+
+<body>
+
+<h1>Simple arithmetic functors</h1>
+
+<p>The basic arithmetic functors are defined as part of the evaluable functors which shall be implemented by a standard-conforming Prolog processor. Each evaluable functor corresponds to one or more operations according to the types of the values which are obtained by evaluating the argument(s) of the functor.</p>
+
+<p>The following list identifies the simple arithmetic functors defined as part of the standard:</p>
+<ul>
+  <li><code>(+)/2</code></li>
+  <li><code>(-)/2</code></li>
+  <li><code>(*)/2</code></li>
+  <li><code>(//)/2</code> (intdiv)</li>
+  <li><code>(/)/2</code> (div)</li>
+  <li><code>(rem)/2</code></li>
+  <li><code>(mod)/2</code></li>
+  <li><code>(-)/1</code></li>
+  <li><code>abs/1</code></li>
+  <li><code>sign/1</code></li>
+  <li><code>float_integer_part/1</code></li>
+  <li><code>float_fractional_part/1</code></li>
+  <li><code>float/1</code></li>
+  <li><code>floor/1</code></li>
+  <li><code>truncate/1</code></li>
+  <li><code>round/1</code></li>
+  <li><code>ceiling/1</code></li>
+</ul>
+<p>Note that the symbols between parentheses are infix predefined operators.</p>
+
+<p>The following list identifies the functors actually exercised by this test:</p>
+<ul>
+  <li><code>(+)/2</code></li>
+  <li><code>(-)/2</code></li>
+  <li><code>(*)/2</code></li>
+  <li><code>(/)/2</code> (div)</li>
+  <li><code>(mod)/2</code></li>
+  <li><code>(-)/1</code></li>
+  <li><code>abs/1</code></li>
+  <li><code>float/1</code></li>
+  <li><code>floor/1</code></li>
+  <li><code>truncate/1</code></li>
+  <li><code>round/1</code></li>
+  <li><code>ceiling/1</code></li>
+</ul>
+
+<h2>Example tests</h2>
+
+<p>Let's start with some simple tests verifying the value of single expressions.</p>
+
+<p>First of all, let's start an appropriate fixture.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EvaluationFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to evaluate an expression and verify the result.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'+'(7, 35).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>42</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'+'(0, 3+11).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>14</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'+'(0, 3.2+11).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>14.2</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'+'(77, N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'+'(foo, 77).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(number, foo)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'-'(7).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>-7</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'-'(3-11).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>8</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'-'(3.2-11).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>7.8</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'-'(N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'-'(foo).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(number, foo)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'-'(7, 35).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>-28</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'-'(20, 3+11).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>6</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'-'(0, 3.2+11).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>-14.2</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'-'(77, N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'-'(foo, 77).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(number, foo)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'*'(7, 35).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>245</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'*'(0, 3+11).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'*'(1.5, 3.2+11).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>21.299999999999997</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'*'(77, N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'*'(foo, 77).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(number, foo)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'/'(7, 35).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'/'(7.0, 35).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>0.2</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'/'(140, 3+11).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>10</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'/'(20.164, 3.2+11).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>1.4200000000000002</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'/'(7, -3).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td></td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'/'(-7, 3).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td></td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'/'(77, N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'/'(foo, 77).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(number, foo)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'/'(3, 0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>evaluation_error(zero_divisor)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>mod(7, 3).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>1</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>mod(0, 3+11).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>mod(7, -2).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>-1</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>mod(77, N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>mod(foo, 77).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(number, foo)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>mod(7.5, 2).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(integer, 7.5)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>mod(7, 0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>evaluation_error(zero_division)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>floor(7.4).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>7</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>floor(-0.4).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>-1</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>round(7.5).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>8</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>round(7.6).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>8</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>round(-0.6).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>-1</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>round(N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>ceiling(-0.5).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>truncate(-0.5).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>truncate(foo).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(number, foo)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>float(7).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>7.0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>float(7.3).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>7.3</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>float(5 / 3).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>1.0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>float(N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>float(foo).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(number, foo)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>abs(7).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>7</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>abs(3-11).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>8</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>abs(3.2-11.0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>7.8</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>abs(N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>abs(foo).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(number, foo)</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check for the exception thrown.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_prolog_flag(max_integer, MI), X is '+'(MI, 1).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>evaluation_error(int_overflow)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_prolog_flag(max_integer, MI), X is '-'('+'(MI, 1), 1).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>evaluation_error(int_overflow)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_prolog_flag(max_integer, MI), X is '*'(MI, 2).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>evaluation_error(int_overflow)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_prolog_flag(max_integer, MI), R is float(MI) * 2, X is floor(R).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>evaluation_error(int_overflow)</td>
+  </tr>
+</table>
+
+<p><a href="../cgi-bin/fit.cgi">Run</a> the tests!</p>
+
+<hr>
+
+<p>The results of the tests for <em>Simple arithmetic functors</em> are as follows:</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><td>fit.Summary</td></tr>
+</table>
+
+</body>
+</html>

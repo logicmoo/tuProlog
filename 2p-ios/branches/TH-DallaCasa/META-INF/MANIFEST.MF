@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: 2p-ios
+Bundle-SymbolicName: 2p-ios
+Bundle-Version: 1.0.0
+Bundle-ClassPath: lib/tuprolog.jar,
+ lib/robovm-cocoatouch.jar,
+ lib/robovm-objc.jar,
+ lib/robovm-rt.jar
+Export-Package: alice.tuprolog,
+ alice.tuprolog.event,
+ alice.tuprolog.interfaces,
+ alice.tuprolog.lib,
+ alice.util,
+ application
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

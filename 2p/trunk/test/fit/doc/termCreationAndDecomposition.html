@@ -1,0 +1,954 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<title>Term creation and decomposition</title>
+</head>
+
+<body>
+
+<h1>Term creation and decomposition</h1>
+
+<p>These predicates enable a term to be assembled from its component parts, or split into its component parts, or copied.</p>
+
+<h2>1. <code>functor/3</code></h2>
+
+<p><code>functor(Term, Name, Arity)</code> is true iff:</p>
+<ul>
+  <li><code>Term</code> is a compound term with a functor whose identifier is <code>Name</code> and arity <code>Arity</code>, or</li>
+  <li><code>Term</code> is an atomic term equal to <code>Name</code> and <code>Arity</code> 0.
+</ul>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+functor(-nonvar, +atomic, +integer)
+functor(+nonvar, ?atomic, ?integer)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>functor(foo(a, b, c), foo, 3).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>functor(foo(a), foo, 2).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>functor(foo(a), fo, 1).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>functor([_|_], '.', 2).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>functor([], [], 0).</td>
+    <td>true</td>
+  </tr>
+</table>
+
+<p>Now we run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>functor(foo(a, b, c), X, Y).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>foo</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>3</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>functor(X, foo, 3).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>foo( _, _, _)</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>functor(X, foo, 0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>foo</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>functor(mats(A, B), A, B).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>mats</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>B</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>2</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>functor(1, X, Y).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>0</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>functor(X, 1.1, 0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1.1</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>functor(X, Y, 3).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>functor(X, foo, N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>functor(X, foo, a).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(integer, a)</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>functor(F, 1.5, 1).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(atom, 1.5)</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>functor(F, foo(a), 1).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(atomic, foo(a))</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_prolog_flag(max_arity, A), X is A + 1, functor(T, foo, X).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>representation_error(max_arity)</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>Minus1 is 0 - 1, functor(F, foo, Minus1).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>domain_error(not_less_than_zero, -1)</td>
+  </tr>
+</table>
+
+<h2>2. <code>arg/3</code></h2>
+
+<p><code>arg(N, Term, Arg)</code> is true iff the <code>N</code>th argument of <code>Term</code> is <code>Arg</code>.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+arg(+integer, +compound_term, ?term)
+</pre>
+
+<h3>2.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>arg(1, foo(a, b), a).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>arg(1, foo(a, b), b).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>arg(0, foo(a, b), foo).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>arg(3, foo(3, 4), N).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>arg(1, foo(X), u(X)).</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>Now we run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>We first start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>arg(1, foo(a, b), X).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>a</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>arg(1, foo(X, b), a).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>a</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>arg(1, foo(X, b), Y).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>Y</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>arg(X, foo(a, b), a).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>arg(1, X, a).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>arg(0, atom, a).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(compound, atom)</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>arg(0, 3, a).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(compound, 3)</td>
+  </tr>
+</table>
+
+<h2>3. <code>=../2</code> (univ)</h2>
+
+<p><code>'=..'(Term, List)</code> is true iff:</p>
+<ul>
+  <li><code>Term</code> is an atomic term and <code>List</code> is the list whose only element is <code>Term</code>, or</li>
+  <li><code>Term</code> is a compound term and <code>List</code> is the list whose head is the functor name of <code>Term</code> and whose tail is a list of the arguments of <code>Term</code></li>
+</ul>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+'=..'(+nonvar, ?list)
+'=..'(-nonvar, +list)
+</pre>
+
+<p>Note that <code>=..</code> is a predefined operator.</p>
+
+<h3>3.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>'=..'(foo(a, b), [foo, a, b]).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'=..'(1, [1]).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'=..'(foo(a, b), [foo, b, a]).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'=..'(f(X), [f, u(X)]).</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>Let's now run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>We first start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'=..'(X, [foo, a, b]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>foo(a, b)</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'=..'(foo(a, b), L).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[foo, a, b]</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'=..'(foo(X, b), [foo, a, Y]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>a</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>b</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'=..'(X, Y).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'=..'(X, [foo, a | Y]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'=..'(X, [foo | bar]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(list, [foo | bar])</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'=..'(X, [Foo, bar]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'=..'(X, [3, 1]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(atom, 3)</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'=..'(X, [1.1, foo]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(atom, 1.1)</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'=..'(X, [a(b), 1]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(atom, a(b))</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'=..'(X, 4).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(list, 4)</td>
+  </tr>
+</table>
+
+<h2>4. <code>copy_term/2</code></h2>
+
+<p><code>copy_term(Term1, Term2)</code> is true iff <code>Term2</code> unifies with a term <code>T</code> which is a renamed copy of <code>Term1</code>.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+copy_term(?term, ?term)
+</pre>
+
+<h3>4.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>copy_term(X, Y).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>copy_term(X, 3).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>copy_term(_, a).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>copy_term(_, _).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>copy_term(a, b).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>copy_term(a+X, X+b), copy_term(a+X, X+b).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>copy_term(demoen(X, X), demoen(Y, f(Y))).</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>Let's now run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>We first start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>copy_term(a+X, X+b).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>a</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>copy_term(X+X+Y, A+B+B).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>A</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>B</td>
+  </tr>
+</table>
+
+<p>Note that there are no error or exception cases for this predicate.</p>
+
+<p><a href="../cgi-bin/fit.cgi">Run</a> the tests!</p>
+
+<hr>
+
+<p>The results of the tests for <em>Term creation and decomposition</em> are as follows:</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><td>fit.Summary</td></tr>
+</table>
+
+</body>
+</html>

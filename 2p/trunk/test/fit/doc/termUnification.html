@@ -1,0 +1,505 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<title>Term unification</title>
+</head>
+
+<body>
+
+<h1>Term unification</h1>
+
+<p>These predicates are concerned with the unification of two terms.</p>
+
+<h2>1. <code>=/2</code> (Prolog unify)</h2>
+
+<p>If <code>X</code> and <code>Y</code> are not subject to occurs check, then <code>'='(X, Y)</code> is true iff <code>X</code> and <code>Y</code> are unifiable.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+'='(?term, ?term)
+</pre>
+
+<p>Note that <code>=</code> is a predefined operator.</p>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>'='(1, 1).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'='(_, _).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'='(1, 2).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'='(1, 1.0).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'='(g(X), f(f(X))).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'='(f(X, 1), f(a(X))).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'='(f(X, Y, X), f(a(X), a(Y), Y, 2)).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'='(X, a(X)).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'='(f(X, 1), f(a(X), 2)).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'='(f(1, X, 1), f(2, a(X), 2)).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'='(f(1, X), f(2, a(X))).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'='(f(X, Y, X, 1), f(a(X), a(Y), Y, 2)).</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>Now we run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'='(X, 1).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'='(X, Y).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>Y</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'='(X, Y), '='(X, abc).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>abc</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>abc</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'='(f(X, def), f(def, Y)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>def</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>def</td>
+  </tr>
+</table>
+
+<p>Note that there are no error or exception cases for this predicate.</p>
+
+<h2>2. <code>unify_with_occurs_check/2</code> (unify)</h2>
+
+<p><code>unify_with_occurs_check(X, Y)</code> attempts to compute and apply a most general unifier of the two terms <code>X</code> and <code>Y</code>.
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+unify_with_occurs_check(?term, ?term)
+</pre>
+
+<h3>2.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>unify_with_occurs_check(1, 1).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>unify_with_occurs_check(_, _).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>unify_with_occurs_check(1, 2).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>unify_with_occurs_check(1, 1.0).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>unify_with_occurs_check(g(X), f(f(X))).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>unify_with_occurs_check(f(X, 1), f(a(X))).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>unify_with_occurs_check(f(X, Y, X), f(a(X), a(Y), Y, 2)).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>unify_with_occurs_check(X, a(X)).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>unify_with_occurs_check(f(X, 1), f(a(X), 2)).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>unify_with_occurs_check(f(1, X, 1), f(2, a(X), 2)).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>unify_with_occurs_check(f(1, X), f(2, a(X))).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>unify_with_occurs_check(f(X, Y, X, 1), f(a(X), a(Y), Y, 2)).</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>Let's now start an appropriate fixture containing an engine to run tests and verify the unification for some of the variables in goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>unify_with_occurs_check(X, 1).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>unify_with_occurs_check(X, Y).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>Y</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>unify_with_occurs_check(X, Y), unify_with_occurs_check(X, abc).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>abc</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>abc</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>unify_with_occurs_check(f(X, def), f(def, Y)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>def</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>def</td>
+  </tr>
+</table>
+
+<p>Note that there are no error or exception cases for this predicate.</p>
+
+<h2>3. <code>\=/2</code> (not Prolog unifiable)</h2>
+
+<p>If <code>X</code> and <code>Y</code> are not subject to occurs check, then <code>\=(X, Y)</code> is true iff <code>X</code> and <code>Y</code> are not unifiable.
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+'\='(@term, @term)
+</pre>
+
+<p>Note that <code>\=</code> is a predefined operator.</p>
+
+<h3>3.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>'\='(1, 1).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'\='(X, 1).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'\='(X, Y).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'\='(_, _).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'\='(f(X, def), f(def, Y)).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'\='(1, 2).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'\='(1, 1.0).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'\='(g(X), f(f(X))).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'\='(f(X, 1), f(a(X))).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'\='(f(X, Y, X), f(a(X), a(Y), Y, 2)).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'\='(X, a(X)).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'\='(f(X, 1), f(a(X), 2)).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'\='(f(1, X, 1), f(2, a(X), 2)).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'\='(f(1, X), f(2, a(X))).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'\='(f(X, Y, X, 1), f(a(X), a(Y), Y, 2)).</td>
+    <td>true</td>
+  </tr>
+</table>
+
+<p>Note that there are no error or exception cases for this predicate.</p>
+
+<p><a href="../cgi-bin/fit.cgi">Run</a> the tests!</p>
+
+<hr>
+
+<p>The results of the tests for <em>Term unification</em> are as follows:</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><td>fit.Summary</td></tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<title>Implementation defined hooks</title>
+</head>
+
+<body>
+
+<h1>Implementation defined hooks</h1>
+
+<p>This predicate enables a program to find the current value for any flag, and to change the current value of some flags.</p>
+
+<p>Whatever happens when a processor executes the predicates <code>halt/0</code> and <code>halt/1</code> is completely implementation dependent.</p>
+
+<h2>1. <code>set_prolog_flag/2</code></h2>
+
+<p>A goal <code>set_prolog_flag(Flag, Value)</code> enables the value associated with a Prolog flag to be altered.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+set_prolog_flag(+flag, @nonvar)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's start with some tests verifying success or failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>set_prolog_flag(unknown, fail).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+    <td>Associates the value <var>fail</var> with the flag <var>unknown</var>.</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>set_prolog_flag(X, off).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>set_prolog_flag(5, decimals).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(atom, 5)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>set_prolog_flag(date, 'July 1988').</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>domain_error(flag, date)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>set_prolog_flag(debug, trace).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>domain_error(flag_value, debug+trace)</td>
+  </tr>
+</table>
+
+<h2>2. <code>current_prolog_flag/2</code></h2>
+
+<p><code>current_prolog_flag(Flag, Value)</code> is true iff <var>Flag</var> is  a flag supported by the processor, and <var>Value</var> is the value currently associated with it.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+current_prolog_flag(?flag, ?term)
+</pre>
+
+<p><code>current_prolog_flag(Flag, Value)</code> is re-executable.</p>
+
+<h3>2.1 Example tests</h3>
+
+<p>Let's start with some tests verifying success or failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_prolog_flag(debug, off).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_prolog_flag(F, V).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+    <td>Unifies <var>F</var> with one of the flags supported by the processor, and <var>V</var> with the value currently associated with the flag <var>F</var>.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>false</td>
+    <td>On re-execution, successively unifies <var>F</var> and <var>V</var> with each other flag supported by the processor and its associated value.</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_prolog_flag(5, _).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(atom, 5)</td>
+  </tr>
+</table>
+
+<p><a href="../cgi-bin/fit.cgi">Run</a> the tests!</p>
+
+<hr>
+
+<p>The results of the tests for <em>Implementation defined hooks</em> are as follows:</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><td>fit.Summary</td></tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,796 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<title>Other arithmetic functors</title>
+</head>
+
+<body>
+
+<h1>Other arithmetic functors</h1>
+
+<p>These subclauses define the format and the definitions of other evaluable functors.</p>
+
+<p>Templates and modes represent a specification for the type of the values when the arguments of the evaluable functor are evaluated as an expression, and the type of its value. A specific notation is employed for the structure and type of the arguments and value:</p>
+<ul>
+  <li><var>int-exp</var> represents an integer expression,</li>
+  <li><var>integer</var> identifies an integer value,</li>
+  <li><var>float-exp</var> represents a floating point expression,</li>
+  <li><var>float</var> identifies a floating point value.</li>
+</ul>
+
+<h2>1. <code>(**)/2</code> (power)</h2>
+
+<p><code>'**'(X, Y)</code> evaluates the expressions <var>X</var> and <var>Y</var> with values <var>VX</var> and <var>VY</var>, and has the value of <var>VX</var> raised to the power of <var>VY</var>. If <var>VX</var> and <var>VY</var> are both zero, the value is 1.0.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+'**'(int-exp, int-exp) = float
+'**'(float-exp, int-exp) = float
+'**'(int-exp, float-exp) = float
+'**'(float-exp, float-exp) = float
+</pre>
+
+<p>Note that <code>**</code> is an infix predefined operator.</p>
+
+<h3>1.1 Example tests</h3>
+
+<p>First of all, let's start an appropriate fixture.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EvaluationFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to evaluate an expression and verify the result.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'**'(5, 3).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>125.0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'**'(-5.0, 3).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>-125.0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'**'(5, -1).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>0.2</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'**'(77, N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'**'(foo, 2).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(number, foo)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'**'(5, 3.0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>125.0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>'**'(0.0, 0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>1.0</td>
+  </tr>
+</table>
+
+<h2>2. <code>sin/1</code></h2>
+
+<p><code>sin(X)</code> evaluates the expression <var>X</var> with value <var>VX</var> and has the value of the sine of <var>VX</var> (measured in radians).</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+sin(float-exp) = float
+sin(int-exp) = float
+</pre>
+
+<h3>2.1 Example tests</h3>
+
+<p>First of all, let's start an appropriate fixture.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EvaluationFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to evaluate an expression and verify the result.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>sin(0.0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>0.0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>sin(N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>sin(0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>0.0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>sin(foo).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(number, foo)</td>
+  </tr>
+</table>
+
+<p>Now we run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>PI is atan(1.0) * 4, X is sin(PI / 2.0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1.0</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>PI</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>3.141592653589793</td>
+  </tr>
+</table>
+
+<h2>3. <code>cos/1</code></h2>
+
+<p><code>cos(X)</code> evaluates the expression <var>X</var> with value <var>VX</var> and has the value of the cosine of <var>VX</var> (measured in radians).</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+cos(float-exp) = float
+cos(int-exp) = float
+</pre>
+
+<h3>3.1 Example tests</h3>
+
+<p>First of all, let's start an appropriate fixture.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EvaluationFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to evaluate an expression and verify the result.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>cos(0.0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>1.0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>cos(N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>cos(0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>1.0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>cos(foo).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(number, foo)</td>
+  </tr>
+</table>
+
+<p>Now we run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>PI is atan(1.0) * 4, X is cos(PI / 2.0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>6.123233995736766e-17</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>PI</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>3.141592653589793</td>
+  </tr>
+</table>
+
+<h2>4. <code>atan/1</code></h2>
+
+<p><code>atan(X)</code> evaluates the expression <var>X</var> with value <var>VX</var> and has the value of the principal value of the arc tangent of <var>VX</var>, that is the value R satisfies &pi;/2 &le; R &le; &pi;/2.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+atan(float-exp) = float
+atan(int-exp) = float
+</pre>
+
+<h3>4.1 Example tests</h3>
+
+<p>First of all, let's start an appropriate fixture.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EvaluationFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to evaluate an expression and verify the result.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>atan(0.0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>0.0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>atan(N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>atan(0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>0.0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>atan(foo).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(number, foo)</td>
+  </tr>
+</table>
+
+<p>Now we run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>PI is atan(1.0) * 4.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>PI</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>3.141592653589793</td>
+  </tr>
+</table>
+
+<h2>5. <code>exp/1</code></h2>
+
+<p><code>exp(X)</code> evaluates the expression <var>X</var> with value <var>VX</var> and has the value of the exponential function of <var>VX</var>.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+exp(float-exp) = float
+exp(int-exp) = float
+</pre>
+
+<h3>5.1 Example tests</h3>
+
+<p>First of all, let's start an appropriate fixture.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EvaluationFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to evaluate an expression and verify the result.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>exp(0.0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>1.0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>exp(1.0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>2.7182818284590455</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>exp(N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>exp(0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>1.0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>exp(foo).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(number, foo)</td>
+  </tr>
+</table>
+
+<h2>6. <code>log/1</code></h2>
+
+<p><code>log(X)</code> evaluates the expression <var>X</var> with value <var>VX</var> and has the value of the natural logarithm of <var>VX</var>.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+log(float-exp) = float
+log(int-exp) = float
+</pre>
+
+<h3>6.1 Example tests</h3>
+
+<p>First of all, let's start an appropriate fixture.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EvaluationFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to evaluate an expression and verify the result.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>log(1.0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>0.0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>log(2.7182818284590455).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>1.0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>log(N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>log(0)</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>evaluation_error(undefined)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>log(foo).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(number, foo)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>log(0.0)</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>evaluation_error(undefined)</td>
+  </tr>
+</table>
+
+<h2>7. <code>sqrt/1</code></h2>
+
+<p><code>sqrt(X)</code> evaluates the expression <var>X</var> with value <var>VX</var> and has the value of the square root of <var>VX</var>.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+sqrt(float-exp) = float
+sqrt(int-exp) = float
+</pre>
+
+<h3>7.1 Example tests</h3>
+
+<p>First of all, let's start an appropriate fixture.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EvaluationFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to evaluate an expression and verify the result.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>sqrt(0.0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>0.0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>sqrt(1).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>1.0</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>sqrt(1.21).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>1.1</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>sqrt(N).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>sqrt(-1.0)</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>evaluation_error(undefined)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>sqrt(foo).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(number, foo)</td>
+  </tr>
+</table>
+
+<p><a href="../cgi-bin/fit.cgi">Run</a> the tests!</p>
+
+<hr>
+
+<p>The results of the tests for <em>Other arithmetic functors</em> are as follows:</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><td>fit.Summary</td></tr>
+</table>
+
+</body>
+</html>

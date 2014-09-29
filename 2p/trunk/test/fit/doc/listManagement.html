@@ -1,0 +1,277 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<title>List Management</title>
+</head>
+
+<body>
+
+<h1>List management</h1>
+
+<p>These predicates enable lists to be manipulated and trasversed.</p>
+
+<h2>1. <code>length/2</code></h2>
+
+<p><code>length(List, Length)</code> is true iff integer <var>Length</var> equals the number of elements in list <var>List</var>. In particular, if <code>List</code> is instantiated to a list of determinate length, then <code>Length</code> will be unified with this length. If <code>List</code> is of indeterminate length and <code>Length</code> is instantiated to an integer, then <code>List</code> will be unified with a list of length <code>Length</code>, and the list elements are unique variables. Finally, if <code>Length</code> is unbound then <code>Length</code> will be unified with all possible lengths of <code>List</code>.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+length(?list, ?length)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success or failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>length('scarlet', 7).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>length(A, -1).</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>Now we run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>length([], 0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>length(X, 5).</td>
+  </tr>
+  <tr>
+	<td>check</td>
+	<td>hasSolution</td>
+	<td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[ _, _, _, _, _]</td>
+  </tr>
+  <tr>
+	<td>check</td>
+	<td>hasAnotherSolution</td>
+	<td>false</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>length([1, 2 | T], X).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[]</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[ _]</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[ _, _]</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>length(L, S).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[]</td>
+  </tr>
+  <tr>
+	<td>enter</td>
+	<td>variable</td>
+	<td>S</td>
+  </tr>
+  <tr>
+	<td>check</td>
+	<td>binding</td>
+	<td>0</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[ _]</td>
+  </tr>
+  <tr>
+	<td>enter</td>
+	<td>variable</td>
+	<td>S</td>
+  </tr>
+  <tr>
+	<td>check</td>
+	<td>binding</td>
+	<td>1</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[ _, _]</td>
+  </tr>
+  <tr>
+	<td>enter</td>
+	<td>variable</td>
+	<td>S</td>
+  </tr>
+  <tr>
+	<td>check</td>
+	<td>binding</td>
+	<td>2</td>
+  </tr>
+</table>
+
+<p>Other candidates for similar tests are: <code>append/3</code>, <code>member/2</code>, <code>no_duplicates/2</code>, <code>quicksort/3</code>, <code>reverse/2</code>, <code>delete/3</code>, <code>element/3</code>.</p>
+
+<p><a href="../cgi-bin/fit.cgi">Run</a> the tests!</p>
+
+<hr>
+
+<p>The results of the tests for <em>List management</em> are as follows:</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><td>fit.Summary</td></tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,1367 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<title>Bugs</title>
+</head>
+
+<body>
+
+<p>This document contains acceptance tests gained in the form of bug reports.</p>
+
+<h3>Number unification</h3>
+
+<p>The following test exercises the unification between numbers, in particular between real and interger numbers.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td>
+    <td>success()</td>
+  </tr>
+  <tr>
+    <td>0.0 = 0.</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>0.9 = 0.</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>0 = 0.9.</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<h3>Number comparison</h3>
+
+<p>The following test exercises the comparison between numbers, in particular between real and interger numbers.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td>
+    <td>success()</td>
+  </tr>
+  <tr>
+    <td>1.0 == 1.</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>1 == 1.0.</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<h3>Managing operators</h3>
+
+<p>The following test exercises predicates for operator management.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td>
+    <td>success()</td>
+  </tr>
+  <tr>
+    <td>current_op(_, _, '+').</td>
+    <td>true</td>
+  </tr>
+</table>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>op(10, yfx, ['@', ':']),<br>current_op(10, yfx, Op).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Op</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>':'</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Op</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'@'</td>
+  </tr>
+</table>
+
+<h3>Expanding subgoals</h3>
+
+<p>The following test exercises the expansion of subgoals in flat lists.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>a.<br>p((a,fail)).<br>p((a)).</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>p(X), X.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>a</td>
+  </tr>
+</table>
+
+<h3>Functor identification</h3>
+
+<p>The following test exercises the identification of functors (and their subsequent evaluation) in subgoals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>X is 5, Y =.. ['+', X, 2], K is Y.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>5</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'+'(5, 2)</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>K</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>7</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>X is 5, Y =.. ['+', X, 2], 10 > Y.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>5</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>'+'(5, 2)</td>
+  </tr>
+</table>
+
+<h3>Asserting/retracting clauses</h3>
+
+<p>The following test exercises the assertion/retraction of clauses in the knowledge base.</p>
+
+<p>You cannot retract clauses belonging to a library's theory.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td>
+    <td>success()</td>
+  </tr>
+  <tr>
+    <td>retract(call(X)).</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>Let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Assertions using variables should use appropriate bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      ops(s).<br>
+      ops(y).<br>
+      ops(z).
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>ops(A), assert(ops_result(A)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>ops_result(X).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>s</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>z</td>
+  </tr>
+</table>
+
+<p>Retraction of clauses with a specific head must work for facts and rules.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      p(0) :- !.<br>
+      p(1).<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>retractall(p(X)).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>p(X).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<h3>Arithmetic Operations</h3>
+
+<p>The following test exercises arithmetic operations on long numbers and on boundaries between int and long.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EvaluationFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>1169658768269 - 531550800000.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>638107968269</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>-2147475543 - 9000.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>-2147484543</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>1169658768269 + 531550800000.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>1701209568269</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>2147483543 + 8000.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>2147491543</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>1474845 * 3634.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>5359586730</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>4651880372 / -1.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>-4651880372</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>evaluable</td>
+    <td>4651880372 // -1.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>value</td>
+    <td>-4651880372</td>
+  </tr>
+</table>
+
+<h3>Cuts on the correct level</h3>
+
+<p>The following test exercise a cut operation to verify its proper functioning.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>write(1), X = ','(write(a), write(b)), X, write(2), write(3).</td>
+    <td><em>Well, this test really hasn't anything to do with cut...</em></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>1ab23</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      b :- write(b1).<br>
+      b :- write(b2).<br>
+      b :- write(b3).<br>
+    </td>
+    <td><em>Well, also this test really hasn't anything to do with cut...</em></td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>X = ','(write(b0), b), X, write(after), fail.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>b0b1afterb2afterb3after</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      p :- a, (a -> write(a) ; write(b)), fail.<br>
+      a.<br>
+      a.<br>
+    </td>
+    <td><em>Here we are really testing the</em> local <em>cut in ->/2...</em></td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>p.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>aa</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      a :- ';'((b, c, ';'((write(cut), !, fail), true)), fail).<br>
+      a :- write(a).<br>
+      b :- write(b1).<br>
+      b :- write(b2).<br>
+      c :- write(c1).<br>
+      c :- write(c2).<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>a.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>b1c1cut</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      go :- fail.<br>
+      go :- write(1), X = ','(write(cut), !), X, write(2), fail.<br>
+      go :- write(3).<br>
+    </td>
+    <td><em>The X meta-call should shield go/0 from the cut's effect.</em></td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>go.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>1cut23</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      go :- fail.<br>
+      go :- write(1), X = ','(write(cut), !), call(X), write(2), fail.<br>
+      go :- write(3).<br>
+    </td>
+    <td><em>The call/1 meta-call should shield go/0 from the cut's effect.</em></td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>go.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>1cut23</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      x :- ';'((y, z), fail).<br>
+      x :- write(x).<br>
+      y :- write(y1).<br>
+      y :- write(y2).<br>
+      z :- ';'((write(cut), !, fail), true).<br>
+      z :- write(z).<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>x.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>y1cuty2cutx</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      ops :- fail.<br>
+      ops :- !,fail.<br>
+      ops :- true.<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>ops.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>More tests on the interaction between <tt>;/2</tt>, <tt>->/2</tt>,
+and cut, by Nathan Finley (see <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=1675798&group_id=45878&atid=444352">SourceForge
+bug #1675798</a>).</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      a(a).<br>
+      a(b).<br>
+      a(c).<br>
+      go :- print(ingo), nl, a(X),<br>
+            (print(X), nl -> fail ; print(ingoalt), nl), fail ;<br>
+            print(altouter), nl, fail.<br>
+      go :- print(ingo2),nl.<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>go.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>ingo<br>a<br>b<br>c<br>altouter<br>ingo2<br></td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      a(a).<br>
+      a(b).<br>
+      a(c).<br>
+      goa :- print(ingoX), nl, a(X), print(X), print('X'), nl, !, fail ;<br>
+             print(ingoaltX),nl, fail.<br>
+      goa :- print(ingo2X),nl.<br>
+      goa :- print(ingo3X),nl.<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>goa.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>ingoX<br>aX<br></td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      gob :- print(ingoX), nl, (print(Y), print('X'), nl, !, fail ;<br>
+             print(ingoaltX), nl), fail.<br>
+      gob :- print(ingo2X),nl.<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>gob.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>ingoX<br>Y_e1X<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      a(a).<br>
+      a(b).<br>
+      a(c).<br>
+      b(bbb).<br>
+      goc :- print(aaa), nl, a(X),<br>
+             (print(hasAA_), print(X), nl -> b(B), print(hasBB_), print(B), nl, fail ; print(altern))<br>
+             ; print(alternate), nl, fail.<br>
+      goc :- print(a222), nl.<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>goc.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>aaa<br>hasAA_a<br>hasBB_bbb<br>hasAA_b<br>hasBB_bbb<br>hasAA_c<br>hasBB_bbb<br>alternate<br>a222<br></td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      a(a).<br>
+      a(b).<br>
+      a(c).<br>
+      goe :- print(ingoX), nl, a(X), (print(X), print('X'), nl -> fail ;<br>
+             print(ingoaltX), nl), fail.<br>
+      goe :- print(ingo2X), nl.<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>goe.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>ingoX<br>aX<br>bX<br>cX<br>ingo2X<br></td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      a(a).<br>
+      a(b).<br>
+      a(c).<br>
+      b(bbb).<br>
+      gof :- print(aaa), nl, a(X),<br>
+             (print(hasAA_), print(X), nl, !, b(B), print(hasBB_), print(B), nl, fail ; print(altern)) ;<br>
+             print(alternate),nl,fail.<br>
+      gof :- print(a222), nl.<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>gof.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>aaa<br>hasAA_a<br>hasBB_bbb<br></td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      a(a).<br>
+      a(b).<br>
+      a(c).<br>
+      b(bbb).<br>
+      gog :- print(aaa), nl, a(X),<br>
+             (print(hasAA_), print(X), nl, b(B), print(hasBB_), print(B), nl, fail ; print(altern), nl, fail) ;<br>
+             print(alternate), nl, fail.<br>
+      gog :- print(a222), nl.<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>gog.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>aaa<br>hasAA_a<br>hasBB_bbb<br>altern<br>hasAA_b<br>hasBB_bbb<br>altern<br>hasAA_c<br>hasBB_bbb<br>altern<br>alternate<br>a222<br></td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      a(a).<br>
+      a(b).<br>
+      a(c).<br>
+      goh :- print(ingoX), nl,<br>
+             (a(X), print(X), print('X'), nl -> print(good)<br>
+             ; a(X), print(why_), print(X), nl, fail), fail.<br>
+      goh :- print(ingo2X), nl.<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>goh.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>ingoX<br>aX<br>goodingo2X<br></td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      a(a).<br>
+      a(b).<br>
+      a(c).<br>
+      goi :- print(ingoi), nl, a(X), print(X), nl -> (print(gotit), nl ; print(again), nl, fail).<br>
+      goi :- print(ingoi222), nl.<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>goi.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>ingoi<br>a<br>gotit<br></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolutionWithOutput</td>
+    <td>true</td>
+    <td><em>This mimick the behavior of GNU Prolog, but note that
+    SICStus Prolog and SWI-Prolog do not provide another solution.</em></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>again<br>ingoi222<br></td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      a(a).<br>
+      a(b).<br>
+      a(c).<br>
+      goj :- print(ingoj), nl, !, (a(X), print(X), nl -> (print(gotit), nl ; print(again), nl), fail).<br>
+      goj :- print(ingoj222), nl.<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>goj.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>ingoj<br>a<br>gotit<br>again<br></td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      a(a).<br>
+      a(b).<br>
+      a(c).<br>
+      gok :- print(ingoj), nl, !, (a(X), print(X), nl, (print(gotit), nl ; print(again), nl), fail).<br>
+      gok :- print(ingoj222), nl.<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>gok.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>ingoj<br>a<br>gotit<br>again<br>b<br>gotit<br>again<br>c<br>gotit<br>again<br></td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      gol :- goll.<br>
+      gol :- print(golc2), nl.<br>
+      goll :- print(first), nl, gocp, fail ; print(ingol), nl, gocp, fail ;<br>
+              (print(lc), nl -> fail ; print(howdidwegethere1)), nl ; print(howhow), nl, fail.<br>
+      goll :- print(howdidwegethere2), nl.<br>
+      gocp :- print(gocpa), nl ; print(gocpb), nl.<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>gol.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolutionWithOutput</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>first<br>gocpa<br>gocpb<br>ingol<br>gocpa<br>gocpb<br>lc<br>howhow<br>howdidwegethere2<br></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolutionWithOutput</td>
+    <td>true</td>
+    <td><em>This mimick the behavior of GNU Prolog, but note that
+    SICStus Prolog and SWI-Prolog do not provide another solution.</em></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>output</td>
+    <td>golc2<br></td>
+  </tr>
+</table>
+
+<h3>Meta-interpretation</h3>
+
+<p>The following tests exercise Prolog meta-interpreters.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      search(E, [E|_]).<br>
+      search(E, [_|T]) :- search(E, T).<br>
+      solve(true).<br>
+      solve((A, B)) :- !, solve(A), solve(B).<br>
+      solve(G) :- clause(G, B), solve(B).<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>solve(search(X, [1,2,3,1])).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<h3>Method access via reflection in JavaLibrary</h3>
+
+<p>The following tests exercise method access via reflection using JavaLibrary.</p>
+
+<p>In particular, a test for accessing public methods of inner classes is performed.
+The JVM <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4071957">bug
+4071957</a> prevents reflective access to inner classes public methods from
+a number of different scopes. This test exercises a sensible workaround for that
+bug implemented in JavaLibrary, in particular in the predicate
+<tt>java_class/3</tt>.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      test_map(Size) :-<br>
+      java_object('java.util.HashMap', [], map),<br>
+      map &lt;- put('key1', 'value1'),<br>
+      map &lt;- put('key2', 'value2'),<br>
+      map &lt;- put('key3', 'value3'),<br>
+      map &lt;- entrySet returns entries,<br>
+      entries &lt;- size returns Size.<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>test_map(S).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>3</td>
+  </tr>
+</table>
+
+<h3>Univ (<tt>..=</tt>) operator bugs</h3>
+
+<p>The following tests exercise the univ (<tt>..=</tt>) operator to catch use cases
+that the ISO standard examples have missed.</p>
+
+<p>In particular, the tests exercise the case where the first argument is an
+atomic term (i.e. an atom or a number) and the second argument is a variable, or
+a one-element-long list containing a variable.</p> 
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>a =.. L.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[a]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>3 =.. L.</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[3]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>a =.. [X].</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>a</td>
+  </tr>
+</table>
+
+<hr>
+
+<p>The results of the tests for <em>Bugs</em> are as follows:</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><td>fit.Summary</td></tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<title>Definite Clause Grammars</title>
+</head>
+
+<body>
+
+<h1>Definite Clause Grammars</h1>
+
+<p>These tests verify functionalities in the <tt>DCGLibrary</tt> provided with the tuProlog distribution. The typical interface predicates exposed by DCG are <tt>phrase/2</tt> and <tt>phrase/3</tt>.</p>
+
+<h2>1. <code>phrase/2</code></h2>
+
+<p><code>phrase(Category, List)</code> is true iff the list <var>List</var> can be parsed as a phrase (i.e. sequence of terminals) of type <var>Category</var>. <var>Category</var> can be any term which would be accepted as a non-terminal of the grammar (or, in general, can be any grammar rule body) and must be instantiated to a non-variable term at the time of the call. If <var>List</var> is bound to a list of terminals by the time of the call, then the goal corresponds to parsing <var>List</var> as a phrase of type <var>Category</var>; otherwise, if <var>List</var> is unbound, then the grammar is being used for generation.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+phrase(+term, ?list)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td colspan="2">alice.tuprolog.EngineFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>load_library('alice.tuprolog.lib.DCGLibrary').</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>a --> [].</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>phrase(a, []).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+    a --&gt; [a], b.<br>
+    b --&gt; [].<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>phrase(a, [a]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>phrase(b, []).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+    a --&gt; [a], a, [d].<br>
+    a --&gt; [b], a, [d].<br>
+    a --&gt; [c].<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>phrase(a, [a, b, a, a, c, d, d, d, d]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+    x(V) --&gt; [a], x(V), [a].<br>
+    x(V) --&gt; [V].<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>phrase(x(1), [a, a, a, 1, a, a, a]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+    x --&gt; [a], x, [a].<br>
+    x --&gt; [V], { number(V) }.<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>phrase(x, [a, a, a, 151, a, a, a]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+    e --&gt; o, et.<br>
+    et --&gt; [].<br>
+    et --&gt; ['+'], e.<br>
+    o --&gt; ['('], e, [')'].<br>
+    o --&gt; [X], { number(X) }.<br>    
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>phrase(e, [1, '+', '(', 2, '+', 3, ')', '+', 4]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+    e(V) --&gt; o(V1), et(V1, V).<br>
+    et(V, V) --&gt; [].<br>
+    et(VI, VO) --&gt; ['+'], o(V1), { VI1 is VI + V1 }, et(VI1, VO).<br>
+    o(V) --&gt; ['('], e(V), [')'].<br>
+    o(X) --&gt; [X], { number(X) }.<br>    
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>phrase(e(V), [1, '+', '(', 2, '+', 3, ')']).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>V</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>6</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+    e --&gt; t, et.<br>
+    et --&gt; [].<br>
+    et --&gt; [and], e.<br>
+    t --&gt; ['0'].<br>
+    t --&gt; ['1'].<br>        
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>phrase(e, ['0']).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+    e(V) --&gt; t(W), et(W, V).<br>
+    et(V, V) --&gt; [].<br>
+    et(W, V) --&gt; [and], t(V1), { W = 1, V1 = 1, !, W2 = 1 ; W2 = 0 }, et(W2, V).<br>
+    t(0) --&gt; ['0'].<br>
+    t(1) --&gt; ['1'].<br>    
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>phrase(e(V), ['1']).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>V</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+</table>
+
+<p>Another candidate for similar tests is <code>phrase/3</code>.</p>
+
+<p><a href="../cgi-bin/fit.cgi">Run</a> the tests!</p>
+
+<hr>
+
+<p>The results of the tests for <em>Definite Clause Grammars</em> are as follows:</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><td>fit.Summary</td></tr>
+</table>
+
+</body>
+</html>

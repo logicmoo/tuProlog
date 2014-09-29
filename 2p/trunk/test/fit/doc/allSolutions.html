@@ -1,0 +1,1423 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<title>All solutions</title>
+</head>
+
+<body>
+
+<h1>All solutions</h1>
+
+<p>These predicates create a list of all the solutions of a goal.</p>
+
+<h2>1. <code>findall/3</code></h2>
+
+<p><code>findall(Template, Goal, Instances)</code> is true iff <code>Instances</code> unifies with the list of values to which a variable <code>X</code> not occurring in <code>Template</code> or <code>Goal</code> would be instantiated by successive re-executions of <code>call(Goal), X=Template.</code> after systematic replacement of all variables in <code>X</code> by new variables.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+findall(?term, +callable_term, ?list)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>findall(X, (X=2; X=1), [1, 2]).</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>Now let's run some tests verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>findall(X, (X=1; X=2), S).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1, 2]</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>findall(X+Y, (X=1), S).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1 + _]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>findall(X, fail, L).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>findall(X, (X=1; X=1), S).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1, 1]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>findall(X, (X=1; X=2), [X, Y]).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>2</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>findall(X, Goal, S).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>findall(X, 4, S).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(callable, 4)</td>
+  </tr>
+</table>
+
+<h2>2. <code>bagof/3</code></h2>
+
+<p><code>bagof/3</code> assembles as a list the solutions of a goal for each different instantiation of the free variables in that goal. The elements of each list are in order of solution, but the order in which each list is found is undefined.</p>
+
+<p>Note that <code>bagof/3</code> is re-executable.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+bagof(?term, +callable_term, ?list)
+</pre>
+
+<h3>2.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>bagof(X, fail, S).</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>Let's run some tests verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>bagof(X, (X=1; X=2), S).</td>
+    <td>Free variable set: <code>{}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1, 2]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>bagof(X, (X=1; X=2), X).</td>
+    <td>Free variable set: <code>{}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1, 2]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>bagof(X, (X=Y; X=Z), S).</td>
+    <td>Free variable set: <code>{Y, Z}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[Y, Z]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>bagof(1, (Y=1; Y=2), L).</td>
+    <td>Free variable set: <code>{Y}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>2</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>bagof(f(X, Y), (X=a; Y=b), L).</td>
+    <td>Free variable set: <code>{}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[f(a, _),f( _,b)]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>bagof(X, Y^((X=1, Y=1) ; (X=2, Y=2)), S).</td>
+    <td>Free variable set: <code>{}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1, 2]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>bagof(X, Y^((X=1; Y=1) ; (X=2, Y=2)), S).</td>
+    <td>Free variable set: <code>{}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1, _,2]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>bagof(X, (Y^(X=1; Y=2) ; X=3), S).</td>
+    <td>Free variable set: <code>{Y}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[3]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>_</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>bagof(X, (X=Y; X=Z; Y=1), S).</td>
+    <td>Free variable set: <code>{Y, Z}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[Y, Z]</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[_]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+</table>
+
+<p>Let's now use a real theory to exercise the predicate on.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      a(1, f(_)).<br>
+      a(2, f(_)).
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>bagof(X, a(X, Y), L).</td>
+    <td>Free variable set: <code>{Y}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1, 2]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>f( _)</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      b(1, 1).<br>
+      b(1, 1).<br>
+      b(1, 2).<br>
+      b(2, 1).<br>
+      b(2, 2).<br>
+      b(2, 2).<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>bagof(X, b(X, Y), L).</td>
+    <td>Free variable set: <code>{Y}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1, 1, 2]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1, 2, 2]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>2</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>bagof(X, Y^Z, L).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>bagof(X, 1, L).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(callable, 1)</td>
+  </tr>
+</table>
+
+<h2>3. <code>setof/3</code></h2>
+
+<p><code>setof/3</code> assembles as a list the solutions of a goal for each different instantiation of the free variables in that goal. Each list is a sorted list, but the order in which each list is found is undefined.</p>
+
+<p>Note that <code>bagof/3</code> is re-executable.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+setof(?term, +callable_term, ?list)
+</pre>
+
+<h3>3.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>setof(X, fail, S).</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>Let's run some tests verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(X, (X=1; X=2), S).</td>
+    <td>Free variable set: <code>{}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1, 2]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>bagof(X, (X=1; X=2), X).</td>
+    <td>Free variable set: <code>{}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1, 2]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(X, (X=2; X=1), S).</td>
+    <td>Free variable set: <code>{}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1, 2]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(X, (X=2; X=2), S).</td>
+    <td>Free variable set: <code>{}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[2]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(X, (X=Y; X=Z), S).</td>
+    <td>Free variable set: <code>{Y, Z}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[Y, Z]</td>
+    <td>Depending on the implementation, the binding could also be <code>[Z, Y]</code></td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(1, (Y=2; Y=1), L).</td>
+    <td>Free variable set: <code>{Y}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+    <td>The order of solutions is undefined</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+    <td>The order of solutions is undefined</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>2</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(f(X, Y), (X=a; Y=b), L).</td>
+    <td>Free variable set: <code>{}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[f( _,b),f(a, _)]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(X, Y^((X=1, Y=1) ; (X=2, Y=2)), S).</td>
+    <td>Free variable set: <code>{}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1, 2]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(X, Y^((X=1; Y=1) ; (X=2, Y=2)), S).</td>
+    <td>Free variable set: <code>{}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[ _,1,2]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(X, (Y^(X=1; Y=2) ; X=3), S).</td>
+    <td>Free variable set: <code>{Y}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[3]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>_</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(X, (X=Y; X=Z; Y=1), S).</td>
+    <td>Free variable set: <code>{Y, Z}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[Y, Z]</td>
+    <td>Depending on the implementation, the binding could also be <code>[Z, Y]</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>S</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[_]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+</table>
+
+<p>The following examples assume that <code>member/2</code> is defined with the following clauses:</p>
+<pre>
+member(X, [X | _]).
+member(X, [_ | L]) :- member(X, L).
+</pre>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>setof(X, (exists(U,V)^member(X, [V, U, f(U), f(V)])), [a, b, f(b), f(a)]).</td>
+    <td>false</td>
+  </tr>
+</table>
+
+<p>Let's run some tests verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(X, member(X, [f(U,b), f(V,c)]), L).</td>
+    <td>Free variable set: <code>{U, V}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[f(U,b), f(V,c)]</td>
+    <td>Depending on the implementation, the binding could also be <code>[f(V,c), f(U,b)]</code></td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(X, member(X, [f(U,b), f(V,c)]), [f(a,c), f(a,b)]).</td>
+    <td>Free variable set: <code>{U, V}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+    <td>Depending on the implementation, the query could also succeed unifying both <code>U</code> and <code>V</code> with <code>a</code></td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(X, member(X, [f(b,U), f(c,V)]), [f(b,a), f(c,a)]).</td>
+    <td>Free variable set: <code>{U, V}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>U</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>a</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>V</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>a</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(X, member(X, [V, U, f(U), f(V)]), [a, b, f(a), f(b)]).</td>
+    <td>Free variable set: <code>{U, V}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>U</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>b</td>
+    <td>Depending on the implementation, the binding could also be <code>a</code></td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>V</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>a</td>
+    <td>Depending on the implementation, the binding could also be <code>b</code></td>
+  </tr>
+</table>
+
+<p>Let's now use a real theory to exercise the predicate on.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      a(1, f(_)).<br>
+      a(2, f(_)).
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(X, a(X, Y), L).</td>
+    <td>Free variable set: <code>{Y}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1, 2]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>f( _)</td>
+  </tr>  
+  
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      b(1, 1).<br>
+      b(1, 1).<br>
+      b(1, 2).<br>
+      b(2, 1).<br>
+      b(2, 2).<br>
+      b(2, 2).<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(X, b(X, Y), L).</td>
+    <td>Free variable set: <code>{Y}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1, 2]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1, 2]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>2</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(X-Xs, Y^setof(Y, b(X, Y), Xs), L).</td>
+    <td>Free variable set: <code>{}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1-[1, 2], 2-[1,2]]</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(X-Xs, setof(Y, b(X, Y), Xs), L).</td>
+    <td>Free variable set: <code>{Y}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1-[1, 2], 2-[1, 2]]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>_</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      d(1, 1).<br>
+      d(1, 2).<br>
+      d(1, 1).<br>
+      d(2, 2).<br>
+      d(2, 1).<br>
+      d(2, 2).<br>
+    </td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>setof(X-Xs, bagof(Y, d(X, Y), Xs), L).</td>
+    <td>Free variable set: <code>{Y}</code></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>[1-[1, 2, 1], 2-[2, 1, 2]]</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Y</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>_</td>
+  </tr>
+</table>
+
+<p>Note that there are no tests covering the cases when an error or exception is thrown by the engine while solving a query, despite <code>setof/3</code> being known for throwing three different types of exceptions.</p>
+
+<p><a href="../cgi-bin/fit.cgi">Run</a> the tests!</p>
+
+<hr>
+
+<p>The results of the tests for <em>All solutions</em> are as follows:</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><td>fit.Summary</td></tr>
+</table>
+
+</body>
+</html>

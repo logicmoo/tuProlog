@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<title>Arithmetic comparison</title>
+</head>
+
+<body>
+
+<h1>Arithmetic comparison</h1>
+
+<p>These predicates cause two expressions to be evaluated and their values to be compared.</p>
+
+<p>Each arithmetic comparison predicate corresponds to an operation which depends on the types of the values which are obtained by evaluating the argument(s) of the predicate.</p>
+
+<h2>1. <code>=:=/2</code> (arithmetic equal), <code>=\=/2</code> (arithmetic not equal), <code>&lt;/2</code> (arithmetic less than), <code>=&lt;</code> (arithmetic less than or equal), <code>>/2</code> (arithmetic greater than), <code>>=/2</code> (arithmetic greater than or equal)</h2>
+
+<p>The following requirements are true for all P where P = {<code>=:=</code>, <code>=\=</code>, <code>&lt;</code>, <code>=&lt;</code>, <code>></code>, <code>>=</code>}.</p>
+<p><code>'P'(E1, E2)</code>is true iff evaluating <code>E1</code> and <code>E2</code> as expressions and performing the corresponding arithmetic operation on their values is <code>true</code>.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+'=:='(@evaluable, @evaluable)
+'=\='(@evaluable, @evaluable)
+'&lt;'(@evaluable, @evaluable)
+'=&lt;'(@evaluable, @evaluable)
+'>'(@evaluable, @evaluable)
+'>='(@evaluable, @evaluable)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>'=:='(0, 1).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'=\='(0, 1).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'&lt;'(0, 1).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'>'(0, 1).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'>='(0, 1).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'=&lt;'(0, 1).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'=:='(1.0, 1).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'=\='(1.0, 1).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'&lt;'(1.0, 1).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'>'(1.0, 1).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'>='(1.0, 1).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'=&lt;'(1.0, 1).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'=:='(3 * 2, 7 - 1).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'=\='(3 * 2, 7 - 1).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'&lt;'(3 * 2, 7 - 1).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'>'(3 * 2, 7 - 1).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'>='(3 * 2, 7 - 1).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'=&lt;'(3 * 2, 7 - 1).</td>
+    <td>true</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'=:='(X, 5).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'=\\='(X, 5).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'&lt;'(X, 5).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'>'(X, 5).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'>='(X, 5).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>'=&lt;'(X, 5).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+</table>
+
+<p><a href="../cgi-bin/fit.cgi">Run</a> the tests!</p>
+
+<hr>
+
+<p>The results of the tests for <em>Arithmetic comparison</em> are as follows:</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><td>fit.Summary</td></tr>
+</table>
+
+</body>
+</html>

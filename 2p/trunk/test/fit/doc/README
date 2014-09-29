@@ -1,0 +1,181 @@
+This directory contains HTML documents with tabular data for executing
+acceptance tests on tuProlog. Four different fields are currently
+covered by acceptance tests: ISO Standard compliance; specific tuProlog
+libraries; list management; and bugs.
+
+This document intends to offer a reasoned analysis of the results of
+tuProlog's acceptance tests: why things fail, where there is room for
+easy improvement, why some tests are ignored, et cetera. The analysis
+is made on a per file basis.
+
+== ISO Standard ==
+
+ISO Standard compliance tests are covered by
+    isoAcceptanceTests.html
+which references other HTML files covering different sections of the
+ISO Prolog standard document. When the result of a single test is not
+given, it means that could be implementation-dependent. When the result
+of a single test is ignored, it typically means that involves Prolog
+exception handling, which tuProlog does not yet support.
+
+1. Term Unification
+
+Three errors are due to number management, which should be easily
+fixed.
+
+Two errors are due to variable naming, which could potentially be
+complicated to be looked at.
+
+The remaining two errors I could not tell: something that deals with
+the fact that tuProlog always performs unification using the occur
+check?
+
+The exceptions are all due to limitations in the current parser: it
+does not allow an operator to be used as a functor without it being
+enclosed in single quotes.
+
+2. Type Testing
+
+Everything works here.
+
+3. Term Comparison
+
+The only exception is due to parser's limitations. See 1.
+
+4. Term Creation And Decomposition
+
+During testing activities, some Java ClassCastException(s) are thrown;
+the specific tests where those exceptions are thrown are currently not
+known. Note that these probably are places where Prolog errors will
+need to be generated when appropriate support for Prolog exceptions is
+added to tuProlog.
+
+One error is due to the impossibility of asserting the equality between
+two anonymous variables.
+
+The remaining two errors are due to variable naming, which could
+potentially be complicated to look at.
+
+5. Arithmetic Evaluation
+
+The only error is due to number management, which should be simple to
+fix.
+
+6. Arithmetic Comparison
+
+One error is due to a limitation in the parser, which is unable to
+escape slashes in a single quoted atom.
+
+7. Clause Retrival And Information
+
+One error seems to be due to variable naming.
+
+One error is quite strange: perhaps the culprit is a call/1 in a
+clause/2 rule where something else should be used?
+
+Two errors are due to clause/2 not recognizing adequate error
+conditions on its arguments.
+
+The current_predicate/1 predicate is not implemented: that leads to the
+remaining errors and exceptions.
+
+8. Clause Creation And Destruction
+
+asserta/1 and assertz/1 do not recognize appropriate error conditions:
+they do not check if the clause asserted is callable, and let
+programmers modify "static" procedures. (In this second case, tuProlog
+just issues a warning instead of generating the appropriate error.)
+
+Equality between theories is not (adequately?) implemented.
+
+There are problems with variable naming, which could potentially be
+complicated to look at.
+
+retract/1 does not correctly implement backtracking.
+
+abolish/1 does not respect error conditions on its parameter.
+
+9. All Solutions
+
+Some errors are due to the impossibility of recognizing two different
+anonymous variables as mutually equal.
+
+The remaining errors and exceptions are caused by the implementation of
+bagof/3, which still is not totally standard compliant.
+
+10. Stream Selection And Control
+
+The predicates exercised by these tests are not implemented.
+
+11. Character Input And Output
+12. Byte Input And Output
+13. Term Input And Output
+
+Tests for these sections of the ISO Standard are not implemented.
+
+14. Logic And Control
+
+The culprit is always \+/1 (not provable). No idea about what could be
+wrong, though.
+
+15. Atomic Term Processing
+
+See 4 for Java ClassCastException(s) thrown during the testing
+activity.
+
+atom_length/2 fails to calculate correct length for single quoted atoms
+with newlines.
+
+atom_concat/3 does not correctly manage whitespace.
+
+Many exceptions are due to unsupported Prolog notation for character
+and number codes.
+
+Character encoding in char_code/2 causes an error. Pay attention to
+which encoding is used!
+
+Numbers and encoding give problems again in number_chars/2. This
+predicate also does not recognize proper error conditions.
+
+16. Implementation Defined Hooks
+
+The unknown flag cannot be changed.
+
+17. Simple Arithmetic Functors
+
+Two errors are due to approximation issues.
+
+The other errors are due to the current_prolog_flag/2 predicate not
+managing error conditions properly, i.e. at least fail when one of its
+parameters do not respect standard preconditions.
+
+18. Other Arithmetic Functors
+
+All errors are due to approximation issues.
+
+19. Bitwise Functors
+
+The exceptions are all due to the parser unable to escape slashes in
+single quoted strings.
+
+== tuProlog Libraries ==
+
+Lots and lots and *lots* of Java exceptions thrown, mainly
+InvocationTargetException and NoSuchMethodException. Why?
+
+Object equality has problems.
+
+Arrays and getters/setters have problems.
+
+On-the-fly compilation of a class is not tested.
+
+== List Management ==
+
+Everything really works here (errors are due to anonymous variables
+intrinsic inequality) but tests just cover length/2.
+
+== Bugs ==
+
+See the bugs.html document for details on bugs already fixed using the
+acceptance testing framework. Hey, everything *must* work in this
+document to make a new tuProlog release!

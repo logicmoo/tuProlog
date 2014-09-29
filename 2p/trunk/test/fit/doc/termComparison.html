@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<title>Term comparison</title>
+</head>
+
+<body>
+
+<h1>Term comparison</h1>
+
+<p>These predicates test the ordering of two terms as defined by the specification.</p>
+
+<p>A goal executing any of these built-in predicates simply succeeds or fails; there is no side effect, unification, or error.</p>
+
+<h2>1. <code>@=&lt;/2</code> (term less than or equal), <code>==/2</code> (term identical), <code>\==/2</code> (term not identical), <code>@&lt;/2</code> (term less than), <code>@>/2</code> (term greater than), <code>@>=/2</code> (term greater than or equal)</h2>
+
+<p>These predicates also test the identity and term-precedence of their arguments. As an example, <code>'@=&lt;'(X, Y)</code> is true iff <code>X</code> preceds <code>Y</code> as defined by the specification, or <code>X</code> and <code>Y</code> are identical terms.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+'@=&lt;'(@term, @term)
+'=='(@term, @term)
+'\\=='(@term, @term)
+'@&lt;'(@term, @term)
+'@>'(@term, @term)
+'@>='(@term, @term)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>'@=&lt;'(1.0, 1).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'@&lt;'(1.0, 1).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'\=='(1, 1).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'@=&lt;'(aardvark, zebra).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'@=&lt;'(short, short).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'@=&lt;'(short, shorter).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'@>='(short, shorter).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'@&lt;'(foo(a, b), north(a)).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'@>'(foo(b), foo(a)).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'@&lt;'(foo(a, X), foo(b, Y)).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'@&lt;'(foo(X, a), foo(Y, b)).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'@=&lt;'(X, X).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'=='(X, X).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'@=&lt;'(X, Y).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'=='(X, Y).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'\=='(_, _).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'=='(_, _).</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>'@=&lt;'(_, _).</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>'@=&lt;'(foo(X, a), foo(Y, b)).</td>
+    <td>true</td>
+  </tr>
+</table>
+
+<p><a href="../cgi-bin/fit.cgi">Run</a> the tests!</p>
+
+<hr>
+
+<p>The results of the tests for <em>Term comparison</em> are as follows:</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><td>fit.Summary</td></tr>
+</table>
+
+</body>
+</html>

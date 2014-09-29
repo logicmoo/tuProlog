@@ -1,0 +1,431 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<title>Clause retrival and information</title>
+</head>
+
+<body>
+
+<h1>Clause retrival and information</h1>
+
+<p>These predicates enable the contents of the database to be inspected during execution.</p>
+
+<p>The examples provided for these predicates assume the database has been created from the following Prolog theory.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      <p>
+      :- dynamic(cat/0).<br>
+      cat.
+      </p>
+      <p>
+      :- dynamic(dog/0).<br>
+      dog :- true.
+      </p>
+      <p>elk(X) :- moose(X).</p>
+      <p>
+      :- dynamic(legs/2).<br>
+      legs(A, 6) :- insect(A).<br>
+      legs(A, 7) :- A, call(A).
+      </p>
+      <p>
+      :- dynamic(insect/1).<br>
+      insect(ant).<br>
+      insect(bee).
+      </p>
+    </td>
+  </tr>
+</table>
+
+<h2>1. <code>clause/2</code></h2>
+
+<p><code>clause(Head, Body)</code> is true iff:</p>
+<ul>
+  <li>The predicate <code>Head</code> is public, and</li>
+  <li>There is a clause in the database which corresponds to a term <code>H :- B</code> which unifies with <code>Head :- Body</code>.</li>
+</ul>
+
+<p><code>clause(Head, Body)</code> is re-executable.</p>
+
+<p>Note that the process of converting a clause to a term produces a renamed copy of the term <code>H :- B</code> corresponding to the clause.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+clause(+head, ?callable_term)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's then ask the engine to solve a query against the database, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(cat, true).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(dog, true).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(legs(I, 6), Body).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Body</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>insect(I)</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(legs(C, 7), Body).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Body</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>(call(C), call(C))</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(insect(I), T).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>I</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>ant</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>I</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>bee</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>true</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(x, Body).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(legs(A, 6), insect(f(A))).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td></td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(_, B).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>instantiation_error</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(4, X).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(callable, 4)</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(elk(N), Body).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <!-- <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>permission_error(access, private_procedure, elk/1)</td>
+  </tr> -->
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(atom(_), Body).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>permission_error(access, private_procedure, atom/1)</td>
+  </tr>
+</table>
+
+<h2>2. <code>current_predicate/1</code></h2>
+
+<p><code>current_predicate(PI)</code> is true iff <code>PI</code> is a predicate indicator for one of the user-defined procedures in the database.</p>
+
+<p><code>current_predicate(PI)</code> is re-executable.</p>
+
+<p>Note that all user-defined procedures are found, whether static or dynamic. A user-defined procedure is also found even when it has no clauses. A user-defined procedure is not found if it has been abolished.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+current_predicate(?predicate_indicator)
+</pre>
+
+<h3>2.1 Example tests</h3>
+
+<p>Let's then ask the engine to solve a query against the database, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_predicate(dog/0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_predicate(current_predicate/1).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_predicate(elk/Arity).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Arity</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>1</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_predicate(foo/A).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_predicate(Name/1).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Name</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>elk</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td>true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td>insect</td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_predicate(4).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td>false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td>type_error(predicate_indicator, 4)</td>
+  </tr>
+</table>
+
+<p><a href="../cgi-bin/fit.cgi">Run</a> the tests!</p>
+
+<hr>
+
+<p>The results of the tests for <em>Clause retrival and information</em> are as follows:</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><td>fit.Summary</td></tr>
+</table>
+
+</body>
+</html>
