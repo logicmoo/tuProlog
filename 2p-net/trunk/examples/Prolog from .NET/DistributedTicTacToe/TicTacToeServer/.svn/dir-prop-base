@@ -1,0 +1,6 @@
+K 13
+svn:externals
+V 61
+^/2p/tags/REL-2.8.0/build/archives/tuprolog.jar tuprolog.jar
+
+END

@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+	
+<project name="tuProlog Plugin build file" basedir="..">
+	
+	<path id="path.svnant">
+ 		<pathelement location="lib/svnant.jar"/>
+ 		<pathelement location="lib/svnClientAdapter.jar"/>
+		<pathelement location="lib/svnjavahl.jar"/>
+		<pathelement location="lib/svnkit.jar"/>
+ 		<!-- ... -->
+	</path>
+	    
+	<typedef 
+	      resource="org/tigris/subversion/svnant/svnantlib.xml" 
+	      classpathref="path.svnant"	
+	/>
+	
+	<!-- ================ -->
+	<!-- Properties setup -->
+	<!-- ================ -->
+	
+	<!-- idea: in the build directory delete and recreate each directory only inside a target that has to modify that directory-->
+
+	<target name="00.init.properties" description="Sets up properties">
+		<echo message="Remember to set up the properties in the file ant/environment.properties !!!"/>
+		<!-- Environment properties -->
+		<property file="ant/environment.properties"/>
+		<!-- Project properties -->
+		<property file="ant/project.properties"/>
+		
+		<!-- Project structure -->
+	    <property name="src.dir" value="src"/>
+		<property name="doc.dir" value="doc"/>
+		<property name="build.dir" value="bin"/>
+		
+		<property name="lib.dir" value="lib"/>
+		<property name="tmp.dir" value="tmp"/>
+
+		
+		<loadfile srcfile="META-INF/MANIFEST.MF" property="complete.version">
+			<filterchain>
+		    	<linecontains>
+		        	<contains value="Bundle-Version:"/>
+		        </linecontains>
+				<deletecharacters chars="\n\r"/>	<!-- Do not get a number with a new line at the end -->
+		        <tokenfilter>
+		        	<replaceregex pattern="[^0-9]+:" replace=""/>
+		        	<trim/>											<!-- Remove the sapece at the beginning -->
+		        </tokenfilter>
+		    </filterchain>
+		 </loadfile>	 
+		
+		 <loadresource property="engine.version">
+			<propertyresource name="complete.version"/>
+			<filterchain>
+			  <tokenfilter>
+			    <replaceregex pattern="\.[0-9]+$" replace="" />
+			  </tokenfilter>
+			</filterchain>
+		  </loadresource>
+		 		
+		  <loadresource property="pluginSpecific.version">
+			<propertyresource name="complete.version"/>
+				<filterchain>
+		  		<tokenfilter>
+		    		<replaceregex pattern="[0-9]+\.[0-9]+\." replace="" />
+		  		</tokenfilter>
+			</filterchain>
+		  </loadresource>
+		
+	</target>
+
+	<!-- ================= -->
+	<!-- Informative tasks -->
+	<!-- ================= -->
+
+	<target name="01.print.properties" depends="00.init.properties" description="Prints properties on screen for verification purpose" >
+        <echo message="-----------------------------------"/>
+        <echo message="Properties are:"/>
+        <echo message="-----------------------------------"/>
+		<echo message="{ant.project.name} is '${ant.project.name}'"/>
+		<echo message="{basedir} is '${basedir}'"/>
+		<echo message="{src.dir} is '${src.dir}'"/>
+		<echo message="{lib.dir} is '${lib.dir}'"/>
+		<echo message="{tmp.dir} is '${tmp.dir}'"/>
+		<echo message="{engine.version} is '${engine.version}'"/>
+		<echo message="{pluginSpecific.version} is '${pluginSpecific.version}'"/>
+        <echo message=" "/>
+	</target>
+	
+	<target name="02.prepare" depends="00.init.properties" description="Creates project structure, if needed">
+		<delete dir="${tmp.dir}" />
+        <mkdir dir="${tmp.dir}"/>
+	</target>
+
+	
+	<target name="03.tag" depends="02.prepare" description="Tags the code">
+		
+		<property name="TagMessage" value="Tag Plugin ${engine.version}.${pluginSpecific.version}"/>
+		
+		<input
+			message="You are tagging the project with version ${engine.version}.${pluginSpecific.version}, if it is OK insert password for ${username}:"
+			addproperty="password"
+		/>
+		
+		<svnSetting
+			id="settings"
+			username="${username}"
+			password="${password}"
+			svnkit="true" 
+			javahl="false" />
+		
+		<!-- DOC: http://subclipse.tigris.org/svnant/svntask.html -->
+		<svn refid="settings">
+		    
+		    <export
+		    	srcUrl="https://tuprolog.googlecode.com/svn/2p-plugin/trunk/tuPrologPlugin/.project"
+		    	destPath="${tmp.dir}/.project" />
+		    
+		 </svn>
+		
+			<!--  I use <name> </name> because in this way I'm sure that I replace the name of the project and nothing else called 2p -->
+			<replace file="${tmp.dir}/.project" token="&lt;name&gt;tuPrologPlugin&lt;/name&gt;" value="&lt;name&gt;tuProlog Plugin REL-${engine.version}.${pluginSpecific.version}&lt;/name&gt;"/>
+		
+		<svn refid="settings">
+		    
+		    <!--  Real tag of the code -->
+			<copy
+				srcUrl="https://tuprolog.googlecode.com/svn/2p-plugin/trunk/tuPrologPlugin" 
+				destUrl="https://tuprolog.googlecode.com/svn/2p-plugin/tags/REL-${engine.version}.${pluginSpecific.version}/tuPrologPlugin"
+				revision="HEAD"
+				message="${TagMessage}" 
+				makeParents="true" >
+			</copy> 
+			
+			<!--  Change the project name -->
+			<delete
+			    url = "https://tuprolog.googlecode.com/svn/2p-plugin/tags/REL-${engine.version}.${pluginSpecific.version}/tuPrologPlugin/.project"
+			    message = "${TagMessage}">
+			</delete>
+			
+			<import
+				path="${tmp.dir}/.project" 
+				url="https://tuprolog.googlecode.com/svn/2p-plugin/tags/REL-${engine.version}.${pluginSpecific.version}/tuPrologPlugin/.project"
+				message="${TagMessage}" >
+			</import> 
+		
+		</svn>
+	</target>
+</project>

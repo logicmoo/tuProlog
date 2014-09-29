@@ -1,0 +1,128 @@
+%=====================================================================
+\chapter{Installing \tuprolog{}}
+\label{installation}
+%=====================================================================
+
+First, you need to have the \tuprolog{} distribution. You can download
+it from the \tuprolog{} web site:\\\\
+%
+\texttt{http://tuprolog.alice.unibo.it/}\\\\
+%
+You can find the latest version in the \textsf{Download} section.
+%
+The distribution file has the form
+\texttt{2p-\emph{X}.\emph{Y}.\emph{Z}.zip}, where
+\emph{X}.\emph{Y}.\emph{Z} identifies the version of \tuprolog{}: for
+instance, the distribution file \texttt{2p-2.0.zip} contains version
+2.0 of the engine.
+%
+After the download, unzip the distribution file in a folder of
+your choice in the file system;
+%
+you should obtain the following directory tree:
+%
+\begin{verbatim}
+    2p-2.0
+    |---lib
+    |---doc
+    |   |---api
+    |---test
+    |---src
+\end{verbatim}
+%
+The \texttt{lib} directory contains the \tuprolog{} Java binaries
+packaged in the JAR format:
+%
+\begin{itemize}
+%
+\item \texttt{2p.jar} contains everything you need to use \tuprolog{},
+  such as the core API, the \texttt{Agent} application, libraries, IDE
+  tools and other extensions.
+%
+\item In addition, you find three other JAR files, provided as helper
+  packages for users who would like to exploit some specific parts
+  only from the \tuprolog{} distribution:
+  \begin{itemize}
+    \item \texttt{tuprolog.jar} contains the core API, the
+      \texttt{Agent} application and default libraries.
+    \item \texttt{tuprolog-ide.jar} contains the IDE tools only.
+    \item \texttt{tuprolog-extensions.jar} contains add-on libraries
+    and other \tuprolog{} extensions.
+  \end{itemize}
+\end{itemize}
+%
+The \texttt{doc} directory contains this Guide and the Java documentation about \tuprolog{} API, collected in the subdirectory \texttt{api}.
+%
+The \texttt{test} directory contains the source code of unit and acceptance tests\footnote{\tuprolog{} exploits JUnit (see \texttt{http://www.junit.org/}) for its unit testing needs and FIT (see \texttt{http://fit.c2.com/}) as its acceptance testing framework.} for the software, as well as some demos to illustrate usage of libraries.
+%
+Finally, the \texttt{src} directory contains the Java source for
+the \tuprolog{} engine.
+
+% ---------------------------------------------------------------
+
+After downloading and unpacking the distribution on your system, you
+can install \tuprolog{} in different ways, depending on how you want
+to use it.
+
+\begin{itemize}
+\item You may want to use \tuprolog{} from a directory playing the
+  role of a central repository where you usually install other
+  programs and third-party libraries.\footnote{Predefined examples of
+  such a directory include \texttt{C:\textbackslash Program Files} in
+  Windows, \texttt{/Library/Applications} under Mac OS X,
+  \texttt{/usr/share} under most *nix environments.}
+%
+In this case, you have to move under the chosen filesystem tree the
+\tuprolog{} directory you have already extracted. Then, you need to
+remember to add the \verb|-cp <jar file>| option when invoking the
+Java interpreter, specifying the path to the \verb|2p.jar| file
+contained in the \verb|lib| subdirectory of the distribution.
+%
+For instance, suppose that you unzipped the \texttt{2p-2.0.zip}
+distribution file in the \texttt{/java/tools} folder and you need
+to run your \emph{ApplicationClass} application with \tuprolog{};
+then you should invoke the Java interpreter as follows:\\\\
+%
+\texttt{java -cp /java/tools/2p-2.0/lib/2p.jar
+  \textit{ApplicationClass}}\\\\
+%
+Alternatively, you can add the required \tuprolog{} JAR file to your
+\verb|CLASSPATH| environment variable,\footnote{Consult your operating
+  system's manual for details regarding how to set and create
+  environment variables.} thus avoiding to specify the \verb|-cp|
+option every time you invoke the interpreter. In this way you can
+exploit \tuprolog{} applications simply by invoking the Java
+intepreter as follows:\\\\
+%
+\texttt{java \textit{ApplicationClass}}\\\\
+%
+You can use the distribution content also by means of the scripts
+provided in the \texttt{bin} directory of the distribution; such
+scripts use the JAR located in the \texttt{lib} directory.
+%
+\item You may want to use \tuprolog{} from your current working
+  directory. In this case, you have to copy the \verb|2p.jar| file
+  from the \verb|lib| subdirectory in the extracted distribution to
+  your working directory. Then, after you move directly in that
+  directory, by means of a terminal or command line prompt, you can
+  execute:\\\\
+%
+\texttt{java -cp 2p.jar \textit{ApplicationClass}}\\\\
+%
+which invokes the Java interpreter and let it use the classes from
+\tuprolog{}. As previously explained, you can also use the
+\verb|CLASSPATH| environment variable to obtain the same effect.
+%
+\item You may want to directly use the class files contained in the
+  \verb|2p.jar| archive from the \tuprolog{} distribution. In this
+  case, first copy the JAR file to your directory of choice; then,
+  unfold it by means of the \verb|jar| command provided by the Java
+  distribution. For instance, open a terminal or a command line
+  prompt from within that directory, and execute:\\\\
+%
+\texttt{jar -xvf 2p.jar}\\\\
+%
+After this operation, you can use \tuprolog{} applications directly
+from that directory, with no need to specify any interpreter's option
+nor to exploit the operating system's environment variables.
+\end{itemize}

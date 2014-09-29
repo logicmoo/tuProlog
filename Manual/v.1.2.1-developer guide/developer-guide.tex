@@ -1,0 +1,134 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                           %
+%   tuProlog Documentation                                                  %
+%                                                                           %
+%   A.Ricci, 5/12/00                                                        %
+%   E.Denti, 31/5/01                                                        %
+%   A.Ricci, 21/6/01                                                        %
+%   A.Ricci, 13/9/01                                                        %
+%   A.Ricci, 05/7/02                                                        %
+%                                                                           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt]{report}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \newif\ifpdf
+ \ifx\pdfoutput\undefined
+ \pdffalse % we are not running PDFLaTeX
+ \else
+ \pdfoutput=1 % we are running PDFLaTeX
+ \pdftrue
+ \fi
+%%%%%%%%%%%%%%%
+ \ifpdf
+ \usepackage[pdftex]{graphicx}
+ \else
+ \usepackage{graphicx}
+ \fi
+%%%%%%%%%%%%%%%
+ \ifpdf
+ \DeclareGraphicsExtensions{.eps, .pdf, .jpg, .tif}
+ \else
+ \DeclareGraphicsExtensions{.eps, .jpg}
+ \fi
+%%%%%%%%%%%%%%%
+%\usepackage{harvard}
+%%%%%%%%%%%%%%%
+%\DeclareGraphicsRule{.gif}{bmp}{}{}% declare GIF filename extension
+%\DeclareGraphicsRule{.jpg}{bmp}{}{}% declare WMF filename extension
+%\DeclareGraphicsRule{.wmf}{bmp}{}{}% declare WMF filename extension
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% -- reducing margins
+ %\setlength{\oddsidemargin}{0pt}
+ %\setlength{\evensidemargin}{0pt}
+ %\setlength{\textwidth}{16cm}
+ %
+ %\setlength{\topmargin}{-0.4in}
+ %\setlength{\textheight}{9.6in}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\xa[1]{\appendixname~\ref{app:#1}}
+\newcommand\labelsec[1]{\label{sec:#1}}
+\newcommand\xs[1]{\sectionname~\ref{sec:#1}}
+\newcommand\xsp[1]{\sectionname~\ref{sec:#1} \onpagename~\pageref{sec:#1}}
+\newcommand\labelssec[1]{\label{ssec:#1}}
+\newcommand\xss[1]{\subsectionname~\ref{ssec:#1}}
+\newcommand\xssp[1]{\subsectionname~\ref{ssec:#1} \onpagename~\pageref{ssec:#1}}
+\newcommand\labelsssec[1]{\label{sssec:#1}}
+\newcommand\xsss[1]{\subsectionname~\ref{sssec:#1}}
+\newcommand\xsssp[1]{\subsectionname~\ref{sssec:#1} \onpagename~\pageref{sssec:#1}}
+\newcommand\labelfig[1]{\label{fig:#1}}
+\newcommand\xf[1]{\figurename~\ref{fig:#1}}
+\newcommand\xff[2]{\figurenames~\ref{fig:#1}~and~\ref{fig:#2}}
+\newcommand\xfp[1]{\figurename~\ref{fig:#1} \onpagename~\pageref{fig:#1}}
+\newcommand\labeltab[1]{\label{tb:#1}}
+\newcommand\xt[1]{\tablename~\ref{tb:#1}}
+\newcommand\xtt[2]{\tablenames~\ref{tb:#1}~and~\ref{ab:#2}}
+\newcommand\xtp[1]{\tablename~\ref{tb:#1} \onpagename~\pageref{tb:#1}}
+\newcommand\labelenum[1]{\label{enum:#1}}
+\newcommand\xen[1]{(\ref{enum:#1})}
+\newcommand\xenp[1]{(\ref{enum:#1}) \onpagename~\pageref{enum:#1}}
+%******************************************************************************%
+\newcommand\bti[1]{\texttt{\textbf{#1}}}
+\newcommand\bt[1]{\texttt{#1}}
+\newcommand\template[1]{\textit{Template: }\texttt{#1}}
+\newcommand\ttit[1]{\texttt{\textit{#1}}}
+%******************************************************************************%
+\newcommand{\LIA}{\mbox{\textsf{LIA}}}
+\newcommand{\aclt}{\mbox{$\mathcal{ACLT}$}}
+\newcommand{\respect}{\mbox{\sf{{R}e{S}pec{T}}}}
+\newcommand{\luce}{\mbox{\sf{{L}u{C}e}}}
+\newcommand{\tucson}{\mbox{\sf{{T}u{CS}o{N}}}}
+\newcommand{\alice}{\mbox{\sf{{aliCE}}}}
+\newcommand{\tuprolog}{\mbox{{\sf{tu}}Prolog}}
+%******************************************************************************%
+
+
+\newcommand\version[1]{\mbox{Document revision: #1}}
+\newcommand\approvedby[1]{\mbox{Approved by: #1}}
+\newcommand\receivedby[1]{\mbox{Received by: #1}}
+\newcommand\creationdate[1]{\mbox{Creation date: #1}}
+\newcommand\lastchangesdate[1]{\mbox{Last Changes date: #1}}
+\newcommand\noa[2]{\noindent\emph{Note of the author (#1): }#2\\\\}
+\newcommand\logo{
+    \begin{figure}[tp]
+        \begin{center}
+            \includegraphics[width=2cm]{images/logo}
+        \end{center}
+\end{figure}
+}
+%******************************************************************************
+%
+\title{{\huge{\bf{\tuprolog{} Developer's Guide\\\mbox{ }\\}}}
+        \tuprolog{} version: 1.2.1\\\mbox{ }\\
+{\small{
+    \version{001}\\
+    \creationdate{2002-09-17}\\
+    \lastchangesdate{2004-03-19}\\
+    % \receivedby{aricci}\\
+    % \approvedby{aricci}\\
+    }}
+}
+
+\author{ \mbox{ }\\DEIS, Universit\`{a} di Bologna a Cesena, Italy
+}
+
+\date{}
+
+\begin{document}
+
+\logo
+
+\maketitle
+
+\tableofcontents
+
+\include{what-is-tuprolog/what-is-tuprolog}
+%\include{developerGuideInstallation}
+\include{using-tuprolog-from-java/using-tuprolog-from-java}
+\include{java-library/java-library}
+\include{howto-develop-libraries/howto-develop-libraries}
+%\include{developerGuideAppendix}
+\bibliography{bibliography/bibliography}
+\bibliographystyle{plain}
+
+\end{document}

@@ -1,0 +1,320 @@
+%=======================================================================
+\chapter*{Appendix: version history}
+\label{ch:version-history}
+%=======================================================================
+
+
+\begin{table}[h]
+  \centering\small
+ \begin{tabular}{|p{1.5cm}|p{1cm}|p{1cm}|p{1.5cm}|p{1.5cm}|p{6cm}|}
+   \hline
+   Version & IDE & Exceptions & Core size & JAR size & Notes\\
+   \hline
+   2.1.1 & thinlet & no  & 113K & 316K & -- \\
+   2.2   & thinlet & yes & 159K & 437K & enhanced core with exceptions support \\
+   2.3.0$\alpha$ & Swing & yes & -- & 621K (+600K javassist) & new Swing GUI, P@J framework, \texttt{set\_seed} predicate\\
+   2.3.1$\beta$  & Swing & yes & -- & 693K (+600K javassist) & indexing (+20\% performance), refactoring \texttt{getTerm}\\
+   2.4.0 RC1   & Swing & yes & -- & 693K (+600K javassist) & improved GUI with exceptions support, improved CUI handling exceptions correctly, unification bug fixed, code refactoring using generics, overall refactoring introducing new interfaces and factories, to better separate engine from upper layers.\\
+   2.4.0 RC2   & Swing & yes & -- & 693K (+600K javassist) & as above + bugfix correction in indexing and operator handling, other minor bugfixes\\
+   2.4.0 RC5   & Swing & yes & -- & 693K (+600K javassist) & as above + Tail Recursion Optimisation\\
+   2.5         & Swing & yes & -- & 693K (+600K javassist) & several bug fixes, uniform cross-platform behaviour and numbering scheme\\
+   2.6         & Swing & yes & -- & 693K (+600K javassist) & new class loader to overcome previous limitations; new register/1 predicate\\
+   \hline
+ \end{tabular}
+ \caption{Version comparison}\label{tab:version-history-comparison}
+\end{table}
+
+
+\subsection{Version 2.0}
+
+Released on 30th October 2006:
+
+\begin{itemize}
+
+ \item Completely redesigned the engine as a set of managers operating around a Finite State Machine inferential core. (Andrea Omicini, Alessandro Ricci, Alex Benini)
+
+ \item Libraries can define new directives. (Alex Benini)
+
+  \item Fixed bug in subsequent execution of multiple directives contained in the same Prolog theory. (Alex Benini)
+
+  \item  Fixed semantics of \texttt{Prolog\#getLibrary(String)}: it now uses the library name instead of the library's complete classname (Alessandro Ricci, Giulio Piancastelli, Alex Benini)
+
+  \item  Added an \texttt{hasOpenAlternatives} method to \texttt{alice.tuprolog.SolveInfo} (Alex Benini)
+
+  \item Class \texttt{alice.tuprolog.NullTerm} has been removed, and empty list implementation now lets \texttt{[] =.. [[]]} succeed. (Giulio Piancastelli)
+
+  \item  Fixed bugs in the evaluation triggered by \texttt{is/2} and arithmetic functors. (Alex Benini)
+
+  \item  Added a button to clear the Output view in the GUI. (Giulio Piancastelli)
+
+  \item  Now the GUI saves theories from the editor's content instead of the engine internal theory. Consequently, a button has been added to put the engine's internal content into the editor. (Giulio Piancastelli)
+
+  \item  Theories feeded to the engine from the GUI by means of \texttt{consult/1} do not get directly displayed in the editor anymore. (Giulio Piancastelli)
+
+  \item  Fixed bug in the use of \texttt{mod/1} with a negative second argument. It now conforms to the ISO Prolog standard specification. (Giulio Piancastelli)
+
+  \item  Fixed bugs in \texttt{length/1}: queries like \texttt{length(A, -1)} now fail; queries like \texttt{length(X, 5)} do not have multiple solutions. (Alex Benini, Giulio Piancastelli, Andrea Omicini)
+
+  \item  Fixed bug in term equality between integer numbers and real numbers with the same integer part. (Giulio Piancastelli)
+
+  \item  Fixed bugs in the type of numbers returned by the following evaluable functors: \texttt{floor/1}, \texttt{ceiling/1}, \texttt{truncate/1}, \texttt{'/'/2}. (Alex Benini, Giulio Piancastelli)
+
+  \item Added the ISO Prolog \texttt{float/1} evaluable functor. (Giulio Piancastelli)
+
+  \item Fixed bug in JavaLibrary regarding the association mechanism between terms and objects. (Alex Benini)
+\end{itemize}
+
+
+\subsection{From Version 2.0 to Version 2.0.1}
+
+Released on 30th January 2007
+
+\begin{itemize}
+  \item Eliminated loop in solving conjunctions of goals. (Alex Benini) [SourceForge bug 1600617]
+
+  \item No more ClassCastException throwing when a library is loaded in an engine already containing a theory. (Alex Benini) [SourceForge bug 1601045]
+
+ \item \texttt{assert/1} does no more throw an exception on backtracking. (Alex Benini, Giulio Piancastelli) [SourceForge bug 1589823]
+
+ \item Halting in CUIConsole does no more throw an exception. (Alex Benini, Giulio Piancastelli) [SourceForge bug 1589898]
+
+ \item \texttt{alice.util.LinkedList} has been removed from the codebase. (Ivar Orstavik)
+
+ \item Corrected error in guide where it seemed that only one anonymous variable existed in Prolog. (Giulio Piancastelli)
+
+ \item Removed alice.tuprolog.StructKey, since hash codes are stored in \texttt{String} objects anyway in the JVM: no need for a class to do that. (Ivar Orstavik, Giulio Piancastelli)
+
+ \item Removed alice.tuprolog.SymbolMap, since it wasn't really optimising anything. (Ivar ¯rstavik, Giulio Piancastelli)
+
+ \item  Following the ISO Standard, \texttt{arg/3} must not work if the first argument is a variable. (Giulio Piancastelli) [SourceForge bug 1610797]
+
+ \item \texttt{=../2} now also works with numbers as its first argument, following more closely the ISO Standard. (Giulio Piancastelli)
+
+ \item \texttt{functor/3} now also works with numbers as its first or second argument, following more closely the ISO Standard. (Giulio Piancastelli)
+
+ \item Now \texttt{$>=$/2} and \texttt{$=<$/2} fail when called with a variable. (Giulio Piancastelli)
+
+ \item New, almost pure-Prolog, \texttt{bagof/3} algorithm. This fixes a whole load of tests, but does not solve SourceForge bug 1589920 entirely, because failures still happen; so, that bug is left open. (Giulio Piancastelli)
+
+ \item  \texttt{list/1} (and \texttt{Term\#isList}) now correctly identify lists as terms with another list as their tail. (Giulio Piancastelli) [SourceForge bug 1622783]
+
+ \item assert/1 does not lose variable bindings when called multiple times with a clause containing variables. (Alex Benini) [SourceForge bug 1601871]
+
+ \item Prolog clauses contained in a library's theory are no more retractable. (Alex Benini)
+
+ \item \texttt{Var\#isAtomic}, \texttt{Var\#isAtom}, \texttt{Var\#isCompound} now take into account the term to which the variable is bound. (Alex Benini)
+
+ \item Added a \texttt{Term\#isEmptyList} method to the Term hierarchy. (Alex Benini)
+
+ \item Removed the \texttt{Term\#isNull} method from the \texttt{Term} hierarchy, since \texttt{NullTerm} is no longer part of the engine codebase. (Alex Benini)
+
+ \item  No more \texttt{NullPointerException} in \texttt{SpyEvent\#toString}. (Alex Benini) [SourceForge bug 1644455]
+
+ \item Corrected example in the \tuprolog{} guide: called \texttt{resolveTerm} on a \texttt{Struct} built with different \texttt{Var} instances with the same name. (Alex Benini, Giulio Piancastelli)
+
+ \item Fixed bug in \texttt{Theory\#append} for theories created from clause lists. (Miklos Espak) [SourceForge bug 1644264]
+
+ \item  Arithmetic operations with long integer numbers are now supported for \texttt{'+'/2}, \texttt{'-'/2}, \texttt{'*'/2}, \texttt{'/'/2}, \texttt{'//'/2}. (Ivar Orstavik, Giulio Piancastelli) [SourceForge bug 1644193]
+
+ \item Deprecated \texttt{isTypeXXX} methods in the \texttt{Number} hierarchy, inserted instead \texttt{isXXX} methods to make the \texttt{Term} hierarchy interface uniform. (Alex Benini)
+
+ \item Methods \texttt{Struct\#listXXX} now enforce the list nature of the callee structure, by throwing an \texttt{UnsupportedOperationException} if that condition is not verified. (Giulio Piancastelli)
+\end{itemize}
+
+
+\subsection{From Version 2.0.1 to Version 2.1}
+
+Released on 20th April 2007
+
+\begin{itemize}
+ \item Removed \texttt{'\$copy'/2}. Use the ISO Standard built-in \texttt{copy\_term/2} predicate instead. (Giulio Piancastelli)
+
+ \item  A subgoal under the form of a variable (e.g. X) is now executed with the same semantics as a call/1 subgoal (e.g call(X)). In the process, a built-in '\$call'/1 has been introduced, having the same effects as call/1 but without cut opacity. (Giulio Piancastelli)
+
+ \item A warning is issued when the demonstration process encounter an unknown predicate. (Giulio Piancastelli)
+
+ \item The interaction between goal disjunction, if-then-else, and cut now properly follows ISO standard. (Alex Benini, Giulio Piancastelli, Nathan Finley) [SourceForge bugs 1648665, 1675798]
+
+ \item Cut now always cuts at the right level. (Alex Benini, Giulio Piancastelli, Nathan Finley) [SourceForge bug 1659422]
+
+ \item CUIConsole output has been polished to resemble more closely what seems to be the "standard" output amongst Prolog consoles. (Giulio Piancastelli)
+
+ \item \texttt{told/0} (\texttt{seen/0}) does not close \texttt{System.out} (\texttt{System.in}) anymore; \texttt{tell/1} (\texttt{see/1}) closes the previously opened output (input) stream. (Alex Benini, Giulio Piancastelli)
+
+ \item Removed problematic assert\_backtrackable and retract\_backtrackable flags from BasicLibrary, in order to more strictly adhere to ISO and to simplify and improve performances on knowledge base management. As a consequence, removed \texttt{'\$restore\_db'/0}. (Ivar Orstavik, Giulio Piancastelli, Alex Benini)
+
+ \item Redesigned the theory management subsystem and introduced a new \texttt{ClauseDatabase} class with storage responsibilities. Gained performance on large theories and overall simplification of the code. (Ivar Orstavik)
+
+ \item Prolog library predicates are now overridden by Prolog predicates with the same indicator in user-defined theories. (Alex Benini, Ivar Orstavik)
+
+ \item Removed \texttt{'\$asserta'/1} and \texttt{'\$assertz'/1}. Use \texttt{asserta/1} and \texttt{assertz/1} instead. (Ivar Orstavik, Giulio Piancastelli, Alex Benini)
+
+ \item \texttt{abolish/1} is now a built-in. (Ivar Orstavik, Giulio Piancastelli, Alex Benini)
+
+ \item Deprecated \texttt{Term\#isVar}, \texttt{Term\#isStruct}, \texttt{Term\#isNumber}: use \texttt{instanceof} instead. (Ivar Orstavik, Giulio Piancastelli, Alex Benini)
+
+ \item Deprecated the package method \texttt{Struct\#getHashKey}: use \\
+      \texttt{Struct\#getPredicateIndicator} instead. The rename has been performed to adhere more strictly to the ISO terminology. (Ivar Orstavik, Giulio Piancastelli, Alex Benini)
+
+ \item Deprecated \texttt{Number\#isInt}, \texttt{Number\#isFloat}, \texttt{Number\#isDouble}, \\
+     \texttt{Number\#isLong}: use \texttt{instanceof} instead. (Giulio Piancastelli)
+
+ \item \texttt{retract/1} now behaves as prescribed by the ISO Standard specification. (Giulio Piancastelli)
+
+ \item Appending two non-textual theories with more than one clause does not result anymore in a never-ending loop. (Maurizio Cimadamore)
+
+ \item Removed non-ISO operators from \texttt{DefaultOperatorManager} and BasicLibrary. (Giulio Piancastelli)
+
+ \item Binary, octal and hexadecimal notations for integer numbers are now recognised. (Ivar Orstavik)
+
+ \item \texttt{alice.util.StringInputStream} removed from the codebase and replaced with \texttt{java.io.Reader}. (Ivar Orstavik)
+
+ \item \texttt{Tokenizer} is now implemented as a \texttt{java.io.StreamTokenizer}. (Ivar Orstavik)
+
+ \item Terms using operators not surrounded by quotes as functors (e.g. \texttt{+(2,3)}) are now recognised correctly. (Ivar Orstavik)
+
+ \item Several lexical inconsistencies with ISO Standard have now been resolved. (Ivar Orstavik)
+
+ \item Added BNF JavaDoc documentation for both \texttt{Parser} and \texttt{Tokenizer}. (Ivar Orstavik)
+
+ \item The Tokenizer class is now restricted to package access. (Ivar Orstavik)
+
+ \item Changed the parser interface to an object-oriented style, and removed current term and numeric state information. (Ivar Orstavik)
+
+ \item Added parse errors as exceptions. (Ivar Orstavik)
+
+ \item Deprecated \texttt{alice.tuprolog.InvalidVarNameException}; just use \\
+     \texttt{alice.tuprolog.InvalidTermException} instead. (Ivar Orstavik)
+
+ \item Renamed parser interface methods: \texttt{toTerm} is now \texttt{parseSingleTerm}, \texttt{readTerm} is \texttt{nextTerm}. (Ivar Orstavik)
+
+ \item Added a \texttt{Number\#createNumber} factory method to build Prolog numbers from input string. (Ivar Orstavik)
+
+ \item Deprecated the \texttt{Term\#parse} factory method to build Prolog terms from String objects. Use \texttt{Term\#createTerm} instead. (Ivar Orstavik)
+
+ \item No more \texttt{StackOverflowError(s)} in parsing large theories, and a three times speed-up in parsing Prolog terms. (Ivar Orstavik)
+
+ \item Added a \texttt{getParserError} method to \texttt{alice.tuprolog.TermIterator} in order to retrieve the parsing error message if the iterator fails on recognising terms. (Ivar Orstavik)
+\end{itemize}
+
+
+\subsection{From Version 2.1 to Version 2.2}
+
+Exceptions support added by Matteo Iuliani in his Master's thesis.
+The core finite state machine was redesigned, adding an ad-hoc Exception state; the behaviour of all predicates was then tailored to the new concept, according to the ISO standard.
+
+\subsection{From Version 2.2 to Version 2.3.0}
+
+Version 2.3 added a brand new GUI based on Swing instead of the previous Thinlet library, and incorporated in \tuprolog{} the P@J framework. The alpha version of the ISOIOLibrary was also included.
+
+\begin{itemize}
+  \item New ISOIOLibrary (alpha version) [Sara Sabioni]:\\
+    + \texttt{alice/tuprolog/lib/ISOIOLibrary.java}
+  \item new \texttt{set\_seed}, \texttt{write\_base} predicate:\\
+    + \texttt{alice/tuprolog/lib/IOLibrary.java}
+  \item changed the method to load/unload theories:\\
+    + \texttt{alice/tuprologx/ide/IDE.java}\\
+    + \texttt{alice/tuprologx/ide/IOFileOperations.java}\\
+    + \texttt{alice/tuprologx/ide/JavaIDE.java}\\
+    + \texttt{alice/tuprologx/ide/JavaIOManager.java}
+  \item extending keyboard shortcuts:\\
+    + \texttt{alice/tuprologx/ide/JavaEditArea.java}
+  \item new methods for removing, resetting and setting libraries:\\
+    + \texttt{alice/tuprologx/ide/LibraryManager.java}
+  \item inclusion of P@J framework:\\
+    + \texttt{alice/tuprologx/pj/*}
+  \item migration to Swing (dropping thinlets):\\
+    + \texttt{alice/tuprologx/ide/JavaIDE.java}\\
+    + \texttt{alice/tuprologx/ide/JavaInputField.java}\\
+    - \texttt{alice/tuprologx/ide/AWTFrameLauncher.java}\\
+    - \texttt{alice/tuprologx/ide/DotNetEditArea.java}\\
+    - \texttt{alice/tuprologx/ide/DotNetIDE.java}\\
+    - \texttt{alice/tuprologx/ide/DotNetInputField.java}\\
+    - \texttt{alice/tuprologx/ide/DotNetIOManager.java}\\
+    - \texttt{alice/tuprologx/ide/FrameLauncher.java}\\
+    - \texttt{alice/tuprologx/ide/img/Debugger.png}\\
+    - \texttt{alice/tuprologx/ide/img/Help24.png}\\
+    - \texttt{alice/tuprologx/ide/img/Library.png}\\
+    - \texttt{alice/tuprologx/ide/LibraryDialog.java}\\
+    - \texttt{alice/tuprologx/ide/SwingFrameLauncher.java}\\
+    - \texttt{alice/tuprologx/ide/ThinletConsole.java}\\
+    - \texttt{alice/tuprologx/ide/ThinletDebugArea.java}\\
+    - \texttt{alice/tuprologx/ide/ThinletStatusBar.java}\\
+    - \texttt{alice/tuprologx/ide/ThinletTheoryEditor.java}\\
+    - \texttt{alice/tuprologx/ide/ThinletToolBar.java}\\
+    - \texttt{alice/tuprologx/ide/xml}\\
+    - \texttt{alice/util/thinlet}\\
+    + \texttt{alice/tuprologx/ide/AboutFrame.java}\\
+    + \texttt{alice/tuprologx/ide/ConsoleDialog.java} \\
+    + \texttt{alice/tuprologx/ide/Console.java} \\
+    + \texttt{alice/tuprologx/ide/ConsoleManager.java} \\
+    + \texttt{alice/tuprologx/ide/DebugAreaFrame.java} \\
+    + \texttt{alice/tuprologx/ide/FileEditArea.java} \\
+    + \texttt{alice/tuprologx/ide/FileIDE.java} \\
+    + \texttt{alice/tuprologx/ide/FontDimensionHandler.java} \\
+    + \texttt{alice/tuprologx/ide/GenericFrame.java} \\
+    + \texttt{alice/tuprologx/ide/img/*} \\
+    + \texttt{alice/tuprologx/ide/InformationToDisplayEvent.java} \\
+    + \texttt{alice/tuprologx/ide/InformationToDisplayListener.java} \\
+    + \texttt{alice/tuprologx/ide/LibraryDialogFrame.java} \\
+    + \texttt{alice/tuprologx/ide/PrologConfigFrame.java} \\
+    + \texttt{alice/tuprologx/ide/PrologFileChooser.java} \\
+    + \texttt{alice/tuprologx/ide/PrologTable.java} \\
+    + \texttt{alice/tuprologx/ide/StatusBar.java} \\
+    + \texttt{alice/tuprologx/ide/TextAreaRenderer.java} \\
+    + \texttt{alice/tuprologx/ide/TheoryEditor.java} \\
+    + \texttt{alice/tuprologx/ide/TheoryTabbedPane.java} \\
+    + \texttt{alice/tuprologx/ide/ToolBar.java}
+  \item migration from ConsoleManager to ThinletManager:\\
+        + \texttt{alice/tuprologx/ide/InputField.java}\\
+        + \texttt{alice/tuprologx/ide/EngineThread.java}
+  \item adding \texttt{FileEditArea} interface\\
+        + \texttt{alice/tuprologx/ide/FileEditArea.java}\\
+        + \texttt{alice/tuprologx/ide/JavaEditArea.java}
+  \item removing the \texttt{IDE} interface in \texttt{JavaIDE}\\
+        + \texttt{alice/tuprologx/ide/JavaIDE.java}
+\end{itemize}
+
+\subsection{From Version 2.3.0 to Version 2.3.1}
+
+Version 2.3 added indexing to improve performance. An overall code refactoring was also made, adding further interfaces to better separate the inner engine classes and the outside view -- also in the perspective of a better support to the Eclipse plugin. Several bugs were also corrected.
+An improved GUI support from exceptions was added, providing a new Exceptions tab; the plugin GUI was also updated accordingly.
+
+\subsection{From Version 2.3.1 to Version 2.4}
+
+The milestone in this step was the inclusion of the Tail Recursion Optimisation, by Silvia Umiliacchi.
+Minor changes and bugfixes were also added.
+
+\subsection{From Version 2.4 to Version 2.5}
+
+Version 2.5 reflected a complete refactoring with uniform numbering scheme among the different supported platforms: basically, this version can be seen as the head of a new, modern development branch. For this reason, it was also selected as the reference version for the brand new manual.
+Several bug fixes were also applied.
+
+\subsection{From Version 2.5 to Version 2.6}
+
+Version 2.6 completed the modernising work of version 2.5, adding a brand new class loading mechanism (based on URLCLassLoader instead of the Java default class loader) that enables Java/.NET types to be loaded outside the \tuprolog{} JAR/DLL, with no need of the launching workarounds that were previously necessary. New predicates were also added in JavaLibrary to allow the class paths to be specified, both dynamically -- when loading or instantiating a specific object, as in \texttt{java\_object} -- and statically -- via the new \texttt{set\_path/1}/\texttt{get\_path/1} predicates.
+
+\section{Acknowledgments}
+
+The following people deserve a big thanks for their help and support in \tuprolog{} development:
+
+\begin{itemize}
+  \item Previous manuals: Andrea Omicini, Alessandro Ricci
+  \item Original 1.x versions: Vladimiro Toschi, Andrea Omicini
+  \item Original 2.0, 2.1: Alessandro Ricci, Alex Benini, Giulio Piancastelli, Ivar Orstavik
+  \item Original 2.1.1: Alex Benini, Giulio Piancastelli, Ivar Orstavik
+  \item Exceptions support in 2.2: Matteo Iuliani
+  \item New GUI in 2.3.0: Giulio Piancastelli, Maurizio Cimadamore, Juri Luca De Coi, George S. Cowan, Lorenzo Zoffoli
+  \item Performance gain in 2.3.1: Michael Gattavecchia, Paolo Contessi, Lorenzo Zoffoli
+  \item New GUI in 2.3.1 Eclipse plugin and redesign: Michele Castagna
+  \item Refactoring in 2.4.0 RC1:
+  \item Refactoring in 2.4.0 RC2: Alessandro Montanari
+  \item Tail recursion optimisation in 2.4.0 RC5: Silvia Umiliacchi
+  \item Mouse wheel, Mac-OS shortcuts, new project structure in 2.4.1: Valerio Pipolo, Alessandro Montanari
+  \item Refactoring in 2.4.0 RC5: Alessandro Montanari
+  \item Refactoring and release in 2.5.x: Alessandro Montanari, Enrico Denti
+  \item New class loading mechanism and register/1 predicate in 2.6.x: Michele Mannino
+\end{itemize}
+
+\noindent \textit{The \tuprolog{} development team}: \\
+Enrico Denti, Andrea Omicini, Alessandro Ricci, Mirko Viroli

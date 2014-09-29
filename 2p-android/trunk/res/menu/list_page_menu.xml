@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/new_theory" android:title="@string/new_theory" android:icon="@drawable/ic_menu_compose" android:alphabeticShortcut="c"></item>
+    <item android:id="@+id/import_theory" android:title="@string/import_theory" android:icon="@drawable/ic_menu_import" android:alphabeticShortcut="i"></item>
+    <item android:id="@+id/edit_path" android:title="@string/edit_path" android:icon="@drawable/ic_menu_save" android:alphabeticShortcut="e"></item>
+</menu>

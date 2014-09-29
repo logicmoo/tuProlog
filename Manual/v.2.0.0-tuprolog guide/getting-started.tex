@@ -1,0 +1,84 @@
+%=======================================================================
+\chapter{Getting Started}
+\label{getting-started}
+%=======================================================================
+
+The \tuprolog{} distribution offers some tools either to consult and execute already existing Prolog programs, or to help developing new Prolog theories and interact with a Prolog engine. %
+Depending on the use you would like to make of \tuprolog{}, you may want to start exploring the distribution tools along different directions.
+
+%=======================================================================
+\section{Prolog Programmer Quick Start}
+%=======================================================================
+
+As a Prolog programmer, you would like to start trying \tuprolog{} by running your
+already existing Prolog programs. You can execute your programs in the form of source
+text files using the \tuprolog{} Agent tool. This tool accepts as arguments the name of
+a text file containing a Prolog theory and, optionally, the goal to be solved; then it starts
+the demonstration. Once you have properly installed \tuprolog{} in the \emph{dir}
+directory, you can use the following template to invoke the Agent tool from the
+command line:\\\\
+%
+\texttt{java -cp \emph{dir}/2p.jar\\
+\mbox{~~~~~~~~~}alice.tuprolog.Agent \textit{PrologTextFile}
+\{\textit{Goal}\}\\\\}
+%
+For instance, suppose a text file named \verb|hello.pl| in your current directory contains the following line:
+\begin{verbatim}
+go :- write('hello, world!'), nl.
+\end{verbatim}
+In order to execute this Prolog program, you can type at the command prompt:\\\\
+%
+\texttt{java -cp \emph{dir}/2p.jar alice.tuprolog.Agent hello.pl go.\\\\}
+%
+Then, the Agent tool tries to prove the goal \texttt{go} with respect to the theory contained in \texttt{hello.pl}. 
+%
+As a result, the string \texttt{hello, world!} should appear on your standard output.
+
+Also, the goal to be proven can be embedded within the Prolog source by means of the \texttt{solve} directive.
+%
+For instance, suppose that the text file \texttt{hellogo.pl} in your current directory contains the following lines:
+\begin{verbatim}
+:- solve(go).
+go :- write('hello, world!'), nl.
+\end{verbatim}
+Then, type:\\\\
+%
+\texttt{java -cp \emph{dir}/2p.jar alice.tuprolog.Agent hellogo.pl\\\\}
+%
+Again, this will make \texttt{hello, world!} appear on your standard output.
+
+%=======================================================================
+\section{Developer Quick Start}
+%=======================================================================
+
+The first thing you may want to do as a developer would probably be to take advantage
+of the tools embedded in the Graphical User Interface included in the \tuprolog{}
+distribution. The GUI can be obtained by issuing the following command:\\\\
+%
+\texttt{java -cp \emph{dir}/2p.jar alice.tuprologx.ide.GUILauncher\\\\}
+%
+The development environment provided by the GUI makes standard Prolog features
+easily accessible, such as asking queries, viewing the current solution along
+with the related variable substitution, backtracking, and so on. Also, it
+enables you to view and edit the current Prolog theory contained in the engine,
+and to spy \tuprolog{} at work during goal demonstrations. Finally, it also
+offers a facility to dynamically load and unload predicate libraries within the
+\tuprolog{} engine.
+
+It is worth remembering that the file \texttt{2p.jar} is an executable Java Archive, so
+by invoking the command:\\\\
+%
+\texttt{java -jar 2p.jar\\\\}
+%
+in the \emph{dir} directory, or by double-clicking it under most operating systems, the
+graphic user interface console is automatically spawned.
+
+You may also want to experience a pure interactive environment on a \tuprolog{}
+engine. In this case, you need to get the \tuprolog{} prompt using the command line
+shell provided within the distribution. To obtain it, just type:\\\\
+%
+\texttt{java -cp \emph{dir}/2p.jar alice.tuprologx.ide.CUIConsole\\\\}
+%
+\noindent which starts a \tuprolog{} interpreter to be used via console, in a sort of
+Command Line User Interface mode. To exit the \tuprolog{} console, you have to
+issue the standard \texttt{halt.} command.

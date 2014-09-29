@@ -1,0 +1,46 @@
+\begin{thebibliography}{1}
+
+\bibitem{ikvm}
+The {IKVM} project.
+\newblock \texttt{http://www.ikvm.net}.
+
+\bibitem{iso95}
+Information technology -- {P}rogramming languages -- {P}rolog -- {P}art 1:
+  General core.
+\newblock International Standard ISO/IEC 13211Ð1, International Organization
+  for Standardization, 1995.
+
+\bibitem{bra00}
+Ivan Bratko.
+\newblock {\em Prolog Programming for Artificial Intelligence}.
+\newblock Addison-Wesley, 2000.
+
+\bibitem{short-patj-sac08}
+Maurizio Cimadamore and Mirko Viroli.
+\newblock Integrating {J}ava and {P}rolog through generic methods and type
+  inference.
+\newblock In {\em Proc. ACM SAC 2008}, pages 198--205, 2008.
+
+\bibitem{luce-aamas2001}
+Enrico Denti and Andrea Omicini.
+\newblock {{\sf LuCe}}: A tuple-based coordination infrastructure for {P}rolog
+  and {J}ava agents.
+\newblock {\em Autonomous Agents and Multi-Agent Systems}, 4(1-2):139--141,
+  March-June 2001.
+
+\bibitem{respect-scico2001}
+Andrea Omicini and Enrico Denti.
+\newblock From tuple spaces to tuple centres.
+\newblock {\em Science of Computer Programming}, 41(3):277--294, November 2001.
+
+\bibitem{tucson-aamas99}
+Andrea Omicini and Franco Zambonelli.
+\newblock Coordination for internet application development.
+\newblock {\em Autonomous Agents and Multi-Agent Systems}, 2(3):251--269, 1999.
+
+\bibitem{ss94}
+Leon Sterling and Ehud Shapiro.
+\newblock {\em The Art of Prolog}.
+\newblock The MIT Press, 1994.
+
+\end{thebibliography}

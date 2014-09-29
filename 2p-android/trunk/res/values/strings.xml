@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, TesiActivity!</string>
+    <string name="app_name">tuProlog</string>
+    <string name="menu_select">Select Theory</string>
+    <string name="no_theories">There are no Theories yet.\nCreate or import one to start working.</string>
+    <string name="menu_insert">Add Theory</string>
+    <string name="menu_delete">Delete Theory</string>
+    <string name="title">Title</string>
+    <string name="body">Body</string>
+    <string name="confirm">Confirm</string>
+    <string name="edit_theory">Edit Theory</string>
+    <string name="theories_list">List Theories</string>
+    <string name="library_manager">Library Manager</string>
+    <string name="new_theory">New Theory</string>
+    <string name="export_theory">Export Theory</string>
+    <string name="import_theory">Import Theory to Database</string>
+    <string name="import_library">Import Library</string>
+    <string name="up_one_level">..</string>
+    <string name="current_dir">.</string>
+    <string name="edit_path">Edit Export Path</string>
+    <string name="about">About</string>
+    <string name="action_settings">Settings</string>
+   
+    <string name="textLibraryFullName">Library fullname:</string>
+    <string name="textLibraryFile">Library file:</string>
+    <string name="textButtonBrowse">Browse</string>
+    <string name="textButtonAdd">Add</string>
+    <string name="textButtonRemove">Remove</string>
+    <string name="textLoadedLibraries">Currently loaded libraries:</string>
+    <string name="textStatus">Ready:</string>
+</resources>

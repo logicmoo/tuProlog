@@ -1,0 +1,51 @@
+\documentclass[11pt]{report}
+
+\usepackage{graphicx}
+
+\newcommand\logo{
+    \begin{figure}[tp]
+        \begin{center}
+            \includegraphics[width=2cm]{images/logo}
+        \end{center}
+\end{figure}
+}
+
+\newcommand\version[1]{\mbox{Document revision: #1}}
+\newcommand\creationdate[1]{\mbox{Creation date: #1}}
+\newcommand\lastchangesdate[1]{\mbox{Last Changes date: #1}}
+\title{{\huge{\bf{\tuprolog{} IDE Guide\\\mbox{ }\\}}}
+        \tuprolog{} IDE version: 1.2.0\\\mbox{ }\\
+{\small{
+\version{003}\\
+\creationdate{2002-09-17}\\
+\lastchangesdate{2004-09-27}\\
+% \receivedby{aricci}\\
+% \approvedby{aricci}\\
+}}
+}
+
+\author{ \mbox{ }\\DEIS, Universit\`{a} di Bologna a Cesena, Italy}
+
+\date{}
+
+\newcommand{\tuprolog}{\textsf{tu}Prolog}
+\newcommand{\classname}[1]{\texttt{#1}}
+\newcommand{\varname}[1]{\texttt{#1}}
+\newcommand{\predicate}[1]{\texttt{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\keycap}[1]{\textbf{#1}}
+\newcommand{\guibutton}[1]{\textsf{#1}}
+\newcommand{\userinput}[1]{\texttt{#1}}
+\newcommand{\figref}[1]{\figurename~\ref{#1}}
+
+\begin{document}
+
+\logo
+
+\maketitle
+
+\tableofcontents
+
+\include{ide/ide}
+
+\end{document}

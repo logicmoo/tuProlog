@@ -1,0 +1,1113 @@
+%=======================================================================
+\chapter{\tuprolog{} Libraries}
+\label{ch:standard-libraries}
+%=======================================================================
+
+Libraries are the means by which \tuprolog{} achieves its
+fundamental characteristics of minimality and configurability.
+%
+The engine is by design choice a minimal, purely-inferential core: as
+such, it only includes a few \emph{built-in} predicates, intended as
+predicates statically defined inside the core, to establish the
+foundation which the mechanisms of the engine are based on.
+%
+Instead, each and every other piece of functionality, in the form of
+predicates, functors, flags and operators, is delivered by libraries,
+and can be added to or subtracted from the engine at any time.
+%
+Thus, a \tuprolog{} engine can be dynamically extended by loading
+(and unloading) any number of libraries. Each library can provide a
+specific set of predicates, functors and a related theory, which can
+be used to define new flags and operators.
+%
+Besides built-in and library predicates, new functionalities can also
+be added to an engine by feeding it with a user-defined Prolog theory.
+
+Libraries can be loaded at any time in the \tuprolog{} engine, both
+from the Java side, by means of the \texttt{loadLibrary} method of
+the \texttt{Prolog} object representing a \tuprolog{} engine, and
+from the Prolog side, using the \texttt{load\_library/1} predicate.
+%
+For example, suppose you want to exploit some features defined in a
+library whose name is \texttt{ExampleLibrary}. If, on the Java side,
+you want to load the library immediately afterwards building a
+\tuprolog{} engine, you would write the following code, using the
+fully qualified Java class name for the library:
+%
+\begin{verbatim}
+Prolog engine = new Prolog();
+try {
+    engine.loadLibrary("com.example.ExampleLibrary");
+} catch (InvalidLibraryException e) {
+}
+\end{verbatim}
+%
+If, on the other hand, you just want to load the library on the Prolog
+side for those clauses which actually make use of its predicates, you
+would write the following code, using just the name of the library,
+which can be different from its fully qualified class name:
+%
+\begin{verbatim}
+% println/1 is defined in ExampleLibrary
+run_test(Test, Result) :- run(Test, Result),
+                          load_library('ExampleLibrary'),
+                          println(Result).
+\end{verbatim}
+%
+Correspondingly, means for unloading libraries are provided, in the
+form of the \texttt{unloadLibrary} method of the \texttt{Prolog}
+class on the Java side, and the \texttt{unload\_library/1} predicate
+on the Prolog side.
+%
+It must be noted that predicates for loading or unloading libraries
+are also available in the form of directives: they perform the same
+actions, but as directives they are immediately executed when the
+Prolog text containing them is feeded to the engine.
+
+Since the core comes as a pure inferential engine, \tuprolog{}
+includes in its distribution some standard libraries which are
+loaded by default into the engine at construction time. While it is
+possible to create an engine with no default libraries preloaded,
+those standard libraries provide the fundamental bricks of a Prolog
+engine, in the form of basic functionalities, ISO compliant
+predicates and evaluable functors, I/O predicates and predicates for
+interoperability and integration between Java and Prolog.
+%
+More user-defined libraries can be then loaded or unloaded, thus
+exploiting the dynamic configurability of \tuprolog{} engines which
+can be reconfigured on the fly enriching or reducing the set of
+available functionalities by need.
+
+The standard libraries are:
+%
+\begin{description}
+\item[BasicLibrary] (class \texttt{alice.tuprolog.lib.BasicLibrary}) |
+  provides common Prolog predicates and functors, and operators. No
+  I/O predicates are included.
+%
+\item[DCGLibrary] (class \texttt{alice.tuprolog.lib.DCGLibrary}) |
+provides support for Definite Clause Grammar, an extension of context
+free grammars used for describing natural and formal languages.
+%
+\item[IOLibrary] (class \texttt{alice.tuprolog.lib.IOLibrary}) |
+provides some basic and classic I/O predicates.
+%
+\item[ISOLibrary] (class \texttt{alice.tuprolog.lib.ISOLibrary}) |
+provides predicates and functors that are part of the built-in
+section in the ISO standard \cite{iso95}, and are not provided by
+previous libraries.
+%
+\item[JavaLibrary] (class \texttt{alice.tuprolog.lib.JavaLibrary}) |
+provides predicates and functors to create, access and deploy
+(existent or new) Java resources, like objects and classes.
+%
+\end{description}
+%
+\noindent The description of each library is provided by discussing in
+the order: predicates, functors, operators and flags defined by the
+library.
+%
+For each library the dependencies with other libraries are specified:
+%
+that is, which other libraries are required in order to provide the
+correct computational behaviour.
+%
+
+%-----------------------------------------------------------------------
+\section{BasicLibrary}
+%-----------------------------------------------------------------------
+
+\noindent \emph{Library Dependencies}: none.
+
+This library provides common Prolog built-in predicates,
+functors, and operators. No I/O predicates are included.
+
+Please note that in the following \texttt{string} means a single or
+double quoted string, as detailed in Chapter \ref{ch:engine};
+\texttt{expr} means an evaluable expression, that is a term that can
+be interpreted as a value by some library functors.
+
+%---------------------------------------------------------------------
+\subsection{Predicates}
+%---------------------------------------------------------------------
+
+\noindent Here follows a list of predicates implemented by this
+library, grouped by category.
+
+%---------------------------------------------------------------------
+\subsubsection{Type Testing}
+%---------------------------------------------------------------------
+%
+\begin{itemize}
+    \item \bti{constant/1}\\
+    \noindent\bt{constant(X)} is true iff \bt{X} is a constant value.\\
+    \template{constant(@term)}
+    %
+    \item \bti{number/1}\\
+    \noindent\bt{number(X)} is true iff \bt{X} is an integer or a float.\\
+    \template{number(@term)}
+    %
+    \item \bti{integer/1}\\
+    \noindent\bt{integer(X)} is true iff \bt{X} is an integer.\\
+    \template{integer(@term)}
+    %
+    \item \bti{float/1}\\
+    \noindent\bt{float(X)} is true iff \bt{X} is an float.\\
+    \template{float(@term)}
+    %
+    \item \bti{atom/1}\\
+    \noindent\bt{atom(X)} is true iff \bt{X} is an atom.\\
+    \template{atom(@term)}
+    %
+    \item \bti{compound/1}\\
+    \noindent\bt{compound(X)} is true iff \bt{X} is a compound term,
+    that is neither atomic nor a variable.\\
+    \template{compound(@term)}
+    %
+    \item \bti{var/1}\\
+    \noindent\bt{var(X)} is true iff \bt{X} is a variable.\\
+    \template{var(@term)}
+    %
+    \item \bti{nonvar/1}\\
+    \noindent\bt{nonvar(X)} is true iff \bt{X} is not a variable.\\
+    \template{nonvar(@term)}
+    %
+    \item \bti{atomic/1}\\
+    \noindent\bt{atomic(X)} is true iff \bt{X} is atomic (that is is an atom, an integer
+    or a float).\\
+    \template{atomic(@term)}
+    %
+    \item \bti{ground/1}\\
+    \noindent\bt{ground(X)} is true iff \bt{X} is a ground term.\\
+    \template{ground(@term)}
+    %
+    \item \bti{list/1}\\
+    \noindent\bt{list(X)} is true iff \bt{X} is a list.\\
+    \template{list(@term)}
+    %
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsubsection{Term Creation, Decomposition and Unification}
+%---------------------------------------------------------------------
+%
+\begin{itemize}
+%
+\item \verb|'=..'/2| : \textit{univ}\\
+\noindent\verb|'=..'(Term, List)| is true if \bt{List} is a list
+consisting of the functor and all arguments of \bt{Term}, in
+order. \\
+\template{'=..'(?term, ?list)}
+%
+\item \bti{functor/3}\\
+\noindent\bt{functor(Term, Functor, Arity)} is true if the term
+\bt{Term} is a compound term, \bt{Functor} is its functor, and
+\bt{Arity} (an integer) is its arity; or if \bt{Term} is an atom
+or number equal to \bt{Functor} and \bt{Arity} is 0.\\
+\template{functor(?term, ?term, ?integer)}
+%
+\item \bti{arg/3}\\
+\noindent\bt{arg(N, Term, Arg)} is true if \bt{Arg} is the \bt{N}th
+arguments of \bt{Term} (counting from 1).\\
+\template{arg(@integer, @compound, -term)}
+%
+\item \bti{text\_term/2}\\
+\noindent\bt{text\_term(Text, Term)} is true iff \bt{Text} is the
+text representation of the term \bt{Term}.\\
+\template{text\_term(?text, ?term)}
+%
+\item \bti{text\_concat/3}\\
+\noindent\bt{text\_concat(TextSource1, TextSource2, TextDest)} is
+true iff \bt{TextDest} is the text resulting by appending the text
+\bt{TestSource2} to \bt{TextSource1}\.\\
+\template{text\_concat(@string, @string, -string)}
+%
+\item \bti{num\_atom/2}\\
+\noindent\bt{num\_atom(Number, Atom)} succeeds iff \bt{Atom}
+is the atom representation of the number \bt{Number}\\
+\template{number\_codes(+number, ?atom)}\\
+\template{number\_codes(?number, +atom)}
+%
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsubsection{Occurs Check}
+%---------------------------------------------------------------------
+
+\noindent When the process of unification takes place between a
+variable $S$ and a term $T$, the first thing a Prolog engine should do
+before proceeding is to check that $T$ does not contain any occurences
+of $S$. This test is known as \emph{occurs check} \cite{ss94} and is
+necessary to prevent the unification of terms such as $s(X)$ and $X$,
+for which no finite common instance exists. Most Prolog
+implementations omit the occurs check from their unification algorithm
+for reasons related to speed and efficiency: \tuprolog{} is no
+exception. However, they provide a predicate for occurs check
+augmented unification, to be used when the programmer wants to never
+incur on an error or an undefined result during the process.
+%
+\begin{itemize}
+%
+\item \bti{unify\_with\_occurs\_check/2}\\
+\noindent\bt{unify\_with\_occurs\_check(X, Y)} is true iff \bt{X}
+and \bt{Y} are unifiable.\\
+\noindent\template{unify\_with\_occurs\_check(?term, ?term)}
+%
+\end{itemize}
+%
+%---------------------------------------------------------------------
+\subsubsection{Expression and Term Comparison}
+%---------------------------------------------------------------------
+\begin{itemize}
+%
+    \item expression comparison (generic template:
+    \emph{pred}(@expr, @expr)):\\
+        \verb|'=:=', '=\=', '>', '<', '>=', '=<'|;
+    %
+    \item term comparison (generic template:
+    \emph{pred}(@term, @term)):\\
+         \verb|'==', '\==', '@>', '@<', '@>=', '@=<'|.
+
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsubsection{Finding Solutions}
+%---------------------------------------------------------------------
+\begin{itemize}
+%
+\item \bti{findall/3}\\
+\noindent\bt{findall(Template, Goal, List)} is true if and only if
+\bt{List} unifies with the list of values to which a variable X not
+occurring in \bt{Template} or \bt{Goal} would be instantiated
+by successive re-executions of\\
+\bt{call(Goal), X = Template}\\
+\noindent after systematic replacement of all variables in X by
+new variables.\\
+\template{\bt{findall(?term, +callable\_term, ?list)}}
+%
+\item \bti{bagof/3}\\
+\noindent\bt{bagof(Template, Goal, Instances)} is true if
+\bt{Instances} is a non-empty list of all terms such that each
+unifies with \bt{Template} for a fixed instance W of the variables
+of \bt{Goal} that are free with respect to \bt{Template}. The
+ordering of the elements of \bt{Instances} is the order in which
+the solutions are found.\\
+\template{bagof(?term, +callable\_term, ?list)}
+%
+\item \bti{setof/3}\\
+\noindent\bt{setof(Template, Goal, List)} is true if \bt{List} is a
+sorted non-empty list of all terms that each unifies with
+\bt{Template} for a fixed instance W of the variables of \bt{Goal}
+that are free with respect to \bt{Template}.\\
+\template{\bt{setof(?term, +callable\_term, ?list)}}
+%
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsubsection{Control Management}
+%---------------------------------------------------------------------
+\begin{itemize}
+%
+\item \bti{(->)/2} : \textit{if-then}\\
+\noindent\verb|'->'(If, Then)| is true if and only if \bt{If} is true
+and \bt{Then} is true for the first solution of \bt{If}.
+%
+\item \bti{(;)/2} : \textit{if-then-else}\\
+\noindent\verb|';'(Either, Or)| is true iff either \bt{Either} or
+\bt{Or} is true.
+%
+\item \bti{call/1}\\
+\noindent\bt{call(Goal)} is true if and only if \bt{Goal}
+represents a goal which is true. It is opaque to cut.\\
+\template{call(+callable\_term)}
+%
+\item \bti{once/1}\\
+\noindent\bt{once(Goal)} finds exactly one solution to \bt{Goal}.
+It is equivalent to \bt{call((Goal, !))} and is opaque to cuts.\\
+\template{once(@goal)}
+%
+\item \bti{repeat/0}\\
+Whenever backtracking reaches \noindent\bt{repeat}, execution
+proceeds forward again through the same clauses as if
+another alternative has been found.\\
+\template{repeat}
+%
+\item \verb|'\+'/1| : \textit{not provable}\\
+\noindent\verb|'\+'(Goal)| is the negation predicate and is
+opaque to cuts. That is, \verb|'\+'(Goal)| is like
+\bt{call(Goal)} except that its success or failure is the opposite.\\
+\template{'$\setminus$+'(@goal)}
+%
+\item \bti{not/1}\\
+\noindent The predicate \bt{not/1} has the same semantics and
+implementation as the predicate \verb|'\+'/1|.\\
+\template{not(@goal)}
+%
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsubsection{Clause Retrival, Creation and Destruction}
+%---------------------------------------------------------------------
+
+\noindent Every Prolog engine lets programmers modify its logic
+database during execution by adding or deleting specific clauses. The
+ISO standard \cite{iso95} distinguishes between static and dynamic
+predicates: only the latter can be modified by asserting or retracting
+clauses. While typically the \emph{dynamic/1} directive is used to
+indicate whenever a user-defined predicate is dynamically modifiable,
+\tuprolog{} engines work differently, establishing two default
+behaviors: library predicates are always of a static kind; every other
+user-defined predicate is dynamic and modifiable at runtime.
+%
+The following list contains library predicates used to manipulate the
+knowledge base of a \tuprolog{} engine during execution.
+
+\begin{itemize}
+%
+\item \bti{clause/2}\\
+\noindent\bt{clause(Head, Body)} is true iff \bt{Head} matches the
+head of a dynamic predicate, and \bt{Body} matches its body. The
+body of a fact is considered to be \bt{true}. \bt{Head} must be at
+least partly instantiated.\\
+\template{\bt{clause(@term, -term)}}
+%
+\item \bti{assert/1}\\
+\noindent\bt{assert(Clause)} is true and adds \bt{Clause} to the
+end of the database.\\
+\template{\bt{assert(@term)}}
+%
+\item \bti{retract/1}\\
+\noindent\bt{retract(Clause)} removes from the knowledge base a
+dynamic clause that matches \texttt{Clause} (which must be at least
+partially instantiated). Gives multiple solutions upon backtracking.\\
+\template{\bt{retract(@term)}}
+%
+\item \bti{retractall/1}\\
+\noindent\bt{retractall(Clause)} removes from the knowledge base all
+the dynamic clauses matching with \texttt{Clause} (which must be at
+least partially instantiated).\\
+\template{\bt{retractall(@term)}}
+%
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsubsection{Operator Management}
+%---------------------------------------------------------------------
+\begin{itemize}
+%
+\item \bti{current\_op/3}\\
+\noindent\bt{current\_op(Priority, Type, Name)} is true iff
+\bt{Priority} is an integer in the range [0, 1200], \bt{Type} is
+one of the \bt{fx}, \bt{xfy}, \bt{yfx}, \bt{xfx} values and
+\bt{Name} is an atom, and as side effect it adds a new operator to
+the engine operator list.\\
+\template{current\_op(?integer, ?term, ?atom)}
+%
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsubsection{Flag Management}
+%---------------------------------------------------------------------
+\begin{itemize}
+%
+\item \bti{current\_prolog\_flag/3}\\
+\noindent\bt{current\_prolog\_flag(Flag,Value)} is true if the
+value of the flag \bt{Flag}
+is \bt{Value}\\
+\template{current\_prolog\_flag(?atom,?term)}
+%
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsubsection{Actions on Theories and Engines}
+%---------------------------------------------------------------------
+\begin{itemize}
+%
+%
+\item \bti{set\_theory/1}\\
+\noindent\bt{set\_theory(TheoryText)} is true iff \bt{TheoryText}
+is the text representation of a valid \tuprolog{} theory, with the
+side effect of setting it as the new theory of the engine.\\
+\template{set\_theory(@string)}
+%
+\item \bti{add\_theory/1}\\
+\noindent\bt{add\_theory(TheoryText)} is true iff \bt{TheoryText}
+is the text representation of a valid \tuprolog{} theory, with the
+side effect of appending it to the current theory of the engine.\\
+\template{add\_theory(@string)}
+%
+\item \bti{get\_theory/1}\\
+\noindent\bt{get\_theory(TheoryText)} is true, and
+\bt{TheoryText} is the text representation of the current theory of the engine.\\
+\template{get\_theory(-string)}
+%
+\item \bti{agent/1}\\
+\noindent\bt{agent(TheoryText)} is true, and spawns a
+\tuprolog{} agent with the knowledge base provided as a Prolog
+textual form in \texttt{TheoryText} (the goal is described in the
+knowledge base).\\
+\template{agent(@string)}
+%
+\item \bti{agent/2}\\
+\noindent\bt{agent(TheoryText, Goal)} is true, and spawn a
+\tuprolog{} agent with the knowledge base provided as a Prolog
+textual form in \texttt{TheoryText}, and solving the query
+\texttt{Goal}
+as a goal.\\
+\template{agent(@string, @term)}
+%
+\end{itemize}
+%
+%---------------------------------------------------------------------
+\subsubsection{Spy Events}
+%---------------------------------------------------------------------
+%
+During each demonstration, the engine notifies to interested listeners so-called
+{\em spy events}, containing informations on its internal state, such as the
+current subgoal being evaluated, the configuration of the execution stack and
+the available choice points. The different kinds of spy events currently
+corresponds to the different states which the virtual machine realizing the
+\tuprolog{}'s inferential core can be found into. \textit{Init} events are
+spawned whenever the machine initialize a subgoal for execution; \textit{Call}
+events are generated when a choice must be made for the next subgoal to be
+executed; \textit{Eval} events represent actual subgoal evaluation; finally,
+\textit{Back} events are notified when a backtracking occurs during the
+demonstration process.
+%
+\begin{itemize}
+%
+\item \bti{spy/0}\\
+\noindent\bt{spy} is true and enables the notification of spy
+events occurring inside the engine.\\
+\template{spy}
+%
+\item \bti{nospy/0}\\
+\noindent\bt{nospy} is true and disables the notification of the
+spy events inside the engine.\\
+\template{nospy}
+%
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsubsection{Auxiliary predicates}
+%---------------------------------------------------------------------
+
+\noindent The following predicates are provided by the library's theory.
+
+\begin{itemize}
+%
+\item \bti{member/2}\\
+\noindent\bt{member(Element, List)} is true iff \bt{Element} is an
+element of the list
+\bt{List}\\
+\template{member(?term, +list)}
+%
+\item \bti{length/2}\\
+\noindent\bt{length(List, NumberOfElements)} is true in three
+different cases: (1) if \bt{List} is instantiated to a list of
+determinate length, then \bt{Length} will be unified with this
+length; (2) if \bt{List} is of indeterminate length and \bt{Length}
+is instantiated to an integer, then \bt{List} will be unified with a
+list of length \bt{Length} and in such a case the list elements are
+unique variables; (3) if \bt{Length} is unbound then \bt{Length}
+will be unified with all possible lengths of \bt{List}.\\
+\template{member(?list, ?integer)}
+%
+\item \bti{append/3}\\
+\noindent\bt{append(What, To, Target)} is true iff \bt{Target} list
+can be obtained by appending the \bt{To} list to the \bt{What}
+list \\
+\template{append(?list, ?list, ?list)}
+%
+\item \bti{reverse/2}\\
+\noindent\bt{reverse(List, ReversedList)} is true iff
+\bti{ReversedList} is the reverse list of \bt{List}\\
+\template{reverse(+list, -list)}
+%
+\item \bti{delete/3}\\
+\noindent\bt{delete(Element, ListSource, ListDest)} is true iff
+\bt{ListDest} list can be obtained by removing the element
+\bt{Element} from the list \bt{ListSource}.\\
+\template{delete(@term, +list, -list)}
+%
+\item \bti{element/3}\\
+\noindent\bt{element(Position, List, Element)} is true iff
+\bt{Element} is the \bt{Position}th element of the list \bt{List}
+(starting the count from 1).\\
+\template{element(@integer, +list, -term)}
+%
+\item \bti{quicksort/3}\\
+\noindent\bt{quicksort(List, ComparisonPredicate, SortedList)} is
+true iff \bt{SortedList} is the list \bt{List} sorted by the comparison
+predicate \bt{ComparisonPredicate}.\\
+\template{element(@list, @pred, -list)}
+%
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsection{Functors}
+%---------------------------------------------------------------------
+
+Functors for expression evaluation (with usual semantics):
+\begin{itemize}
+    \item unary:  \verb|+, -, ~, +|
+    \item binary:  \verb|+, -, *, \, **, <<, >>, /\, \/|
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsection{Operators}
+%---------------------------------------------------------------------
+
+\begin{table}[h]
+    %
+    \begin{center}{\small\tt
+    \begin{tabular}{p{2cm}|p{1cm}|p{1cm}}\hline\hline
+    Name & Assoc. & Prio. \\ \hline\hline
+    :-      &   fx  &   1200 \\
+    :-      &   xfx &   1200 \\
+    ?-      &   fx  &   1200 \\
+    ;       &   xfy &   1100 \\
+    ->      &   xfy &   1050 \\
+    ,       &   xfy &   1000 \\
+    not     &   fy  &   900 \\
+    $\setminus$+   &   fy   & 900   \\
+    =       &   xfx &   700 \\
+    $\setminus$=    &  xfx  &   700 \\
+    ==      &   xfx &   700 \\
+    $\setminus$==   &  xfx  &   700 \\
+    @>      &   xfx & 700   \\
+    @<      &   xfx & 700   \\
+    @=<    &   xfx & 700   \\
+    @>=    &   xfx & 700   \\
+    =:=    &   xfx & 700   \\
+    =$\setminus$=   &   xfx & 700   \\
+    >      &   xfx & 700   \\
+    <      &   xfx & 700   \\
+    >=      &   xfx & 700   \\
+    =<      &   xfx & 700   \\
+    is      &   xfx &   700 \\
+    =..     &   xfx & 700 \\
+    +       &   yfx & 500 \\
+    -       &   yfx & 500 \\
+    $/\setminus$    &   yfx &   500 \\
+    $\setminus/$    &   yfx &   500 \\
+    $\ast$  &   yfx & 400 \\
+    /       &   yfx & 400 \\
+    //      &   yfx & 400 \\
+    >>      &   yfx & 400 \\
+    <<      &   yfx & 400 \\
+    >>      &   yfx & 400 \\
+    $\ast$$\ast$  &   xfx & 200 \\
+    \textasciicircum  &   xfy & 200 \\
+    $\setminus$$\setminus$      &   fx & 200 \\
+    -       &   fy & 200 \\
+    \hline\hline
+    \end{tabular}
+    }\end{center}
+\end{table}
+
+\clearpage
+
+%-----------------------------------------------------------------------
+\section{ISOLibrary}
+%-----------------------------------------------------------------------
+
+\noindent \emph{Library Dependencies}: BasicLibrary.
+
+This library contains almost\footnote{Currently ISO exceptions, ISO
+I/O predicates and some ISO directives are not supported.} all the
+built-in predicates and functors that are part of the ISO standard
+and that are not part directly of the \tuprolog{} core engine or
+other core libraries.
+%
+Moreover, some features are added, not currently ISO, such as the
+support for definite clause grammars (DCGs).
+%
+
+%---------------------------------------------------------------------
+\subsection{Predicates}
+%---------------------------------------------------------------------
+
+\noindent Here follows a list of predicates implemented by this
+library, grouped by category.
+
+%---------------------------------------------------------------------
+%\subsubsection{Clause Retrieval and Information}
+%---------------------------------------------------------------------
+
+%\begin{itemize}
+%
+%\item \bti{current\_predicate/1}\\
+%\noindent\bt{current\_predicate(Functor/Arity)} -- \emph{to be implemented}\\
+%\template{\bt{current\_predicate(?term)}}
+%
+%\end{itemize}
+
+%---------------------------------------------------------------------
+\subsubsection{Type Testing}
+%---------------------------------------------------------------------
+
+\begin{itemize}
+%
+\item \bti{bound/1}\\
+\noindent\bt{bound(Term)} is a synonym for the \bt{ground/1} predicate
+defined in BasicLibrary.\\
+\template{bound(+term)}
+%
+\item \bti{unbound/1}\\
+\noindent\bt{unbound(Term)} is true iff \bt{Term} is not a ground
+term.\\
+\template{unbound(+term)}
+%
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsubsection{Atoms Processing}
+%---------------------------------------------------------------------
+
+\begin{itemize}
+%
+\item \bti{atom\_length/2}\\
+\noindent\bt{atom\_length(Atom, Length)} is true iff the integer
+\bt{Length} equals the number of characters in the name of atom
+\bt{Atom}.\\
+\template{atom\_length(+atom, ?integer)}
+%
+\item \bti{atom\_concat/3}\\
+\noindent\bt{atom\_concat(Start, End, Whole)} is true iff the
+\bt{Whole} is the atom obtained by concatenating the characters of
+\bt{End} to those of \bt{Start}. If \bt{Whole} is instantiated, then
+all decompositions of \bt{Whole} can be obtained by backtracking.\\
+\template{atom\_concat(?atom, ?atom, +atom)}\\
+\template{atom\_concat(+atom, +atom, -atom)}
+%
+\item \bti{sub\_atom/5}\\
+\noindent\bt{sub\_atom(Atom, Before, Length, After, SubAtom)} is
+true iff \bt{SubAtom} is the sub atom of \bt{Atom} of length
+\bt{Length} that appears with \bt{Before} characters preceding it
+and \bt{After} characters following. It is re-executable.\\
+\template{sub\_atom(+atom, ?integer, ?integer, ?integer, ?atom)}
+%
+\item \bti{atom\_chars/2}\\
+\noindent\bt{atom\_chars(Atom,List)} succeeds iff \bt{List} is a
+list whose elements are the one character atoms that in order make
+up \bt{Atom}.\\
+\template{atom\_chars(+atom, ?character\_list)}\\
+\template{atom\_chars(-atom, ?character\_list)}
+%
+\item \bti{atom\_codes/2}\\
+\noindent\bt{atom\_codes(Atom, List)} succeeds iff \bt{List} is a
+list whose elements are the character codes that in order correspond
+to the characters that make up \bt{Atom}.\\
+\template{atom\_codes(+atom, ?character\_code\_list)}\\
+\template{atom\_chars(-atom, ?character\_code\_list)}
+%
+\item \bti{char\_code/2}\\
+\noindent\bt{char\_code(Char, Code)} succeeds iff \bt{Code} is a
+the character code that corresponds to the character \bt{Char}.\\
+\template{char\_code(+character, ?character\_code)}\\
+\template{char\_code(-character, +character\_code)}
+%
+\item \bti{number\_chars/2}\\
+\noindent\bt{number\_chars(Number, List)} succeeds iff \bt{List}
+is a list whose elements are the one character atoms that in
+order make up \bt{Number}.\\
+\template{number\_chars(+number, ?character\_list)}\\
+\template{number\_chars(-number, ?character\_list)}
+%
+\item \bti{number\_codes/2}\\
+\noindent\bt{number\_codes(Number, List)} succeeds iff \bt{List}
+is a list whose elements are the codes for the one character atoms
+that in order make up \bt{Number}.\\
+\template{number\_codes(+number,?character\_code\_list)}\\
+\template{number\_codes(-number,?character\_code\_list)}
+%
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsection{Functors}
+%---------------------------------------------------------------------
+
+\begin{itemize}
+    \item Trigonometric functions: \bt{sin(+expr)}, \bt{cos(+expr)}, \bt{atan(+expr)}.
+    %
+    \item Logarithmic functions: \bt{exp(+expr)}, \bt{log(+expr)}, \bt{sqrt(+expr)}.
+    %
+    \item Absolute value functions: \bt{abs(+expr)}, \bt{sign(+Expr)}.
+    %
+    \item Rounding functions: \bt{floor(+expr)},
+    \bt{ceiling(+expr)}, \bt{round(+expr)}, \bt{truncate(+expr)},
+    \bt{float(+expr)}, \bt{float\_integer\_part(+expr)},\\\bt{float\_fractional\_part(+expr)}.
+    %
+    \item Integer division functions:
+    \bt{div(+expr, +expr)}, \bt{mod(+expr, +expr)}, \bt{rem(+expr, +expr)}.
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsection{Operators}
+%---------------------------------------------------------------------
+
+\begin{table}[h]
+    %
+    \begin{center}{\small\tt
+    \begin{tabular}{p{2cm}|p{1cm}|p{1cm}}\hline\hline
+    Name & Assoc. & Prio. \\ \hline
+    mod   & yfx & 400\\
+    div   & yfx & 300\\
+    rem   & yfx & 300\\
+    sin   & fx & 200\\
+    cos   & fx & 200\\
+    sqrt  & fx & 200\\
+    atan  & fx & 200\\
+    exp   & fx & 200\\
+    log   & fx & 200\\
+    \hline\hline
+    \end{tabular}
+    }\end{center}
+\end{table}
+
+%---------------------------------------------------------------------
+\subsection{Flags}
+%---------------------------------------------------------------------
+
+\begin{table}[h]
+    %
+    \begin{center}{\small\tt
+    \begin{tabular}{p{6cm}|p{3cm}|p{3cm}}\hline\hline
+        Flag Name   & Possible Values & Default Value\\ \hline\hline
+        bounded         & {true}           &  true \\
+        max\_integer     & {2147483647}     &  2147483647 \\
+        min\_integer     & {-2147483648}    &  -2147483648 \\
+        integer\_rounding\_function & {down} & down \\
+        char\_conversion & {off}           & off \\
+        debug           & {off}           & off \\
+        max\_arity       & {2147483647}    & 2147483647 \\
+        undefined\_predicates & {fail}         & fail \\
+        double\_quotes & {atom}         & atom \\
+    \hline\hline
+    \end{tabular}
+    }\end{center}
+\end{table}
+
+\clearpage
+
+%---------------------------------------------------------------------
+\section{DCGLibrary}
+%---------------------------------------------------------------------
+
+\noindent \emph{Library Dependencies}: BasicLibrary.
+
+This library provides support for Definite Clause Grammar
+\cite{bra00}, also known as DCG,\footnote{The DCG formalism is not
+defined as an ISO standard at the time of writing this document.} an
+extension of context free grammars that have proven useful for
+describing natural and formal languages, and that may be
+conveniently expressed and executed in Prolog.
+%
+Note that this library is not loaded by default when a \tuprolog{}
+engine is created.
+
+A Definite Clause Grammar rule has the general form:\\\\
+%
+\begin{verbatim}
+Head --> Body
+\end{verbatim}
+%
+with the declarative interpretation that a possible form for \texttt{Head}
+is \texttt{Body}.
+%
+A non-terminal symbol may be any term other than a variable or a
+number.
+%
+A terminal symbol may be any term. In order to distinguish
+terminals from nonterminals, a sequence of one or more terminal
+symbols  is written within a grammar rule as a Prolog list, with the
+empty sequence written as the empty list \verb|[]|.
+%
+The body can contain also executable blocks -- interpreted
+according to normal Prolog rule -- enclosed by the \verb|{| and
+\verb|}| parenthesis.
+%
+A simple example of DCG follows:
+%
+\begin{verbatim}
+sentence --> noun_phrase, verb_phrase.
+verb_phrase --> verb, noun_phrase.
+noun_phrase --> [charles].
+noun_phrase --> [linda].
+verb --> [loves].
+\end{verbatim}
+%
+So, you can verify that a phrase is correct according to
+the grammar simply by the query:
+%
+\begin{verbatim}
+?- phrase(sentence, [charles, loves, linda]).
+\end{verbatim}
+%
+But also:
+%
+\begin{verbatim}
+?- phrase(sentence, [Who, loves, linda]).
+\end{verbatim}
+%
+which would give, according to the grammar, two solutions,
+\texttt{Who} bound to \texttt{charles}, and \texttt{Who} bound to
+\texttt{linda}.
+
+%---------------------------------------------------------------------
+\subsection{Predicates}
+%---------------------------------------------------------------------
+
+\noindent The classic built-in predicates provided for parsing DCG
+sentences are:
+
+\begin{itemize}
+%
+\item \bti{phrase/2}\\
+\noindent\bt{phrase(Category, List)} is true iff the list \bt{List}
+can be parsed as a phrase (i.e. sequence of terminals) of type
+\bt{Category}.
+%
+\bt{Category} can be any term which would be accepted as a
+nonterminal of the grammar (or in general, it can be any grammar
+rule body), and must be instantiated to a non-variable term at the
+time of the call.
+%
+This predicate is the usual way to commence execution of grammar
+rules.
+%
+If \bt{List} is bound to a list of terminals by the time of the
+call, then the goal corresponds to parsing \bt{List} as a phrase
+of type \bt{Category}; otherwise if \bt{List} is unbound, then the
+grammar is being used for generation.\\
+%
+\template{phrase(+term, ?list)}
+%
+%
+\item \bti{phrase/3}\\
+\noindent\bt{phrase(Category, List, Rest)} is true iff the segment
+between the start of list \bt{List} and the start of list \bt{Rest}
+can be parsed as a phrase (i.e. sequence of terminals) of type
+\bt{Category}.
+%
+In other words, if the search for phrase Phrase is started at the
+beginning of list \bt{List}, then \bt{Rest} is what remains
+unparsed after \bt{Category} has been found.
+%
+Again, \bt{Category} can be any term which would be accepted as a
+nonterminal of the grammar (or in general, any grammar rule body),
+and must be instantiated to a non variable term at the time
+of the call.\\
+%
+\template{phrase(+term, ?list, ?rest)}
+
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsection{Operators}
+%---------------------------------------------------------------------
+\mbox{} % Thanks stupid LaTeX for putting the table below where you want
+        % instead of where I say.
+\begin{table}[!h]
+    \begin{center}{\small\tt
+    \begin{tabular}{p{2cm}|p{1cm}|p{1cm}}\hline\hline
+    Name & Assoc. & Prio. \\ \hline
+    --> & xfx & 1200\\
+    \hline\hline
+    \end{tabular}
+    }\end{center}
+\end{table}
+
+%-----------------------------------------------------------------------
+\section{IOLibrary}
+%-----------------------------------------------------------------------
+
+\noindent \emph{Library Dependencies}: BasicLibrary.
+
+The IOLibrary defines classic Prolog built-ins predicates to enable
+interaction between Prolog programs and external resources, typically
+files and I/O channels.
+
+%---------------------------------------------------------------------
+\subsection{Predicates}
+%---------------------------------------------------------------------
+
+\noindent Here follows a list of predicates implemented by this
+library, grouped by category.
+
+%---------------------------------------------------------------------
+\subsubsection{General I/O}
+%---------------------------------------------------------------------
+
+\begin{itemize}
+
+\item \bti{see/1}\\
+\noindent\bt{see(StreamName)} is used to create/open an input
+stream; the predicate is true iff \bt{StreamName} is a string
+representing the name of a file to be created or accessed as input
+stream, or the string \texttt{stdin} selecting current standard
+input as input stream.\\
+\template{see(@atom)}
+%
+\item \bti{seen/0}\\
+\noindent\bt{seen} is used to close the input stream previously
+opened; the predicate is true iff the closing action is possible.\\
+\template{seen}
+%
+\item \bti{seeing/1}\\
+\noindent\bt{seeing(StreamName)} is true iff \texttt{StreamName}
+is the name of the stream currently used as input stream.\\
+\template{seeing(?term)}
+%
+\item \bti{tell/1}\\
+\noindent\bt{tell(StreamName)} is used to create/open an output
+stream; the predicate is true iff \bt{StreamName} is a string
+representing the name of a file to be created or accessed as
+output stream, or the string \texttt{stdout} selecting current
+standard output as output stream.\\
+\template{tell(@atom)}
+%
+\item \bti{told/0}\\
+\noindent\bt{told} is used to close the output stream previously
+opened; the predicate is true iff the closing action is possible.\\
+\template{told}
+%
+\item \bti{telling/1}\\
+\noindent\bt{telling(StreamName)} is true iff \texttt{StreamName}
+is the name of the stream currently used as input stream.\\
+\template{telling(?term)}
+%
+\item \bti{put/1}\\
+\noindent\bt{put(Char)} puts the character \bt{Char} on
+current output stream; it is true iff the operation is possible.\\
+\template{put(@char)}
+%
+\item \bti{get0/1}\\
+\noindent\bt{get0(Value)} is true iff \bt{Value} is the next
+character (whose code can span on the entire ASCII codes)
+available from the input stream, or -1 if no characters are
+available;
+%
+as a side effect the character is removed from the input stream.\\
+%
+\template{get0(?charOrMinusOne)}
+%
+\item \bti{get/1}\\
+\noindent\bt{get(Value)} is true iff \bt{Value} is the next
+character (whose code can span on the range 32..255 as ASCII
+codes) available from the input stream, or -1 if no characters are
+available;
+%
+as a side effect the character (with all the characters that
+precede this one not in the range 32..255) is removed from the
+input stream.\\
+%
+\template{get(?charOrMinusOne)}
+%
+\item \bti{tab/1}\\
+\noindent\bt{tab(NumSpaces)} inserts \bt{NumSpaces} space
+characters (ASCII code 32) on output stream; the predicate is true
+iff the operation is possible.\\
+%
+\template{tab(+integer)}
+%
+%
+\item \bti{read/1}\\
+\noindent\bt{read(Term)} is true iff \bt{Term} is Prolog term
+available from the input stream.
+%
+The term must ends with the \emph{.} character; if no valid terms
+are available, the predicate fails.
+%
+As a side effect, the term is removed from the input stream.\\
+%
+\template{read(?term)}
+%
+%
+\item \bti{write/1}\\
+\noindent\bt{write(Term)} writes the term \bt{Term} on current
+output stream.
+%
+The predicate fails if the operation is not possible.\\
+%
+\template{write(@term)}
+%
+%
+\item \bti{print/1}\\
+\noindent\bt{print(Term)} writes the term \bt{Term} on current
+output stream, removing apices if the term is an atom representing
+a string.
+%
+The predicate fails if the operation is not possible.\\
+%
+\template{print(@term)}
+%
+\item \bti{nl/0}\\
+\noindent\bt{nl} writes a new line control character on current
+output stream.
+%
+The predicate fails if the operation is not possible.\\
+\template{nl}
+%
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsubsection{I/O and Theories Helpers}
+%---------------------------------------------------------------------
+%
+\begin{itemize}
+%
+\item \bti{text\_from\_file/2}\\
+\noindent\bt{text\_from\_file(File, Text)} is true iff \bt{Text} is
+the text contained in the file whose name is \texttt{File}.\\
+\template{text\_from\_file(+string, -string)}
+%
+%
+\item \bti{agent\_file/1}\\
+\noindent\bt{agent\_file(TheoryFileName)} is true iff
+\texttt{TheoryFileName} is an accessible file containing a Prolog
+knowledge base, and as a side effect it spawns a \tuprolog{} agent
+provided with that knowledge base.\\
+\template{agent\_file(+string)}
+%
+%
+\item \bti{solve\_file/2}\\
+\noindent\bt{solve\_file(TheoryFileName, Goal)} is true iff
+\texttt{TheoryFileName} is an accessible file containing a Prolog
+knowledge base, and as a side effect it solves the query \texttt{Goal}
+according to that knowledge base.\\
+\template{solve\_file(+string, +goal)}
+%
+%
+\item \bti{consult/1}\\
+\noindent\bt{consult(TheoryFileName)} is true iff
+\texttt{TheoryFileName} is an accessible file containing a Prolog
+knowledge base, and as a side effect it consult that knowledge base,
+by adding it to current knowledge base.\\
+\template{consult(+string)}
+%
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsubsection{Random Generation of Numbers}
+%---------------------------------------------------------------------
+
+\noindent The random generation of number can be regarded as a form of
+I/O.
+
+\begin{itemize}
+%
+\item \bti{rand\_float/1}\\
+\noindent\bt{rand\_float(RandomFloat)} is true iff
+\texttt{RandomFloat} is a float random number generated by the
+engine between 0 and 1.\\
+\template{rand\_float(?float)}
+%
+\item \bti{rand\_int/2}\\
+\noindent\bt{rand\_int(Seed, RandomInteger)} is true iff
+\texttt{RandomInteger} is an integer random number generated by
+the engine between 0 and \texttt{Seed}.\\
+\template{rand\_int(?integer, @integer)}
+%
+\end{itemize}

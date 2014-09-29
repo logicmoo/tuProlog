@@ -1,0 +1,10 @@
+engine.addOutputListener(new OutputListener() {
+
+            @Override
+            public void onOutput(OutputEvent e) {
+                finalResult += e.getMsg();
+
+            }
+        });
+
+finalResult it's a Global variable which contains the returned String produced by Prolog Write instruction.

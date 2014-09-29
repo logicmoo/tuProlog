@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="tuProlog Plug-in Update Site" url="http://tuprolog.googlecode.com/svn/2p-plugin/trunk/tuPrologUpdateSite/">
+      This in the Update Site of tuPtolog plug-in, it allows Update Manager to find newer 
+      versions of plug-is and sugest user to install it.
+   </description>
+   <feature url="features/alice.tuprologx.eclipse_0.5.0.jar" id="alice.tuprologx.eclipse" version="0.5.0">
+      <category name="tuProlog Plug-in Features"/>
+   </feature>
+   <feature url="features/alice.tuprologx.eclipse_2.4.1.jar" id="alice.tuprologx.eclipse" version="2.4.1">
+      <category name="tuProlog Plug-in Features"/>
+   </feature>
+   <feature url="features/alice.tuprologx.eclipse_2.4.1.b2.jar" id="alice.tuprologx.eclipse" version="2.4.1.b2">
+      <category name="tuProlog Plug-in Features"/>
+   </feature>
+   <feature url="features/alice.tuprologx.eclipse_2.5.0.jar" id="alice.tuprologx.eclipse" version="2.5.0">
+      <category name="tuProlog Plug-in Features"/>
+   </feature>
+   <feature url="features/alice.tuprologx.eclipse_2.7.0.jar" id="alice.tuprologx.eclipse" version="2.7.0">
+      <category name="tuProlog Plug-in Features"/>
+   </feature>
+   <feature url="features/tuPrologFeature_2.7.2.1.jar" id="tuPrologFeature" version="2.7.2.1">
+      <category name="tuProlog Plug-in Features"/>
+   </feature>
+   
+<!--<feature url="features/tuPrologFeature_2.9.0.jar" id="tuPrologFeature" version="2.9.0">
+      <category name="tuProlog Plug-in Features"/>
+   </feature>
+
+-->
+   <category-def name="tuProlog Plug-in Features" label="tuProlog Plug-in Features"/>
+</site>

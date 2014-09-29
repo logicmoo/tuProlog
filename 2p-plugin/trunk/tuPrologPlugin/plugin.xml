@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+     <extension point="org.eclipse.ui.perspectiveExtensions">
+      
+      <perspectiveExtension targetID="tuPrologPlugin.perspective.PrologPerspective">
+         <newWizardShortcut id="alice.tuprologx.eclipse.wizards.PrologProjectWizard">
+         </newWizardShortcut>
+         
+         <newWizardShortcut id="alice.tuprologx.eclipse.wizards.PrologWizard">
+         </newWizardShortcut>
+         
+         <perspectiveShortcut id="tuPrologPlugin.perspective.PrologPerspective"/>
+      </perspectiveExtension>
+
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="tuProlog View"
+            id="view"/>
+      <view
+            allowMultiple="true"
+            icon="icons/method.gif"
+            class="alice.tuprologx.eclipse.views.ASTView"
+            category="view"
+            name="ASTView"
+            id="alice.tuprologx.eclipse.views.ASTView"/>
+      <view
+            allowMultiple="true"
+            icon="icons/console.gif" 
+            class="alice.tuprologx.eclipse.views.ConsoleView"
+            category="view"
+            name="tuProlog Console"
+            id="alice.tuprologx.eclipse.views.ConsoleView"/>
+   	  <view
+   	  		allowMultiple="true"
+   	  		icon="icons/queryListIcon.png" 
+   	  		class="alice.tuprologx.eclipse.views.QueryList"
+   	  		category="view"
+   	  		name="QueryList"
+   	  		id="alice.tuprologx.eclipse.views.QueryList"/>
+   </extension>
+   <extension point="org.eclipse.ui.newWizards">
+   <category
+            name="tuProlog"
+            id="prologwizard"/>
+      <wizard
+            category="prologwizard"
+            class="alice.tuprologx.eclipse.wizards.PrologWizard"
+            icon="icons/newTheory.gif"
+            id="alice.tuprologx.eclipse.wizards.PrologWizard"
+            name="tuProlog Theory"
+            project="true"/>
+      <wizard
+            category="prologwizard"
+            class="alice.tuprologx.eclipse.wizards.PrologProjectWizard"
+            icon="icons/newProject.gif"
+            id="alice.tuprologx.eclipse.wizards.PrologProjectWizard"
+            name="tuProlog Project"
+            project="true"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="alice.tuprologx.eclipse.editors.PrologEditor"
+            extensions="pl,pro"
+            icon="icons/sample.gif"
+            id="alice.tuprologx.eclipse.editors.PrologEditor"
+            name="tuProlog"
+            symbolicFontName="alice.tuprologx.eclipse.editor.editorfont"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            icon="icons/sample.gif"
+            class="alice.tuprologx.eclipse.perspective.PrologPerspective"
+            name="tuProlog"
+            id="tuPrologPlugin.perspective.PrologPerspective"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="alice.tuprologx.eclipse.preferences.PreferencePageRoot"
+            id="alice.tuprologx.eclipse.preferences.PreferencePageRoot"
+            name="tuProlog Plugin"/>
+      <page
+            category="alice.tuprologx.eclipse.preferences.PreferencePageRoot"
+            class="alice.tuprologx.eclipse.preferences.PreferencePageSyntaxColoring"
+            id="alice.tuprologx.eclipse.preferences.PreferencePageSyntaxColoring"
+            name="Syntax Coloring"/>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="alice.tuprologx.eclipse.preferences.PreferenceInitializer"/>
+   </extension>
+   
+   <extension
+         id="prologBuilder"
+         name="Prolog Project Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="alice.tuprologx.eclipse.core.PrologBuilder">
+         </run>
+      </builder>
+   </extension>
+   
+   <extension
+         id="prologParser"
+         name="Prolog Project Parser"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="alice.tuprologx.eclipse.core.PrologParser">
+         </run>
+      </builder>
+   </extension>
+   
+   <extension 
+   		id="prologSyntaxError"
+   		name="Prolog Parsing Error"
+        point="org.eclipse.core.resources.markers">
+            
+        <super type="org.eclipse.core.resources.problemmarker"/>
+        <super type="org.eclipse.core.resources.textmarker"/>
+        <persistent value="true"/>
+    </extension>
+   
+   <extension
+         id="prologNature"
+         name="Prolog Project Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="alice.tuprologx.eclipse.core.PrologNature">
+         </run>
+      </runtime>
+      <builder
+            id="tuPrologPlugin.prologBuilder">
+      </builder>
+      <builder
+            id="tuPrologPlugin.prologParser">
+      </builder>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            class="alice.tuprologx.eclipse.properties.EnginesManagement"
+            icon="icons/sample.gif"
+            id="alice.tuprologx.eclipse.properties.enginesManagement"
+            name="Engines Management">
+            <enabledWhen>
+            	<instanceof value="org.eclipse.core.resources.IProject"/>
+            </enabledWhen>
+      </page>
+   </extension>
+   
+   <extension point="org.eclipse.ui.ide.projectNatureImages">
+  		<image 
+    	id="alice.tuprologx.eclipse.prologNatureImage"
+    	natureId="tuPrologPlugin.prologNature"
+    	icon="icons/cartella2prolog.gif">
+  	</image>
+ 	</extension>
+ 	
+ 	<!-- tocca a me -->
+ 	
+   <extension point="org.eclipse.ui.actionSets">
+   		<actionSet
+   			id="alice.tuprologx.eclipse.toolbar.PrologAction"
+   			label="tuProlog Set"
+   			visible="true">   			
+   			<action
+   				id="alice.tuprologx.eclipse.toolbar.PrologTheoryAction"
+   				label="New tuProlog Theory"
+   				toolbarPath="tuPrologGroup"
+   				class="alice.tuprologx.eclipse.toolbar.PrologTheoryAction"
+   				icon="icons/newTheory.gif">   				
+   			</action>
+   			<action
+   				id="alice.tuprologx.eclipse.toolbar.PrologProjectAction"
+   				label="New tuProlog Project"
+   				toolbarPath="tuPrologGroup"
+   				class="alice.tuprologx.eclipse.toolbar.PrologProjectAction"
+   				icon="icons/newProject.gif">   				
+   			</action>
+      <action
+            class="alice.tuprologx.eclipse.toolbar.PrologSetTheoryAction"
+            icon="icons/SetTheory20.png"
+            id="alice.tuprologx.eclipse.toolbar.PrologSetTheoryAction"
+            label="SetTheory"
+            toolbarPath="tuPrologGroup">
+      </action>
+            <action
+            class="alice.tuprologx.eclipse.toolbar.PrologGetTheoryAction"
+            icon="icons/GetTheory20.png"
+            id="alice.tuprologx.eclipse.toolbar.PrologGetTheoryAction"
+            label="GetTheory"
+            toolbarPath="tuPrologGroup">
+      </action>
+   		</actionSet>	
+   </extension>                		
+   
+  
+  
+-
+-
+  <extension
+        point="org.eclipse.ui.importWizards">
+     <category
+           id="alice.tuprologx.eclipse.importWizards.sampleCategory"
+           name="Prolog">
+     </category>
+     <wizard
+           category="alice.tuprologx.eclipse.importWizards.sampleCategory"
+           class="alice.tuprologx.eclipse.importWizards.ImportWizard"
+           icon="icons/newTheory.gif"
+           id="alice.tuprologx.eclipse.importWizards.ImportWizard"
+           name="Import Prolog Theory">
+        <description>
+           Import a Prolog Theory from the local file system into the workspace.
+        </description>
+     </wizard>
+  </extension>
+  <extension
+        point="org.eclipse.help.contexts">
+     <contexts
+           file="contexts.xml">
+     </contexts>
+  </extension>
+    
+                  		
+    
+</plugin>

@@ -1,0 +1,171 @@
+\BOOKMARK [0][]{chapter.1}{1 What is tuProlog}{}% 1
+\BOOKMARK [0][]{chapter.2}{2 Installing tuProlog}{}% 2
+\BOOKMARK [1][]{section.2.1}{2.1 Installation in Java}{chapter.2}% 3
+\BOOKMARK [1][]{section.2.2}{2.2 Installation in .NET}{chapter.2}% 4
+\BOOKMARK [1][]{section.2.3}{2.3 Installation in Android}{chapter.2}% 5
+\BOOKMARK [1][]{section.2.4}{2.4 Installation in Eclipse}{chapter.2}% 6
+\BOOKMARK [0][]{chapter.3}{3 Getting Started}{}% 7
+\BOOKMARK [1][]{section.3.1}{3.1 tuProlog for the Prolog User}{chapter.3}% 8
+\BOOKMARK [2][]{subsection.3.1.1}{3.1.1 Editing theories}{section.3.1}% 9
+\BOOKMARK [2][]{subsection.3.1.2}{3.1.2 Solving goals}{section.3.1}% 10
+\BOOKMARK [2][]{subsection.3.1.3}{3.1.3 Debugging support}{section.3.1}% 11
+\BOOKMARK [2][]{subsection.3.1.4}{3.1.4 Dynamic library management}{section.3.1}% 12
+\BOOKMARK [2][]{subsection.3.1.5}{3.1.5 Input from console}{section.3.1}% 13
+\BOOKMARK [1][]{section.3.2}{3.2 tuProlog for the Java Developer}{chapter.3}% 14
+\BOOKMARK [1][]{section.3.3}{3.3 tuProlog for the .NET Developer}{chapter.3}% 15
+\BOOKMARK [1][]{section.3.4}{3.4 tuProlog for the Android User}{chapter.3}% 16
+\BOOKMARK [2][]{subsection.3.4.1}{3.4.1 Class loading issues: tuProlog 2.9 news}{section.3.4}% 17
+\BOOKMARK [0][]{chapter.4}{4 tuProlog Basics}{}% 18
+\BOOKMARK [1][]{section.4.1}{4.1 Predicate categories}{chapter.4}% 19
+\BOOKMARK [1][]{section.4.2}{4.2 Syntax}{chapter.4}% 20
+\BOOKMARK [1][]{section.4.3}{4.3 Engine configurability}{chapter.4}% 21
+\BOOKMARK [1][]{section.4.4}{4.4 Exception support}{chapter.4}% 22
+\BOOKMARK [2][]{subsection.4.4.1}{4.4.1 Error classification}{section.4.4}% 23
+\BOOKMARK [1][]{section.4.5}{4.5 Built-in predicates}{chapter.4}% 24
+\BOOKMARK [2][]{subsection.4.5.1}{4.5.1 Control management}{section.4.5}% 25
+\BOOKMARK [2][]{subsection.4.5.2}{4.5.2 Term unification and management}{section.4.5}% 26
+\BOOKMARK [2][]{subsection.4.5.3}{4.5.3 Knowledge base management}{section.4.5}% 27
+\BOOKMARK [2][]{subsection.4.5.4}{4.5.4 Operator and flag management}{section.4.5}% 28
+\BOOKMARK [2][]{subsection.4.5.5}{4.5.5 Library management}{section.4.5}% 29
+\BOOKMARK [2][]{subsection.4.5.6}{4.5.6 Directives}{section.4.5}% 30
+\BOOKMARK [0][]{chapter.5}{5 tuProlog Libraries}{}% 31
+\BOOKMARK [1][]{section.5.1}{5.1 BasicLibrary}{chapter.5}% 32
+\BOOKMARK [2][]{subsection.5.1.1}{5.1.1 Predicates}{section.5.1}% 33
+\BOOKMARK [3][]{subsubsection.5.1.1.1}{5.1.1.1 Type Testing}{subsection.5.1.1}% 34
+\BOOKMARK [3][]{subsubsection.5.1.1.2}{5.1.1.2 Term Creation, Decomposition and Unification}{subsection.5.1.1}% 35
+\BOOKMARK [3][]{subsubsection.5.1.1.3}{5.1.1.3 Occurs Check}{subsection.5.1.1}% 36
+\BOOKMARK [3][]{subsubsection.5.1.1.4}{5.1.1.4 Expression and Term Comparison}{subsection.5.1.1}% 37
+\BOOKMARK [3][]{subsubsection.5.1.1.5}{5.1.1.5 Finding Solutions}{subsection.5.1.1}% 38
+\BOOKMARK [3][]{subsubsection.5.1.1.6}{5.1.1.6 Control Management}{subsection.5.1.1}% 39
+\BOOKMARK [3][]{subsubsection.5.1.1.7}{5.1.1.7 Clause Retrieval, Creation and Destruction}{subsection.5.1.1}% 40
+\BOOKMARK [3][]{subsubsection.5.1.1.8}{5.1.1.8 Operator Management}{subsection.5.1.1}% 41
+\BOOKMARK [3][]{subsubsection.5.1.1.9}{5.1.1.9 Flag Management}{subsection.5.1.1}% 42
+\BOOKMARK [3][]{subsubsection.5.1.1.10}{5.1.1.10 Actions on Theories and Engines}{subsection.5.1.1}% 43
+\BOOKMARK [3][]{subsubsection.5.1.1.11}{5.1.1.11 Spy Events}{subsection.5.1.1}% 44
+\BOOKMARK [3][]{subsubsection.5.1.1.12}{5.1.1.12 Auxiliary predicates}{subsection.5.1.1}% 45
+\BOOKMARK [2][]{subsection.5.1.2}{5.1.2 Functors}{section.5.1}% 46
+\BOOKMARK [2][]{subsection.5.1.3}{5.1.3 Operators}{section.5.1}% 47
+\BOOKMARK [1][]{section.5.2}{5.2 ISOLibrary}{chapter.5}% 48
+\BOOKMARK [2][]{subsection.5.2.1}{5.2.1 Predicates}{section.5.2}% 49
+\BOOKMARK [3][]{subsubsection.5.2.1.1}{5.2.1.1 Type Testing}{subsection.5.2.1}% 50
+\BOOKMARK [3][]{subsubsection.5.2.1.2}{5.2.1.2 Atoms Processing}{subsection.5.2.1}% 51
+\BOOKMARK [2][]{subsection.5.2.2}{5.2.2 Functors}{section.5.2}% 52
+\BOOKMARK [2][]{subsection.5.2.3}{5.2.3 Operators}{section.5.2}% 53
+\BOOKMARK [2][]{subsection.5.2.4}{5.2.4 Flags}{section.5.2}% 54
+\BOOKMARK [1][]{section.5.3}{5.3 IOLibrary}{chapter.5}% 55
+\BOOKMARK [2][]{subsection.5.3.1}{5.3.1 Predicates}{section.5.3}% 56
+\BOOKMARK [3][]{subsubsection.5.3.1.1}{5.3.1.1 General I/O}{subsection.5.3.1}% 57
+\BOOKMARK [3][]{subsubsection.5.3.1.2}{5.3.1.2 Helper Predicates}{subsection.5.3.1}% 58
+\BOOKMARK [3][]{subsubsection.5.3.1.3}{5.3.1.3 Random Generation of Numbers}{subsection.5.3.1}% 59
+\BOOKMARK [1][]{section.5.4}{5.4 ThreadLibrary}{chapter.5}% 60
+\BOOKMARK [2][]{subsection.5.4.1}{5.4.1 Predicates}{section.5.4}% 61
+\BOOKMARK [3][]{subsubsection.5.4.1.1}{5.4.1.1 Creating and deleting threads}{subsection.5.4.1}% 62
+\BOOKMARK [3][]{subsubsection.5.4.1.2}{5.4.1.2 Inter-thread communication via queues}{subsection.5.4.1}% 63
+\BOOKMARK [3][]{subsubsection.5.4.1.3}{5.4.1.3 Thread synchronization via mutual exclusion}{subsection.5.4.1}% 64
+\BOOKMARK [2][]{subsection.5.4.2}{5.4.2 Examples}{section.5.4}% 65
+\BOOKMARK [3][]{subsubsection.5.4.2.1}{5.4.2.1 Factorial of two numbers}{subsection.5.4.2}% 66
+\BOOKMARK [3][]{subsubsection.5.4.2.2}{5.4.2.2 Father and child communicating via a public queue}{subsection.5.4.2}% 67
+\BOOKMARK [3][]{subsubsection.5.4.2.3}{5.4.2.3 Father and children communicating via a private queue}{subsection.5.4.2}% 68
+\BOOKMARK [3][]{subsubsection.5.4.2.4}{5.4.2.4 Synchronizing thread interactions}{subsection.5.4.2}% 69
+\BOOKMARK [3][]{subsubsection.5.4.2.5}{5.4.2.5 Flattening and manipulating lists}{subsection.5.4.2}% 70
+\BOOKMARK [1][]{section.5.5}{5.5 DCGLibrary}{chapter.5}% 71
+\BOOKMARK [2][]{subsection.5.5.1}{5.5.1 Predicates}{section.5.5}% 72
+\BOOKMARK [2][]{subsection.5.5.2}{5.5.2 Operators}{section.5.5}% 73
+\BOOKMARK [1][]{section.5.6}{5.6 ISOIOLibrary}{chapter.5}% 74
+\BOOKMARK [2][]{subsection.5.6.1}{5.6.1 Predicates}{section.5.6}% 75
+\BOOKMARK [2][]{subsection.5.6.2}{5.6.2 Options}{section.5.6}% 76
+\BOOKMARK [1][]{section.5.7}{5.7 SocketLibrary}{chapter.5}% 77
+\BOOKMARK [2][]{subsection.5.7.1}{5.7.1 Predicates}{section.5.7}% 78
+\BOOKMARK [2][]{subsection.5.7.2}{5.7.2 Operators}{section.5.7}% 79
+\BOOKMARK [2][]{subsection.5.7.3}{5.7.3 Use from the Java side: term hierarchy extension}{section.5.7}% 80
+\BOOKMARK [0][]{chapter.6}{6 tuProlog Exceptions}{}% 81
+\BOOKMARK [1][]{section.6.1}{6.1 Exceptions in ISO Prolog}{chapter.6}% 82
+\BOOKMARK [2][]{subsection.6.1.1}{6.1.1 Error classification}{section.6.1}% 83
+\BOOKMARK [1][]{section.6.2}{6.2 Exceptions in tuProlog}{chapter.6}% 84
+\BOOKMARK [2][]{subsection.6.2.1}{6.2.1 Examples}{section.6.2}% 85
+\BOOKMARK [2][]{subsection.6.2.2}{6.2.2 Handling Java/.NET Exceptions from tuProlog}{section.6.2}% 86
+\BOOKMARK [0][]{chapter.7}{7 Multi-paradigm programming in Prolog and Java}{}% 87
+\BOOKMARK [1][]{section.7.1}{7.1 Using Java from Prolog: JavaLibrary}{chapter.7}% 88
+\BOOKMARK [2][]{subsection.7.1.1}{7.1.1 Type mapping}{section.7.1}% 89
+\BOOKMARK [2][]{subsection.7.1.2}{7.1.2 Creating and accessing objects: an overview}{section.7.1}% 90
+\BOOKMARK [3][]{subsubsection.7.1.2.1}{7.1.2.1 Examples}{subsection.7.1.2}% 91
+\BOOKMARK [3][]{subsubsection.7.1.2.2}{7.1.2.2 Registering object bindings}{subsection.7.1.2}% 92
+\BOOKMARK [2][]{subsection.7.1.3}{7.1.3 Predicates}{section.7.1}% 93
+\BOOKMARK [3][]{subsubsection.7.1.3.1}{7.1.3.1 Object creation, class compilation and method invocation}{subsection.7.1.3}% 94
+\BOOKMARK [3][]{subsubsection.7.1.3.2}{7.1.3.2 Array management}{subsection.7.1.3}% 95
+\BOOKMARK [3][]{subsubsection.7.1.3.3}{7.1.3.3 Class path handling predicates}{subsection.7.1.3}% 96
+\BOOKMARK [3][]{subsubsection.7.1.3.4}{7.1.3.4 Helper predicates}{subsection.7.1.3}% 97
+\BOOKMARK [2][]{subsection.7.1.4}{7.1.4 Functors}{section.7.1}% 98
+\BOOKMARK [2][]{subsection.7.1.5}{7.1.5 Operators}{section.7.1}% 99
+\BOOKMARK [2][]{subsection.7.1.6}{7.1.6 Examples}{section.7.1}% 100
+\BOOKMARK [3][]{subsubsection.7.1.6.1}{7.1.6.1 RMI Connection to a Remote Object}{subsection.7.1.6}% 101
+\BOOKMARK [3][]{subsubsection.7.1.6.2}{7.1.6.2 A Swing GUI}{subsection.7.1.6}% 102
+\BOOKMARK [3][]{subsubsection.7.1.6.3}{7.1.6.3 Database access via JDBC}{subsection.7.1.6}% 103
+\BOOKMARK [3][]{subsubsection.7.1.6.4}{7.1.6.4 Dynamic compilation}{subsection.7.1.6}% 104
+\BOOKMARK [2][]{subsection.7.1.7}{7.1.7 Handling Java Exceptions}{section.7.1}% 105
+\BOOKMARK [3][]{subsubsection.7.1.7.1}{7.1.7.1 Java exception examples}{subsection.7.1.7}% 106
+\BOOKMARK [1][]{section.7.2}{7.2 Using Prolog from Java: the Java API}{chapter.7}% 107
+\BOOKMARK [2][]{subsection.7.2.1}{7.2.1 A Taxonomy of Prolog types in Java}{section.7.2}% 108
+\BOOKMARK [3][]{subsubsection.7.2.1.1}{7.2.1.1 Further notes about Terms}{subsection.7.2.1}% 109
+\BOOKMARK [2][]{subsection.7.2.2}{7.2.2 Prolog engines, theories and libraries}{section.7.2}% 110
+\BOOKMARK [3][]{subsubsection.7.2.2.1}{7.2.2.1 Further notes about Prolog engines}{subsection.7.2.2}% 111
+\BOOKMARK [2][]{subsection.7.2.3}{7.2.3 Examples}{section.7.2}% 112
+\BOOKMARK [3][]{subsubsection.7.2.3.1}{7.2.3.1 Appending lists}{subsection.7.2.3}% 113
+\BOOKMARK [3][]{subsubsection.7.2.3.2}{7.2.3.2 Exploiting a theory from clause list}{subsection.7.2.3}% 114
+\BOOKMARK [3][]{subsubsection.7.2.3.3}{7.2.3.3 A console-based Prolog interpreter}{subsection.7.2.3}% 115
+\BOOKMARK [2][]{subsection.7.2.4}{7.2.4 Support to relative paths in consulting Prolog sub-files}{section.7.2}% 116
+\BOOKMARK [2][]{subsection.7.2.5}{7.2.5 Registering object bindings}{section.7.2}% 117
+\BOOKMARK [2][]{subsection.7.2.6}{7.2.6 Capturing the Prolog output in Java}{section.7.2}% 118
+\BOOKMARK [1][]{section.7.3}{7.3 Augmenting Prolog via Java:developing new libraries}{chapter.7}% 119
+\BOOKMARK [2][]{subsection.7.3.1}{7.3.1 Syntactic conventions}{section.7.3}% 120
+\BOOKMARK [3][]{subsubsection.7.3.1.1}{7.3.1.1 Capturing exceptions raised in libraries}{subsection.7.3.1}% 121
+\BOOKMARK [3][]{subsubsection.7.3.1.2}{7.3.1.2 Capturing the Java output in Prolog}{subsection.7.3.1}% 122
+\BOOKMARK [3][]{subsubsection.7.3.1.3}{7.3.1.3 Naming issues}{subsection.7.3.1}% 123
+\BOOKMARK [2][]{subsection.7.3.2}{7.3.2 Hybrid Java+Prolog libraries}{section.7.3}% 124
+\BOOKMARK [2][]{subsection.7.3.3}{7.3.3 Library loading issues}{section.7.3}% 125
+\BOOKMARK [2][]{subsection.7.3.4}{7.3.4 Library Name}{section.7.3}% 126
+\BOOKMARK [1][]{section.7.4}{7.4 Augmenting Java via Prolog:the P@J framework}{chapter.7}% 127
+\BOOKMARK [2][]{subsection.7.4.1}{7.4.1 Term taxonomy}{section.7.4}% 128
+\BOOKMARK [2][]{subsection.7.4.2}{7.4.2 Examples}{section.7.4}% 129
+\BOOKMARK [0][]{chapter.8}{8 Multi-paradigm programming in Prolog and .NET}{}% 130
+\BOOKMARK [1][]{section.8.1}{8.1 A bit of history}{chapter.8}% 131
+\BOOKMARK [2][]{subsection.8.1.1}{8.1.1 tuProlog 2.1 and CSharpLibrary}{section.8.1}% 132
+\BOOKMARK [2][]{subsection.8.1.2}{8.1.2 tuProlog 2.1.3: CSharpLibrary + exceptions}{section.8.1}% 133
+\BOOKMARK [2][]{subsection.8.1.3}{8.1.3 tuProlog 2.2 and CLILibrary}{section.8.1}% 134
+\BOOKMARK [1][]{section.8.2}{8.2 IKVM Basics}{chapter.8}% 135
+\BOOKMARK [2][]{subsection.8.2.1}{8.2.1 Dynamic vs. Static modality}{section.8.2}% 136
+\BOOKMARK [2][]{subsection.8.2.2}{8.2.2 Class loading issues}{section.8.2}% 137
+\BOOKMARK [2][]{subsection.8.2.3}{8.2.3 The other way: writing .NET applications in Java}{section.8.2}% 138
+\BOOKMARK [1][]{section.8.3}{8.3 tuProlog.NET now}{chapter.8}% 139
+\BOOKMARK [2][]{subsection.8.3.1}{8.3.1 Highlights}{section.8.3}% 140
+\BOOKMARK [1][]{section.8.4}{8.4 Using .NET from Prolog: OOLibrary}{chapter.8}% 141
+\BOOKMARK [2][]{subsubsection.8.4.0.1}{8.4.0.1 Motivation}{section.8.4}% 142
+\BOOKMARK [3][]{subsubsection.8.4.0.2}{8.4.0.2 Language Conventions}{subsubsection.8.4.0.1}% 143
+\BOOKMARK [3][]{subsubsection.8.4.0.3}{8.4.0.3 OOLibrary: predicates}{subsubsection.8.4.0.1}% 144
+\BOOKMARK [2][]{subsection.8.4.1}{8.4.1 Examples}{section.8.4}% 145
+\BOOKMARK [2][]{subsection.8.4.2}{8.4.2 Handling .NET Exceptions}{section.8.4}% 146
+\BOOKMARK [1][]{section.8.5}{8.5 Using Prolog from .NET: the API}{chapter.8}% 147
+\BOOKMARK [1][]{section.8.6}{8.6 Augmenting Prolog via .NET:developing new libraries}{chapter.8}% 148
+\BOOKMARK [2][]{subsection.8.6.1}{8.6.1 Capturing exceptions raised in .NET libraries}{section.8.6}% 149
+\BOOKMARK [2][]{subsection.8.6.2}{8.6.2 Capturing the .NET output in Prolog}{section.8.6}% 150
+\BOOKMARK [1][]{section.8.7}{8.7 Augmenting .NET via Prolog:the P@J framework revised}{chapter.8}% 151
+\BOOKMARK [2][]{subsection.8.7.1}{8.7.1 P@.NET via code generators}{section.8.7}% 152
+\BOOKMARK [1][]{section.8.8}{8.8 Putting everything together}{chapter.8}% 153
+\BOOKMARK [2][]{subsection.8.8.1}{8.8.1 Example: Multi-language TicTacToe}{section.8.8}% 154
+\BOOKMARK [0][]{chapter.9}{9 Multi-paradigm programming in Prolog and Android}{}% 155
+\BOOKMARK [1][]{section.9.1}{9.1 Class path issues}{chapter.9}% 156
+\BOOKMARK [0][]{chapter.10}{10 Version history}{}% 157
+\BOOKMARK [1][]{subsection.10.0.1}{10.0.1 Version 2.0}{chapter.10}% 158
+\BOOKMARK [2][]{subsection.10.0.2}{10.0.2 From Version 2.0 to Version 2.0.1}{subsection.10.0.1}% 159
+\BOOKMARK [2][]{subsection.10.0.3}{10.0.3 From Version 2.0.1 to Version 2.1}{subsection.10.0.1}% 160
+\BOOKMARK [2][]{subsection.10.0.4}{10.0.4 From Version 2.1 to Version 2.2}{subsection.10.0.1}% 161
+\BOOKMARK [2][]{subsection.10.0.5}{10.0.5 From Version 2.2 to Version 2.3.0}{subsection.10.0.1}% 162
+\BOOKMARK [2][]{subsection.10.0.6}{10.0.6 From Version 2.3.0 to Version 2.3.1}{subsection.10.0.1}% 163
+\BOOKMARK [2][]{subsection.10.0.7}{10.0.7 From Version 2.3.1 to Version 2.4}{subsection.10.0.1}% 164
+\BOOKMARK [2][]{subsection.10.0.8}{10.0.8 From Version 2.4 to Version 2.5}{subsection.10.0.1}% 165
+\BOOKMARK [2][]{subsection.10.0.9}{10.0.9 From Version 2.5 to Version 2.6}{subsection.10.0.1}% 166
+\BOOKMARK [2][]{subsection.10.0.10}{10.0.10 From Version 2.6 to Version 2.7}{subsection.10.0.1}% 167
+\BOOKMARK [2][]{subsection.10.0.11}{10.0.11 From Version 2.7 to Version 2.7.2}{subsection.10.0.1}% 168
+\BOOKMARK [2][]{subsection.10.0.12}{10.0.12 From Version 2.7.2 to Version 2.8}{subsection.10.0.1}% 169
+\BOOKMARK [2][]{subsection.10.0.13}{10.0.13 From Version 2.8 to Version 2.9}{subsection.10.0.1}% 170
+\BOOKMARK [1][]{section.10.1}{10.1 Acknowledgments}{chapter.10}% 171

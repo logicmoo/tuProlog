@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OOLibrary", "OOLibrary\OOLibrary.csproj", "{341AE3B6-9352-4C83-97DD-36D7B05DFB60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fixtures", "Fixtures\Fixtures.csproj", "{E2015E5E-F559-42D4-8858-0D1158CE5AD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conventions", "Conventions\Conventions.csproj", "{D5FBB9FD-795F-4E8B-A7AA-B5D92D677173}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{341AE3B6-9352-4C83-97DD-36D7B05DFB60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{341AE3B6-9352-4C83-97DD-36D7B05DFB60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{341AE3B6-9352-4C83-97DD-36D7B05DFB60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{341AE3B6-9352-4C83-97DD-36D7B05DFB60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2015E5E-F559-42D4-8858-0D1158CE5AD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2015E5E-F559-42D4-8858-0D1158CE5AD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2015E5E-F559-42D4-8858-0D1158CE5AD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2015E5E-F559-42D4-8858-0D1158CE5AD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5FBB9FD-795F-4E8B-A7AA-B5D92D677173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5FBB9FD-795F-4E8B-A7AA-B5D92D677173}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5FBB9FD-795F-4E8B-A7AA-B5D92D677173}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5FBB9FD-795F-4E8B-A7AA-B5D92D677173}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

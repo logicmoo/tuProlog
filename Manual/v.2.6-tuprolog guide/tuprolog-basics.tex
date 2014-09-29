@@ -1,0 +1,610 @@
+%=======================================================================
+\chapter{\tuprolog{} Basics}
+\label{ch:engine}
+%=======================================================================
+
+This chapter overviews the basic elements and structure of the \tuprolog{} engine, the \tuprolog{} syntax, the programming support, and the built-in predicates.
+%
+Additional predicates, provided by libraries, are presented in the next Chapter.
+
+%---------------------------------------------------------------------
+\section{Predicate categories}
+\label{sec:predicate-categories}
+%---------------------------------------------------------------------
+
+In \tuprolog{}, predicates are organized into three different categories:
+%
+\begin{description}
+\item[built-in predicates] |
+Built-in predicates are so-called because they are defined at the \tuprolog{} core level. They constitute a small but essential set of predicates, that any \tuprolog{} engine can count on.
+%
+Any modification possibly made to the engine before or during execution will never affect the number and properties of these predicates.
+
+
+\item[library predicates] |
+Predicates loaded in a \tuprolog{} engine by means of a \tuprolog{} library are called library predicates.
+%
+Since libraries can be loaded and unloaded in \tuprolog{} engines freely at the system start-up, or dynamically at run time, the set of the library predicates of a \tuprolog{} engine is not fixed, and can change from engine to engine, as well as at different times for the same engine.
+%
+It is worth noting that library predicates cannot be individually retracted: to remove an undesired library predicate from the engine, the whole library containing that predicate needs to be unloaded.
+%
+%As discussed in Chapter \ref{ch:howto-develop-libraries}, \tuprolog{} libraries can be implemented mixing Java and Prolog code.
+
+Library predicates can be overridden by theory predicates, that is, predicates defined in the user theory.
+
+
+\item[theory predicates] |
+Predicates loaded in a \tuprolog{} engine by means of a \tuprolog{} theory are called theory predicates.
+%
+Since theories can be loaded and unloaded in \tuprolog{} engines freely at the system start-up, or dynamically at execution time, the set of the theory predicates of a \tuprolog{} engine is not fixed, and can change from engine to engine, as well as at different times for the same engine.
+%
+%\tuprolog{} theories are collections of Prolog clauses.
+\end{description}
+
+
+It is worth highlighting that, though they may seem similar, library and theory predicates are not the same, and are handled differently by the \tuprolog{} engine.
+%
+The difference between the two categories is both \textit{conceptual} and \textit{structural}.
+
+Conceptually speaking, theory predicates should be used to axiomatically represent domain knowledge at the time the proof is performed, while library predicates should be used to represent what is required (procedural knowledge, utility predicates) in order to actually and effectively perform proofs in the domain of interest. So, from this viewpoint, library predicates are devoted to represent more ``stable'' knowledge than theory predicates.
+%
+Correspondingly, library and theory predicates are represented differently at run-time, and are handled differently by the engine---in particular, with respect to the observation level for monitoring and debugging purposes.
+%
+In particular, library predicates are usually step over during debugging, coherently with their more stable (and expectedly well-tested) nature, while theory predicates are step into in a detailed way during the controlled execution.
+%
+This is also why all the tools in the \tuprolog{} GUI show in a separate way the theory predicates, on the one hand, and the loaded libraries and predicates, on the other.
+
+
+%---------------------------------------------------------------------
+\section{Syntax}
+\label{sec:syntax}
+%---------------------------------------------------------------------
+
+The term syntax supported by \tuprolog{} engine is basically ISO compliant,\footnote{Some ISO directives, however, are not supported.} and accounts for several elements:
+%
+\begin{description}
+
+\item[Atoms] |
+There are four types of atoms:
+\emph{(i)} a series of letters, digit, and/or underscores, beginning with a lower-case letter; \emph{(ii)} a series of one or more characters from the set \{\texttt{\#}, \texttt{\$}, \texttt{\&}, \texttt{*}, \texttt{+}, \texttt{-}, \texttt{.}, \texttt{/}, \texttt{:}, \texttt{<}, \texttt{=}, \texttt{>}, \texttt{?}, \texttt{@}, \texttt{\textasciicircum}, \texttt{\~}\}, provided it does not begin with \texttt{/*};
+\emph{(iii)} The special atoms \texttt{[]} and \texttt{\{\}};
+\emph{(iv)} a single-quoted string.
+
+\item[Variables] |
+A variable name begins with a capital
+letter or the underscore mark (\bt{\_}), and consists of letters,
+digits, and/or underscores.
+%
+A single underscore mark denotes an anonymous variable.
+
+\item[Numbers] |
+Integers and float are supported.
+%
+The formats supported for integer numbers are decimal, binary (with \verb|0b|
+prefix), octal (with \verb|0o| prefix), and hexadecimal (with \verb|0x|
+prefix). The character code format for integer numbers (prefixed by \verb|0'|) is supported only for alphanumeric characters, the white space, and characters in the set \{\texttt{\#}, \texttt{\$}, \texttt{\&}, \texttt{*}, \texttt{+}, \texttt{-}, \texttt{.}, \texttt{/}, \texttt{:}, \texttt{<}, \texttt{=}, \texttt{>}, \texttt{?}, \texttt{@}, \texttt{\textasciicircum}, \texttt{\~}\}.
+%
+The range of integers is -2147483648 to 2147483647; the range of floats is
+-2E+63 to 2E+63-1.
+%
+Floating point numbers can be expressed also in the exponential format (e.g. \bt{-3.03E-05}, \bt{0.303E+13}).
+%
+A minus can be written before any number to make it negative (e.g. \bt{-3.03}).
+%
+Notice that the minus is the sign-part of the number itself; hence \bt{-3.4} is a number, not an expression (by contrast, \bt{- 3.4} is an expression).
+
+\item[Strings] |
+A series of ASCII characters, embedded in quotes \verb|'| or \verb|"|.
+%
+Within single quotes, a single quote is written double (e.g, \verb|'don''t forget'|).
+%
+A backslash at the very end of the line denotes continuation to the next line, so that: \\
+\verb|'this is \ |\\
+\verb|a single line'|\\
+is equivalent to \verb|'this is a single line'| (the line break is ignored).
+%
+Within a string, the backslash can be used to denote special characters, such as \verb|\n| for a newline,
+\verb|\r| for a return without newline,
+\verb|\t| for a tab character,
+\verb|\\| for a backslash,
+\verb|\'| for a single quote,
+\verb|\"| for a double quote.
+
+\item[Compounds] |
+The ordinary way to write a compound is to write the functor (as an atom), an opening parenthesis, without spaces between them, and then a series of terms separated by commas, and a closing parenthesis: \bt{f(a,b,c)}.
+%
+This notation can be used also for functors that are normally written as operators, e.g. \bt{2+2} = \verb|'+'(2,2)|.
+%
+Lists are defined as rightward-nested structures using the dot operator \verb|'.'|; so, for example: \\
+\bt{[a] =} \verb|'.'(a,[])|\\
+\bt{[a,b] =} \verb|'.'(a,'.'(b,[]))|\\
+\bt{[a,b|c] =} \verb|'.'(a,'.'(b,c))|\\
+%
+There can be only one \bt{|} in a list, and no commas after it.
+%
+Also curly brackets are supported: any term enclosed with \bt{$\{$} and \bt{$\}$} is treated as the argument of the special functor \verb|'{}'|:  \verb|{hotel}| = \verb|'{}'(hotel)|, \bt{$\{$1,2,3$\}$} = \verb|'{}'(1,2,3)|.
+%
+Curly brackets can be used in the Definite Clause Grammars theory.
+
+
+\item[Comments and Whitespaces] -- Whitespaces consist of blanks (including tabs and formfeeds), end-of-line marks, and comments. A whitespace can be put before and after any term, operator, bracket, or argument separator, as long as it does not break up an atom or number or separate a functor from the opening parenthesis that introduces its argument lists.
+%
+For instance, atom \bt{p(a,b,c)} can be written as \bt{p(\mbox{~a~},\mbox{~b~},\mbox{~c~})}, but not as \bt{\mbox{p~}(a,b,c)}).
+%
+Two types of comments are supported: one type begins with \bt{/*} and ends with \bt{*/}, the other begins with \bt{\%} and ends at the end of the line.
+%
+Nested comments are not allowed.
+
+
+\item[Operators] |
+Operators are characterised by a name, a specifier, and a priority.
+%
+An operator name is an atom, which is not univocal: the same atom can be an operator in more than one class, as in the case of the infix and prefix minus signs.
+%
+An operator  specifier is a string like \texttt{xfy}, which gives both its class (infix, postfix and prefix) and its associativity: \texttt{xfy} specifies that the grouping on the right should be formed first, \texttt{yfx} on the left, \texttt{xfx} no priority.
+%
+An operator priority is a non-negative integer ranging from 0 (max priority) and 1200 (min priority).
+
+Operators can be defined by means of either the \bt{op/3} predicate or directive.
+%
+No predefined operators are directly given by the raw \tuprolog{} engine, whereas a number of them is provided through libraries.
+
+\item[Commas] |
+The comma has three functions: it separates arguments of functors, it separates elements of lists, and it is an infix operator of priority 1000.
+%
+Thus \bt{(a,b)} (without a functor in front) is a compound, equivalent to \verb|','(a,b)|.
+
+\item[Parentheses] -- Parentheses are allowed around any term.
+%
+The effect of parentheses is to override any grouping that may
+otherwise be imposed by operator priorities.
+%
+Operators enclosed in parentheses do not work as operators;
+thus \bt{2(+)3} is a syntax error.
+\end{description}
+
+%---------------------------------------------------------------------
+\section{Engine configurability}
+\label{sec:engine-configurability}
+%---------------------------------------------------------------------
+\tuprolog{} engines provides four levels of configurability:
+
+\begin{description}
+
+\item[Libraries] |
+At the first level, each \tuprolog{} engine can be dynamically extended by loading or unloading libraries.
+%
+Each library can provide a specific set of predicates, functors, and a related theory, which also allows new flags and operators to be defined.
+%
+Libraries can be either pre-defined (see Chapter \ref{ch:standard-libraries}) or user-defined (see Section \ref{sec:howto-develop-libraries}).
+%
+A library can be loaded by means of the predicate \texttt{load\_library} (Prolog side), or by means of the method \texttt{loadLibrary} of the \tuprolog{} engine (Java/.NET side).
+
+
+\item[Directives] |
+At the second level, directives can be given by means of the \bt{:-/1} predicate, which is natively supported by the engine, and can be used to configure and use a \tuprolog{} engine (\bt{set\_prolog\_flag/1}, \bt{load\_library/1}, \bt{consult/1}, \bt{solve/1}), format and syntax of read-terms\footnote{As specified by the ISO standard, a read-term is a Prolog term followed by an end token, composed by an optional layout text sequence and a dot.} (\bt{op/3}).
+%
+Directives are described in detail in the following sections.
+
+\item[Flags] |
+At the third level, \tuprolog{} supports the dynamic definition of flags to describe relevant aspects of libraries, predicates and evaluable functors.
+%
+A flag is identified by a name (an alphanumeric atom), a list of possible values, a default value, and a boolean value specifying if the flag value can be modified.
+%
+Dynamically, a flag value can be changed (if modifiable) with a new value included in the list of possible values.
+
+\item[Theories] |
+The fourth level of configurability is given by theories: a theory is a text consisting of a sequence of clauses and/or directives.
+%
+Clauses and directives are terminated by a dot, and are separated by a whitespace character.
+%
+Theories can be loaded or unloaded by means of suitable library predicates, which are described in Chapter \ref{ch:standard-libraries}.
+
+\end{description}
+
+%---------------------------------------------------------------------
+\section{Exception support}
+\label{sec:exception-support}
+%---------------------------------------------------------------------
+
+As of version 2.2, \tuprolog{} supports exceptions according to the ISO Prolog standard (ISO/IEC 13211-1) published in 1995.
+%
+Details about the exception handling mechanism are provided in Chapter \ref{ch:exceptions}: this short overview is functional to the understanding of the built-in predicate specification presented in the next Section.
+
+According to the ISO specification, an \textit{error} is a particular circumstance that interrupts the execution of a Prolog program: when a Prolog engine encounters an error, it raises an \textit{exception}, which is supposed to transfer the execution flow to a suitable exception handler, exiting atomically from any number of nested execution contexts.
+
+%-----------------------------------------------------------------------
+\subsection{Error classification}
+\label{ssec:error classification}
+%-----------------------------------------------------------------------
+When an exception is raised, the relevant error information is also transferred by instantiating a suitable \textit{error term}.
+
+The ISO Prolog standard prescribes that such a term follows the pattern
+\texttt{error(\textit{Error\_term}, \textit{Implementation\_defined\_term})} where
+\texttt{\textit{Error\_term}} is constrained by the standard to a pre-defined set of values (the error categories), and \texttt{\textit{Implementation\_defined\_term}} is an optional term providing implementation-specific details.
+%
+Ten error categories are defined:
+\begin{enumerate}
+  \item \texttt{instantiation\_error}: when the argument of a predicate or one of its components is an unbound variable, which should have been instantiated. Example: \texttt{X is Y+1} when \texttt{Y} is not instantiated at the time \texttt{is/2} is evaluated.
+
+  \item \texttt{type\_error(\textit{ValidType}, \textit{Culprit})}: when the type of an argument of a predicate, or one of its components, is instantiated, but is bound to the wrong type of data. \texttt{\textit{ValidType}} represents the expected data type (one of \texttt{atom}, \texttt{atomic}, \texttt{byte}, \texttt{callable}, \texttt{character}, \texttt{evaluable}, \texttt{in\_byte}, \texttt{in\_character}, \texttt{integer}, \texttt{list}, \texttt{number}, \texttt{predicate\_indicator}, \texttt{variable}), and \texttt{\textit{Culprit}} is the actual (wrong) type found.
+      Example: a predicate expecting months to be represented as integers in the range 1--12 called with an argument like \texttt{march} instead of \texttt{3}.
+
+  \item \texttt{domain\_error(\textit{ValidDomain}, \textit{Culprit})}: when the argument type is correct, but its value falls outside the expected range.
+      \texttt{\textit{ValidDomain}} is one of \texttt{character\_code\_list},
+      \texttt{not\_empty\_list}, \texttt{not\_less\_than\_zero}, \texttt{close\_option}, \texttt{io\_mode}, \texttt{operator\_priority}, \texttt{operator\_specifier}, \texttt{flag\_value}, \texttt{prolog\_flag}, \texttt{read\_option}, \texttt{write\_option}, \texttt{source\_sink}, \texttt{stream}, \texttt{stream\_option}, \texttt{stream\_or\_alias}, \texttt{stream\_position},\\
+      \texttt{stream\_property}. Example: a predicate expecting months as above, called with an out-of-range argument like \texttt{13}.
+
+  \item \texttt{existence\_error(\textit{ObjectType}, \textit{ObjectName}}): when the referenced object does not exist. \texttt{\textit{ObjectType}} is
+      the type of the unexisting object (one of \texttt{procedure}, \texttt{source\_sink}, or \texttt{stream}), and \texttt{\textit{ObjectName}} is the missing object's name. Example: trying to access an unexisting file like \texttt{usr/goofy} leads to an
+      \texttt{existence\_error(stream, 'usr/goofy')}.
+
+  \item \texttt{permission\_error(\textit{Operation}, \textit{ObjectType}, \textit{Object})}: whenever\\
+       \texttt{\textit{Operation}} (one of \texttt{access}, \texttt{create}, \texttt{input}, \texttt{modify}, \texttt{open}, \texttt{output}, or \texttt{reposition}) is not allowed on \texttt{\textit{Object}}, of type \texttt{\textit{ObjectType}} (one of  \texttt{binary\_stream}, \texttt{past\_end\_of\_stream}, \texttt{operator}, \texttt{private\_procedure}, \texttt{static\_procedure}, \texttt{source\_sink}, \texttt{stream}, \texttt{text\_stream}, \texttt{flag}).
+
+  \item \texttt{representation\_error(\textit{Flag})}: when an implementation-defined limit, whose category is given by \texttt{\textit{Flag}} (one of
+      \texttt{character}, \texttt{character\_code}, \texttt{in\_character\_code}, \texttt{max\_arity}, \texttt{max\_integer}, \texttt{min\_integer}), is violated during execution.
+
+  \item \texttt{evaluation\_error(\textit{Error})}: when the evaluation of a function produces an out-of-range value (one of \texttt{float\_overflow}, \texttt{int\_overflow}, \texttt{undefined}, \texttt{underflow}, \texttt{zero\_divisor}).
+
+  \item \texttt{resource\_error(\textit{Resource})}: when the Prolog engine does not have enough resources to complete the execution of the goal. \texttt{Resource} can be any term useful to describe the situation. Examples: maximum number of opened files reached, no further available memory, etc.
+
+  \item \texttt{syntax\_error(\textit{Message})}: when data read from an external source have an incorrect format or cannot be processed for some reason. \texttt{\textit{Message}} can be any term useful to describe the situation.
+
+  \item \texttt{system\_error}: any other unexpected error not falling into the previous categories.
+\end{enumerate}
+
+
+%---------------------------------------------------------------------
+\section{Built-in predicates}
+\label{sec:builtins}
+%---------------------------------------------------------------------
+
+This section contains a comprehensive list of the built-in predicates, that is the predicated defined directly in the \tuprolog{} core, both for efficiency reasons and because they directly affect the resolution process.
+
+Following an established convention, the symbol \bt{+} in front of an argument means an \emph{input argument}, \bt{-} means \emph{output argument}, \bt{?} means \emph{input/output} argument, \bt{@} means \emph{input argument} that must be bound.
+
+%---------------------------------------------------------------------
+\subsection{Control management}
+\label{ssec:control-management}
+%---------------------------------------------------------------------
+
+\begin{itemize}
+
+\item \bti{true/0}\\
+    \noindent\bt{true} is true.
+
+\item \bti{fail/0}\\
+    \noindent\bt{fail} is false.
+
+\item \verb|','/2|\\
+    \noindent\verb|','(First,Second)| is true if and only if both \bt{First}
+    and \bt{Second} are true.
+
+\item \bti{!/0}\\
+    \noindent\bt{!} is true. All choice points between the cut and the
+    parent goal are removed. The effect is a commitment to use both the
+    current clause and the substitutions found at the point of the
+    cut.
+
+\item \verb|'$call'/1|\\
+    \noindent\verb|'$call'(Goal)| is true if and only if \bt{Goal}
+    represents a true goal. It is not opaque to cut.
+
+    \template{'\$call'(+callable\_term)}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} when \texttt{G} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).
+
+    \exception{error(type\_error(ValidType, Culprit), type\_error(\\
+    Goal, ArgNo, ValidType, Culprit))} when \texttt{G} is not a callable goal. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}), \texttt{ValidType} is the data type expected for \texttt{G} (here, \texttt{callable}), while \texttt{Culprit} is the actual data type found.
+
+\item \bti{halt/0}\\
+    \noindent\bt{halt} terminates a Prolog demonstration, exiting the
+    Prolog thread and returning to the parent system. In any of the \tuprolog{} user interfaces -- the GUI, the character-based console, the Android app, the Eclipse plugin -- the effect is to terminate the whole application (including Eclipse itself).
+
+\item \bti{halt/1}\\
+    \noindent\bt{halt(X)} terminates a Prolog demonstration, exiting the
+    Prolog thread and returning the provided int value to the parent system.
+    In any of the \tuprolog{} user interfaces -- the GUI, the character-based console, the Android app, the Eclipse plugin -- the effect is to terminate the whole application (including Eclipse itself).
+
+    \template{halt(+int)}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} when \texttt{X} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).
+
+    \exception{error(type\_error(ValidType, Culprit), type\_error(\\
+    Goal, ArgNo, ValidType, Culprit))} when \texttt{X} is not an integer number. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}), \texttt{ValidType} is the data type expected for \texttt{X} (here, \texttt{integer}), while \texttt{Culprit} is the actual data type found.
+
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsection{Term unification and management}
+\label{ssec:term-unification-and-management}
+%---------------------------------------------------------------------
+
+\begin{itemize}
+
+\item \bti{is/2}\\
+    \noindent\bt{is(X, Y)} is true iff \bt{X} is unifiable with the value of the expression \bt{Y}.
+
+    \template{is(?term, @evaluable)}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} when \texttt{Y} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (here, \texttt{2}).
+
+    \exception{error(type\_error(ValidType, Culprit), type\_error(\\
+    Goal, ArgNo, ValidType, Culprit))} when \texttt{Y} is not a valid expression. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (clearly, \texttt{2}), \texttt{ValidType} is the data type expected for \texttt{G} (here, \texttt{evaluable}), while \texttt{Culprit} is the actual data type found.
+
+    \exception{error(evaluation\_error (Error), evaluation\_error(\\
+    Goal, ArgNo, Error))} when an error occurs during the evaluation of \texttt{Y}. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (clearly, \texttt{2}), and \texttt{Error} is the error occurred (e.g. \texttt{zero\_division} in case of a division by zero).
+
+\item \verb|'='/2|\\
+    \noindent\verb|'='(X, Y)| is true iff \bt{X} and \bt{Y} are unifiable.
+
+    \template{'='(?term, ?term)}
+
+\item \verb|'\='/2|\\
+    \noindent\verb|'\='(X, Y)| is true iff \bt{X} and \bt{Y} are not unifiable.
+
+    \template{'$\setminus$='(?term, ?term)}
+
+\item \verb|'$tolist'/2|\\
+    \noindent\verb|'$tolist'(Compound, List)| is true if \bt{Compound} is a compound term, and in this case \bt{List} is list representation of the compound, with the name as first element and all the arguments as other elements.
+
+    \template{'\$tolist'(@struct, -list)}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} when \texttt{Struct} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).
+
+    \exception{error(type\_error(ValidType, Culprit), type\_error(\\
+    Goal, ArgNo, ValidType, Culprit))} when \texttt{Struct} is not a structure. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (clearly, \texttt{1}), \texttt{ValidType} is the data type expected for \texttt{G} (here, \texttt{struct}), while \texttt{Culprit} is the actual data type found.
+
+\item \verb|'$fromlist'/2|\\
+    \noindent\verb|'$fromlist'(Compound, List)| is true if \bt{Compound} unifies with the list representation of \bt{List}.
+
+    \template{'\$fromlist'(-struct, @list)}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} when \texttt{List} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{2}).
+
+    \exception{error(type\_error(ValidType, Culprit), type\_error(\\
+    Goal, ArgNo, ValidType, Culprit))} when \texttt{List} is not a list. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (clearly, \texttt{2}), \texttt{ValidType} is the data type expected for \texttt{G} (here, \texttt{list}), while \texttt{Culprit} is the actual data type found.
+
+\item \bti{copy\_term/2}\\
+    \noindent\bt{copy\_term(Term1, Term2)} is true iff \bt{Term2} unifies with the a renamed copy of \bt{Term1}.
+
+    \template{copy\_term(?term, ?term)}
+
+\item \verb|'$append'/2|\\
+    \noindent\verb|'$append'(Element, List)| is true if \bt{List} is a list, with the side effect that the \bt{Element} is appended to the list.
+
+    \template{'\$append'(+term, @list)}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} when \texttt{List} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{2}).
+
+    \exception{error(type\_error(ValidType, Culprit), type\_error(\\
+    Goal, ArgNo, ValidType, Culprit))} when \texttt{List} is not a list. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (clearly, \texttt{2}), \texttt{ValidType} is the data type expected for \texttt{G} (here, \texttt{list}), while \texttt{Culprit} is the actual data type found.
+
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsection{Knowledge base management}
+\label{ssec:knowledge-base-management}
+%---------------------------------------------------------------------
+
+\begin{itemize}
+
+\item
+    \verb|'$find'/2|\\
+    \noindent\verb|'$find'(Clause, Clauses)| is true if \bt{Clause} is a clause and \bt{Clauses} is a list: as a side effect, all the database clauses matching \bt{Clause} are appended to the \bt{Clauses} list.
+
+    \template{'\$find'(@clause, @list)}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} when \texttt{Clause} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (here, \texttt{1}).
+
+    \exception{error(type\_error(ValidType, Culprit), type\_error(\\
+    Goal, ArgNo, ValidType, Culprit))} when \texttt{Clauses} is not a list. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (here, \texttt{2}), \texttt{ValidType} is the data type expected for \texttt{Clauses} (i.e. \texttt{list}), while \texttt{Culprit} is the actual data type found.
+
+\item
+    \bti{abolish/1}\\
+    \noindent\bt{abolish(Predicate)} completely wipes out the dynamic
+    predicate matching \texttt{Predicate}.
+
+    \template{\bt{abolish(@term)}}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} when \texttt{Predicate} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).
+
+    \exception{error(type\_error(ValidType, Culprit), type\_error(\\
+    Goal, ArgNo, ValidType, Culprit))} when \texttt{Predicate} is not a structure. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}), \texttt{ValidType} is the data type expected for \texttt{Predicate}, while \texttt{Culprit} is the actual data type found.
+
+\item \bti{asserta/1}\\
+    \noindent\bt{asserta(Clause)} is true, with the side effect that
+    the clause \bt{Clause} is added to the beginning of database.
+
+    \template{asserta(@clause)}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} when \texttt{Clause} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).
+
+    \exception{error(type\_error(ValidType, Culprit), type\_error(\\
+    Goal, ArgNo, ValidType, Culprit))} when \texttt{Clause} is not a structure. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}), \texttt{ValidType} is the data type expected for \texttt{Clause}, while \texttt{Culprit} is the actual data type found.
+
+\item \bti{assertz/1}\\
+    \noindent\bt{assertz(Clause)} is true, with the side effect that
+    the clause \bt{Clause} is added to the end of the database.
+
+    \template{assertz(@clause)}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} when \texttt{Clause} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).
+
+    \exception{error(type\_error(ValidType, Culprit), type\_error(\\
+    Goal, ArgNo, ValidType, Culprit))} when \texttt{Clause} is not a structure. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}), \texttt{ValidType} is the data type expected for \texttt{Clause}, while \texttt{Culprit} is the actual data type found.
+
+\item \verb|'$retract'/1|\\
+    \noindent\verb|'$retract'(Clause)| is true if the database contains
+    at least one clause unifying with \bt{Clause}; as a side effect, the
+    clause is removed from the database. It is not re-executable.
+    Please do not confuse this built-in predicate with the \texttt{retract/1} predicate of \textit{BasicLibrary}.
+
+    \template{'\$retract'(@clause)}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} when \texttt{Clause} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).
+
+    \exception{error(type\_error(ValidType, Culprit), type\_error(\\
+    Goal, ArgNo, ValidType, Culprit))} when \texttt{Clause} is not a structure. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}), \texttt{ValidType} is the data type expected for \texttt{Clause}, while \texttt{Culprit} is the actual data type found.
+
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsection{Operator and flag management}
+\label{ssec:operator-and-flag-management}
+%---------------------------------------------------------------------
+
+\begin{itemize}
+
+\item \bti{op/3}\\
+    \noindent\bt{op(Priority, Specifier, Operator)} is true. It always succeeds,
+    modifying the operator table as a side effect. If \bt{Priority} is 0, then
+    \bt{Operator} is removed from the operator table; else, \bt{Operator} is
+    added to the operator table, with priority (lower binds tighter) \bt{Priority}
+    and associativity determined by \bt{Specifier}. If an operator with the same
+    \bt{Operator} symbol and the same \bt{Specifier} already exists in the operator
+    table, the predicate modifies its priority according to the specified \bt{Priority} argument.
+
+    \template{op(+integer, +specifier, @atom\_or\_atom\_list)}
+
+ \item \bti{flag\_list/1}\\
+     \noindent\bt{flag\_list(FlagList)} is true and \bt{FlagList} is the list of the flags currently defined in the engine.
+
+     \template{flag\_list(-list)}
+
+\item \bti{set\_prolog\_flag/2}\\
+    \noindent\bt{set\_prolog\_flag(Flag, Value)} is true, and as a side effect associates \bt{Value} with the flag \bt{Flag}, where \bt{Value} is a value that is within the implementation defined range of values for \bt{Flag}.
+
+    \template{set\_prolog\_flag(+flag, @nonvar)}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if either \texttt{Flag} or \texttt{Value} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (\texttt{1} or \texttt{2}).
+
+    \exception{error(type\_error(ValidType, Culprit), type\_error(\\
+    Goal, ArgNo, ValidType, Culprit))} if \texttt{Flag} is not a structure or \texttt{Value} is not ground. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (\texttt{1} or \texttt{2}), \texttt{Valid-}\\\texttt{Type} is the data type expected for \texttt{Flag} or \texttt{Value} (\texttt{struct} or \texttt{ground}, respectively), while \texttt{Culprit} is the actual wrong term (either \texttt{Flag} or \texttt{Value}).
+
+    \exception{error(domain\_error(ValidDomain, Culprit), domain\_\\error(Goal, ArgNo, ValidDomain, Culprit))} if \texttt{Flag} is undefined in the engine or \texttt{Value} is not admissible for \texttt{Flag}. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (\texttt{1} or \texttt{2}), \texttt{ValidDomain} is the data type expected for \texttt{Flag} or \texttt{Value} (\texttt{prolog\_flag} or \texttt{flag\_value}, respectively), while \texttt{Culprit} is the actual wrong term (either \texttt{Flag} or \texttt{Value}).
+
+    \exception{error(permission\_error(Operation, ObjectType,\\Culprit), permission\_error(Goal, Operation, ObjectType,\\Culprit, Message))} if \texttt{Flag} is unmodifiable. \texttt{Goal} is the goal where the problem occurred, \texttt{Operation} is the operation that caused the problem (\texttt{modify}), \texttt{ObjectType} is the data type of the flag (i.e. \texttt{flag}), \texttt{Culprit} is the actual wrong term (clearly, \texttt{Flag}), and \texttt{Message} adds possible extra info (by convention, the atom \texttt{0} is used when no extra info exists).
+
+\item \bti{get\_prolog\_flag/2}\\
+    \noindent\bt{get\_prolog\_flag(Flag, Value)} is true iff \bt{Flag} is a flag supported by the engine and \bt{Value} is the value currently associated with it. It is not re-executable.
+
+    \template{get\_prolog\_flag(+flag, ?term)}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} when \texttt{Flag} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).
+
+    \exception{error(type\_error(ValidType, Culprit), type\_error(\\
+    Goal, ArgNo, ValidType, Culprit))} when \texttt{Flag} is not a structure. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (clearly, \texttt{1}), \texttt{ValidType} is the data type expected for \texttt{G} (here, \texttt{struct}), while \texttt{Culprit} is the actual data type found.
+
+    \exception{error(domain\_error(ValidDomain, Culprit), domain\_\\error(Goal, ArgNo, ValidDomain, Culprit))} if \texttt{Flag} is undefined in the engine. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (clearly, \texttt{1}), \texttt{ValidDomain} is the domain expected for \texttt{G} (here, \texttt{prolog\_flag}), while \texttt{Culprit} is the actual wrong term found.
+
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsection{Library management}
+\label{ssec:library-management}
+%---------------------------------------------------------------------
+
+\begin{itemize}
+
+\item \bti{load\_library/1}\\
+    \bt{load\_library(LibraryName)} is true if \bt{LibraryName} is the name of a \tuprolog{} library available for loading. As side effect, the specified library is loaded by the engine. Actually \bt{LibraryName} is the full name of the Java class providing the library.
+
+    \template{load\_library(@string)}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} when \texttt{LibraryName} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).
+
+    \exception{error(type\_error(ValidType, Culprit), type\_error(\\
+    Goal, ArgNo, ValidType, Culprit))} when \texttt{LibraryName} is not an atom. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}), \texttt{ValidType} is the data type expected for \texttt{LibraryName}, while \texttt{Culprit} is the actual data type found.
+
+    \exception{error(existence\_error(ObjectType, Culprit),\\existence\_error(Goal, ArgNo, ObjectType, Culprit, Message))} when the library \texttt{LibraryName} does not exist. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}), \texttt{ObjectType} is the data type expected for the missing object (here, \texttt{class}), while \texttt{Culprit} is the actual data type found and \texttt{Message} provides extra info about the occurred error.
+
+ \item \bti{unload\_library/1}\\
+    \noindent\bt{unload\_library(LibraryName)} is true if \bt{LibraryName} is the name of a library currently loaded in the engine. As side effect, the library is unloaded from the engine. Actually \bt{LibraryName} is the full name of the Java class providing the library.
+
+    \template{unload\_library(@string)}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} when \texttt{LibraryName} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}).
+
+    \exception{error(type\_error(ValidType, Culprit), type\_error(\\
+    Goal, ArgNo, ValidType, Culprit))} when \texttt{LibraryName} is not an atom. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}), \texttt{ValidType} is the data type expected for \texttt{LibraryName}, while \texttt{Culprit} is the actual data type found.
+
+    \exception{error(existence\_error(ObjectType, Culprit),\\existence\_error(Goal, ArgNo, ObjectType, Culprit, Message))} when the library \texttt{LibraryName} does not exist. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (obviously, \texttt{1}), \texttt{ObjectType} is the data type expected for the missing object (here, \texttt{class}), while \texttt{Culprit} is the actual data type found and \texttt{Message} provides extra info about the occurred error.
+
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsection{Directives}
+\label{ssec:directives}
+%---------------------------------------------------------------------
+
+Directives are basically queries immediately executed at the theory load time.
+%
+Unlike other Prolog systems, \tuprolog{} does not allow directives to be composed---that is, each directive must contain only one query: multiple directives require multiple queries.
+%
+The standard directives are as follows:
+
+\begin{itemize}
+
+\item \bti{:- op/3}\\
+     \noindent\bt{op(Priority, Specifier, Operator)} adds \bt{Operator}
+     to the operator table, with priority (lower binds tighter)
+     \bt{Priority} and associativity determined by \bt{Specifier}.
+
+     \template{op(+integer, +specifier, @atom\_or\_atom\_list)}
+
+    \exception{error(instantiation\_error, instantiation\_error(\\
+    Goal, ArgNo))} if any of \texttt{Priority}, \texttt{Specifier} or \texttt{Operator} is a variable. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (one of \texttt{1}, \texttt{2}, \texttt{3}).
+
+    \exception{error(type\_error(ValidType, Culprit), type\_error(\\
+    Goal, ArgNo, ValidType, Culprit))} if \texttt{Priority} is not an integer number, or \texttt{Specifier} is not an atom, or \texttt{Operator} is not an atom or a list of atoms. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (one of \texttt{1}, \texttt{2} or \texttt{3}), \texttt{ValidType} is the data type expected for the \texttt{Culprit}, and \texttt{Culprit} is the actual cause of the problem.
+
+    \exception{error(domain\_error(ValidDomain, Culprit), domain\_\\error(Goal, ArgNo, ValidDomain, Culprit))} if the type of \texttt{Priority} and \texttt{Specifier} is correct, but their values are not admissible for the operator priority or associativity, respectively. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (\texttt{1} or \texttt{2}), \texttt{ValidDomain} is the data type expected for \texttt{Culprit}, and \texttt{Culprit} is the actual wrong term found.
+
+\item \bti{:- flag/4}\\
+     \noindent\bt{flag(FlagName, ValidValuesList, DefaultValue, IsModifiable)}
+     adds to the engine a new flag, identified by the \bt{FlagName} name, which can assume only the values listed in \bt{ValidValuesList} with \bt{DefaultValue} as default value, and that can be modified if \bt{IsModifiable} is true.
+
+     \template{flag(@string, @list, @term, @{true, false})}
+
+\item \bti{:- initialization/1}\\
+     \noindent\bt{initialization(Goal)} sets the starting goal to be executed just
+     after the theory has been consulted.
+
+     \template{initialization(@goal)}
+
+\item \bti{:- solve/1}\\
+     \noindent Synonym for \bt{initialization/1}. \emph{Deprecated.}
+
+     \template{solve(@goal)}
+
+\item \bti{:- load\_library/1}\\
+     The directive version of the \texttt{load\_library/1} predicate documented in Subsection \ref{ssec:library-management}. However, here errors in the library name do not raise exceptions---rather, the directive simply fails, yielding no effect at all.
+
+\item \bti{:- include/1}\\
+     \noindent\bt{include(Filename)} immediately loads the theory contained in the file specified by \bt{Filename}. Again, errors in the file name do not raise exceptions: the directive simply fails, yielding no effect at all.
+
+     \template{include(@string)}
+
+\item \bti{:- consult/1}\\
+     \noindent Synonym for \bt{include/1}. \emph{Deprecated.}
+
+     \template{consult(@string)}
+
+\end{itemize}

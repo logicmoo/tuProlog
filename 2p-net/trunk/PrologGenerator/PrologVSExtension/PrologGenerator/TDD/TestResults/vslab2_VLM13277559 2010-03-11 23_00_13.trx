@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRun id="75bc8cb3-89fc-4316-8ded-d8e46456addd" name="vslab2@VLM13277559 2010-03-11 23:00:13" runUser="REDMOND\vslab2" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestSettings name="TestRunConfig1" id="03845682-d4db-4a01-962a-1a67d70c5d8b">
+    <Description>This is a default test run configuration for a local test run.</Description>
+    <Deployment runDeploymentRoot="vslab2_VLM13277559 2010-03-11 23_00_13">
+      <DeploymentItem filename="C:\Program Files\Microsoft Visual Studio 2010 SDK\VisualStudioIntegration\Common\Assemblies\v2.0\Microsoft.VisualStudio.Shell.9.0.dll" />
+      <DeploymentItem filename="C:\Program Files\Microsoft Visual Studio 2010 SDK\VisualStudioIntegration\Common\Assemblies\v4.0\Microsoft.VSSDK.UnitTestLibrary.dll" />
+      <DeploymentItem filename="D:\richap\Example.SingleFileGenerator\bin\Debug\GeneratorSample.dll" />
+    </Deployment>
+    <Execution>
+      <TestTypeSpecific />
+      <AgentRule name="Execution Agents">
+      </AgentRule>
+    </Execution>
+  </TestSettings>
+  <Times creation="2010-03-11T23:00:13.1909390-08:00" queuing="2010-03-11T23:00:14.3470854-08:00" start="2010-03-11T23:00:14.4564506-08:00" finish="2010-03-11T23:00:15.3313814-08:00" />
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" error="0" failed="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+  <TestDefinitions>
+    <UnitTest name="CreateInstance" storage="d:\richap\example.singlefilegenerator\tdd\bin\debug\generatorsample.unittests.dll" id="4dee2b42-fe52-1818-8a41-01245dc7dfb1">
+      <Execution id="88b60560-f07e-4d49-9a6f-f534e7917b43" />
+      <TestMethod codeBase="D:/richap/Example.SingleFileGenerator/TDD/bin/Debug/GeneratorSample.UnitTests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="Microsoft.Samples.VisualStudio.Project.GeneratorSample.UnitTests.Tests.GeneratorTests, GeneratorSample.UnitTests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="CreateInstance" />
+    </UnitTest>
+    <UnitTest name="CheckForIVsSingleFileGenerator" storage="d:\richap\example.singlefilegenerator\tdd\bin\debug\generatorsample.unittests.dll" id="742cb2ae-41af-2cee-d17f-586fcc18c7b6">
+      <Execution id="d7e2a77e-b343-4a1c-809f-bd7c223ee6c0" />
+      <TestMethod codeBase="D:/richap/Example.SingleFileGenerator/TDD/bin/Debug/GeneratorSample.UnitTests.DLL" adapterTypeName="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestAdapter, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.Adapter, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" className="Microsoft.Samples.VisualStudio.Project.GeneratorSample.UnitTests.Tests.GeneratorTests, GeneratorSample.UnitTests, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" name="CheckForIVsSingleFileGenerator" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <TestEntries>
+    <TestEntry testId="4dee2b42-fe52-1818-8a41-01245dc7dfb1" executionId="88b60560-f07e-4d49-9a6f-f534e7917b43" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="742cb2ae-41af-2cee-d17f-586fcc18c7b6" executionId="d7e2a77e-b343-4a1c-809f-bd7c223ee6c0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <Results>
+    <UnitTestResult executionId="88b60560-f07e-4d49-9a6f-f534e7917b43" testId="4dee2b42-fe52-1818-8a41-01245dc7dfb1" testName="CreateInstance" computerName="VLM13277559" duration="00:00:00.0471696" startTime="2010-03-11T23:00:14.5189450-08:00" endTime="2010-03-11T23:00:15.2063894-08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="88b60560-f07e-4d49-9a6f-f534e7917b43">
+    </UnitTestResult>
+    <UnitTestResult executionId="d7e2a77e-b343-4a1c-809f-bd7c223ee6c0" testId="742cb2ae-41af-2cee-d17f-586fcc18c7b6" testName="CheckForIVsSingleFileGenerator" computerName="VLM13277559" duration="00:00:00.0002293" startTime="2010-03-11T23:00:15.2220134-08:00" endTime="2010-03-11T23:00:15.2376374-08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d7e2a77e-b343-4a1c-809f-bd7c223ee6c0">
+    </UnitTestResult>
+  </Results>
+</TestRun>

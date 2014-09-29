@@ -1,0 +1,160 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="livetemplates.csharp.usevar">True</setting>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/d:RegistrationAttributes/f:CodeGeneratorRegistrationAttribute.cs/l:C!?Program Files (x86)?Microsoft Visual Studio 2010 SDK?VisualStudioIntegration?Common?Source?CSharp?RegistrationAttributes?CodeGeneratorRegistrationAttribute.cs" caret="2710" fromTop="0" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:AssemblyInfo.cs" caret="1010" fromTop="23" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:Generated.Designer.cs" caret="0" fromTop="0" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:BaseCodeGeneratorWithSite.cs" caret="4607" fromTop="10" />
+      <File id="D51383C1-F5D8-4873-9E0E-CB4A23809B5B/f:Theory.pl" caret="48" fromTop="2" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:BaseCodeGenerator.cs" caret="7516" fromTop="3" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="2777" fromTop="0" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:BaseCodeGenerator.cs" caret="2074" fromTop="12" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="634" fromTop="8" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="3961" fromTop="14" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:Generated.Designer.cs" caret="0" fromTop="0" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="5276" fromTop="9" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="3740" fromTop="9" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="4000" fromTop="17" />
+      <File id="D51383C1-F5D8-4873-9E0E-CB4A23809B5B/f:Theory.pl" caret="48" fromTop="2" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="2631" fromTop="3" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="4267" fromTop="15" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="3956" fromTop="8" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="5137" fromTop="21" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="3651" fromTop="10" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="3586" fromTop="25" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="5012" fromTop="22" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="1785" fromTop="0" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:BaseCodeGenerator.cs" caret="8268" fromTop="21" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:BaseCodeGenerator.cs" caret="7516" fromTop="3" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="2575" fromTop="6" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="3586" fromTop="15" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="2450" fromTop="8" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="2340" fromTop="7" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="2793" fromTop="13" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="2402" fromTop="7" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="2170" fromTop="1" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="3586" fromTop="22" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="2910" fromTop="0" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="3291" fromTop="11" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="3269" fromTop="11" />
+      <File id="461089E7-008E-4737-BA17-E1FCD1CC3D0E/f:PrologGenerator.cs" caret="3586" fromTop="12" />
+    </RecentEdits>
+  </RecentFiles>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerNUnit>
+    <NUnitInstallDir IsNull="False">
+    </NUnitInstallDir>
+    <UseAddins>Never</UseAddins>
+  </UnitTestRunnerNUnit>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Default">
+      <Item value="PrologGenerator" priority="4" />
+      <Item value="Guid`0" priority="0" />
+      <Item value="inputFileContent" priority="7" />
+      <Item value="content" priority="0" />
+      <Item value="header" priority="5" />
+      <Item value="writer" priority="2" />
+      <Item value="base" priority="3" />
+      <Item value="string" priority="5" />
+      <Item value="File`0" priority="2" />
+      <Item value="Open" priority="0" />
+      <Item value="f" priority="0" />
+      <Item value="new" priority="4" />
+      <Item value="Path`0" priority="0" />
+      <Item value="InputFilePath" priority="0" />
+      <Item value="className" priority="2" />
+      <Item value="StringReader`0" priority="0" />
+      <Item value="StringReader" priority="0" />
+      <Item value="sr" priority="3" />
+      <Item value="foreach" priority="0" />
+      <Item value="while" priority="0" />
+      <Item value="if" priority="2" />
+      <Item value="cn" priority="1" />
+      <Item value="true" priority="2" />
+      <Item value="null" priority="1" />
+      <Item value="nameSpace" priority="2" />
+      <Item value="this" priority="1" />
+      <Item value="catch" priority="2" />
+      <Item value="Exception`0" priority="2" />
+      <Item value="try" priority="1" />
+      <Item value="int" priority="0" />
+      <Item value="linenumber" priority="2" />
+      <Item value="return" priority="0" />
+      <Item value="preamble" priority="0" />
+      <Item value="private" priority="0" />
+      <Item value="bool" priority="0" />
+      <Item value="HasError" priority="3" />
+      <Item value="false" priority="1" />
+      <Item value="protected" priority="0" />
+      <Item value="String`0" priority="0" />
+      <Item value="stringCollection" priority="3" />
+      <Item value="StringCollection" priority="0" />
+      <Item value="tmp" priority="1" />
+      <Item value="stringReader" priority="0" />
+      <Item value="queryable" priority="1" />
+      <Item value="Queryable`0" priority="0" />
+      <Item value="ListDictionary`0" priority="0" />
+      <Item value="List&lt;string&gt;" priority="0" />
+      <Item value="righe" priority="2" />
+      <Item value="riga" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.IO.StringWriter">
+      <Item value="Write`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:PrologGenerator.BaseCodeGeneratorWithSite">
+      <Item value="InputFilePath" priority="2" />
+      <Item value="FileNameSpace" priority="0" />
+      <Item value="GetProjectItem`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@PrologGenerator.Generated">
+      <Item value="ClassTemplate" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.String">
+      <Item value="Remove`0" priority="1" />
+      <Item value="Replace`0" priority="2" />
+      <Item value="Substring`0" priority="1" />
+      <Item value="StartsWith`0" priority="1" />
+      <Item value="Split`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.IO.File">
+      <Item value="Open`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.IO.Path">
+      <Item value="GetFileNameWithoutExtension`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.IO.StringReader">
+      <Item value="ReadLine`0" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:PrologGenerator.PrologGenerator">
+      <Item value="GeneratorError`0" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Specialized.StringCollection">
+      <Item value="Add`0" priority="0" />
+      <Item value="GetEnumerator`0" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.List`1">
+      <Item value="Add`0" priority="0" />
+      <Item value="Where`1" priority="0" />
+      <Item value="First`1" priority="0" />
+      <Item value="Select`2" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Collections.Generic.IEnumerable`1">
+      <Item value="First`1" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+</Configuration>

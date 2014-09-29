@@ -1,0 +1,78 @@
+%=======================================================================
+\chapter{What is \tuprolog{}}
+\label{what-is}
+%=======================================================================
+
+\tuprolog{} is a light-weight Prolog framework for distributed applications and infrastructures.
+%
+\tuprolog{} is developed and maintained by the \alice{} research group\footnote{\url{http://www.alice.unibo.it}} at the \textsc{Alma Mater Studiorum}---Universit\`{a} di Bologna.
+%
+It is built as an Open Source software, released under the LGPL license -- thus allowing also for commercial derivative work --, and made available through the pages of the \apice{} web portal\footnote{\url{http://tuprolog.apice.unibo.it}}.
+
+\tuprolog{} is designed to be \emph{minimal}, dynamically \emph{configurable}, \emph{interoperable}, straightforwardly \emph{integrated} with Java and .NET, and easily \emph{deployable}.
+
+First of all, \tuprolog{} is designed with \textit{minimality} in mind.
+%
+Accordingly, \tuprolog{} core is a tiny Java object that contains only the essential properties of a Prolog engine.
+%
+Only the required Prolog features -- like, say, ISO compliance, I/O predicates, DCG operators -- are then to be added to or removed from a \tuprolog{} engine according to the contingent application needs.
+
+The obvious counterpart of minimality is \tuprolog{} \textit{configurability}.
+%
+In fact, a simple yet powerful mechanism based on the notion of \tuprolog{} \textit{library} is provided tha allows required predicates, functors and operators to be loaded and unloaded in a \tuprolog{} engine, both statically and dynamically.
+%
+Libraries can be either included in the standard \tuprolog{} distribution, or defined \textit{ad hoc} by the \tuprolog{} user / developer. 
+
+A \tuprolog{} library can be built in different ways. 
+%
+First of all, a \tuprolog{} library could be straightforwardly written in Prolog.
+%
+On the other hand, a \tuprolog{} library could also be implemented using either Java or any language of .NET framework---depending on the chosen \tuprolog{} implementation.
+%
+Finally, a \tuprolog{ library could be built by combining Prolog and Java / .NET languages, thus paving the way for multi-language / multi-paradigm integration.
+%
+Whatever the language(s) used, a \tuprolog{} library can be either used to configure a \tuprolog{} engine when this is started up, or loaded -- and then unloaded -- dynamically at any time during the engine execution.
+
+\tuprolog{} was first implemented upon Java, then ported upon .NET, and is now available on both platforms.
+%
+\textit{Deployability} of \tuprolog{} owes a lot to Java and .NET.
+%
+On the Java side, the requirements for \tuprolog{} installation simply amount to the presence of a standard Java VM, and a Java invocation upon a single JAR file is everything needed to start a \tuprolog{} activity.
+%
+On the .NET side, \ldots ENRICO ENRICO ENRICO ENRICO
+
+\tuprolog{} \textit{integration} with other languages and paradigms is kept as clean as possible, so that the components of a \tuprolog{} application can be developed by choosing at any step the most suitable paradigm---either declarative/logic or imperative/object-oriented.
+%
+On the Prolog side, thanks to the \texttt{JavaLibrary} library, any Java entity (object, class, package) can be represented as a Prolog term, and exploited from Prolog.
+%
+So, for instance, Java packages like Swing and {JDBC} can be directly used from within Prolog, straightforwardly enhancing \tuprolog{} with graphics and database access capabilities.
+%
+In the same way, \texttt{DotNetLibrary} \ldots o come cavolo si chiama ENRICO ENRICO ENRICO ENRICO
+%
+On the Java side, a \tuprolog{} engine can be invoked and used as a simple Java object, possibly embedded in beans, or exploited in a multi-threaded context, according to the application needs.
+%
+Also, a multiplicity of different \tuprolog{} engines can be used from a Java program at the same time, each one configured with its own libraries and knowledge base.
+%
+In the same way, sbrodolata .NET di ENRICO ENRICO ENRICO ENRICO
+
+
+Interoperability misteriosa: cosa diciamo??? Ancora quanto segue???
+
+Finally, \textit{interoperability} is developed along two main lines:
+Internet standard patterns, and coordination models.
+%
+So, \tuprolog{} supports interaction via TCP/IP and RMI, and can be
+also provided as a CORBA service.
+%
+In addition, \tuprolog{} supports tuple-based coordination under many
+forms.
+%
+First, components of a \tuprolog{} application can be organised around
+Java-based tuple spaces, logic tuple spaces, and \respect{} tuple
+centres \cite{respect-scico2001}.
+%
+Then, \tuprolog{} applications can exploit Internet infrastructures
+providing tuple-based coordination services, like \luce{}
+\cite{luce-aamas2001} and \tucson{} \cite{tucson-aamas99}.
+
+

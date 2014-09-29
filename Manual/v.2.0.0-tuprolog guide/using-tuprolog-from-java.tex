@@ -1,0 +1,601 @@
+%=======================================================================
+\chapter{Using \tuprolog{} from Java}
+\label{java-api}
+%=======================================================================
+
+\section{Getting started}
+
+Let's begin with your first Java program using \tuprolog{}.
+%
+{\small{
+\begin{verbatim}
+    import alice.tuprolog.*;
+
+    public class Test2P {
+        public static void main(String[] args) throws Exception {
+            Prolog engine = new Prolog();
+            SolveInfo info = engine.solve("append([1],[2,3],X).");
+            System.out.println(info.getSolution());
+        }
+    }
+\end{verbatim}
+}}
+\noindent In this first example a \tuprolog{} engine is
+created, and asked to solve a query, provided in a textual form.
+%
+This query in the Java environment is equivalent to the query\\\\
+%
+{\small{\texttt{?- append([1],[2,3],X).\\\\}}}
+%
+\noindent in a classic Prolog environment, and accounts for
+finding the list that is obtained by appending the list
+\texttt{[2,3]} to the list \texttt{[1]} (\texttt{append} is
+included in the theory provided by the
+\texttt{alice.tuprolog.lib.BasicLibrary}, which is downloaded by
+the default when instantiating the engine).
+%
+
+By properly compiling and executing this simple program,\footnote{Save the program in a file called \texttt{Test2P.java}, then compile it with
+%
+\texttt{javac -classpath tuprolog.jar Test2P.java}
+%
+and then execute it with
+%
+\texttt{java -cp .;tuprolog.jar Test2P.java}} the string
+\texttt{append([1],[2,3],[1,2,3])} -- that is the solution of out
+query -- will be displayed on the standard output.
+%
+%
+
+\noindent Then, let's consider a little bit more involved example:
+
+{\small{
+\begin{verbatim}
+public class Test2P {
+    public static void main(String[] args) throws Exception {
+        Prolog engine = new Prolog();
+        SolveInfo info = engine.solve("append(X,Y,[1,2]).");
+        while (info.isSuccess()) {
+            System.out.println("solution: " + info.getSolution() +
+                               " - bindings: " + info);
+            if (engine.hasOpenAlternatives()) {
+                info = engine.solveNext();
+            } else {
+                break;
+            }
+        }
+    }
+}
+\end{verbatim}
+}}
+
+In this case, all the solutions of a query are retrieved and
+displayed, with also the variable bindings:
+{\small{\begin{verbatim}
+
+solution: append([],[1,2],[1,2]) - bindings: Y / [1,2]  X / []
+solution: append([1],[2],[1,2]) - bindings: Y / [2]  X / [1]
+solution: append([1,2],[],[1,2]) - bindings: Y / []  X / [1,2]
+
+\end{verbatim}
+}}
+
+\section{Basic Data Structures}
+
+\noindent All Prolog data objects are mapped onto Java objects:
+\texttt{Term} is the base class for Prolog untyped terms such as
+atoms and compound terms (represented by the \texttt{Struct} class),
+Prolog variables (\texttt{Var} class) and Prolog typed terms such
+as numbers (\texttt{Int}, \texttt{Long}, \texttt{Float},
+\texttt{Double} classes).
+%
+In particular:
+
+%
+\begin{itemize}
+    %
+    \item \texttt{Term} -- this abstract class represents a generic Prolog term, and it is the
+    root base class of \tuprolog{} data structures, defining the basic common services, such
+    as term comparison, term unification and so on.
+    %
+    It is worth noting that it is an abstract class, so no direct \texttt{Term}
+    objects can be instantiated;
+    %
+    %
+    %
+    \item \texttt{Var} -- this class (derived from \texttt{Term})
+    represents \tuprolog{} variables.
+    %
+    A variable can be anonymous, created by means of the default constructor, with no
+    arguments, or identified by a name, that must starts with an upper case letter or an
+    underscore;
+    %
+    \item \texttt{Struct} -- this class (derived from \texttt{Term})
+    represents un-typed \tuprolog{} terms, such as atoms, lists and compound terms;
+    %
+    \texttt{Struct} objects are characterised by a functor name and a
+    list of arguments (which are \texttt{Term}s themselves), while
+    \texttt{Var} objects are labelled by a string representing the
+    Prolog name.
+    %
+    Atoms are mapped as \texttt{Struct}s with functor with a name and
+    no arguments;
+    %
+    Lists are mapped as \texttt{Struct} objects with functor
+    \verb|'.'|, and two \texttt{Term} arguments (head and tail of the list);
+    %
+    lists can be also built directly by exploiting the 2-arguments constructor, with
+    head and tail terms as arguments.
+    %
+    Empty list is constructed by means of the no-argument constructor of \texttt{Struct}
+    (default constructor).
+    %
+    \item \texttt{Number} -- this abstract class represents typed, numerical Prolog terms,
+        and it is the  base class of \tuprolog{} number classes;
+    %
+    \item \texttt{Int, Long, Double, Float} -- these classes (derived from \texttt{Number})
+    represent  typed numerical \tuprolog{} terms, respectively integer, long, double and
+    float numbers.
+    %
+    Following the Java conventions, the default type for integer number is \texttt{Int}
+    (integer, not long, number), and for \texttt{Double} (and so double), for floating point
+    number.
+\end{itemize}
+
+
+\noindent Some examples of term creation follow:
+%
+{\small{\begin{verbatim}
+
+// constructs the atom vodka
+Struct drink = new Struct("vodka");
+
+// constructs the number 40
+Term degree = new alice.tuprolog.Int(40);
+
+// constructs the compound degree(vodka, 40)
+Term drinkDegree = new Struct("degree",
+                              new Struct("vodka"),
+                              new Int(40));
+// second way to constructs the compound degree(vodka,40)
+Struct drinkDegree2 = new Struct("degree", drink, degree);
+
+// constructs the compound temperature('Rome', 25.5)
+Struct temperature = new Struct("temperature",
+                                new Struct("Rome"),
+                                new alice.tuprolog.Float(25.5));
+
+// constructs the compound equals(X, X)
+Struct t1 = new Struct("equals", new Var("X"), new Var("X"));
+t1.resolveTerm();
+
+// mother(John,Mary)
+Struct father = new Struct(new Struct("John"), new Struct("Mary")));
+
+// father(John, _)
+Term  father = new Struct(new Struct("John"), new Var());
+
+// p(1, _, q(Y, 3.03, 'Hotel'))
+Term  t2 = new Struct("p",
+                      new Int(1),
+                      new Var(),
+                      new Struct("q",
+                                 new Var("Y"),
+                                 new Float(3.03f),
+                                 new Struct("Hotel")));
+
+// The Long number 130373303303
+Term t3 = new alice.tuprolog.Long(130373303303h);
+
+// The double precision number 1.7625465346573
+Term t4 = new alice.tuprolog.Double(1.7625465346573);
+
+// an empty list
+Struct empty = new Struct();
+
+// the list [303]
+Struct l = new Struct(new Int(303), new Struct());
+
+// the list [1,2,apples]
+Struct alist = new Struct(
+                   new Int(1),
+                   new Struct(
+                       new Int(2),
+                       new Struct("apples")));
+
+// fruits([apple, orange | _ ])
+Term list2 = new Struct("fruits", new Struct(
+                                      new Struct("apple",
+                                          new Struct("orange"),
+                                          new Var())));
+
+// complex_compound(1, _, q(Y, 3.03, 'Hotel', k(Y,X)), [303, 13, _, Y])
+Term t5 = Term.parse(
+     "complex_compound(1, _, q(Y, 3.03, 'Hotel', k(Y,X)), [303, 13, _, Y])"
+);
+
+\end{verbatim}}}
+%
+\noindent The name of the \tuprolog{} number classes
+(\texttt{Int}, \texttt{Float}, \texttt{Long}, \texttt{Double})
+follows the name of the primitive Java data type they represents.
+%
+Note that due to class name clashes (for instance between classes
+\texttt{java.lang.Long} and \texttt{alice.tuprolog.Long}), it
+could be necessary to use the full class name to identify
+\tuprolog{} classes.
+%
+
+\section{Engine, Theories and Libraries}
+
+\noindent Then, the other main classes that make \tuprolog{} Core
+API concern \tuprolog{} engines, theories and libraries. In
+particular:
+%
+\begin{itemize}
+    \item \texttt{Prolog} -- this class represent \tuprolog{}
+    engines.
+    %
+    This class provides a minimal interface that enables users
+    to: \\
+    %
+    \indent{-- set/get the theory to be used for
+    demonstrations;}\\
+        %
+    \indent{-- load/unload libraries;} \\
+        %
+    \indent{-- solve a goal, represented either by a \texttt{Term} object or by a
+        textual representation (a \texttt{String} object) of a
+        term.}\\
+    %
+    A \tuprolog{} engine can be instantiated either with some standard default
+    libraries loaded, by means of the default constructor, or with
+    a starting set of libraries, which can be empty, provided as
+    argument to the constructor (see JavaDoc documentation for
+    details).
+    %
+    Accordingly, a raw, very lightweight, \tuprolog{} engine can
+    be created by specifying an empty set of library, providing
+    natively a very small set of built-in primitives.
+
+
+    \item \texttt{Theory} -- this class represent \tuprolog{}
+    theories.
+    %
+    A theory is represented by a text, consisting of a series of
+    clauses and/or directives, each followed by a dot and a
+    whitespace character.
+    %
+    Instances of this class are built either from a textual representation,
+    directly provided as a string or taken by any possible input
+    stream, or from a list of terms representing Prolog clauses.
+    %
+    %
+    %
+    %
+    %
+    \item \texttt{Library} -- this class represents \tuprolog{}
+    libraries;
+    %
+    A \texttt{tuprolog} engine can be dynamically extended by loading
+    (and unloading) any number of libraries; each library can provide
+    a specific set of of built-ins predicates, functors and a related
+    theory.
+    %
+    A library can be loaded by means of the built-in by means of the method
+    \texttt{loadLibrary} of the \tuprolog{} engine.
+    %
+    Some standard libraries are provided in the
+    \texttt{alice.tuprolog.lib} package and loaded by the default
+    instantiation of a \tuprolog{} engine:
+    %
+    \texttt{alice.tuprolog.lib.BasicLibrary}, providing basic and
+    well-known Prolog built-ins, \texttt{alice.tuprolog.lib.IOLibrary}
+    providing \textit{de facto} standard Prolog I/O predicates, \texttt{alice.tuprolog.lib.ISOLibrary}
+    providing some ISO predicates/functors not directly provided
+    by \texttt{BasicLibrary} and \texttt{IOLibrary}, and
+    \texttt{alice.tuprolog.lib.JavaLibrary}, which enables the
+    creation and usage of Java objects from \tuprolog{} programs,
+    in particular enabling the reuse of any existing Java resources.
+    %
+    %
+    \item \texttt{SolveInfo} -- this class represents the result of a
+    demonstration and instances of these class are returned by the
+    \texttt{solve} methods the \texttt{Prolog} engines;
+    %
+    in particular \texttt{SolveInfo} objects provide services to test the
+    success of the demonstration (\texttt{isSuccess} method),
+    to access to the term solution of the query
+    (\texttt{getSolution} method)  and to access the list of the
+    variable with their bindings.
+\end{itemize}
+%
+
+Some notes about \tuprolog{} terms and the services they provide:
+\begin{itemize}
+%
+\item the static \texttt{parse} method provides a quick way to get a
+term from its string representation.
+%
+\item \tuprolog{} terms provides directly methods for unification and matching: \\
+%
+{\tt{\small{public boolean unify(Term t)}}}\\
+%
+{\tt{\small{public boolean match(Term t)}}}\\
+%
+Terms that have been subject to unification outside a
+demonstration context (that is invoking directly these methods,
+and not passing through the solving service of an engine) should
+not be used then in queries to engines.
+%
+\item some services are provided to compare terms, according to the
+Prolog rules, and to check their type;
+%
+in particular the standard Java method \texttt{equals} has the
+same semantics of the method \texttt{isEqual} which follows the
+Prolog comparison semantics.
+%
+\item some services makes it possible to copy a term as it is
+or to get a renamed copy of the term (\texttt{copy} and
+\texttt{getRenamedCopy});
+%
+it is worth noting that the design of \tuprolog{} promotes a
+stateless usage of terms; in particular, it is good practice not
+to reuse the same terms in different demonstration contexts, as
+part of different queries.
+%
+\item the method \texttt{getTerm} is useful in the case of
+variables, providing the term linked possibly considering all the
+linking chain in the case of variables referring other variables.
+%
+\item when a term is created by means of the proper constructor,
+consider as example: \\\\
+%
+{\tt{\scriptsize{Struct myTerm = new Struct("p", new Var("X"), new
+Int(1), new Var("X"))}}}\\\\
+%
+it is \emph{not resolved}, in the sense that possible variable
+terms with the same name in the term do not refer each other;
+%
+so in the example the first and the third argument of the compound
+\texttt{myTerm} point to different variable objects.
+%
+A term is resolved the first time it is involved in a matching or
+unification context.
+%
+\end{itemize}
+
+\noindent Some notes about \tuprolog{} engines, theories,
+libraries and the services they provide:
+
+\begin{itemize}
+%
+\item \tuprolog{} engines support natively some
+\emph{directives}, that can be defined by means of the :-/1
+predicate in theory specification.
+%
+Directives are used to specify properties of clauses and of the
+engine (\emph{solve/1}, \emph{initialization/1},
+\emph{set\_prolog\_flag/1}, \emph{load\_library/1},
+\emph{consult/1}), format and syntax of read-terms (\emph{op/3},
+\emph{char\_conversion/2}).
+%
+\item \tuprolog{} engines support natively the dynamic definition
+and management of \emph{flags} (or property), used to describe
+some aspects of libraries and their built-ins.
+%
+A flag is identified by a name (an alphanumeric atom), a list of
+possible values, a default value and a boolean value specifying if
+the flag value can be modified.
+%
+\item \tuprolog{} engines are thread-safe. The methods that could
+create problems in being used in a multi-threaded context are now
+synchronised.
+%
+\item \tuprolog{} engines have no (static) dependencies with each
+other, multiple engines can be created independently as simple
+objects on the same Java virtual machine,  each with its own
+configuration (theory and loaded libraries).
+%
+Moreover, accordingly to the design of \tuprolog{} system in
+general, engines are very lightweight, making suitable the use of
+multiple engines in the same execution context.
+%
+\item \tuprolog{} engines can be serialised and stored as a persistent
+object or sent through the network.
+%
+This is true also for engines with pre-loaded standard libraries:
+%
+in the case that other libraries are loaded, these must be
+serializable in order to have the engine serializable.
+%
+\end{itemize}
+
+%
+%
+
+\section{Some more examples of \tuprolog{} usage}
+
+\noindent Creation of an engine (with default libraries
+pre-loaded):
+
+{\tt\scriptsize{
+\begin{verbatim}
+    import alice.tuprolog.*;
+
+    ...
+    Prolog engine = new Prolog();
+\end{verbatim} }}
+
+
+\noindent Creation of an engine specifying only the
+\texttt{BasicLibrary} as pre-loaded library:
+
+{\tt\scriptsize{
+\begin{verbatim}
+    import alice.tuprolog.*;
+
+    ...
+    Prolog engine = new Prolog(new String[]{"alice.tuprolog.lib.BasicLibrary"});
+\end{verbatim} }}
+
+\noindent Creation and loading of a theory from a string:
+
+{\tt\scriptsize{\begin{verbatim}
+
+    String theoryText = "my_append([],X,X).\n" +
+                        "my_append([X|L1],L2,[X|L3]) :- my_append(L1,L2,L3).\n";
+
+    Theory theory = new Theory(theoryText);
+    try {
+        engine.setTheory(theory);
+    } catch(InvalidTheoryException e) {
+    }
+\end{verbatim} }}
+
+\noindent Creation and loading of a theory from an input stream:
+
+{\tt\scriptsize{\begin{verbatim}
+
+    Theory theory = new Theory(new FileInputStream("test.pl");
+    try {
+        engine.setTheory(theory);
+    } catch(InvalidTheoryException e) {
+    }
+\end{verbatim} }}
+
+\noindent Goal demonstration (provided as a string):
+
+{\tt\scriptsize{\begin{verbatim}
+
+    // ?- append(X,Y,[1,2,3]).
+    try {
+        SolveInfo info = engine.solve("append(X,Y,[1,2,3]).");
+        Term solution = info.getSolution();
+    } catch(MalformedGoalException mge) {
+        ...
+    } catch(NoSolutionException nse) {
+        ...
+    }
+\end{verbatim} }}
+
+\noindent Goal demonstration (provided as a Term):
+
+{\tt\scriptsize{\begin{verbatim}
+
+    try {
+        Term goal = new Struct("p", new Int(1), new Var("X"));
+        try {
+            // ?- p(1,X).
+            SolveInfo info = engine.solve(goal);
+            Term solution = info.getSolution();
+ 
+        } catch (NoSolutionException nse) {
+        }
+    } catch (InvalidVarNameException ivne) {
+    }
+\end{verbatim} }}
+
+\noindent Getting another solution:
+
+{\tt\scriptsize{\begin{verbatim}
+    try {
+        SolveInfo info = engine.solve(goal);
+        info = engine.solveNext();
+    } catch(NoMoreSolutionException e)
+\end{verbatim} }}
+
+\noindent Loading a library:
+
+{\tt\scriptsize{\begin{verbatim}
+    try {
+        engine.loadLibrary('alice.tuprologx.lib.TucsonLibrary');
+    } catch(InvalidLibraryException e) {
+    }
+\end{verbatim} }}
+
+\noindent Here, a complete example of interaction with a
+\tuprolog{} engine is shown (refer to the JavaDoc documentation for
+details about interfaces):
+
+{\tt\scriptsize{\begin{verbatim}
+
+import alice.tuprolog.*; import java.io.*;
+
+public class Test2P {
+    public static void main (String args[]) {
+        Prolog engine = new Prolog();
+        try {
+
+            // solving a goal
+            SolveInfo info = engine.solve(new Struct("append",
+                                              new Var("X"),
+                                              new Var("Y"),
+                                              new Struct(new Term[]{new Struct("hotel"),
+                                                                    new Int(303),
+                                                                    new Var()})));
+
+
+            // note we could use strings:
+            // SolveInfo info = engine.solve("append(X, Y, [hotel, 303, _]).");
+
+            // test for demonsration success
+            if (info.isSuccess()) {
+
+                // acquire solution and substitution
+                Term sol = info.getSolution();
+                System.out.println("Solution: " + sol);
+
+                System.out.println("Bindings: " + info);
+
+                // open choice points?
+                if (engine.hasOpenAlternatives()) {
+
+                    // ask for another solution
+                    info = engine.solveNext();
+
+                    if (info.isSuccess()) {
+                        System.out.println("An other substitution: " + info);
+                    }
+                }
+            }
+
+            // other frequent interactions
+
+            // setting a new theory in the engine
+            String theory = "p(X,Y) :- q(X), r(Y).\n" +
+                            "q(1).\n" +
+                            "r(1).\n" +
+                            "r(2).\n";
+            engine.setTheory(new Theory(theory));
+
+            SolveInfo info2 = engine.solve("p(1,X).");
+            System.out.println(info2);
+
+            // retrieving the theory from a file
+            FileOutputStream os=new FileOutputStream("test.pl");
+            os.write(theory.getBytes());
+            os.close();
+            engine.setTheory(new Theory(new FileInputStream("test.pl")));
+            info2 = engine.solve("p(X,X).");
+            System.out.println(info2.getSolution());
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+\end{verbatim}}}
+
+With the program execution, the following string are displayed on
+the standard output:
+
+{\tt\small{
+
+\begin{verbatim}
+Solution: append([],[hotel,303,_],[hotel,303,_])
+Bindings: Y /[hotel,303,_] X / []
+An other substitution: Y / [303,_]  X / [hotel]
+X / 1
+p(1,1)
+\end{verbatim}}}

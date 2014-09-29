@@ -1,0 +1,302 @@
+﻿<?xml version="1.0"?>
+
+<project name="tuProlog.NET build file" basedir="..">
+	
+	<path id="path.svnant">
+ 		<pathelement location="ant/lib/svnant.jar"/>
+ 		<pathelement location="ant/lib/svnClientAdapter.jar"/>
+		<pathelement location="ant/lib/svnkit-javahl16-1.7.9.jar"/>
+		<pathelement location="ant/lib/sqljet-1.1.7.jar"/>
+		<pathelement location="ant/lib/svnkit-1.7.9.jar"/>
+		<pathelement location="ant/lib/antlr-runtime-3.4.jar"/>
+		<pathelement location="ant/lib/sequence-library-1.0.2.jar"/>
+ 		<!-- ... -->
+	</path>
+	    
+	<typedef 
+	      resource="org/tigris/subversion/svnant/svnantlib.xml" 
+	      classpathref="path.svnant"	
+	/>
+	
+
+  <target name="00.init.properties" description="Sets up properties">
+	<echo message="Remember to set up the properties in the file ant/environment.properties !!!"/>
+	<!-- Environment properties -->
+	<property file="ant/environment.properties"/>
+	
+	<!-- Project structure -->
+	<property name="projects.root.dir" value="OOLibrary"/>
+  	<property name="doc.dir" value="doc"/>
+	<property name="oolib.bin.dir" value="OOLibrary/OOLibrary/bin/Release"/>
+  	<property name="lib.dir" value="lib"/>
+	<property name="conventions.bin.dir" value="OOLibrary/Conventions/bin/Release"/>
+	<property name="examples.dir" value="examples"/>
+	<property name="licenses.dir" value="licenses"/>
+	<property name="helper.dir" value="ant/HelperVersion"/>
+	
+	<!-- Compile the HelperVersion, I'm not sure we can use always the same without recompile it, TO CHECK -->
+  	
+  	<!-- However, the new 2p.exe has to be copied in the HelperVersion directory -->
+	<copy todir="${helper.dir}">
+		<fileset dir="${lib.dir}">
+			<include name="2p.exe"/>
+		</fileset>
+	</copy>
+	
+	<copy todir="${helper.dir}">
+		<fileset dir="${ikvm.dir}/bin/">
+			<include name="IKVM.OpenJDK.Core.dll"/>
+			<include name="IKVM.Runtime.dll"/> 
+		</fileset>
+	</copy>
+	
+  	
+	<exec dir="${helper.dir}" executable="csc">
+		<arg value="/reference:2p.exe,IKVM.OpenJDK.Core.dll"/>
+		<arg value="HelperVersion.cs"/>
+	</exec>
+	
+	<exec outputproperty="complete.version" executable="${basedir}/${helper.dir}/HelperVersion.exe" />
+	
+	<loadresource property="engine.version">
+	  <propertyresource name="complete.version"/>
+	  <filterchain>
+	    <tokenfilter>
+	      <trim/>
+	      <replaceregex pattern="\.[0-9]+$" replace="" />
+	    </tokenfilter>
+	  </filterchain>
+	</loadresource>
+	
+	<loadresource property="netSpecific.version">
+	  <propertyresource name="complete.version"/>
+	  <filterchain>
+	    <tokenfilter>
+	      <trim/>
+	      <replaceregex pattern="^[0-9]+\.[0-9]+\." replace="" />
+	    </tokenfilter>
+	  </filterchain>
+	</loadresource>
+  	
+  	<exec outputproperty="ikvm.version.complete" executable="${ikvm.dir}/bin/ikvm.exe">
+  		<arg value="-version"/>
+  	</exec>
+  	
+  	<loadresource property="ikvm.version">
+	  <propertyresource name="ikvm.version.complete"/>
+	  <filterchain>
+	  	<linecontains>
+        	<contains value="IKVM.OpenJDK.Core:"/>
+        </linecontains>
+	  	<deletecharacters chars="\n\r"/>        <!-- Do not get a number with a new line at the end -->
+	    <tokenfilter>
+	      	<replaceregex pattern="^.+:" replace="" />
+	      	<trim/>
+	    </tokenfilter>
+	  </filterchain>
+	</loadresource>
+  	
+  	<echo message="ikvm.version=${ikvm.version}"/> 
+  	
+  	<echo message="engine.version=${engine.version}"/>
+  	<echo message="netSpecific.version=${netSpecific.version}"/>
+	
+  	<property name="project.name" value="2p.NET-${engine.version}.${netSpecific.version}"/>
+	<property name="release.dir" value="release/${project.name}"/>
+	<property name="release.lib.dir" value="${release.dir}/lib"/>
+  	
+  </target>
+	
+	<target name="01.release.bin" depends="00.init.properties" description="Creates the structure for the release">
+		<echo message="msbuild and csc have to be in the PATH"/>
+		
+		<delete dir="${release.dir}" />
+		<delete file="${project.name}.zip"/>
+	    <mkdir dir="${release.dir}"/>
+		<mkdir dir="${release.lib.dir}"/>
+		<mkdir dir="${release.dir}/licenses"/>
+		<mkdir dir="${release.dir}/doc"/>
+				
+		<!-- Copy examples -->
+		<!-- We have to use export because the "examples" folder is under version control and we don't 
+			want to copy the svn informations in the build -->
+		<!-- <copy todir="${release.dir}/examples">
+			<fileset dir="${examples.dir}"/>
+		</copy> -->
+		 <svnSetting
+	            id="settings"
+	            svnkit="true" 
+	            javahl="false" />
+	    
+	    <!-- DOC: http://subclipse.tigris.org/svnant/svntask.html -->
+	    <svn refid="settings">
+	        
+	        <export srcPath="${examples.dir}" destPath="${release.dir}/examples" />
+	    	
+	    	<export srcPath="${licenses.dir}" destPath="${release.dir}/licenses" force="yes"/>
+	        
+	     </svn>
+		
+		<!-- Change the reference to the libraries in the examples -->
+		<!-- Derivative -->
+		<replace 	file="${release.dir}/examples/Prolog from .NET/DerivativeExample/DerivativeExample/DerivativeExample.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\lib\2p.exe&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\2p.exe&lt;/HintPath&gt;"/>
+		
+		<!-- Simple TicTacToe -->
+		<replace 	file="${release.dir}/examples/Prolog from .NET/tic tac toe/main/tictactoe.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\lib\2p.exe&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\2p.exe&lt;/HintPath&gt;"/>
+		
+		<replace 	file="${release.dir}/examples/Prolog from .NET/tic tac toe/main/tictactoe.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\OOLibrary\Conventions\bin\Release\Conventions.dll&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\lib\Conventions.dll&lt;/HintPath&gt;"/>
+		
+		<replace 	file="${release.dir}/examples/Prolog from .NET/tic tac toe/main/tictactoe.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\OOLibrary\OOLibrary\bin\Release\OOLibrary.dll&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\lib\OOLibrary.dll&lt;/HintPath&gt;"/>
+
+		<!-- Distributed TicTacToe -->
+		<replace 	file="${release.dir}/examples/Prolog from .NET/DistributedTicTacToe/TicTacToeClient/WindowsGame1/WindowsGame1/TicTacToeGame.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\..\..\lib\2p.exe&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\..\..\2p.exe&lt;/HintPath&gt;"/>
+		
+		<replace 	file="${release.dir}/examples/Prolog from .NET/DistributedTicTacToe/TicTacToeClient/WindowsGame1/WindowsGame1/TicTacToeGame.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\..\..\OOLibrary\Conventions\bin\Release\Conventions.dll&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\..\..\lib\Conventions.dll&lt;/HintPath&gt;"/>
+		
+		<replace 	file="${release.dir}/examples/Prolog from .NET/DistributedTicTacToe/TicTacToeClient/WindowsGame1/WindowsGame1/TicTacToeGame.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\..\..\OOLibrary\OOLibrary\bin\Release\OOLibrary.dll&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\..\..\lib\OOLibrary.dll&lt;/HintPath&gt;"/>
+
+		<!-- StockAnalyzer-->
+		<replace 	file="${release.dir}/examples/Prolog from .NET/StockAnalyzer/StockAnalyzer/StockAnalyzerCS/StockAnalyzerCS.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\..\lib\2p.exe&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\..\2p.exe&lt;/HintPath&gt;"/>
+		
+		<replace 	file="${release.dir}/examples/Prolog from .NET/StockAnalyzer/StockAnalyzer/StockAnalyzerCS/StockAnalyzerCS.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\..\OOLibrary\Conventions\bin\Release\Conventions.dll&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\..\lib\Conventions.dll&lt;/HintPath&gt;"/>
+		
+		<replace 	file="${release.dir}/examples/Prolog from .NET/StockAnalyzer/StockAnalyzer/StockAnalyzerCS/StockAnalyzerCS.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\..\OOLibrary\OOLibrary\bin\Release\OOLibrary.dll&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\..\lib\OOLibrary.dll&lt;/HintPath&gt;"/>
+		
+		<!-- Compile OOLib and conventions -->
+		<exec dir="${projects.root.dir}" executable="msbuild">
+			<arg value="/property:Configuration=Release"/>
+			<arg value="/t:Clean"/>
+		</exec>
+		
+		<exec dir="${projects.root.dir}" executable="msbuild">
+			<arg value="/property:Configuration=Release"/>
+		</exec>
+		
+		<!-- Copy OOLib, conventions, javassist, 2p.exe and tuprolog.dll -->
+		<copy todir="${release.lib.dir}">
+			<fileset dir="${oolib.bin.dir}">
+				<include name="OOLibrary.dll"/>
+				<include name="javassist.dll"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${release.lib.dir}">
+			<fileset dir="${conventions.bin.dir}">
+				<include name="Conventions.dll"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${release.dir}">
+			<fileset dir="${lib.dir}">
+				<include name="tuprolog.dll"/>
+				<include name="2p.exe"/>
+			</fileset>
+		</copy>
+		
+		<!-- Copy config file -->
+		<copy todir="${release.dir}">
+			<fileset dir="${basedir}/ant">
+				<include name="2p.exe.config"/>
+			</fileset>
+		</copy>
+		
+		<!-- Copy manual -->
+		<copy todir="${release.dir}/doc">
+			<fileset dir="${doc.dir}">
+				<include name="tuprolog-guide.pdf"/>
+			</fileset>
+		</copy>
+		
+		<!-- IKVM version -->
+		<echo append="false" file="${release.dir}/ikvm-version-${ikvm.version}.txt"/>
+		
+		<!-- Copy the IKVM files -->
+		<copy todir="${release.lib.dir}">
+			<fileset dir="${ikvm.dir}/bin/">
+				<include name="IKVM.OpenJDK.XML.API.dll"/>
+				<include name="IKVM.OpenJDK.Security.dll"/>
+				<include name="IKVM.OpenJDK.Naming.dll"/>
+				<include name="IKVM.OpenJDK.Media.dll"/>
+				<include name="IKVM.AWT.WinForms.dll"/>
+				<include name="IKVM.OpenJDK.Beans.dll"/>
+				<include name="IKVM.OpenJDK.Corba.dll"/>
+				<include name="IKVM.OpenJDK.Remoting.dll"/>
+				<include name="IKVM.OpenJDK.Util.dll"/>
+				<include name="IKVM.OpenJDK.Text.dll"/>
+				<include name="IKVM.OpenJDK.Core.dll"/>
+				<include name="IKVM.OpenJDK.Misc.dll"/>
+				<include name="IKVM.OpenJDK.Tools.dll"/>
+				<include name="IKVM.OpenJDK.SwingAWT.dll"/>
+				<include name="IKVM.Runtime.dll"/> 
+				<include name="IKVM.Reflection.dll"/> <!-- Added by Mannino-->
+			</fileset>
+			
+			<!-- Copy also tuprolog.jar needed for the examples and the README -->
+			<fileset dir="${lib.dir}">
+				<include name="tuprolog.jar"/>
+				<include name="README.txt"/>
+			</fileset>
+		</copy>
+		
+		<zip destfile="release/${project.name}.zip" basedir="${release.dir}" />
+		
+	</target>
+	
+	<target name="02.tag" depends="01.release.bin" description="Tags the code">
+			
+			<property name="TagMessage" value="Tag .NET ${engine.version}.${netSpecific.version}"/>
+			
+			<input
+				message="You are tagging the project with version ${engine.version}.${netSpecific.version}, if it is OK insert password for ${username}:"
+				addproperty="password"
+			/>
+			
+			<svnSetting
+				id="settings"
+				username="${username}"
+				password="${password}"
+				svnkit="true" 
+				javahl="false" />
+			
+		    <echo>Tagging the code...</echo>
+			<!-- It is not possible to put echo messahes inside the svn tag -->
+			<svn refid="settings">
+			    
+				<copy
+					srcUrl="https://tuprolog.googlecode.com/svn/2p-net/trunk" 
+					destUrl="https://tuprolog.googlecode.com/svn/2p-net/tags/REL-${engine.version}.${netSpecific.version}"
+					revision="HEAD"
+					message="${TagMessage}" 
+					makeParents="true" >
+				</copy> 
+				
+				<import
+					path="release/${project.name}.zip" 
+					url="https://tuprolog.googlecode.com/svn/2p-net/tags/REL-${engine.version}.${netSpecific.version}/release/${project.name}.zip"
+					message="${TagMessage}" 
+					recurse="false" >
+				</import> 
+			
+			</svn>
+		</target>
+</project>

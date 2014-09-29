@@ -1,0 +1,904 @@
+%=======================================================================
+\chapter{Accessing Java from \tuprolog{}}
+\label{java-library}
+%=======================================================================
+One of the main advantages of \tuprolog{} open architecture is
+that any Java component can be directly accessed and used from
+Prolog, in a simple and effective way, by means of the
+\texttt{JavaLibrary} library: this delivers all the power of
+existing Java components and packages to \tuprolog{} sources.
+%
+In this way, all Java packages involving interaction (such as Swing,
+JDBC, the socket package, RMI) are immediately available to increase
+the interaction abilities of \tuprolog:
+%
+{``one library for all libraries''} is the basic motto.
+%
+%
+\section{Mapping data structures}
+
+Complete bi-directional mapping is provided between Java primitive
+types and \tuprolog{} data types.
+%
+By default, \tuprolog{} integers are mapped into Java \texttt{int}
+or \texttt{long} as appropriate, while \texttt{byte} and
+\texttt{short} types are mapped into \tuprolog{}'s \texttt{Int}
+instances. Only Java \texttt{double} numbers are used to map
+\tuprolog{} reals, but \texttt{float} values returned as result of
+method invocations or field accesses are handled properly anyway,
+without any loss of information.
+%
+Boolean Java values are mapped into specific \tuprolog{}
+\texttt{Term} constants.
+%
+Java \texttt{char}s are mapped into Prolog atoms, but atoms are
+mapped into Java \texttt{String}s by default.
+%
+The \emph{any} variable (\_) can be used to specify the Java
+\texttt{null} value.
+
+%---------------------------------------------------------------
+\section{General predicates description}
+%---------------------------------------------------------------
+
+\begin{figure}
+\caption{A sample Java class (a counter) used to explain JavaLibrary predicates behaviour.
+\labelfig{jreflect-example}}
+\begin{verbatim}
+public class Counter {
+    public String name;
+    private long value = 0;
+
+    public Counter() {}
+    public Counter(String aName) { name = aName; }
+
+    public void setValue(long val) { value=val; }
+    public long getValue() { return value; }
+    public void inc() { value++; }
+
+    static public String getVersion() { return "1.0"; }
+}
+\end{verbatim}
+\end{figure}
+
+The library offers the following predicates:
+%
+\begin{enumerate}
+  \renewcommand\labelenumi{\it(\roman{enumi})}
+  %
+  \item the \texttt{java\_object/3} predicate is used to create a new Java
+        object of the specified class, according to the syntax:
+        %
+        \begin{center}
+        \texttt{java\_object(\textit{ClassName},
+                             \textit{ArgumentList},
+                             \textit{ObjectRef})}
+        \end{center}
+        %
+        \texttt{\textit{ClassName}} is a Prolog atom bound to the name of the
+        proper Java class (e.g. \verb|'Counter'|, \verb|'java.io.FileInputStream'|),
+        while the parameter \texttt{\textit{ArgumentList}} is a Prolog list used to supply
+        the required arguments to the class
+        constructor: the empty list matches the default constructor.
+        %
+        %%%%%% RICCI 020202
+        Also Java arrays can be instantiated, by appending
+        \texttt{[]} at the end of the \texttt{\textit{ClassName}}
+        string.
+        %%%%%%
+        %
+        The reference to the newly-created object is bound to \texttt{\textit{ObjectRef}},
+        which is typically a ground Prolog term; alternatively, an unbound term
+        may be used, in which case the term is bound to an automatically-generated
+        %%%%%% RICCI 020202
+        Prolog atom \verb|'$obj_N'|, where \texttt{N} is a progressive integer.
+        %%%%%%
+        %
+        In both cases, these atoms are interpreted as object references --
+        and therefore used to operate on the Java object from Prolog -- \textit{only}
+        in the context of \texttt{JavaLibrary}'s predicates.
+        %
+        %%%%%% RICCI 020202
+        %
+        The predicate fails whenever \textit{ClassName} does not identify a valid Java class,
+        or the constructor does not exists, or arguments in
+        \texttt{\textit{ArgumentList}} are not ground, or \textit{ObjectRef}
+        already identifies an object in the system.
+        %
+        %%%%%%
+
+        According to the default behaviour of \texttt{java\_object},
+        when a ground term is bound to a Java object by means of the predicate,
+        the binding is kept for the full time of the demonstration
+        (even in the case of backtracking).
+        %
+        This behaviour can be changed, getting the bindings
+        created by the \texttt{java\_object} undone by
+        backtracking, by changing the value of the flag \texttt{java\_object\_backtrackable}
+        to \texttt{true} (the default is \texttt{false}).
+
+
+
+  \item the \texttt{<-/2} predicate is used to invoke a method on a Java
+        object according to a send-message pattern:
+        %
+        \begin{center}
+        \texttt{\textit{ObjectRef} <- \textit{MethodName}(\textit{Arguments})}
+
+        \texttt{\textit{ObjectRef} <- \textit{MethodName}(\textit{Arguments})
+                returns \textit{Term}}
+        \end{center}
+        %
+        \texttt{\textit{ObjectRef}} is an atom interpreted as a Java object
+        reference as explained above, while \texttt{\textit{MethodName}}
+        is the Java name of the method to be invoked, along with its
+        \texttt{\textit{Arguments}}.
+        %
+        The \texttt{returns} keyword is used to retrieve the value returned
+        from non-void Java methods and bind it to a Prolog term: if
+        the type of the returned value can be mapped onto a primitive Prolog
+        data type (a number or a string), \texttt{\textit{Term}} is unified
+        with the corresponding Prolog value; if, instead, it is a Java object
+        other than the ones above, \texttt{\textit{Term}} is handled
+        as \texttt{\textit{ObjectRef}} in the case of \texttt{java\_object/3}.
+        %
+        %%%%%% RICCI 020202
+        %
+        % - static methods access
+        %
+        Static methods can be invoked using the compound
+        term \texttt{class(\textit{ClassName})} in the place
+        of \texttt{\textit{ObjectRef}}.
+        %
+        % - accennare al most specific method?
+        %
+        %%%%%%
+        %%%%%% RICCI 020202
+        %
+        % - the predicates fails if...
+        %
+        If \textit{MethodName} does not identify a valid method for the object (class),
+        or arguments in \texttt{\textit{ArgumentList}} are not
+        valid (because of a wrong signature or not ground values) the predicate fails.
+        %%%%%%
+
+  \item the \texttt{.} infix operator is used, in conjunction with the \texttt{set}
+        / \texttt{get} pseudo-method pair, to access the public fields of a Java
+        object.
+        %
+        The syntax is based on the following constructs:
+        %
+        \begin{center}
+        \tt
+        \textit{ObjectRef} . \textit{Field} <- set(\textit{GroundTerm})\\
+        \textit{ObjectRef} . \textit{Field} <- get(\textit{Term})\\
+        \end{center}
+        %
+        As usual, \texttt{\textit{ObjectRef}} is the Prolog identifier for
+        a Java object.
+        %
+        The first construct set the public field \texttt{\textit{Field}}
+        to the specified \texttt{\textit{GroundTerm}}, which may be either
+        a value of a primitive data type, or a reference to an existing
+        object: if \texttt{\textit{GroundTerm}} is not ground, the infix
+        predicate fails.
+        %
+        The second construct retrieves the value of the public field
+        \texttt{\textit{Field}}, where \texttt{\textit{Term}} is handled
+        once again as \texttt{\textit{ObjectRef}} in the case of
+        \texttt{java\_object/3}.
+        %
+        %%%%%% RICCI 020202
+        %
+        % - static class access
+        %
+        As for methods, static fields of classes can be accessed using the compound
+        term \texttt{class(\textit{ClassName})} in the place
+        of \texttt{\textit{ObjectRef}}.
+        %
+        % - accesso ad array
+        Some helper predicates are provided to access Java array
+        elements:\\
+        \texttt{java\_array\_set(\textit{ArrayRef}, \textit{Index}, \textit{Object})}\\
+        \texttt{java\_array\_set\_\textit{\emph{Basic Type}}(\textit{ArrayRef}, \textit{Index}, \textit{Value})}\\
+        to set elements,\\
+        \texttt{java\_array\_get(\textit{ArrayRef}, \textit{Index}, \textit{Object})}\\
+        \texttt{java\_array\_get\_\textit{\emph{Basic Type}}(\textit{ArrayRef}, \textit{Index}, \textit{Value})}\\
+        to get elements,\\
+        \texttt{java\_array\_length(\textit{ArrayObject}, \textit{Size})}
+        to get the array length.\\
+        %
+        %%%%%%
+        It is worth to point out that the \texttt{set} and \texttt{get} formal
+        pseudo-methods above are \textit{not} methods of some class, but just
+        part of the construct of the \texttt{.} infix operator, according to
+        a JavaBeans-like approach.
+
+  \item the \texttt{as} infix operator is used to explicitly specify (i.e., cast)
+        method argument types:
+        %
+        \begin{center}
+        \texttt{\textit{ObjectRef} as \textit{ClassName}}
+        \end{center}
+        %
+        By writing so, the object represented by \texttt{\textit{ObjectRef}} is
+        considered to belong to class \texttt{\textit{Classname}}: both
+        \texttt{\textit{ObjectRef}} and \texttt{\textit{Classname}} have
+        the usual meaning explained above.
+        %
+        %%%%%% RICCI 020202
+        The operator works also with primitive Java types, specified
+        as \texttt{\textit{Classname}} (for instance, \texttt{myNumber \textit{as int}}).
+        %%%%%%
+        %
+        The purpose of this predicate is both to provide methods with the
+        exact Java types required, and to solve possible overloading conflicts
+        a-priori.
+        %
+        %%%%%% RICCI 020202
+        %
+        %In particular, \texttt{as} is needed when invoking a method whose a
+        %formal argument is of type \texttt{\textit{T}} (e.g., \texttt{JButton})
+        %with an actual object argument whose type is a subclass of
+        %\texttt{\textit{T}} (say, \texttt{myButton}) -- that is, when upcasting
+        %is needed to let Java identify the method signature unambiguously.
+        %%%%%%
+
+  %%%%%% RICCI 020202
+  %
+  \item The \texttt{java\_class/4} predicate makes it possible
+        to create and load a new Java class from a source text provided as an
+        argument, thus supporting \textit{dynamic compilation} of Java
+        classes:
+        %
+        %
+        \begin{center}
+        \texttt{java\_class(\textit{SourceText},
+                            \textit{FullClassName},
+                            \textit{ClassPathList},
+                            \textit{ObjectRef})}
+        \end{center}
+        %
+        \texttt{\textit{SourceText}} is a string representing the
+        text source of the Java class, \texttt{\textit{FullClassName}}
+        is the full Java class name, and \texttt{\textit{ClassPathList}}
+        is a (possibly empty) Prolog list of class paths that may
+        be required for a successful dynamic compilation
+        of this class.
+        %
+        \texttt{\textit{ObjectRef}} is a reference to an instance of the
+        class \texttt{java.lang.Class} that represents the newly-created class.
+        %
+        The predicate fails whenever \texttt{\textit{SourceText}} contains errors,
+        or the class cannot be located in the package hierarchy
+        as specified, or \texttt{\textit{ObjectRef}} already identifies an object
+        in the system.
+  %
+  %%%%%%
+
+\end{enumerate}
+%
+%%%%%% RICCI 020202
+%
+\noindent Generally, exceptions thrown by method or constructor
+calls cannot be explicitly managed and cause the failure of the
+related predicate.
+%
+
+To taste the flavour of \texttt{JavaLibrary}, let us consider the
+example below (refer to \xf{jreflect-example} for \texttt{Counter}
+class definition):
+
+%
+{\small
+\begin{verbatim}
+    ?-  java_object('Counter', ['MyCounter'], myCounter),
+        myCounter <- setValue(5),
+        myCounter <- inc,
+        myCounter <- getValue returns Value,
+        write(X),
+
+        class('Counter') <- getVersion return Version,
+
+        myCounter.name <- get(Name),
+        class('java.lang.System') . out <- get(Out),
+        Out <- println(Name),
+
+        myCounter.name <- set('MyCounter2'),
+
+        java_object('Counter[]', [10], ArrayCounters),
+        java_array_set(ArrayCounters, 0, myCounter).
+\end{verbatim}}
+%
+\noindent Here, a \texttt{Counter} object is created providing the
+\texttt{MyCounter} name as constructor argument: the reference to
+the new object is bound to the Prolog atom \texttt{myCounter}.
+%
+This reference is then used for method invocation via the
+\texttt{<-} operator, calling the \texttt{setValue(5)} method
+(which is void and therefore returns nothing) first, incrementing
+the counter (no arguments are specified) and invoking the
+\texttt{getValue} method just after.
+%
+Since \texttt{getValue} returns an integer value, the
+\texttt{returns} operator retrieves the method result (hopefully,
+5) and binds it to the \texttt{X} Prolog variable, which is
+printed via the Prolog \texttt{write/1} predicate.
+%
+Of course, if the Prolog variable \texttt{X} is already bound to
+5, the predicate succeeds as well, while fails if \texttt{X} is
+bound to anything else.
+%
+%%%%%%
+Then, the static method \texttt{getVersion} is called, retrieving
+the version of the class \texttt{Counter}, and printed using the
+method \texttt{println} provided by the static \texttt{out} field
+in the \texttt{java.lang.System} class.
+%
+The \texttt{name} public field of \texttt{myCounter} object is
+then accessed, setting the \texttt{MyCounter2} value.
+%
+Finally, an array of 10 counters is created, and the
+\texttt{myCounter} object assigned to its first element.
+%%%%%%
+%
+
+The key point here is that the only requirement for this example
+to run is the presence of the \texttt{Counter.class} file in the
+proper position in the file system, according to Java naming
+conventions: no other auxiliary information is needed -- no
+headers, no pre-compilations, etc.
+%
+This enables the seamless reuse and exploitation of the large
+amount of available Java libraries and resources, starting from
+the standard ones, such as Swing to manage GUI components, JDBC to
+access databases, RMI and CORBA for distributed computing, and so
+on.
+%
+\xf{jexamples-swing} shows an example, where Java Swing API is
+exploited to graphically choose a file from Prolog: a Swing
+\texttt{JFileChooser} dialog is instantiated and bound to the
+Prolog variable \texttt{Dialog} (a univocal Prolog atom of the form
+\verb|'$obj_N'|, to be
+used as the object reference, is automatically generated and bounded
+to the variable) which
+is then used to invoke methods \texttt{showOpenDialog} and
+\texttt{getSelectedFile} of \texttt{JFileChooser}'s interface.
+%
+Further examples about exploiting standard Java libraries from
+\tuprolog{}
+%can be found in the Appendix A.
+can be found in \cite{tuprolog-padl2001}.
+
+\begin{figure}
+\caption{Using a Swing componen from a \tuprolog{} program. Note the \texttt{\_} Prolog value used to represent the Java \texttt{null} value.
+\labelfig{jexamples-swing}}
+\begin{verbatim}
+test_open_file_dialog(FileName) :-
+    java_object('javax.swing.JFileChooser', [], Dialog),
+    Dialog <- showOpenDialog(_),
+    Dialog <- getSelectedFile returns File,
+    File <- getName returns FileName.
+\end{verbatim}
+\end{figure}
+
+Besides the Prolog predicates, \texttt{JavaLibrary} embeds the
+\texttt{register} function, which, unlike the previous
+functionalities, is to be used on the Java side.
+%
+Its purpose is to associate an existing Java object
+\texttt{\textit{obj}} to a Prolog identifier
+\texttt{\textit{ObjectRef}}, according to the syntax:
+%
+\begin{center}
+ \small\tt
+ boolean register(Struct \textit{ObjectRef}, Object \textit{obj})
+    throws InvalidObjectIdException;\\
+\end{center}
+%
+\texttt{\textit{ObjectRef}} is a ground term (otherwise an
+exception is raised) that represents the Java object
+\texttt{\textit{obj}} in the context of \texttt{JavaLibrary}'s
+predicates: the function returns \texttt{false} if the object
+represented by \texttt{\textit{obj}} is already registered under a
+different \texttt{\textit{ObjectRef}}.
+%
+As an example of use, let us consider the following
+case:\footnote{An
+  explicit cast to \texttt{alice.tuprolog.lib.JavaLibrary} is needed because
+  \texttt{loadLibrary} returns a reference to a generic
+  \texttt{Library}, while the \texttt{register} primitive is defined in
+  \texttt{JavaLibrary} only.}
+%
+{\small
+\begin{verbatim}
+Prolog core = new Prolog();
+Library lib = core.loadLibrary("alice.tuprolog.lib.JavaLibrary");
+((alice.tuprolog.lib.JavaLibrary)lib).register(new Struct("stdout"),
+                                               System.out);
+\end{verbatim}}
+%
+\noindent Here, the Java object \texttt{System.out} is registered
+for use in \tuprolog{} under the name \texttt{stdout}.
+%
+So, within the scope of the \texttt{core} engine, a Prolog program
+can now contain
+\begin{verbatim}
+stdout <- println('What a nice message!')
+\end{verbatim}
+as if \texttt{stdout} was a pre-defined \tuprolog{} identifier.
+
+%---------------------------------------------------------------------
+\section{Predicates}
+%---------------------------------------------------------------------
+
+\noindent Here follows a list of predicates implemented by this
+library, grouped in categories corresponding to the functionalities
+they provide.
+
+%---------------------------------------------------------------------
+\subsection{Method Invocation, Object and Class Creation}
+%---------------------------------------------------------------------
+
+\begin{itemize}
+%
+\item \bti{java\_object/3}\\
+\noindent\bt{java\_object(ClassName, ArgList, ObjId)} is true iff
+\bt{ClassName} is the full class name of a Java class available on
+the local file system, \bt{ArgList} is a list of arguments that
+can be meaningfully used to instantiate an object of the class,
+and \bt{ObjId} can be used to reference such an object;
+%
+as a side effect, the Java object is created and the reference to
+it is unified with \bt{ObjId}.
+%
+It is worth noting that \bt{ObjId} can be a Prolog variable (that
+will be bound to a ground term) as well as a ground term (not a
+number).\\
+\template{java\_object(+full\_class\_name, +list, ?obj\_id)}
+%
+\item \bti{java\_object\_bt/3}\\
+\noindent\bt{java\_object\_bt(ClassName, ArgList, ObjId)} has the same behaviour of \bt{java\_object/3}, but the binding that is established between the \bt{ObjId} term and the Java object is destroyed with backtracking.\\
+\template{java\_object\_bt(+full\_class\_name, +list, ?obj\_id)}
+%
+\item \bti{destroy\_object/1}\\
+\noindent\bt{destroy\_object(ObjId)} is true and as a side effect
+the binding between \bt{ObjId} and a Java object,
+possibly established, by previous predicates is destroyed.\\
+\template{destroy\_object(@obj\_id)}
+%
+\item \bti{java\_class/4}\\
+\noindent\bt{java\_class(ClassSourceText, FullClassName, ClassPathList, ObjId)}
+is true iff \bt{ClassSouceText} is a source string describing a
+valid Java class declaration, a class whose full name is
+\bt{FullClassName}, according to the classes found in paths
+listed in \bt{ClassPathList}, and \bt{ObjId} can be used as a
+meaningful reference for a \texttt{java.lang.Class} object
+representing that class;
+%
+as a side effect the described class is (possibly created and)
+loaded and made available to the system.\\
+\template{java\_class(@java\_source, @full\_class\_name, @list, ?obj\_id)}
+%
+\item \bti{java\_call/3}\\
+\noindent\bt{java\_call(ObjId, MethodInfo, ObjIdResult)} is true iff
+\bt{ObjId} is a ground term currently referencing a Java object,
+which provides a method whose name is the functor name of the term
+\bt{MethodInfo} and possible arguments the arguments of
+\bt{MethodInfo} as a compound, and \bt{ObjIdResult} can be used as
+a meaningful reference for the Java object that the method
+possibly returns.
+%
+As a side effect the method is called on the Java object
+referenced by the \bt{ObjId} and the object possibly returned by
+the method invocation is referenced by the \bt{ObjIdResult} term.
+%
+The anonymous variable used as argument in the \bt{MethodInfo}
+structure is interpreted as the Java \texttt{null} value.\\
+\template{java\_call(@obj\_id, @method\_signature, ?obj\_id)}
+%
+\item \verb|'<-'/2|\\
+\noindent\verb|'<-'(ObjId, MethodInfo)| is true iff \bt{ObjId} is
+a ground term currently referencing a Java object, which provides a
+method whose name is the functor name of the term \bt{MethodInfo}
+and possible arguments the arguments of \bt{MethodInfo} as a
+compound.
+%
+As a side effect the method is called on the Java object
+referenced by the \bt{ObjId}.
+%
+The anonymous variable used as argument in the \bt{MethodInfo}
+structure is interpreted as the Java \texttt{null} value.\\
+\template{'<-'(@obj\_id, @method\_signature)}
+%
+\item \bti{return/2}\\
+\noindent\verb|return('<-'(ObjId, MethodInfo), ObjIdResult)| is true
+iff \bt{ObjId} is a ground term currently referencing a Java object,
+which provides a method whose name is the functor name of the term
+\bt{MethodInfo} and possible arguments the arguments of
+\bt{MethodInfo} as a compound, and \bt{ObjIdResult} can be used as
+a meaningful reference for the Java object that the method
+possibly returns.
+%
+As a side effect the method is called on the Java object
+referenced by the \bt{ObjId} and the object possibly returned by
+the method invocation is referenced by the \bt{ObjIdResult} term.
+%
+The anonymous variable used as argument in the \bt{MethodInfo}
+structure is interpreted as the Java \texttt{null} value.\\
+%
+It is worth noting that this predicate is equivalent to the
+\texttt{java\_call} predicate.\\
+\template{return('<-'(@obj\_id, @method\_signature), ?obj\_id)}
+%
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsection{Java Array Management}
+%---------------------------------------------------------------------
+\begin{itemize}
+%
+\item \bti{java\_array\_set/3}\\
+\noindent\bt{java\_array\_set(ObjArrayId, Index, ObjId)} is true iff
+\bt{ObjArrayId} is a ground term currently referencing a Java
+array object, \bt{Index} is a valid index for the array and
+\bt{ObjId} is a ground term currently referencing a Java object
+that could inserted as an element of the array (according to Java
+type rules).
+%
+As side effect, the object referenced by \bt{ObjId} is set in the
+array referenced by \bt{ObjArrayId} in the position (starting from
+0, following the Java convention) specified by \bt{Index}.
+%
+The anonymous variable used as \bt{ObjId} is interpreted as the
+Java \texttt{null} value.
+%
+This predicate can be used for arrays of Java objects:
+%
+for arrays whose elements are Java primitive types (such as
+\texttt{int}, \texttt{float}, etc.) the following predicates can
+be used, with the same semantics of \bt{java\_array\_set} but
+specifying directly the term to be set as a \tuprolog{} term
+(according to the mapping described previously):\\
+%
+\mbox{~~~~}\bt{java\_array\_set\_int(ObjArrayId, Index, Integer)}\\
+\mbox{~~~~}\bt{java\_array\_set\_short(ObjArrayId, Index, ShortInteger)}\\
+\mbox{~~~~}\bt{java\_array\_set\_long(ObjArrayId, Index, LongInteger)}\\
+\mbox{~~~~}\bt{java\_array\_set\_float(ObjArrayId, Index, Float)}\\
+\mbox{~~~~}\bt{java\_array\_set\_double(ObjArrayId, Index, Double)}\\
+\mbox{~~~~}\bt{java\_array\_set\_char(ObjArrayId, Index, Char)}\\
+\mbox{~~~~}\bt{java\_array\_set\_byte(ObjArrayId, Index, Byte)}\\
+\mbox{~~~~}\bt{java\_array\_set\_boolean(ObjArrayId, Index, Boolean)}\\
+%
+\template{java\_array\_set(@obj\_id, @positive\_integer, +obj\_id)}
+%
+%
+%
+\item \bti{java\_array\_get/3}\\
+\noindent\bt{java\_array\_get(ObjArrayId, Index, ObjIdResult)} is
+true iff \bt{ObjArrayId} is a ground term currently referencing a
+Java array object, \bt{Index} is a valid index for the array, and
+\bt{ObjIdResult} can be used as a meaningful reference for a Java
+object contained in the array.
+%
+As a side effect, \bt{ObjIdResult} is unified with the reference to
+the Java object of the array referenced by \bt{ObjArrayId} in the
+\bt{Index} position.
+%
+This predicate can be used for arrays of Java objects:
+%
+for arrays whose elements are Java primitive types (such as
+\texttt{int}, \texttt{float}, etc.) the following predicates can
+be used, with the same semantics of \bt{java\_array\_get} but
+binding directly the array element to a \tuprolog{} term
+(according to the mapping described previously):\\
+%
+\mbox{~~~~}\bt{java\_array\_get\_int(ObjArrayId, Index, Integer)}\\
+\mbox{~~~~}\bt{java\_array\_get\_short(ObjArrayId, Index, ShortInteger)}\\
+\mbox{~~~~}\bt{java\_array\_get\_long(ObjArrayId, Index, LongInteger)}\\
+\mbox{~~~~}\bt{java\_array\_get\_float(ObjArrayId, Index, Float)}\\
+\mbox{~~~~}\bt{java\_array\_get\_double(ObjArrayId, Index, Double)}\\
+\mbox{~~~~}\bt{java\_array\_get\_char(ObjArrayId, Index, Char)}\\
+\mbox{~~~~}\bt{java\_array\_get\_byte(ObjArrayId, Index, Byte)}\\
+\mbox{~~~~}\bt{java\_array\_get\_boolean(ObjArrayId, Index, Boolean)}\\
+%
+\template{java\_array\_get(@obj\_id, @positive\_integer, ?obj\_id)}
+%
+%
+\item \bti{java\_array\_length/2}\\
+\noindent\bt{java\_array\_length(ObjArrayId, ArrayLength)} is true
+iff \bt{ArrayLength} is the length of the Java array referenced by
+the term \bt{ObjArrayId}.\\
+\template{java\_array\_length(@term, ?integer)}
+%
+\end{itemize}
+
+%---------------------------------------------------------------------
+\subsection{Helper Predicates}
+%---------------------------------------------------------------------
+
+\begin{itemize}
+%
+\item \bti{java\_object\_string/2}\\
+\noindent\bt{java\_object\_string(ObjId, String)} is true iff
+\bt{ObjId} is a term referencing a Java object and
+\bt{PrologString} is the string representation of the object
+(according to the semantics of the \texttt{toString} method
+provided by the Java object).\\
+\template{java\_object\_string(@obj\_id, ?string)}
+%
+\end{itemize}
+
+%---------------------------------------------------------------------
+\section{Functors}
+%---------------------------------------------------------------------
+
+No functors are provided by the \texttt{JavaLibrary} library.
+
+%---------------------------------------------------------------------
+\section{Operators}
+%---------------------------------------------------------------------
+
+\begin{table}[h]
+    %
+    \begin{center}{\small\tt
+    \begin{tabular}{p{2cm}|p{1cm}|p{1cm}}\hline\hline
+    Name & Assoc. & Prio. \\ \hline\hline
+    <-   & xfx & 800\\
+    returns     & xfx & 850 \\
+    as   & xfx & 200\\
+    .   & xfx & 600\\
+    \hline\hline
+    \end{tabular}
+    }\end{center}
+\end{table}
+
+%\clearpage
+
+
+%-----------------------------------------------------------------------
+\section{Java Library Examples}
+%-----------------------------------------------------------------------
+
+The following examples are designed to show \texttt{JavaLibrary}'s
+ease of use and flexibility.
+
+%-------------------------------
+\subsection{RMI Connection to a Remote Object}
+%-------------------------------
+
+Here we connect via RMI to a remote Java object.
+%
+In order to allow the reader to try this example with no need of
+other objects, we connect to the remote Java object identified by
+the name \verb|'prolog'|, which is an RMI server bundled with
+the \tuprolog{} package, and can be spawned by typing:
+
+{\small%
+\texttt{java -Djava.security.all=policy.all  alice.tuprologx.runtime.rmi.Daemon}
+}
+
+\noindent Then, we invoke the object method whose signature is
+
+{\small%
+\texttt{SolveInfo solve(String goal);}
+}
+%
+{\small%
+\begin{verbatim}
+    ?-  java_object('java.rmi.RMISecurityManager', [], Manager),
+        class('java.lang.System') <- setSecurityManager(Manager),
+        class('java.rmi.Naming') <- lookup('prolog') returns Engine,
+        Engine <- solve('append([1],[2],X).') returns SolInfo,
+        SolInfo <- success returns Ok,
+        SolInfo <- getSubstitution returns Sub,
+        Sub <- toString returns SubStr, write(SubStr), nl,
+        SolInfo <- getSolution returns Sol,
+        Sol <- toString returns SolStr, write(SolStr), nl.
+\end{verbatim}
+}
+%
+\noindent The Java version of the same code would be:
+%
+{\small%
+\begin{verbatim}
+        System.setSecurityManager(new RMISecurityManager());
+        PrologRMI core = (PrologRMI) Naming.lookup("prolog");
+        SolveInfo info = core.solve("append([1],[2],X).");
+        boolean ok = info.success();
+        String sub = info.getSubstiturion();
+        System.out.println(sub);
+        String sol = info.getSolution();
+        System.out.println(sol);
+\end{verbatim}
+}
+
+
+%-------------------------------
+\subsection{Java Swing GUI from \tuprolog}
+%-------------------------------
+
+What about creating Java GUI components from the \tuprolog{}
+environment?
+%
+Here is a little example, where a standard Java Swing open file
+dialog windows is popped up:
+%
+{\small%
+\begin{verbatim}
+    open_file_dialog(FileName):-
+        java_object('javax.swing.JFileChooser', [], Dialog ),
+        Dialog <- showOpenDialog(_) returns Result,
+        write(Result),
+        Dialog <- getSelectedFile returns File,
+        File <- getName returns FileName,
+        class('java.lang.System') . out <- get(Out),
+        Out <- println('you want to open file '),
+        Out <- println(FileName).
+\end{verbatim}
+}
+
+%-------------------------------
+\subsection{Database access via JDBC from \tuprolog}
+%-------------------------------
+
+This example shows how to access a database via the Java standard
+JDBC interface from \tuprolog{}.
+%
+The program computes the minimum path between two cities, fetching
+the required data from the database called `distances'.
+%
+The entry point of the Prolog program is the \texttt{find\_path}
+predicate.
+%
+{\small%
+\begin{verbatim}
+    find_path(From, To) :-
+        init_dbase('jdbc:odbc:distances', Connection, '', ''),
+        exec_query(Connection,
+          'SELECT city_from, city_to, distance FROM distances.txt',
+          ResultSet),
+        assert_result(ResultSet),
+        findall(pa(Length,L), paths(From,To,L,Length), PathList),
+        current_prolog_flag(max_integer, Max),
+        min_path(PathList, pa(Max,_), pa(MinLength,MinList)),
+        outputResult(From, To, MinList, MinLength).
+
+    paths(A, B, List, Length) :-
+        path(A, B, List, Length, []).
+
+    path(A, A, [], 0, _).
+    path(A, B, [City|Cities], Length, VisitedCities) :-
+        distance(A, City, Length1),
+        not(member(City, VisitedCities)),
+        path(City, B, Cities, Length2, [City|VisitedCities]),
+        Length is Length1 + Length2.
+
+    min_path([], X, X) :- !.
+    min_path([pa(Length, List) | L],  pa(MinLen,MinList), Res) :-
+        Length < MinLen, !,
+        min_path(L, pa(Length,List), Res).
+    min_path([_|MorePaths], CurrentMinPath, Res) :-
+        min_path(MorePaths, CurrentMinPath, Res).
+
+    writeList([]) :- !.
+    writeList([X|L]) :- write(','), write(X), !, writeList(L).
+
+    outputResult(From, To, [], _) :- !,
+        write('no path found from '), write(From),
+        write(' to '), write(To), nl.
+    outputResult(From, To, MinList, MinLength) :-
+        write('min path from '), write(From),
+        write(' to '), write(To), write(': '),
+        write(From), writeList(MinList),
+        write('  - length: '), write(MinLength).
+
+    % Access to Database
+
+    init_dbase(DBase, Username, Password, Connection) :-
+        class('java.lang.Class') <- forName('sun.jdbc.odbc.JdbcOdbcDriver'),
+        class('java.sql.DriverManager') <- getConnection(DBase, Username, Password)
+            returns Connection,
+        write('[ Database '), write(DBase), write(' connected ]'), nl.
+
+    exec_query(Connection, Query, ResultSet):-
+        Connection <- createStatement returns Statement,
+        Statement <- executeQuery(Query) returns ResultSet,
+        write('[ query '), write(Query), write(' executed ]'), nl.
+
+    assert_result(ResultSet) :-
+        ResultSet <- next returns Valid, Valid == true, !,
+        ResultSet <- getString('city_from') returns From,
+        ResultSet <- getString('city_to') returns To,
+        ResultSet <- getInt('distance') returns Dist,
+        assert(distance(From, To, Dist)),
+        assert_result(ResultSet).
+    assert_result(_).
+\end{verbatim}
+}
+
+%-------------------------------
+\subsection{Dynamic compilation}
+%-------------------------------
+
+As already said, the \texttt{java\_class} predicate performs
+\textit{dynamic compilation}, creating an instance of a Java
+\texttt{Class} class that represents the public class declared in
+the source text provided as argument.
+%
+The created \texttt{Class} instance, referenced by a Prolog term,
+can be used to create instances via the \texttt{newInstance}
+method, to retrieve specific constructors via the
+\texttt{getConstructor} method, to analyze class methods and
+fields, and for other above-mentioned meta-services: a sketch is
+reported in \xf{dynamic-compilation}.
+%
+The \texttt{java\_class} arguments in the example specify, besides
+the source text and the binding variable, the full class name
+(\texttt{Counter}), which is necessary to locate the class in the
+package hierarchy, and possibly a list of class paths required
+for a successful compilation (if any).
+
+\begin{figure}
+\caption{Predicate \texttt{java\_class} performing dynamic compilation of Java code in \tuprolog{}.
+\labelfig{dynamic-compilation}}
+\begin{verbatim}
+    ?- Source = 'public class Counter { ... }',
+       java_class(Source, 'Counter', [], counterClass),
+       counterClass <- newInstance returns myCounter,
+       myCounter <- setValue(5),
+       myCounter <- getValue returns X,
+       write(X).
+\end{verbatim}
+\end{figure}
+
+\xf{jcexamples} shows a more complex example, where a Java source
+is retrieved via FTP and then exploited first to create a new
+(previously unknown) class, and then a new instance of that class.
+(The FTP service is provided by a shareware Java library.)
+%
+\begin{figure}
+\caption{A new Java class is compiled and used after being retrieved via FTP.
+\labelfig{jcexamples}}
+{\scriptsize
+\begin{verbatim}
+% A user whose name is 'myName' and whose password is 'myPwd' gets the content of the file
+% 'Counter.java' from the server whose IP address is 'srvAddr', creates the corresponding
+% Java class and exploits it to instantiate and deploy an object
+
+test :-
+    get_remote_file('alice/tuprolog/test', 'Counter.java', srvAddr, myName, myPwd, Content),
+    % creating the class
+    java_class(Content, 'Counter', [], CounterClass),
+    % instantiating (and using) an object of such a class
+    CounterClass <- newInstance returns MyCounter,
+    MyCounter <- setValue(303),
+    MyCounter <- inc,
+    MyCounter <- inc,
+    MyCounter <- getValue returns Value,
+    write(Value), nl.
+
+% +DirName: Directory on the server where the file is located
+% +FileName: Name of the file to be retrieved
+% +FTPHost: IP address of the FTP server
+% +FTPUser: User name of the FTP client
+% +FTPPwd: Password of the FTP client
+% -Content: Content of the retrieved file
+
+get_remote_file(DirName, FileName, FTPHost, FTPUser, FTPPwd, Content) :-
+    java_object('com.enterprisedt.net.ftp.FTPClient', [FTPHost], Client),
+    % get file
+    Client <- login(FTPUser, FTPPwd),
+    Client <- chdir(DirName),
+    Client <- get(FileName) returns Content,
+    Client <- quit.
+\end{verbatim}
+}
+\end{figure}
+%
+Though a lot remains to explore, \texttt{java\_class} features
+seem quite interesting: in perspective one might think, for
+instance, of a Prolog intelligent agent that dynamically acquires
+information on a Java resource, and then autonomously builds up,
+at run-time, the proper Java machinery enabling efficient
+interaction with the resource.
