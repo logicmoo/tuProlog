@@ -10,13 +10,13 @@ tuProlog and related packages are released under the GNU Lesser General Public L
 
 This version is intended to be the last stable version supporting Java 7: the next major release, tuProlog 3.0, will include support for lambda expressions and therefore require Java 8.
 
-### **Bug fixes ###**
+### **Bug fixes ** ###
 * the behaviour of setof / bagof has been finally fixed, correcting the old-dated bug causing variable bindings to be erroneously lost in some corner cases;
 * the behaviour of the disjunction predicate (’;’) has also been fixed, correcting the other old-dated bug causing the disjunction to be associated in the wrong way in some specific corner cases;
 * the behaviour of the functor predicate, previosly entering an endless loop in the corner case when the ?rst argument was unbound and the second referred to the term itself, has also been fixed.
 
-### **New features**
- ###* improved class loading in both JavaSE and Android editions, enabling external resources to be loaded on the Android platform, too;
+### **New features**###
+* improved class loading in both JavaSE and Android editions, enabling external resources to be loaded on the Android platform, too;
 * improved support to keyboard input on the Java IDE; a new input tab has been added to the console, replacing the old-fashioned input dialog;
 * compliance with the Java scripting engine specification (JSR-233), with new Java methods to explicitly retrieve and set the standard I/O streams.
 
