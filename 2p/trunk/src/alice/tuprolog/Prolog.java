@@ -34,7 +34,7 @@ import alice.tuprolog.interfaces.IProlog;
 @SuppressWarnings("serial")
 public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 
-
+	private static final long serialVersionUID = 1L;
 	/*  manager of current theory */
 	private TheoryManager theoryManager;
 	/*  component managing primitive  */

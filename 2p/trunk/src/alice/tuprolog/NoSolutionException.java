@@ -23,4 +23,6 @@ package alice.tuprolog;
  * @see SolveInfo
  */
 @SuppressWarnings("serial")
-public class NoSolutionException extends PrologException {}
+public class NoSolutionException extends PrologException {
+	private static final long serialVersionUID = 1L;
+}

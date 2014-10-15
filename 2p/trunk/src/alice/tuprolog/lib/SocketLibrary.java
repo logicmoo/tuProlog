@@ -40,6 +40,7 @@ import alice.tuprolog.interfaces.*;
  */
 
 public class SocketLibrary extends Library implements ISocketLib {
+	private static final long serialVersionUID = 1L;
 	private String addrRegex;
 	private LinkedList<ThreadReader> readers;			// Active readers
 	private LinkedList<ServerSocket> serverSockets;		// Opened ServerSockets

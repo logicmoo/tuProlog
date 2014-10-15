@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 
 public abstract class AbstractSocket extends Term{
-	
+	private static final long serialVersionUID = 1L;
 	public abstract boolean isClientSocket();
 	
 	public abstract boolean isServerSocket();

@@ -33,7 +33,7 @@ import alice.tuprolog.interfaces.IOperatorManager;
  */
 @SuppressWarnings("serial")
 /*Castagna 06/2911*/public/**/ class OperatorManager implements /*Castagna 06/2011*/IOperatorManager,/**/Serializable {
-    
+	private static final long serialVersionUID = 1L;
     /**
 	 * current known operators
 	 */

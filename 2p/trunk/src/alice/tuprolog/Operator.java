@@ -25,7 +25,7 @@ import java.io.Serializable;
  */
 @SuppressWarnings("serial")
 final public class Operator implements Serializable {
-    
+	private static final long serialVersionUID = 1L;
     /**
 	 * operator name
 	 */

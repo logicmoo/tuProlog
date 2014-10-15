@@ -31,7 +31,7 @@ import java.util.Iterator;
  */
 @SuppressWarnings("serial")
 public class Theory implements Serializable {
-
+	private static final long serialVersionUID = 1L;
     private String theory;
     private Struct clauseList;
 

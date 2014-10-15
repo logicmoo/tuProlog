@@ -32,6 +32,7 @@ import java.util.*;
  */
 @SuppressWarnings("serial")
 public abstract class Number extends Term implements Comparable<Number> {
+	private static final long serialVersionUID = 1L;
     
     /**
      *  Returns the value of the number as int

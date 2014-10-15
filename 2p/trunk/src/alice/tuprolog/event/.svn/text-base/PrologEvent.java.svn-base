@@ -28,7 +28,7 @@ import alice.tuprolog.Prolog;
 @SuppressWarnings("serial")
 public abstract class PrologEvent extends java.util.EventObject {
     private long when;
-    
+    private static final long serialVersionUID = 1L;
     public PrologEvent(Prolog source){
         super(source);
         when = System.currentTimeMillis();

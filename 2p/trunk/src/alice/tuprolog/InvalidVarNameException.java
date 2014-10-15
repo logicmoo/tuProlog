@@ -25,7 +25,7 @@ package alice.tuprolog;
  */
 @SuppressWarnings("serial")
 public class InvalidVarNameException extends InvalidTermException {
-    
+	private static final long serialVersionUID = 1L;
     public InvalidVarNameException(String message) {
         super(message);
     }

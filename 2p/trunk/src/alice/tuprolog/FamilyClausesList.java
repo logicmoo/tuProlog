@@ -20,7 +20,7 @@ import java.util.ListIterator;
  */
 @SuppressWarnings("serial")
 class FamilyClausesList extends LinkedList<ClauseInfo> {
-	
+	private static final long serialVersionUID = 1L;
 	private FamilyClausesIndex<Number> numCompClausesIndex;
 	private FamilyClausesIndex<String> constantCompClausesIndex;
 	private FamilyClausesIndex<String> structCompClausesIndex;

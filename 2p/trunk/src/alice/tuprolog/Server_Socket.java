@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Server_Socket extends AbstractSocket{
 	private ServerSocket socket;
-	
+	private static final long serialVersionUID = 1L;
 	public Server_Socket(ServerSocket s){
 		socket=s;
 	}

@@ -13,7 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 @SuppressWarnings("serial")
 public class EngineManager implements java.io.Serializable {
-	
+	private static final long serialVersionUID = 1L;
 	private Prolog vm;
 	private Hashtable<Integer, EngineRunner> runners;	//key: id; obj: runner
 	private Hashtable<Integer, Integer> threads;	//key: pid; obj: id

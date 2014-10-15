@@ -29,7 +29,7 @@ import java.util.*;
  */
 @SuppressWarnings("serial")
 class ClauseDatabase extends HashMap<String,FamilyClausesList> implements Iterable<ClauseInfo> {
-
+	private static final long serialVersionUID = 1L;
 	void addFirst(String key, ClauseInfo d) {
 		FamilyClausesList family = get(key);
 		if (family == null)

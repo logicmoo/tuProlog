@@ -30,4 +30,5 @@ import alice.tuprolog.PrologException;
  */
 @SuppressWarnings("serial")
 public class InvalidObjectIdException extends PrologException {
+	private static final long serialVersionUID = 1L;
 }

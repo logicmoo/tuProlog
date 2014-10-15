@@ -27,7 +27,7 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class Int extends Number {
-    
+   private static final long serialVersionUID = 1L; 
    private int      value;
     
     public Int(int v) {

@@ -24,4 +24,6 @@ package alice.tuprolog;
  *
  */
 @SuppressWarnings("serial")
-public class MalformedGoalException extends PrologException {}
+public class MalformedGoalException extends PrologException {
+	private static final long serialVersionUID = 1L;
+}

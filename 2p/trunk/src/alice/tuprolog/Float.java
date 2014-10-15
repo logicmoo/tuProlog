@@ -29,7 +29,7 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class Float extends Number {
-    
+	private static final long serialVersionUID = 1L;
     private float value;
     
     public Float(float v) {

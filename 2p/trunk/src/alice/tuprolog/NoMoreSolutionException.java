@@ -27,4 +27,6 @@ package alice.tuprolog;
  *
  */
 @SuppressWarnings("serial")
-public class NoMoreSolutionException extends PrologException {}
+public class NoMoreSolutionException extends PrologException {
+	private static final long serialVersionUID = 1L;
+}

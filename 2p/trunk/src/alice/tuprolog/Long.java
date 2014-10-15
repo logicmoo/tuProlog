@@ -29,7 +29,7 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class Long extends Number {
-    
+   private static final long serialVersionUID = 1L;
    private long value;
     
     public Long(long v) {

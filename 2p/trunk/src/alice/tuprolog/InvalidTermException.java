@@ -23,7 +23,7 @@ package alice.tuprolog;
  */
 public class InvalidTermException extends IllegalArgumentException {
 
-    private static final long serialVersionUID = -4416801118548866803L;
+	private static final long serialVersionUID = 1L;
     
     /*Castagna 06/2011*/
 	public int line = -1;

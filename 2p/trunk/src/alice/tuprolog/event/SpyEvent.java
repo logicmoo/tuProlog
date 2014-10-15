@@ -28,7 +28,7 @@ import alice.tuprolog.Engine;
  */
 @SuppressWarnings("serial")
 public class SpyEvent extends EventObject {
-
+	private static final long serialVersionUID = 1L;
     /**
 	 * event description
 	 */

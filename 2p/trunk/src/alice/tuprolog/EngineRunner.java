@@ -19,7 +19,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 @SuppressWarnings("serial")
 public class EngineRunner implements java.io.Serializable, Runnable{
-    
+	private static final long serialVersionUID = 1L;
     private Prolog                              mediator;
     private TheoryManager       theoryManager;
     private PrimitiveManager    primitiveManager;

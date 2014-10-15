@@ -29,7 +29,7 @@ import alice.tuprolog.*;
  */
 @SuppressWarnings("serial")
 public class EDCGLibrary extends Library {
-
+	private static final long serialVersionUID = 1L;
     public EDCGLibrary() {
     }
 

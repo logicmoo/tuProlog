@@ -53,6 +53,7 @@ import alice.tuprolog.interfaces.IParser;
 @SuppressWarnings("serial")
 public class Parser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 {
+	private static final long serialVersionUID = 1L;
 	private static class IdentifiedTerm {
 		private int priority;
 		private Term result;

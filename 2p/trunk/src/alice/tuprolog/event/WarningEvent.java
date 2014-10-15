@@ -25,7 +25,7 @@ import java.util.*;
  */
 @SuppressWarnings("serial")
 public class WarningEvent extends EventObject {
-
+	private static final long serialVersionUID = 1L;
     /**
 	 * event description
 	 */

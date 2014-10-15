@@ -24,7 +24,7 @@ import java.util.*;
  */
 @SuppressWarnings("serial")
 class Flag implements java.io.Serializable {
-    
+	private static final long serialVersionUID = 1L;
     private String name;
     private Struct valueList;
     private Term   value;

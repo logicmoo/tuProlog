@@ -24,9 +24,9 @@ import alice.tuprolog.*;
  */
 @SuppressWarnings("serial")
 public class TheoryLibrary extends Library {
-    
+	private static final long serialVersionUID = 1L;
     private Theory th;
-   private String name;
+    private String name;
     
     public TheoryLibrary(String name, Theory theory){
         this.th = theory;

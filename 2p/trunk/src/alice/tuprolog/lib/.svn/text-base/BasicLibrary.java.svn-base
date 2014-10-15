@@ -32,7 +32,7 @@ import alice.tuprolog.Number;
  */
 @SuppressWarnings("serial")
 public class BasicLibrary extends Library {
-
+	private static final long serialVersionUID = 1L;
     public BasicLibrary() {
     }
 

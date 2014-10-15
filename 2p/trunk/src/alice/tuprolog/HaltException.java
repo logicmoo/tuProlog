@@ -26,7 +26,7 @@ package alice.tuprolog;
  */
 @SuppressWarnings("serial")
 public class HaltException extends PrologException {
-    
+	private static final long serialVersionUID = 1L;
     private int value;
     
     public HaltException() {

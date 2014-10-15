@@ -30,7 +30,7 @@ import alice.tuprolog.SolveInfo;
 public class QueryEvent extends PrologEvent {
 
    private SolveInfo info;
-    
+   private static final long serialVersionUID = 1L;
     public QueryEvent(Prolog source, SolveInfo info){
         super(source);
         this.info=info;

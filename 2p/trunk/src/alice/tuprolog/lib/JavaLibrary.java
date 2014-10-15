@@ -91,7 +91,7 @@ public class JavaLibrary extends Library {
 	 * used to manage different classloaders.
 	 */
     private AbstractDynamicClassLoader dynamicLoader;     
-    
+    private static final long serialVersionUID = 1L;
     /**
      * library theory
      */

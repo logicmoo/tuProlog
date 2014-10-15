@@ -32,7 +32,7 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class BuiltIn extends Library {
-
+	private static final long serialVersionUID = 1L;
 	private EngineManager engineManager;
 	private TheoryManager theoryManager;
 	private LibraryManager libraryManager;
