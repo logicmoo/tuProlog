@@ -4,7 +4,7 @@ tuProlog is a light-weight Prolog system for distributed applications and infras
 
 tuProlog and related packages are released under the GNU Lesser General Public License, so no payment is required for using it. However, we welcome donations (see menu aside).
 
-**Current version: tuProlog 2.9.0 (released on July 16, 2014)**
+**Current version: tuProlog 2.9.1 (released on October 16, 2014)**
 
 ## **Highlights** ##
 
