@@ -31,7 +31,6 @@ import java.io.*;
  * 
  * 
  */
-@SuppressWarnings("serial")
 public class IOLibrary extends Library {
 	private static final long serialVersionUID = 1L;
 	/**

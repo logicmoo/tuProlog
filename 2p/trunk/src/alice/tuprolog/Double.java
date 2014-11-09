@@ -25,7 +25,6 @@ import java.util.List;
  * Double class represents the double prolog data type
  *
  */
-@SuppressWarnings("serial")
 public class Double extends Number {
 	private static final long serialVersionUID = 1L;
     private double value;

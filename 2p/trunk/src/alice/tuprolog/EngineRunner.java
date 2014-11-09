@@ -17,7 +17,6 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  * Core engine
  */
-@SuppressWarnings("serial")
 public class EngineRunner implements java.io.Serializable, Runnable{
 	private static final long serialVersionUID = 1L;
     private Prolog                              mediator;

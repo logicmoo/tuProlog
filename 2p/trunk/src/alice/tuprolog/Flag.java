@@ -22,7 +22,6 @@ import java.util.*;
 /**
  * This class represents a prolog Flag
  */
-@SuppressWarnings("serial")
 class Flag implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
     private String name;

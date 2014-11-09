@@ -24,7 +24,6 @@ import java.util.NoSuchElementException;
  *
  * @see Struct
  */
-@SuppressWarnings("serial")
 class StructIterator implements java.util.Iterator<Term>, java.io.Serializable {
 	private static final long serialVersionUID = 1L;
     Struct list;

@@ -3,7 +3,6 @@ package alice.tuprolog;
 /**
  * @author Matteo Iuliani
  */
-@SuppressWarnings("serial")
 public class JavaException extends Throwable {
 	private static final long serialVersionUID = 1L;
     // eccezione Java che rappresenta l'argomento di java_throw/1

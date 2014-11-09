@@ -30,7 +30,6 @@ import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 import alice.tuprolog.interfaces.*;
 
-@SuppressWarnings("serial")
 /**
  * 
  * @author Mirco Bordoni

@@ -3,7 +3,6 @@ package alice.tuprolog.event;
 
 import java.util.*;
 
-@SuppressWarnings("serial")
 public class ExceptionEvent extends EventObject{
 	private static final long serialVersionUID = 1L;
 	private String msg;

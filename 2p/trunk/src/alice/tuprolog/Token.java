@@ -24,7 +24,6 @@ import java.io.Serializable;
  *
  *
  */
-@SuppressWarnings("serial")
 class Token implements Serializable {
 	private static final long serialVersionUID = 1L;
     // token textual representation

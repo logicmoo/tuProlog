@@ -1,0 +1,439 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<title>Clause retrival and information</title>
+</head>
+
+<body>
+
+<h1>Clause retrival and information</h1>
+
+<p>These predicates enable the contents of the database to be inspected during execution.</p>
+
+<p>The examples provided for these predicates assume the database has been created from the following Prolog theory.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>theory</td>
+    <td>
+      <p>
+      :- dynamic(cat/0).<br>
+      cat.
+      </p>
+      <p>
+      :- dynamic(dog/0).<br>
+      dog :- true.
+      </p>
+      <p>elk(X) :- moose(X).</p>
+      <p>
+      :- dynamic(legs/2).<br>
+      legs(A, 6) :- insect(A).<br>
+      legs(A, 7) :- A, call(A).
+      </p>
+      <p>
+      :- dynamic(insect/1).<br>
+      insect(ant).<br>
+      insect(bee).
+      </p>
+    </td>
+  </tr>
+</table>
+
+<h2>1. <code>clause/2</code></h2>
+
+<p><code>clause(Head, Body)</code> is true iff:</p>
+<ul>
+  <li>The predicate <code>Head</code> is public, and</li>
+  <li>There is a clause in the database which corresponds to a term <code>H :- B</code> which unifies with <code>Head :- Body</code>.</li>
+</ul>
+
+<p><code>clause(Head, Body)</code> is re-executable.</p>
+
+<p>Note that the process of converting a clause to a term produces a renamed copy of the term <code>H :- B</code> corresponding to the clause.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+clause(+head, ?callable_term)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's then ask the engine to solve a query against the database, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(cat, true).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#cfffcf">true</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(dog, true).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#cfffcf">true</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(legs(I, 6), Body).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#cfffcf">true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Body</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#ffcfcf">insect(I) <font size=-1 color="#c08080"><i>expected</i></font><hr>insect(I) <font size=-1 color="#c08080"><i>actual</i></font></td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(legs(C, 7), Body).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#cfffcf">true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Body</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#ffcfcf">(call(C), call(C)) <font size=-1 color="#c08080"><i>expected</i></font><hr>','(C,call(C)) <font size=-1 color="#c08080"><i>actual</i></font></td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(insect(I), T).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#cfffcf">true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>I</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#cfffcf">ant</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#cfffcf">true</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td bgcolor="#cfffcf">true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>I</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#cfffcf">bee</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#cfffcf">true</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(x, Body).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#cfffcf">false</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(legs(A, 6), insect(f(A))).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td> <font color="#808080">false</font></td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(_, B).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#cfffcf">false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td bgcolor="#efefef">instantiation_error</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(4, X).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#cfffcf">false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td bgcolor="#efefef">type_error(callable, 4)</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(elk(N), Body).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#cfffcf">true</td>
+  </tr>
+  <!-- <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td bgcolor="#efefef">permission_error(access, private_procedure, elk/1)</td>
+  </tr> -->
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>clause(atom(_), Body).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#cfffcf">false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td bgcolor="#efefef">permission_error(access, private_procedure, atom/1)</td>
+  </tr>
+</table>
+
+<h2>2. <code>current_predicate/1</code></h2>
+
+<p><code>current_predicate(PI)</code> is true iff <code>PI</code> is a predicate indicator for one of the user-defined procedures in the database.</p>
+
+<p><code>current_predicate(PI)</code> is re-executable.</p>
+
+<p>Note that all user-defined procedures are found, whether static or dynamic. A user-defined procedure is also found even when it has no clauses. A user-defined procedure is not found if it has been abolished.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+current_predicate(?predicate_indicator)
+</pre>
+
+<h3>2.1 Example tests</h3>
+
+<p>Let's then ask the engine to solve a query against the database, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_predicate(dog/0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#ffcfcf">true <font size=-1 color="#c08080"><i>expected</i></font><hr>false <font size=-1 color="#c08080"><i>actual</i></font></td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_predicate(current_predicate/1).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#cfffcf">false</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_predicate(elk/Arity).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#ffcfcf">true <font size=-1 color="#c08080"><i>expected</i></font><hr>false <font size=-1 color="#c08080"><i>actual</i></font></td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Arity</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#ffffcf">1<hr><pre>alice.tuprolog.NoSolutionException<br />	at alice.tuprolog.SolveInfo.getVarValue(SolveInfo.java:181)<br />	at alice.tuprolog.EngineFixture.binding(EngineFixture.java:92)<br />	at sun.reflect.GeneratedMethodAccessor13.invoke(Unknown Source)<br />	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)<br />	at java.lang.reflect.Method.invoke(Method.java:606)<br />	at fit.TypeAdapter.invoke(Unknown Source)<br />	at fit.TypeAdapter.get(Unknown Source)<br />	at fit.Fixture.check(Unknown Source)<br />	at alice.tuprolog.PrologActionFixture.check(PrologActionFixture.java:18)<br />	at sun.reflect.GeneratedMethodAccessor19.invoke(Unknown Source)<br />	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)<br />	at java.lang.reflect.Method.invoke(Method.java:606)<br />	at fit.ActionFixture.doCells(Unknown Source)<br />	at fit.Fixture.doRow(Unknown Source)<br />	at fit.Fixture.doRows(Unknown Source)<br />	at fit.Fixture.doTable(Unknown Source)<br />	at fit.Fixture.interpretFollowingTables(Unknown Source)<br />	at fit.Fixture.interpretTables(Unknown Source)<br />	at fit.Fixture.doTables(Unknown Source)<br />	at alice.tuprolog.AcceptanceFixture.run(AcceptanceFixture.java:30)<br />	at alice.tuprolog.AcceptanceFixture.right(AcceptanceFixture.java:41)<br />	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)<br />	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)<br />	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)<br />	at java.lang.reflect.Method.invoke(Method.java:606)<br />	at fit.TypeAdapter.invoke(Unknown Source)<br />	at fit.TypeAdapter.get(Unknown Source)<br />	at fit.Fixture.check(Unknown Source)<br />	at fit.ColumnFixture.check(Unknown Source)<br />	at fit.ColumnFixture.doCell(Unknown Source)<br />	at fit.Fixture.doCells(Unknown Source)<br />	at fit.Fixture.doRow(Unknown Source)<br />	at fit.ColumnFixture.doRow(Unknown Source)<br />	at alice.tuprolog.AcceptanceFixture.doRow(AcceptanceFixture.java:78)<br />	at fit.Fixture.doRows(Unknown Source)<br />	at fit.ColumnFixture.doRows(Unknown Source)<br />	at fit.Fixture.doTable(Unknown Source)<br />	at fit.Fixture.interpretTables(Unknown Source)<br />	at fit.Fixture.doTables(Unknown Source)<br />	at fit.FileRunner.process(Unknown Source)<br />	at fit.FileRunner.run(Unknown Source)<br />	at fit.FileRunner.main(Unknown Source)<br /></pre></td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_predicate(foo/A).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#cfffcf">false</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_predicate(Name/1).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#ffcfcf">true <font size=-1 color="#c08080"><i>expected</i></font><hr>false <font size=-1 color="#c08080"><i>actual</i></font></td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>Name</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#ffffcf">elk<hr><pre>alice.tuprolog.NoSolutionException<br />	at alice.tuprolog.SolveInfo.getVarValue(SolveInfo.java:181)<br />	at alice.tuprolog.EngineFixture.binding(EngineFixture.java:92)<br />	at sun.reflect.GeneratedMethodAccessor13.invoke(Unknown Source)<br />	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)<br />	at java.lang.reflect.Method.invoke(Method.java:606)<br />	at fit.TypeAdapter.invoke(Unknown Source)<br />	at fit.TypeAdapter.get(Unknown Source)<br />	at fit.Fixture.check(Unknown Source)<br />	at alice.tuprolog.PrologActionFixture.check(PrologActionFixture.java:18)<br />	at sun.reflect.GeneratedMethodAccessor19.invoke(Unknown Source)<br />	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)<br />	at java.lang.reflect.Method.invoke(Method.java:606)<br />	at fit.ActionFixture.doCells(Unknown Source)<br />	at fit.Fixture.doRow(Unknown Source)<br />	at fit.Fixture.doRows(Unknown Source)<br />	at fit.Fixture.doTable(Unknown Source)<br />	at fit.Fixture.interpretFollowingTables(Unknown Source)<br />	at fit.Fixture.interpretTables(Unknown Source)<br />	at fit.Fixture.doTables(Unknown Source)<br />	at alice.tuprolog.AcceptanceFixture.run(AcceptanceFixture.java:30)<br />	at alice.tuprolog.AcceptanceFixture.right(AcceptanceFixture.java:41)<br />	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)<br />	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)<br />	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)<br />	at java.lang.reflect.Method.invoke(Method.java:606)<br />	at fit.TypeAdapter.invoke(Unknown Source)<br />	at fit.TypeAdapter.get(Unknown Source)<br />	at fit.Fixture.check(Unknown Source)<br />	at fit.ColumnFixture.check(Unknown Source)<br />	at fit.ColumnFixture.doCell(Unknown Source)<br />	at fit.Fixture.doCells(Unknown Source)<br />	at fit.Fixture.doRow(Unknown Source)<br />	at fit.ColumnFixture.doRow(Unknown Source)<br />	at alice.tuprolog.AcceptanceFixture.doRow(AcceptanceFixture.java:78)<br />	at fit.Fixture.doRows(Unknown Source)<br />	at fit.ColumnFixture.doRows(Unknown Source)<br />	at fit.Fixture.doTable(Unknown Source)<br />	at fit.Fixture.interpretTables(Unknown Source)<br />	at fit.Fixture.doTables(Unknown Source)<br />	at fit.FileRunner.process(Unknown Source)<br />	at fit.FileRunner.run(Unknown Source)<br />	at fit.FileRunner.main(Unknown Source)<br /></pre></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td bgcolor="#ffcfcf">true <font size=-1 color="#c08080"><i>expected</i></font><hr>false <font size=-1 color="#c08080"><i>actual</i></font></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#ffffcf">insect<hr><pre>alice.tuprolog.NoSolutionException<br />	at alice.tuprolog.SolveInfo.getVarValue(SolveInfo.java:181)<br />	at alice.tuprolog.EngineFixture.binding(EngineFixture.java:92)<br />	at sun.reflect.GeneratedMethodAccessor13.invoke(Unknown Source)<br />	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)<br />	at java.lang.reflect.Method.invoke(Method.java:606)<br />	at fit.TypeAdapter.invoke(Unknown Source)<br />	at fit.TypeAdapter.get(Unknown Source)<br />	at fit.Fixture.check(Unknown Source)<br />	at alice.tuprolog.PrologActionFixture.check(PrologActionFixture.java:18)<br />	at sun.reflect.GeneratedMethodAccessor19.invoke(Unknown Source)<br />	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)<br />	at java.lang.reflect.Method.invoke(Method.java:606)<br />	at fit.ActionFixture.doCells(Unknown Source)<br />	at fit.Fixture.doRow(Unknown Source)<br />	at fit.Fixture.doRows(Unknown Source)<br />	at fit.Fixture.doTable(Unknown Source)<br />	at fit.Fixture.interpretFollowingTables(Unknown Source)<br />	at fit.Fixture.interpretTables(Unknown Source)<br />	at fit.Fixture.doTables(Unknown Source)<br />	at alice.tuprolog.AcceptanceFixture.run(AcceptanceFixture.java:30)<br />	at alice.tuprolog.AcceptanceFixture.right(AcceptanceFixture.java:41)<br />	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)<br />	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)<br />	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)<br />	at java.lang.reflect.Method.invoke(Method.java:606)<br />	at fit.TypeAdapter.invoke(Unknown Source)<br />	at fit.TypeAdapter.get(Unknown Source)<br />	at fit.Fixture.check(Unknown Source)<br />	at fit.ColumnFixture.check(Unknown Source)<br />	at fit.ColumnFixture.doCell(Unknown Source)<br />	at fit.Fixture.doCells(Unknown Source)<br />	at fit.Fixture.doRow(Unknown Source)<br />	at fit.ColumnFixture.doRow(Unknown Source)<br />	at alice.tuprolog.AcceptanceFixture.doRow(AcceptanceFixture.java:78)<br />	at fit.Fixture.doRows(Unknown Source)<br />	at fit.ColumnFixture.doRows(Unknown Source)<br />	at fit.Fixture.doTable(Unknown Source)<br />	at fit.Fixture.interpretTables(Unknown Source)<br />	at fit.Fixture.doTables(Unknown Source)<br />	at fit.FileRunner.process(Unknown Source)<br />	at fit.FileRunner.run(Unknown Source)<br />	at fit.FileRunner.main(Unknown Source)<br /></pre></td>
+  </tr>
+</table>
+
+<p>The remaining tests cover the cases when an error or exception is thrown by the engine while solving a query.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">alice.tuprolog.PrologActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>current_predicate(4).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#cfffcf">false</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>exception</td>
+    <td bgcolor="#efefef">type_error(predicate_indicator, 4)</td>
+  </tr>
+</table>
+
+<p><a href="../cgi-bin/fit.cgi">Run</a> the tests!</p>
+
+<hr>
+
+<p>The results of the tests for <em>Clause retrival and information</em> are as follows:</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><td>fit.Summary</td></tr>
+<tr>
+<td> <font color="#808080">counts</font></td>
+<td bgcolor="#ffcfcf">18 right, 6 wrong, 5 ignored, 3 exceptions</td></tr>
+<tr>
+<td> <font color="#808080">run date</font></td>
+<td> <font color="#808080">Thu Oct 16 20:22:39 CEST 2014</font></td></tr>
+<tr>
+<td> <font color="#808080">run elapsed time</font></td>
+<td> <font color="#808080">0:00.23</font></td></tr></table>
+
+</body>
+</html>

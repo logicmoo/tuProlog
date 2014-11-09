@@ -23,7 +23,6 @@ package alice.tuprolog;
  *
  *
  */
-@SuppressWarnings("serial")
 public class UnknownVarException extends PrologException {
 	private static final long serialVersionUID = 1L;
 }

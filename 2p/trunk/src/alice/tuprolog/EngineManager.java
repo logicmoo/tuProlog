@@ -11,7 +11,6 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
-@SuppressWarnings("serial")
 public class EngineManager implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private Prolog vm;

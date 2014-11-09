@@ -22,7 +22,6 @@ import alice.tuprolog.*;
  * Library built from Prolog theory.
  * 
  */
-@SuppressWarnings("serial")
 public class TheoryLibrary extends Library {
 	private static final long serialVersionUID = 1L;
     private Theory th;

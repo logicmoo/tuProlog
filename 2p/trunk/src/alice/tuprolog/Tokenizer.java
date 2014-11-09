@@ -44,7 +44,6 @@ import java.util.Arrays;
  * the type returned is the same as the unicode int value of the ordinary character
  * - other characters should be handled as ordinary characters.
  */
-@SuppressWarnings("serial")
 public class Tokenizer extends StreamTokenizer implements Serializable {
 	private static final long serialVersionUID = 1L;
     static final int TYPEMASK = 0x00FF;

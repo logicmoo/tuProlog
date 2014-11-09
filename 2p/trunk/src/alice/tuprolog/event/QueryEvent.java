@@ -26,7 +26,6 @@ import alice.tuprolog.SolveInfo;
  * @since 1.3
  *
  */
-@SuppressWarnings("serial")
 public class QueryEvent extends PrologEvent {
 
    private SolveInfo info;

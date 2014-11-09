@@ -447,18 +447,19 @@ public class StateEnd extends State {
 	    	//Object[] a=(e.goalVars).toArray();
 	    	//System.out.println("Lista variabili goal bagof nomi e.goalVars "+e.goalVars.toString());
 	    	//int r=0;
-	    	for (java.util.Iterator<? extends Term> it = varList.listIterator(); it.hasNext();) {
-	    		//System.out.println("Entro "+r);
-	    		//r++;
-	    		Term var=it.next();
-	    		for(int y=0; y<a.length;y++){
-	    			Var vv=(Var)a[y];
-	    			if(vv.getLink()!=null && vv.getLink().isEqual(var)/*&& !(var.toString().startsWith("_"))*/){
-	    				//System.out.println("Aggiungo trovata uguaglianza "+vv+" e var "+var);
-	    				lGoalVar.add(vv.getName());
-	    			}
-	    		}
-	    	}
+	    	if (varList != null)
+		    	for (java.util.Iterator<? extends Term> it = varList.listIterator(); it.hasNext();) {
+		    		//System.out.println("Entro "+r);
+		    		//r++;
+		    		Term var=it.next();
+		    		for(int y=0; y<a.length;y++){
+		    			Var vv=(Var)a[y];
+		    			if(vv.getLink()!=null && vv.getLink().isEqual(var)/*&& !(var.toString().startsWith("_"))*/){
+		    				//System.out.println("Aggiungo trovata uguaglianza "+vv+" e var "+var);
+		    				lGoalVar.add(vv.getName());
+		    			}
+		    		}
+		    	}
 	    	//System.out.println("********Lista variabili goal bagof nomi goal lGoalVar "+lGoalVar);
 	    	
 	    	/*

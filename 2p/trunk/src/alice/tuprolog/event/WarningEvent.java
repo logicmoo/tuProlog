@@ -23,7 +23,6 @@ import java.util.*;
  *  a prolog engine
  *
  */
-@SuppressWarnings("serial")
 public class WarningEvent extends EventObject {
 	private static final long serialVersionUID = 1L;
     /**

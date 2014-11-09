@@ -1,0 +1,1182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+  <testsuite errors="0" failures="0" hostname="MacBook-Air-di-Roberta-Calegari.local" id="0" name="ExceptionsTestSuite" package="alice.tuprolog" skipped="0" tests="205" time="27.233" timestamp="2014-07-13T10:18:55">
+      <properties>
+          <property name="java.vendor" value="Oracle Corporation" />
+
+          <property name="username" value="alemonty88@gmail.com" />
+
+          <property name="lib.dir" value="lib" />
+
+          <property name="sun.java.launcher" value="SUN_STANDARD" />
+
+          <property name="eclipse.pdebuild.templates" value="/Applications/eclipse-kepler-64/plugins/org.eclipse.pde.build_3.8.100.v20130514-1028/templates//" />
+
+          <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+
+          <property name="os.name" value="Mac OS X" />
+
+          <property name="engine.version" value="2.9" />
+
+          <property name="sun.boot.class.path" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/JObjC.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/classes" />
+
+          <property name="ikvmc" value="C:\Users\Alessandro\Desktop\tuProlog-repo\2p-net\ikvm\ikvm-7.2.4630.5\bin\ikvmc.exe" />
+
+          <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+
+          <property name="ant.home" value="/Applications/apache-ant-1.9.4" />
+
+          <property name="java.runtime.version" value="1.7.0_25-b15" />
+
+          <property name="ikvm.dir" value="C:\Users\Alessandro\Desktop\tuProlog-repo\2p-net\ikvm\ikvm-7.2.4630.5" />
+
+          <property name="user.name" value="robertacalegari" />
+
+          <property name="build.dir" value="build" />
+
+          <property name="build.archives.net.dir" value="build/archives/net" />
+
+          <property name="user.language" value="it" />
+
+          <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib" />
+
+          <property name="ant.project.default-target" value="help" />
+
+          <property name="doc.dir" value="doc" />
+
+          <property name="build.release.dir" value="release" />
+
+          <property name="ant.project.name" value="tuProlog build file" />
+
+          <property name="build.tests.dir" value="build/tests" />
+
+          <property name="java.version" value="1.7.0_25" />
+
+          <property name="user.timezone" value="" />
+
+          <property name="sun.arch.data.model" value="64" />
+
+          <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+
+          <property name="java.endorsed.dirs" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/endorsed" />
+
+          <property name="sun.cpu.isalist" value="" />
+
+          <property name="sun.jnu.encoding" value="US-ASCII" />
+
+          <property name="file.encoding.pkg" value="sun.io" />
+
+          <property name="file.separator" value="/" />
+
+          <property name="java.specification.name" value="Java Platform API Specification" />
+
+          <property name="java.class.version" value="51.0" />
+
+          <property name="build.classes.dir" value="build/classes" />
+
+          <property name="user.country" value="IT" />
+
+          <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre" />
+
+          <property name="java.vm.info" value="mixed mode" />
+
+          <property name="ant.file" value="/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/ant/build.xml" />
+
+          <property name="os.version" value="10.9.3" />
+
+          <property name="path.separator" value=":" />
+
+          <property name="java.vm.version" value="23.25-b01" />
+
+          <property name="build.archives.dir" value="build/archives" />
+
+          <property name="ant.library.dir" value="/Applications/apache-ant-1.9.4/lib" />
+
+          <property name="java.awt.printerjob" value="sun.lwawt.macosx.CPrinterJob" />
+
+          <property name="sun.io.unicode.encoding" value="UnicodeBig" />
+
+          <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit" />
+
+          <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+
+          <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+
+          <property name="eclipse.pdebuild.scripts" value="/Applications/eclipse-kepler-64/plugins/org.eclipse.pde.build_3.8.100.v20130514-1028/scripts//" />
+
+          <property name="user.home" value="/Users/robertacalegari" />
+
+          <property name="target" value="1.6" />
+
+          <property name="java.specification.vendor" value="Oracle Corporation" />
+
+          <property name="test.dir" value="test" />
+
+          <property name="tmp.dir" value="tmp" />
+
+          <property name="java.library.path" value="/Users/robertacalegari/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:." />
+
+          <property name="java.vendor.url" value="http://java.oracle.com/" />
+
+          <property name="java.vm.vendor" value="Oracle Corporation" />
+
+          <property name="gopherProxySet" value="false" />
+
+          <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+
+          <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner alice.tuprolog.ExceptionsTestSuite skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=false outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/build/reports/unit/TEST-alice.tuprolog.ExceptionsTestSuite.xml crashfile=/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/tmp/junitvmwatcher1190961977902974474.properties propsfile=/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/tmp/junit248786437624226398.properties" />
+
+          <property name="java.class.path" value="/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/ant-ikvmc.0.5.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/antfit.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/fit.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/ikvm-api.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/javassist.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/junit.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/mscorlib.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/svnClientAdapter.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/svnant.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/svnjavahl.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/svnkit.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/build/classes:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/build/tests/unit:/Applications/apache-ant-1.9.4/lib/ant-launcher.jar:/Applications/apache-ant-1.9.4/lib/ant.jar:/Applications/apache-ant-1.9.4/lib/ant-junit.jar:/Applications/apache-ant-1.9.4/lib/ant-junit4.jar" />
+
+          <property name="ant.version" value="Apache Ant(TM) version 1.9.4 compiled on April 29 2014" />
+
+          <property name="JavaSpecific.version" value="0" />
+
+          <property name="jdk.home" value="C:\Program Files\Java\jdk1.7.0_17" />
+
+          <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+
+          <property name="java.vm.specification.version" value="1.7" />
+
+          <property name="sun.cpu.endian" value="little" />
+
+          <property name="sun.os.patch.level" value="unknown" />
+
+          <property name="build.unit.reports.dir" value="build/reports/unit" />
+
+          <property name="java.io.tmpdir" value="/var/folders/g1/y8_c83wx51d1tgy93dx_ys8m0000gn/T/" />
+
+          <property name="eclipse.pdebuild.home" value="/Applications/eclipse-kepler-64/plugins/org.eclipse.pde.build_3.8.100.v20130514-1028/.//" />
+
+          <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
+
+          <property name="os.arch" value="x86_64" />
+
+          <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment" />
+
+          <property name="ant.file.tuProlog build file" value="/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/ant/build.xml" />
+
+          <property name="ant.file.type.tuProlog build file" value="file" />
+
+          <property name="java.ext.dirs" value="/Users/robertacalegari/Library/Java/Extensions:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/ext:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java" />
+
+          <property name="user.dir" value="/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk" />
+
+          <property name="NETSpecific.version" value="0" />
+
+          <property name="line.separator" value="&#xa;" />
+
+          <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+
+          <property name="basedir" value="/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk" />
+
+          <property name="ant.java.version" value="1.7" />
+
+          <property name="ant.core.lib" value="/Applications/apache-ant-1.9.4/lib/ant.jar" />
+
+          <property name="build.fit.reports.dir" value="build/reports/fit" />
+
+          <property name="file.encoding" value="US-ASCII" />
+
+          <property name="java.specification.version" value="1.7" />
+
+          <property name="src.dir" value="src" />
+
+          <property name="ant.project.invoked-targets" value="06.unit.test,06.unit.test.report,07.fit.test" />
+
+      </properties>
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_set_theory_1_2" time="0.992" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_set_theory_1_1" time="0.583" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_set_theory_1_3" time="0.389" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_add_theory_1_1" time="0.309" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_add_theory_1_2" time="0.309" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_add_theory_1_3" time="0.312" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_agent_1_1" time="0.311" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_agent_1_2" time="0.305" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_agent_2_1" time="0.297" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_agent_2_2" time="0.307" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_agent_2_3" time="0.318" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_agent_2_4" time="0.326" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_1" time="0.295" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_2" time="0.362" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_3" time="0.35" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_4" time="0.386" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_5" time="0.295" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_6" time="0.252" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_7" time="0.225" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_8" time="0.205" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_9" time="0.202" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_10" time="0.185" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_11" time="0.164" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_12" time="0.17" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_13" time="0.137" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_14" time="0.151" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_15" time="0.134" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_16" time="0.13" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_17" time="0.157" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_18" time="0.141" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_19" time="0.135" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_20" time="0.153" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_21" time="0.149" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_22" time="0.149" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_23" time="0.121" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_text_concat_3_1" time="0.134" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_24" time="0.134" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_25" time="0.136" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_26" time="0.157" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_27" time="0.15" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_28" time="0.134" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_29" time="0.123" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_30" time="0.128" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_31" time="0.141" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_32" time="0.151" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_33" time="0.129" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_34" time="0.14" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_35" time="0.104" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_36" time="0.133" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_37" time="0.129" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_38" time="0.104" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_39" time="0.064" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_40" time="0.077" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_41" time="0.05" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_expression_comparison_2_42" time="0.062" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_text_concat_3_2" time="0.056" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_text_concat_3_3" time="0.091" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_text_concat_3_4" time="0.066" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_num_atom_2_1" time="0.056" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_num_atom_2_2" time="0.06" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_num_atom_2_3" time="0.069" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_arg_3_1" time="0.061" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_arg_3_2" time="0.065" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_arg_3_3" time="0.064" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_arg_3_4" time="0.068" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_arg_3_5" time="0.046" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_clause_2_1" time="0.08" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_call_1_1" time="0.05" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_call_1_2" time="0.066" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_findall_3_1" time="0.067" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_findall_3_2" time="0.06" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_setof_3_1" time="0.068" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_setof_3_2" time="0.061" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_bagof_3_1" time="0.054" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_bagof_3_2" time="0.061" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_assert_1_1" time="0.059" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_assert_1_2" time="0.045" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_retract_1_1" time="0.052" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_retract_1_2" time="0.05" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_retractall_1_1" time="0.048" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_retractall_1_2" time="0.073" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_member_2_1" time="0.064" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_reverse_2_1" time="0.068" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_delete_3_1" time="0.058" />
+
+      <testcase classname="alice.tuprolog.BasicLibraryExceptionsTestCase" name="test_element_3_1" time="0.074" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_asserta_1_1" time="0.048" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_asserta_1_2" time="0.062" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_assertz_1_1" time="0.051" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_assertz_1_2" time="0.076" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$retract_1_1" time="0.044" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$retract_1_2" time="0.078" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_abolish_1_1" time="0.055" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_abolish_1_2" time="0.037" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_abolish_1_3" time="0.04" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_halt_1_1" time="0.048" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_halt_1_2" time="0.06" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_load_library_1_1" time="0.096" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_load_library_1_2" time="0.157" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_load_library_1_3" time="0.173" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_unload_library_1_1" time="0.141" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_unload_library_1_2" time="0.152" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_unload_library_1_3" time="0.148" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$call_1_1" time="0.148" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$call_1_2" time="0.059" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_is_2_1" time="0.036" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_is_2_2" time="0.029" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_is_2_3" time="0.033" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_is_2_4" time="0.035" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_is_2_5" time="0.028" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$tolist_2_1" time="0.034" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$tolist_2_2" time="0.047" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$fromlist_2_1" time="0.031" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$fromlist_2_2" time="0.035" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$append_2_1" time="0.031" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$append_2_2" time="0.031" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$find_2_1" time="0.032" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$find_2_2" time="0.027" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_set_prolog_flag_2_1" time="0.033" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_set_prolog_flag_2_2" time="0.035" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_set_prolog_flag_2_3" time="0.027" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_set_prolog_flag_2_4" time="0.031" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_set_prolog_flag_2_5" time="0.034" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_set_prolog_flag_2_6" time="0.032" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_set_prolog_flag_2_7" time="0.033" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_get_prolog_flag_2_1" time="0.038" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_get_prolog_flag_2_2" time="0.028" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_get_prolog_flag_2_3" time="0.033" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$op_3_1" time="0.037" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$op_3_2" time="0.028" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$op_3_3" time="0.034" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$op_3_4" time="0.034" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$op_3_5" time="0.031" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$op_3_6" time="0.035" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$op_3_7" time="0.033" />
+
+      <testcase classname="alice.tuprolog.BuiltInExceptionsTestCase" name="test_$op_3_8" time="0.029" />
+
+      <testcase classname="alice.tuprolog.DCGLibraryExceptionsTestCase" name="test_phrase_2_1" time="0.038" />
+
+      <testcase classname="alice.tuprolog.DCGLibraryExceptionsTestCase" name="test_phrase_3_1" time="0.037" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_see_1_1" time="0.029" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_see_1_2" time="0.035" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_see_1_3" time="0.034" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_tell_1_1" time="0.028" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_tell_1_2" time="0.032" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_put_1_1" time="0.03" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_put_1_2" time="0.03" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_put_1_3" time="0.036" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_tab_1_1" time="0.03" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_tab_1_2" time="0.034" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_read_1_1" time="0.05" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_write_1_1" time="0.03" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_print_1_1" time="0.032" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_text_from_file_2_1" time="0.033" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_text_from_file_2_2" time="0.027" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_text_from_file_2_3" time="0.035" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_agent_file_1_1" time="0.036" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_agent_file_1_2" time="0.029" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_agent_file_1_3" time="0.042" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_solve_file_2_1" time="0.035" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_solve_file_2_2" time="0.03" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_solve_file_2_3" time="0.033" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_solve_file_2_4" time="0.035" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_solve_file_2_5" time="0.03" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_consult_1_1" time="0.032" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_consult_1_2" time="0.037" />
+
+      <testcase classname="alice.tuprolog.IOLibraryExceptionsTestCase" name="test_consult_1_3" time="0.03" />
+
+      <testcase classname="alice.tuprolog.ISOLibraryExceptionsTestCase" name="test_atom_length_2_1" time="0.036" />
+
+      <testcase classname="alice.tuprolog.ISOLibraryExceptionsTestCase" name="test_atom_length_2_2" time="0.031" />
+
+      <testcase classname="alice.tuprolog.ISOLibraryExceptionsTestCase" name="test_atom_chars_2_1" time="0.03" />
+
+      <testcase classname="alice.tuprolog.ISOLibraryExceptionsTestCase" name="test_atom_chars_2_2" time="0.035" />
+
+      <testcase classname="alice.tuprolog.ISOLibraryExceptionsTestCase" name="test_char_code_2_1" time="0.029" />
+
+      <testcase classname="alice.tuprolog.ISOLibraryExceptionsTestCase" name="test_char_code_2_2" time="0.032" />
+
+      <testcase classname="alice.tuprolog.ISOLibraryExceptionsTestCase" name="test_sub_atom_5_2" time="0.034" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_object_3_1" time="0.044" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_object_3_2" time="0.038" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_object_3_3" time="0.038" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_object_3_4" time="0.048" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_object_bt_3_1" time="0.034" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_object_bt_3_2" time="0.036" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_object_bt_3_3" time="0.043" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_object_bt_3_4" time="0.034" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_class_4_1" time="2.745" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_class_4_2" time="4.42" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_call_3_1" time="0.058" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_call_3_2" time="0.035" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_call_3_3" time="0.034" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_returns_2_1" time="0.039" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_returns_2_2" time="0.04" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_returns_2_3" time="0.037" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_array_set_3_1" time="0.038" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_array_set_3_2" time="0.048" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_array_set_3_3" time="0.029" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_array_get_3_1" time="0.04" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryExceptionsTestCase" name="test_java_array_get_3_3" time="0.038" />
+
+      <testcase classname="alice.tuprolog.JavaThrowCatchTestCase" name="test_java_catch_3_1" time="0.033" />
+
+      <testcase classname="alice.tuprolog.JavaThrowCatchTestCase" name="test_java_catch_3_2" time="0.037" />
+
+      <testcase classname="alice.tuprolog.JavaThrowCatchTestCase" name="test_java_catch_3_3" time="0.038" />
+
+      <testcase classname="alice.tuprolog.JavaThrowCatchTestCase" name="test_java_catch_3_4" time="0.046" />
+
+      <testcase classname="alice.tuprolog.JavaThrowCatchTestCase" name="test_java_catch_3_5" time="0.029" />
+
+      <testcase classname="alice.tuprolog.JavaThrowCatchTestCase" name="test_java_catch_3_6" time="0.038" />
+
+      <testcase classname="alice.tuprolog.JavaThrowCatchTestCase" name="test_java_catch_3_7" time="0.039" />
+
+      <testcase classname="alice.tuprolog.ThrowCatchTestCase" name="test_catch_3_2" time="0.031" />
+
+      <testcase classname="alice.tuprolog.ThrowCatchTestCase" name="test_catch_3_1" time="0.035" />
+
+      <testcase classname="alice.tuprolog.ThrowCatchTestCase" name="test_catch_3_3" time="0.036" />
+
+      <testcase classname="alice.tuprolog.ThrowCatchTestCase" name="test_catch_3_4" time="0.03" />
+
+      <testcase classname="alice.tuprolog.ThrowCatchTestCase" name="test_catch_3_5" time="0.038" />
+
+      <testcase classname="alice.tuprolog.ThrowCatchTestCase" name="test_catch_3_6" time="0.045" />
+
+      <system-out><![CDATA[]]></system-out>
+
+      <system-err><![CDATA[]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="2" hostname="MacBook-Air-di-Roberta-Calegari.local" id="1" name="TuPrologTestSuite" package="alice.tuprolog" skipped="0" tests="166" time="12.499" timestamp="2014-07-13T10:18:41">
+      <properties>
+          <property name="java.vendor" value="Oracle Corporation" />
+
+          <property name="username" value="alemonty88@gmail.com" />
+
+          <property name="lib.dir" value="lib" />
+
+          <property name="sun.java.launcher" value="SUN_STANDARD" />
+
+          <property name="eclipse.pdebuild.templates" value="/Applications/eclipse-kepler-64/plugins/org.eclipse.pde.build_3.8.100.v20130514-1028/templates//" />
+
+          <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+
+          <property name="os.name" value="Mac OS X" />
+
+          <property name="engine.version" value="2.9" />
+
+          <property name="sun.boot.class.path" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/JObjC.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/classes" />
+
+          <property name="ikvmc" value="C:\Users\Alessandro\Desktop\tuProlog-repo\2p-net\ikvm\ikvm-7.2.4630.5\bin\ikvmc.exe" />
+
+          <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+
+          <property name="ant.home" value="/Applications/apache-ant-1.9.4" />
+
+          <property name="java.runtime.version" value="1.7.0_25-b15" />
+
+          <property name="ikvm.dir" value="C:\Users\Alessandro\Desktop\tuProlog-repo\2p-net\ikvm\ikvm-7.2.4630.5" />
+
+          <property name="user.name" value="robertacalegari" />
+
+          <property name="build.dir" value="build" />
+
+          <property name="build.archives.net.dir" value="build/archives/net" />
+
+          <property name="user.language" value="it" />
+
+          <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib" />
+
+          <property name="ant.project.default-target" value="help" />
+
+          <property name="doc.dir" value="doc" />
+
+          <property name="build.release.dir" value="release" />
+
+          <property name="ant.project.name" value="tuProlog build file" />
+
+          <property name="build.tests.dir" value="build/tests" />
+
+          <property name="java.version" value="1.7.0_25" />
+
+          <property name="user.timezone" value="" />
+
+          <property name="sun.arch.data.model" value="64" />
+
+          <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+
+          <property name="java.endorsed.dirs" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/endorsed" />
+
+          <property name="sun.cpu.isalist" value="" />
+
+          <property name="sun.jnu.encoding" value="US-ASCII" />
+
+          <property name="file.encoding.pkg" value="sun.io" />
+
+          <property name="file.separator" value="/" />
+
+          <property name="java.specification.name" value="Java Platform API Specification" />
+
+          <property name="java.class.version" value="51.0" />
+
+          <property name="build.classes.dir" value="build/classes" />
+
+          <property name="user.country" value="IT" />
+
+          <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre" />
+
+          <property name="java.vm.info" value="mixed mode" />
+
+          <property name="ant.file" value="/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/ant/build.xml" />
+
+          <property name="os.version" value="10.9.3" />
+
+          <property name="path.separator" value=":" />
+
+          <property name="java.vm.version" value="23.25-b01" />
+
+          <property name="build.archives.dir" value="build/archives" />
+
+          <property name="ant.library.dir" value="/Applications/apache-ant-1.9.4/lib" />
+
+          <property name="java.awt.printerjob" value="sun.lwawt.macosx.CPrinterJob" />
+
+          <property name="sun.io.unicode.encoding" value="UnicodeBig" />
+
+          <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit" />
+
+          <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+
+          <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
+
+          <property name="eclipse.pdebuild.scripts" value="/Applications/eclipse-kepler-64/plugins/org.eclipse.pde.build_3.8.100.v20130514-1028/scripts//" />
+
+          <property name="user.home" value="/Users/robertacalegari" />
+
+          <property name="target" value="1.6" />
+
+          <property name="java.specification.vendor" value="Oracle Corporation" />
+
+          <property name="test.dir" value="test" />
+
+          <property name="tmp.dir" value="tmp" />
+
+          <property name="java.library.path" value="/Users/robertacalegari/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:." />
+
+          <property name="java.vendor.url" value="http://java.oracle.com/" />
+
+          <property name="java.vm.vendor" value="Oracle Corporation" />
+
+          <property name="gopherProxySet" value="false" />
+
+          <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+
+          <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner alice.tuprolog.TuPrologTestSuite skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=false outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/build/reports/unit/TEST-alice.tuprolog.TuPrologTestSuite.xml crashfile=/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/tmp/junitvmwatcher574964715784839912.properties propsfile=/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/tmp/junit2255822734040154799.properties" />
+
+          <property name="java.class.path" value="/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/ant-ikvmc.0.5.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/antfit.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/fit.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/ikvm-api.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/javassist.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/junit.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/mscorlib.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/svnClientAdapter.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/svnant.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/svnjavahl.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/lib/svnkit.jar:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/build/classes:/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/build/tests/unit:/Applications/apache-ant-1.9.4/lib/ant-launcher.jar:/Applications/apache-ant-1.9.4/lib/ant.jar:/Applications/apache-ant-1.9.4/lib/ant-junit.jar:/Applications/apache-ant-1.9.4/lib/ant-junit4.jar" />
+
+          <property name="ant.version" value="Apache Ant(TM) version 1.9.4 compiled on April 29 2014" />
+
+          <property name="JavaSpecific.version" value="0" />
+
+          <property name="jdk.home" value="C:\Program Files\Java\jdk1.7.0_17" />
+
+          <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+
+          <property name="java.vm.specification.version" value="1.7" />
+
+          <property name="sun.cpu.endian" value="little" />
+
+          <property name="sun.os.patch.level" value="unknown" />
+
+          <property name="build.unit.reports.dir" value="build/reports/unit" />
+
+          <property name="java.io.tmpdir" value="/var/folders/g1/y8_c83wx51d1tgy93dx_ys8m0000gn/T/" />
+
+          <property name="eclipse.pdebuild.home" value="/Applications/eclipse-kepler-64/plugins/org.eclipse.pde.build_3.8.100.v20130514-1028/.//" />
+
+          <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
+
+          <property name="os.arch" value="x86_64" />
+
+          <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment" />
+
+          <property name="ant.file.tuProlog build file" value="/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk/ant/build.xml" />
+
+          <property name="ant.file.type.tuProlog build file" value="file" />
+
+          <property name="java.ext.dirs" value="/Users/robertacalegari/Library/Java/Extensions:/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre/lib/ext:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java" />
+
+          <property name="user.dir" value="/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk" />
+
+          <property name="NETSpecific.version" value="0" />
+
+          <property name="line.separator" value="&#xa;" />
+
+          <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+
+          <property name="basedir" value="/Users/robertacalegari/Documents/workspace-kepler-64/2p-trunk" />
+
+          <property name="ant.java.version" value="1.7" />
+
+          <property name="ant.core.lib" value="/Applications/apache-ant-1.9.4/lib/ant.jar" />
+
+          <property name="build.fit.reports.dir" value="build/reports/fit" />
+
+          <property name="file.encoding" value="US-ASCII" />
+
+          <property name="java.specification.version" value="1.7" />
+
+          <property name="src.dir" value="src" />
+
+          <property name="ant.project.invoked-targets" value="06.unit.test,06.unit.test.report,07.fit.test" />
+
+      </properties>
+
+      <testcase classname="alice.tuprolog.BuiltInTestCase" name="testGroupingConjunctions" time="0.292" />
+
+      <testcase classname="alice.tuprolog.BuiltInTestCase" name="testConvertTermToGoal" time="0.001" />
+
+      <testcase classname="alice.tuprolog.PrologTestCase" name="testEngineInitialization" time="0.184" />
+
+      <testcase classname="alice.tuprolog.PrologTestCase" name="testLoadLibraryAsString" time="0.15" />
+
+      <testcase classname="alice.tuprolog.PrologTestCase" name="testLoadLibraryAsObject" time="0.146" />
+
+      <testcase classname="alice.tuprolog.PrologTestCase" name="testGetLibraryWithName" time="0.003" />
+
+      <testcase classname="alice.tuprolog.PrologTestCase" name="testUnloadLibraryAfterLoadingTheory" time="0.119" />
+
+      <testcase classname="alice.tuprolog.PrologTestCase" name="testAddTheory" time="0.127" />
+
+      <testcase classname="alice.tuprolog.PrologTestCase" name="testSpyListenerManagement" time="0.087" />
+
+      <testcase classname="alice.tuprolog.PrologTestCase" name="testLibraryListener" time="0.075" />
+
+      <testcase classname="alice.tuprolog.PrologTestCase" name="testTheoryListener" time="0.091" />
+
+      <testcase classname="alice.tuprolog.PrologTestCase" name="testQueryListener" time="0.063" />
+
+      <testcase classname="alice.tuprolog.IntTestCase" name="testIsAtomic" time="0.001" />
+
+      <testcase classname="alice.tuprolog.IntTestCase" name="testIsAtom" time="0.001" />
+
+      <testcase classname="alice.tuprolog.IntTestCase" name="testIsCompound" time="0.0" />
+
+      <testcase classname="alice.tuprolog.IntTestCase" name="testEqualsToStruct" time="0.005" />
+
+      <testcase classname="alice.tuprolog.IntTestCase" name="testEqualsToVar" time="0.002" />
+
+      <testcase classname="alice.tuprolog.IntTestCase" name="testEqualsToInt" time="0.001" />
+
+      <testcase classname="alice.tuprolog.IntTestCase" name="testEqualsToLong" time="0.0" />
+
+      <testcase classname="alice.tuprolog.IntTestCase" name="testEqualsToDouble" time="0.001" />
+
+      <testcase classname="alice.tuprolog.IntTestCase" name="testEqualsToFloat" time="0.0" />
+
+      <testcase classname="alice.tuprolog.IOLibraryTestCase" name="testGetPrimitives" time="0.001" />
+
+      <testcase classname="alice.tuprolog.IOLibraryTestCase" name="testTab1" time="0.057" />
+
+      <testcase classname="alice.tuprolog.DoubleTestCase" name="testIsAtomic" time="0.001" />
+
+      <testcase classname="alice.tuprolog.DoubleTestCase" name="testIsAtom" time="0.001" />
+
+      <testcase classname="alice.tuprolog.DoubleTestCase" name="testIsCompound" time="0.0" />
+
+      <testcase classname="alice.tuprolog.DoubleTestCase" name="testEqualsToStruct" time="0.0" />
+
+      <testcase classname="alice.tuprolog.DoubleTestCase" name="testEqualsToVar" time="0.001" />
+
+      <testcase classname="alice.tuprolog.DoubleTestCase" name="testEqualsToInt" time="0.0" />
+
+      <testcase classname="alice.tuprolog.DoubleTestCase" name="testEqualsToLong" time="0.0" />
+
+      <testcase classname="alice.tuprolog.DoubleTestCase" name="testEqualsToDouble" time="0.001" />
+
+      <testcase classname="alice.tuprolog.DoubleTestCase" name="testEqualsToFloat" time="0.001" />
+
+      <testcase classname="alice.tuprolog.SolveInfoTestCase" name="testGetSubsequentQuery" time="0.058" />
+
+      <testcase classname="alice.tuprolog.StateRuleSelectionTestCase" name="testUnknownPredicateInQuery" time="0.048" />
+
+      <testcase classname="alice.tuprolog.StateRuleSelectionTestCase" name="testUnknownPredicateInTheory" time="0.066" />
+
+      <testcase classname="alice.tuprolog.StructIteratorTestCase" name="testEmptyIterator" time="0.003" />
+
+      <testcase classname="alice.tuprolog.StructIteratorTestCase" name="testIteratorCount" time="0.001" />
+
+      <testcase classname="alice.tuprolog.StructIteratorTestCase" name="testMultipleHasNext" time="0.0" />
+
+      <testcase classname="alice.tuprolog.StructIteratorTestCase" name="testMultipleNext" time="0.001" />
+
+      <testcase classname="alice.tuprolog.StructIteratorTestCase" name="testRemoveOperationNotSupported" time="0.001" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testIsAtomic" time="0.0" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testIsAtom" time="0.008" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testIsCompound" time="0.001" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testStructWithNullArgument" time="0.001" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testEmptyList" time="0.0" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testStructWithNullName" time="0.001" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testStructWithEmptyName" time="0.004" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testEmptyListAsSquaredStruct" time="0.003" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testEmptyListAsDottedStruct" time="0.001" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testListAsDottedStruct" time="0.0" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testListFromArgumentArray" time="0.0" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testListSize" time="0.0" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testNonListHead" time="0.007" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testNonListTail" time="0.0" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testNonListSize" time="0.001" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testNonListIterator" time="0.0" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testToList" time="0.0" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testToString" time="0.001" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testAppend" time="0.001" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testIteratedGoalTerm" time="0.001" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testIsList" time="0.0" />
+
+      <testcase classname="alice.tuprolog.StructTestCase" name="testEqualsToObject" time="0.001" />
+
+      <testcase classname="alice.tuprolog.TermIteratorTestCase" name="testEmptyIterator" time="0.0" />
+
+      <testcase classname="alice.tuprolog.TermIteratorTestCase" name="testMultipleHasNext" time="0.001" />
+
+      <testcase classname="alice.tuprolog.TermIteratorTestCase" name="testMultipleNext" time="0.001" />
+
+      <testcase classname="alice.tuprolog.TermIteratorTestCase" name="testRemoveOperationNotSupported" time="0.0" />
+
+      <testcase classname="alice.tuprolog.TermIteratorTestCase" name="testIterationCount" time="0.001" />
+
+      <testcase classname="alice.tuprolog.TermIteratorTestCase" name="testIteratorOnInvalidTerm" time="0.001" />
+
+      <testcase classname="alice.tuprolog.TermIteratorTestCase" name="testIterationOnInvalidTheory" time="0.0" />
+
+      <testcase classname="alice.tuprolog.TheoryTestCase" name="testToStringWithParenthesis" time="0.001" />
+
+      <testcase classname="alice.tuprolog.TheoryTestCase" name="testAppendClauseLists" time="0.048" />
+
+      <testcase classname="alice.tuprolog.TheoryManagerTestCase" name="testUnknownDirective" time="0.043" />
+
+      <testcase classname="alice.tuprolog.TheoryManagerTestCase" name="testFailedDirective" time="0.059" />
+
+      <testcase classname="alice.tuprolog.TheoryManagerTestCase" name="testAssertNotBacktrackable" time="0.075" />
+
+      <testcase classname="alice.tuprolog.TheoryManagerTestCase" name="testAbolish" time="0.077" />
+
+      <testcase classname="alice.tuprolog.TheoryManagerTestCase" name="testAbolish2" time="0.076" />
+
+      <testcase classname="alice.tuprolog.TheoryManagerTestCase" name="testRetractall" time="0.059" />
+
+      <testcase classname="alice.tuprolog.TheoryManagerTestCase" name="testRetract" time="0.049" />
+
+      <testcase classname="alice.tuprolog.LibraryTestCase" name="testLibraryFunctor" time="0.055" />
+
+      <testcase classname="alice.tuprolog.LibraryTestCase" name="testLibraryPredicate" time="0.067" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryTestCase" name="testGetPrimitives" time="0.001" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryTestCase" name="testAnonymousObjectRegistration" time="0.055" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryTestCase" name="testDynamicObjectsRetrival" time="0.095" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryTestCase" name="test_java_object" time="0.046" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryTestCase" name="test_java_object_2" time="0.039" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryTestCase" name="test_invalid_path_java_object" time="0.008" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryTestCase" name="test_java_call_3" time="0.038" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryTestCase" name="test_invalid_path_java_call_4" time="0.015" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryTestCase" name="test_java_array" time="0.038" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryTestCase" name="test_set_classpath" time="0.02" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryTestCase" name="test_get_classpath" time="0.006" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryTestCase" name="test_register_1" time="0.036" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryTestCase" name="test_unregister_1" time="0.183" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryTestCase" name="test_java_catch" time="0.028" />
+
+      <testcase classname="alice.tuprolog.JavaLibraryTestCase" name="test_interface" time="0.094" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testReadingTerms" time="0.0" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testReadingEOF" time="0.001" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testUnaryPlusOperator" time="0.0" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testUnaryMinusOperator" time="0.01" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testBinaryMinusOperator" time="0.001" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testListWithTail" time="0.001" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testBraces" time="0.0" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testUnivOperator" time="0.001" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testDotOperator" time="0.002" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testBracketedOperatorAsTerm" time="0.001" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testBracketedOperatorAsTerm2" time="0.002" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testIntegerBinaryRepresentation" time="0.001" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testIntegerOctalRepresentation" time="0.0" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testIntegerHexadecimalRepresentation" time="0.001" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testEmptyDCGAction" time="0.003" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testSingleDCGAction" time="0.001" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testMultipleDCGAction" time="0.004" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testMissingDCGActionElement" time="0.001" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testDCGActionCommaAsAnotherSymbol" time="0.0" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testUncompleteDCGAction" time="0.0" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testMultilineComments" time="0.01" />
+
+      <testcase classname="alice.tuprolog.ParserTestCase" name="testSingleQuotedTermWithInvalidLineBreaks" time="0.001" />
+
+      <testcase classname="alice.tuprolog.SpyEventTestCase" name="testToString" time="0.378" />
+
+      <testcase classname="alice.tuprolog.VarTestCase" name="testIsAtomic" time="0.001" />
+
+      <testcase classname="alice.tuprolog.VarTestCase" name="testIsAtom" time="0.001" />
+
+      <testcase classname="alice.tuprolog.VarTestCase" name="testIsCompound" time="0.001" />
+
+      <testcase classname="alice.tuprolog.TestVarIsEqual" name="testDifferntVarsCompareEqual" time="0.548">
+          <failure message="Test should complete normally" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Test should complete normally
+	at alice.tuprolog.TestVarIsEqual.testDifferntVarsCompareEqual(TestVarIsEqual.java:110)
+</failure>
+
+      </testcase>
+
+      <testcase classname="alice.tuprolog.JavaDynamicClassLoaderTestCase" name="ConstructorTest" time="0.004" />
+
+      <testcase classname="alice.tuprolog.JavaDynamicClassLoaderTestCase" name="LoadClassTest" time="0.031" />
+
+      <testcase classname="alice.tuprolog.JavaDynamicClassLoaderTestCase" name="LoadClassNotFoundTest" time="0.013" />
+
+      <testcase classname="alice.tuprolog.JavaDynamicClassLoaderTestCase" name="InvalidPathTest" time="0.003" />
+
+      <testcase classname="alice.tuprolog.JavaDynamicClassLoaderTestCase" name="URLHandling" time="0.06" />
+
+      <testcase classname="alice.tuprolog.JavaDynamicClassLoaderTestCase" name="TestNestedPackage" time="0.014" />
+
+      <testcase classname="alice.tuprolog.ISOIOLibraryTestCase" name="test_open" time="0.026" />
+
+      <testcase classname="alice.tuprolog.ISOIOLibraryTestCase" name="test_2" time="0.007" />
+
+      <testcase classname="alice.tuprolog.ISOIOLibraryTestCase" name="test_3" time="0.033" />
+
+      <testcase classname="alice.tuprolog.ISOIOLibraryTestCase" name="test_4" time="0.014" />
+
+      <testcase classname="alice.tuprolog.ISOIOLibraryTestCase" name="test_5" time="0.023" />
+
+      <testcase classname="alice.tuprolog.ISOIOLibraryTestCase" name="test_6" time="0.024" />
+
+      <testcase classname="alice.tuprolog.ISOIOLibraryTestCase" name="test_7" time="0.004" />
+
+      <testcase classname="alice.tuprolog.ISOIOLibraryTestCase" name="test_8" time="0.012" />
+
+      <testcase classname="alice.tuprolog.ISOIOLibraryTestCase" name="test_9" time="0.025" />
+
+      <testcase classname="alice.tuprolog.ISOIOLibraryTestCase" name="test_10" time="0.051" />
+
+      <testcase classname="alice.tuprolog.SocketLibTestCase" name="test_server_write" time="0.562" />
+
+      <testcase classname="alice.tuprolog.SocketLibTestCase" name="test_client_write" time="0.178">
+          <failure type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError
+	at alice.tuprolog.SocketLibTestCase.test_client_write(SocketLibTestCase.java:84)
+</failure>
+
+      </testcase>
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testThread_id_1" time="0.166" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testThread_create_2" time="0.236" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testThread_next_sol_1" time="0.185" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testThread_join_2" time="0.202" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testThread_read_2" time="0.214" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testThread_has_next_1" time="0.174" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testThread_detach_1" time="0.2" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testThread_sleep_1" time="0.658" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testThread_send_msg_2" time="0.106" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testThread_get_msg_2" time="0.569" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testThread_peek_msg_2" time="0.582" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testThread_wait_msg_2" time="0.54" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testThread_remove_msg_2" time="0.088" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testMsg_queue_destroy_1" time="0.036" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testMsg_queue_size_2" time="0.057" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testMutex_destroy_1" time="0.537" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testMutex_lock_unlock_1" time="0.049" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testMutex_trylock_1" time="0.03" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testMutex_unlock_all_0" time="0.034" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testFattoriale" time="0.053" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testMutex1" time="0.054" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testMutex2" time="0.042" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="testMutex3" time="0.059" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="concurrentTest1" time="0.062" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="concurrentTest2" time="0.052" />
+
+      <testcase classname="alice.tuprolog.ThreadLibraryTestCase" name="concurrentTest3" time="0.044" />
+
+      <system-out><![CDATA[Pippo constructed!
+Pluto.method(IPippo) invoked.
+met
+Pippo constructed!
+Pluto.method2(Pippo) invoked.
+met
+Pippo constructed!
+Pluto.method(IPippo) invoked.
+met
+Pippo constructed!
+met
+Pippo constructed!
+Pluto.method(IPippo) invoked.
+met
+]]></system-out>
+
+      <system-err><![CDATA[java.net.SocketException: Socket closed
+	at java.net.SocketInputStream.socketRead0(Native Method)
+	at java.net.SocketInputStream.read(SocketInputStream.java:150)
+	at java.net.SocketInputStream.read(SocketInputStream.java:121)
+	at java.net.SocketInputStream.read(SocketInputStream.java:203)
+	at java.io.ObjectInputStream$PeekInputStream.peek(ObjectInputStream.java:2291)
+	at java.io.ObjectInputStream$BlockDataInputStream.readBlockHeader(ObjectInputStream.java:2471)
+	at java.io.ObjectInputStream$BlockDataInputStream.refill(ObjectInputStream.java:2541)
+	at java.io.ObjectInputStream$BlockDataInputStream.skipBlockData(ObjectInputStream.java:2443)
+	at java.io.ObjectInputStream.skipCustomData(ObjectInputStream.java:1939)
+	at java.io.ObjectInputStream.readNonProxyDesc(ObjectInputStream.java:1618)
+	at java.io.ObjectInputStream.readClassDesc(ObjectInputStream.java:1515)
+	at java.io.ObjectInputStream.readArray(ObjectInputStream.java:1661)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1342)
+	at java.io.ObjectInputStream.defaultReadFields(ObjectInputStream.java:1989)
+	at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:1913)
+	at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:1796)
+	at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1348)
+	at java.io.ObjectInputStream.readObject(ObjectInputStream.java:370)
+	at alice.tuprolog.lib.SocketLibrary.read_from_socket_3(SocketLibrary.java:441)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at alice.tuprolog.PrimitiveInfo.evalAsPredicate(PrimitiveInfo.java:123)
+	at alice.tuprolog.StateGoalEvaluation.doJob(StateGoalEvaluation.java:41)
+	at alice.tuprolog.Engine.run(Engine.java:77)
+	at alice.tuprolog.EngineRunner.solve(EngineRunner.java:179)
+	at alice.tuprolog.EngineRunner.threadSolve(EngineRunner.java:145)
+	at alice.tuprolog.EngineRunner.run(EngineRunner.java:358)
+	at java.lang.Thread.run(Thread.java:724)
+]]></system-err>
+
+  </testsuite>
+</testsuites>

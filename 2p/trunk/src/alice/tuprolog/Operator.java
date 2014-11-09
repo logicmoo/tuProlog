@@ -23,7 +23,6 @@ import java.io.Serializable;
  * a type, and a  priority.
  *
  */
-@SuppressWarnings("serial")
 final public class Operator implements Serializable {
 	private static final long serialVersionUID = 1L;
     /**

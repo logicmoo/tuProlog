@@ -26,7 +26,6 @@ import java.util.*;
  *
  *
  */
-@SuppressWarnings("serial")
 public class OutputEvent extends EventObject {
 	private static final long serialVersionUID = 1L;
     /**

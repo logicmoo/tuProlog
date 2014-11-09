@@ -26,7 +26,6 @@ import alice.tuprolog.Theory;
  * @since 1.3 
  *
  */
-@SuppressWarnings("serial")
 public class TheoryEvent extends PrologEvent {
 	private static final long serialVersionUID = 1L;
     private Theory oldTh;

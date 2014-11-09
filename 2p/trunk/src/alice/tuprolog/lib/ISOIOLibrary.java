@@ -19,7 +19,6 @@ import java.io.*;
  * 
  */
 
-@SuppressWarnings("serial")
 public class ISOIOLibrary extends Library{
 	private static final long serialVersionUID = 1L;
     protected final int files = 1000; //numero casuale abbastanza alto per evitare eccezioni sulle dimensioni delle hashtable

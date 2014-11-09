@@ -25,7 +25,6 @@ import alice.tuprolog.Prolog;
  * @since 1.3
  *
  */
-@SuppressWarnings("serial")
 public abstract class PrologEvent extends java.util.EventObject {
     private long when;
     private static final long serialVersionUID = 1L;

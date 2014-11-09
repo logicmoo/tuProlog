@@ -65,7 +65,6 @@ import alice.util.JavaDynamicClassLoader;
  * 
  * 
  */
-@SuppressWarnings("serial")
 public class JavaLibrary extends Library {
 
     /**

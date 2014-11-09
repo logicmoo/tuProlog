@@ -2,9 +2,6 @@ package alice.tuprolog;
 import java.net.InetAddress;
 import java.util.AbstractMap;
 import java.util.ArrayList;
-@SuppressWarnings("serial")
-
-
 
 public abstract class AbstractSocket extends Term{
 	private static final long serialVersionUID = 1L;

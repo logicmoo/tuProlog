@@ -4,7 +4,6 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.List;
 
-@SuppressWarnings("serial")
 
 public class Server_Socket extends AbstractSocket{
 	private ServerSocket socket;

@@ -18,7 +18,6 @@ import alice.tuprolog.Term;
 
 
 
-@SuppressWarnings("serial")
 public class ThreadLibrary extends Library {
 	private static final long serialVersionUID = 1L;
 	protected EngineManager engineManager;

@@ -30,7 +30,6 @@ import java.util.*;
  *
  * Reviewed by Paolo Contessi: implements Comparable<Number>
  */
-@SuppressWarnings("serial")
 public abstract class Number extends Term implements Comparable<Number> {
 	private static final long serialVersionUID = 1L;
     

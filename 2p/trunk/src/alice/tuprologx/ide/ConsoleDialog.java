@@ -47,7 +47,7 @@ public class ConsoleDialog
     private PropertyChangeSupport propertyChangeSupport;
     private Console consoleManager;
     private String[] variables = null;
-   private java.util.List<Var> bindings = null;
+    private java.util.List<Var> bindings = null;
     private int selectDisplayModality = 0;
     /*Castagna 06/2011*/  
 	private boolean	exceptionEnabled;

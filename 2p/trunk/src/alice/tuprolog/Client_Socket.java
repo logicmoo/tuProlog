@@ -4,7 +4,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.List;
 
-@SuppressWarnings("serial")
 
 public class Client_Socket extends AbstractSocket {
 	private static final long serialVersionUID = 1L;

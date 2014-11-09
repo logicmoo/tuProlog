@@ -50,7 +50,6 @@ import alice.tuprolog.interfaces.IParser;
  *              '{' { exprA(1200) }* '}'
  * op(type,n) ::= atom | { symbol }+
  */
-@SuppressWarnings("serial")
 public class Parser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 {
 	private static final long serialVersionUID = 1L;

@@ -31,7 +31,6 @@ import alice.tuprolog.interfaces.IProlog;
  * The Prolog class represents a tuProlog engine.
  *
  */
-@SuppressWarnings("serial")
 public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 
 	private static final long serialVersionUID = 1L;

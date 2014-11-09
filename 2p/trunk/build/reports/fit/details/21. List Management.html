@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<title>List Management</title>
+</head>
+
+<body>
+
+<h1>List management</h1>
+
+<p>These predicates enable lists to be manipulated and trasversed.</p>
+
+<h2>1. <code>length/2</code></h2>
+
+<p><code>length(List, Length)</code> is true iff integer <var>Length</var> equals the number of elements in list <var>List</var>. In particular, if <code>List</code> is instantiated to a list of determinate length, then <code>Length</code> will be unified with this length. If <code>List</code> is of indeterminate length and <code>Length</code> is instantiated to an integer, then <code>List</code> will be unified with a list of length <code>Length</code>, and the list elements are unique variables. Finally, if <code>Length</code> is unbound then <code>Length</code> will be unified with all possible lengths of <code>List</code>.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+length(?list, ?length)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success or failure of single goals.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">alice.tuprolog.SimpleGoalFixture</td>
+  </tr>
+  <tr>
+    <td>goal</td><td>success()</td>
+  </tr>
+  <tr>
+    <td>length('scarlet', 7).</td>
+    <td bgcolor="#cfffcf">false</td>
+  </tr>
+  <tr>
+    <td>length(A, -1).</td>
+    <td bgcolor="#cfffcf">false</td>
+  </tr>
+</table>
+
+<p>Now we run some tests also verifying the unification for some of the variables in goals.</p>
+
+<p>First of all, let's start an appropriate fixture containing an engine.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="2">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>start</td>
+    <td>alice.tuprolog.EngineFixture</td>
+  </tr>
+</table>
+
+<p>Then, ask the engine to solve a query, and check variable bindings.</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr>
+    <td colspan="3">fit.ActionFixture</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>length([], 0).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#cfffcf">true</td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>length(X, 5).</td>
+  </tr>
+  <tr>
+	<td>check</td>
+	<td>hasSolution</td>
+	<td bgcolor="#cfffcf">true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#ffcfcf">[ _, _, _, _, _] <font size=-1 color="#c08080"><i>expected</i></font><hr>[_630738019,_834603741,_1969376430,_144207799,_1338923977] <font size=-1 color="#c08080"><i>actual</i></font></td>
+  </tr>
+  <tr>
+	<td>check</td>
+	<td>hasAnotherSolution</td>
+	<td bgcolor="#cfffcf">false</td>
+  </tr>
+  
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>length([1, 2 | T], X).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#cfffcf">true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#cfffcf">2</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#cfffcf">[]</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td bgcolor="#cfffcf">true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#cfffcf">3</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#ffcfcf">[ _] <font size=-1 color="#c08080"><i>expected</i></font><hr>[_2074361709] <font size=-1 color="#c08080"><i>actual</i></font></td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td bgcolor="#cfffcf">true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>X</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#cfffcf">4</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>T</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#ffcfcf">[ _, _] <font size=-1 color="#c08080"><i>expected</i></font><hr>[_1026464448,_1051841185] <font size=-1 color="#c08080"><i>actual</i></font></td>
+  </tr>
+
+  <tr>
+    <td>enter</td>
+    <td>query</td>
+    <td>length(L, S).</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasSolution</td>
+    <td bgcolor="#cfffcf">true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#cfffcf">[]</td>
+  </tr>
+  <tr>
+	<td>enter</td>
+	<td>variable</td>
+	<td>S</td>
+  </tr>
+  <tr>
+	<td>check</td>
+	<td>binding</td>
+	<td bgcolor="#cfffcf">0</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td bgcolor="#cfffcf">true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#ffcfcf">[ _] <font size=-1 color="#c08080"><i>expected</i></font><hr>[_1861686432] <font size=-1 color="#c08080"><i>actual</i></font></td>
+  </tr>
+  <tr>
+	<td>enter</td>
+	<td>variable</td>
+	<td>S</td>
+  </tr>
+  <tr>
+	<td>check</td>
+	<td>binding</td>
+	<td bgcolor="#cfffcf">1</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>hasAnotherSolution</td>
+    <td bgcolor="#cfffcf">true</td>
+  </tr>
+  <tr>
+    <td>enter</td>
+    <td>variable</td>
+    <td>L</td>
+  </tr>
+  <tr>
+    <td>check</td>
+    <td>binding</td>
+    <td bgcolor="#ffcfcf">[ _, _] <font size=-1 color="#c08080"><i>expected</i></font><hr>[_595887664,_1367722887] <font size=-1 color="#c08080"><i>actual</i></font></td>
+  </tr>
+  <tr>
+	<td>enter</td>
+	<td>variable</td>
+	<td>S</td>
+  </tr>
+  <tr>
+	<td>check</td>
+	<td>binding</td>
+	<td bgcolor="#cfffcf">2</td>
+  </tr>
+</table>
+
+<p>Other candidates for similar tests are: <code>append/3</code>, <code>member/2</code>, <code>no_duplicates/2</code>, <code>quicksort/3</code>, <code>reverse/2</code>, <code>delete/3</code>, <code>element/3</code>.</p>
+
+<p><a href="../cgi-bin/fit.cgi">Run</a> the tests!</p>
+
+<hr>
+
+<p>The results of the tests for <em>List management</em> are as follows:</p>
+
+<table border="1" cellspacing="0" cellpadding="3">
+  <tr><td>fit.Summary</td></tr>
+<tr>
+<td> <font color="#808080">counts</font></td>
+<td bgcolor="#ffcfcf">19 right, 5 wrong, 0 ignored, 0 exceptions</td></tr>
+<tr>
+<td> <font color="#808080">run date</font></td>
+<td> <font color="#808080">Thu Oct 16 20:22:47 CEST 2014</font></td></tr>
+<tr>
+<td> <font color="#808080">run elapsed time</font></td>
+<td> <font color="#808080">0:00.04</font></td></tr></table>
+
+</body>
+</html>
