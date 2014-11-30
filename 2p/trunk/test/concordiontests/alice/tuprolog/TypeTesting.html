@@ -1,0 +1,621 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+	xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+<head>
+<title>Type testing</title>
+</head>
+
+<body>
+
+	<h1>Type testing</h1>
+
+	<p>These predicates test the type associated with a term.</p>
+
+	<p>A goal executing any of these predicates simply succeeds or
+		fails; there is no side effect, unification, or error.</p>
+
+	<h2>
+		1.
+		<code>var/1</code>
+	</h2>
+
+	<p>
+		<code>var(X)</code>
+		is true iff
+		<code>X</code>
+		is a member of the variable set as defined by the specification.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+var(@term)
+</pre>
+
+	<h3>1.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>var(Foo).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>var(_).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+	</table>
+
+
+	<br />
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>var(foo).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>foo = Foo, var(Foo).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>foo=Bar, var(Bar).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+
+	</table>
+
+	<h2>
+		2.
+		<code>atom/1</code>
+	</h2>
+
+	<p>
+		<code>atom(X)</code>
+		is true iff
+		<code>X</code>
+		is a member of the atom set as defined by the specification.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+atom(@term)
+</pre>
+
+	<h3>2.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>atom(atom).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>atom('string').</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>atom([]).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+	</table>
+
+
+	<br />
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>atom(a(b)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>atom(Var).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>atom(6).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>atom(3.3).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+
+	</table>
+
+
+	<h2>
+		3.
+		<code>integer/1</code>
+	</h2>
+
+	<p>
+		<code>integer(X)</code>
+		is true iff
+		<code>X</code>
+		is a member of the integer set as defined by the specification.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+integer(@term)
+</pre>
+
+	<h3>3.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>integer(6).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>integer(-3).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+
+	</table>
+
+
+	<br />
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>integer(3.3).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>integer(X).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>integer(atom).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+
+
+	</table>
+
+
+	<h2>
+		4.
+		<code>float/1</code>
+	</h2>
+
+	<p>
+		<code>float(X)</code>
+		is true iff
+		<code>X</code>
+		is a member of the float set as defined by the specification.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+float(@term)
+</pre>
+
+	<h3>4.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>float(3.3).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>float(-3.3).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+	</table>
+
+
+	<br />
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>float(atom).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>float(X1).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+
+	</table>
+
+
+	<h2>
+		5.
+		<code>atomic/1</code>
+	</h2>
+
+	<p>
+		<code>atomic(X)</code>
+		is true if
+		<code>X</code>
+		is an atom, integer or float, and is false if
+		<code>X</code>
+		is a variable or a compound term, w.r.t every set as defined by the
+		specification.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+atomic(@term)
+</pre>
+
+	<h3>5.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>atomic(atom).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>atomic(2.3).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+	</table>
+
+
+	<br />
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>atomic(a(b)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>atomic(V1).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+
+	</table>
+
+	<h2>
+		6.
+		<code>compound/1</code>
+	</h2>
+
+	<p>
+		<code>compound(X)</code>
+		is true iff
+		<code>X</code>
+		is a member of the compound term set as defined by the specification.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+compound(@term)
+</pre>
+
+	<h3>6.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>compound(-a).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>compound(a(b)).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>compound([a]).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+	</table>
+
+
+	<br />
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>compound(33.3).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>compound(-33.3).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>compound(_).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>compound(a).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+
+		<tr>
+			<td>compound([]).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+
+
+	<h2>
+		7.
+		<code>nonvar/1</code>
+	</h2>
+
+	<p>
+		<code>nonvar(X)</code>
+		is true iff
+		<code>X</code>
+		is not a member of the variable set as defined by the specification.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+nonvar(@term)
+</pre>
+
+	<h3>7.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>nonvar(33.3).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>nonvar(foo).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>foo = Baz, nonvar(Baz).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>nonvar(a(b)).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+	</table>
+
+
+	<br />
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>nonvar(_).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>nonvar(FOO).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+
+	</table>
+
+
+
+
+	<h2>
+		8.
+		<code>number/1</code>
+	</h2>
+
+	<p>
+		<code>number(X)</code>
+		is true if
+		<code>X</code>
+		is an integer or float, and is false if
+		<code>X</code>
+		is a variable, an atom or a compound term, w.r.t every set as defined
+		by the specification.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+number(@term)
+</pre>
+
+	<h3>8.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>number(3).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>number(3.3).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>number(-3).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+	</table>
+
+
+	<br />
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>number(a).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>number(X).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+
+</body>
+</html>

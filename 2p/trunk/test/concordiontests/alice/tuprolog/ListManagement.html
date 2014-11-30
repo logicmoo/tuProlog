@@ -1,0 +1,247 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+	xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+<head>
+<title>List Management</title>
+</head>
+
+<body>
+
+	<h1>List management</h1>
+
+	<p>These predicates enable lists to be manipulated and trasversed.</p>
+
+	<h2>
+		1.
+		<code>length/2</code>
+	</h2>
+
+	<p>
+		<code>length(List, Length)</code>
+		is true iff integer
+		<var>Length</var>
+		equals the number of elements in list
+		<var>List</var>
+		. In particular, if
+		<code>List</code>
+		is instantiated to a list of determinate length, then
+		<code>Length</code>
+		will be unified with this length. If
+		<code>List</code>
+		is of indeterminate length and
+		<code>Length</code>
+		is instantiated to an integer, then
+		<code>List</code>
+		will be unified with a list of length
+		<code>Length</code>
+		, and the list elements are unique variables. Finally, if
+		<code>Length</code>
+		is unbound then
+		<code>Length</code>
+		will be unified with all possible lengths of
+		<code>List</code>
+		.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+length(?list, ?length)
+</pre>
+
+	<h3>1.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success or failure
+		of single goals.</p>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>length([], 0).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>length(X, 5).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>length([1, 2 | T], X).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>length(L, S).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+	</table>
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>length('scarlet', 7).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>length(A, -1).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+	<p>Tests With Results</p>
+	<table
+		concordion:execute="#result = successAndResultsWithLimit(#goal,#theory,#variable,#solution,#limit)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:set="#limit">Limit</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>length(X, 5).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>[_,_,_,_,_]</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>length([1, 2 | T], X).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>2</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>length([1, 2 | T], X).</td>
+			<td>null</td>
+			<td>T</td>
+			<td>[]</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>length([1, 2 | T], X).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>3</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>length([1, 2 | T], X).</td>
+			<td>null</td>
+			<td>T</td>
+			<td>[_]</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>length([1, 2 | T], X).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>4</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>length([1, 2 | T], X).</td>
+			<td>null</td>
+			<td>T</td>
+			<td>[_,_]</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>length(L, S).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>[]</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>length(L, S).</td>
+			<td>null</td>
+			<td>S</td>
+			<td>0</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>length(L, S).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>[_]</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>length(L, S).</td>
+			<td>null</td>
+			<td>S</td>
+			<td>1</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>length(L, S).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>[_,_]</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>length(L, S).</td>
+			<td>null</td>
+			<td>S</td>
+			<td>2</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+
+
+
+
+	</table>
+
+	<p>
+		Other candidates for similar tests are:
+		<code>append/3</code>
+		,
+		<code>member/2</code>
+		,
+		<code>no_duplicates/2</code>
+		,
+		<code>quicksort/3</code>
+		,
+		<code>reverse/2</code>
+		,
+		<code>delete/3</code>
+		,
+		<code>element/3</code>
+		.
+	</p>
+
+
+</body>
+</html>

@@ -1,0 +1,438 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion" xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+<head>
+<title>Clause creation and destruction</title>
+</head>
+
+<body>
+
+<h1>Clause creation and destruction</h1>
+
+<p>These predicates enable the database to be altered during execution.</p>
+
+<h2>1. <code>asserta/1</code></h2>
+
+<p><code>asserta(Clause)</code> is true.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+asserta(@clause)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>The examples defined in this subsection assume the database has been created from the following Prolog text.</p>
+
+<table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal,String theory)</th></tr>
+        <tr><td>asserta(legs(octopus, 8)).</td><td>:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>true</td></tr>
+        <tr><td>asserta((legs(A, 4) :- animal(A))).</td><td>:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>true</td></tr>
+                <tr><td>asserta((foo(X) :- X, call(X))).</td><td>:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>true</td></tr>
+        
+</table>
+
+
+<p>Tests With Exception</p>
+
+<table concordion:execute="#result = successWithException(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal)</th><th ext:embed="successWithExceptionAndText(#goal,#theory)">Type Of Error</th></tr>
+        <tr><td>asserta(_).</td><td>:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>true</td><td></td></tr>
+        <tr><td>asserta(4).</td><td>:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>true</td><td></td></tr>
+         <tr><td>asserta((foo :- 4)).</td><td>:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>true</td><td></td></tr>
+        <tr><td>asserta((atom(_) :- true)).</td><td>:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>true</td><td></td></tr>
+        
+        
+</table>
+
+
+
+<h2>2. <code>assertz/1</code></h2>
+
+<p><code>assertz(Clause)</code> is true.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+assertz(@clause)
+</pre>
+
+<h3>2.1 Example tests</h3>
+
+<p>The examples defined in this subsection assume the database has been created from the following Prolog text.</p>
+
+
+<table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal,String theory)</th></tr>
+        <tr><td>assertz(legs(spider, 8)).</td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).</td><td>true</td></tr>
+        <tr><td>assertz((legs(B, 2) :- bird(B))).</td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).</td><td>true</td></tr>
+                <tr><td>assertz((foo(X) :- X -> call(X))).</td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).</td><td>true</td></tr>
+        
+</table>
+
+
+<p>Tests With Exception</p>
+
+<table concordion:execute="#result = successWithException(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal)</th><th ext:embed="successWithExceptionAndText(#goal,#theory)">Type Of Error</th></tr>
+        <tr><td>assertz(_).</td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).</td><td>true</td><td></td></tr>
+        <tr><td>assertz(4).</td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).</td><td>true</td><td></td></tr>
+         <tr><td>assertz((foo :- 4)).</td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).</td><td>true</td><td></td></tr>
+        <tr><td>assertz((atom(_) :- true)).</td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).</td><td>true</td><td></td></tr>
+        
+        
+</table>
+
+
+
+<h2>3. <code>retract/1</code></h2>
+
+<p><code>retract(Clause)</code> is true iff the database contains at least one dynamic procedure with a clause <code>Clause</code> which unifies with <code>Head :- Body</code>.</p>
+
+<p><code>retract(Clause)</code> is re-executable.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+retract(+clause)
+</pre>
+
+<h3>3.1 Example tests</h3>
+
+<p>The examples defined in this subsection assume the database has been created from the following Prolog text.</p>
+
+
+
+<table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal,String theory)</th></tr>
+        <tr><td>retract(legs(octopus, 8)).</td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+legs(spider, 8).
+legs(B, 2) :- bird(B).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).
+foo(X) :- call(X) -> call(X).</td><td>true</td></tr>
+        <tr><td>retract((foo(C) :- A -> B)).</td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+legs(spider, 8).
+legs(B, 2) :- bird(B).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).
+foo(X) :- call(X) -> call(X).</td><td>true</td></tr>
+        
+        
+</table>
+
+<br />
+ <table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertFalse="#result">success(String goal,String theory)</th></tr>
+        <tr><td>retract(legs(spider, 6)).</td><td>null</td><td>false</td></tr>
+        <tr><td>        retract(insect(I)), write(I), retract(insect(bee)), fail.
+        </td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+legs(spider, 8).
+legs(B, 2) :- bird(B).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).
+foo(X) :- call(X) -> call(X).</td><td>false</td></tr>
+                <tr><td>retract((foo(A) :- A, call(A))).</td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+legs(spider, 8).
+legs(B, 2) :- bird(B).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).
+foo(X) :- call(X) -> call(X).</td><td>false</td></tr>
+             
+        
+        
+</table>
+
+<p>Tests With Exception</p>
+
+<table concordion:execute="#result = successWithException(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal)</th><th ext:embed="successWithExceptionAndText(#goal,#theory)">Type Of Error</th></tr>
+        <tr><td>retract(insect(I)), write(I), retract(insect(bee)), fail.
+        </td><td>null</td><td>true</td><td></td></tr>
+        <tr><td>        retract((X :- in_eec(Y))).
+        </td><td>null</td><td>true</td><td></td></tr>
+                <tr><td>retract((4 :- X)).</td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+legs(spider, 8).
+legs(B, 2) :- bird(B).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).
+foo(X) :- call(X) -> call(X).</td><td>true</td><td></td></tr>
+                <tr><td>retract((atom(X) :- X == '[]')).</td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+legs(spider, 8).
+legs(B, 2) :- bird(B).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).
+foo(X) :- call(X) -> call(X).</td><td>true</td><td></td></tr>
+        
+</table>
+
+<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		 <tr><td>retract((legs(X, 2) :- T)).</td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+legs(spider, 8).
+legs(B, 2) :- bird(B).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).
+foo(X) :- call(X) -> call(X).</td><td>T</td><td>bird(X)</td><td>true</td></tr>
+        <tr><td>retract((legs(X, Y) :- Z)).</td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+legs(spider, 8).
+legs(B, 2) :- bird(B).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).
+foo(X) :- call(X) -> call(X).</td><td>Y</td><td>2</td><td>true</td></tr>
+                <tr><td>retract((legs(X, Y) :- Z)).</td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+legs(spider, 8).
+legs(B, 2) :- bird(B).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).
+foo(X) :- call(X) -> call(X).</td><td>Z</td><td>animal(X)</td><td>true</td></tr>
+                                <tr><td>retract((legs(X, Y) :- Z)).</td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+legs(spider, 8).
+legs(B, 2) :- bird(B).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).
+foo(X) :- call(X) -> call(X).</td><td>Y</td><td>6</td><td>true</td></tr>
+          <tr><td>retract((legs(X, Y) :- Z)).</td><td>:- dynamic(legs/2).
+legs(A, 4) :- animal(A).
+legs(octopus, 8).
+legs(A, 6) :- insect(A).
+legs(spider, 8).
+legs(B, 2) :- bird(B).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).
+
+:- dynamic(foo/1).
+foo(X) :- call(X), call(X).
+foo(X) :- call(X) -> call(X).</td><td>Z</td><td>insect(X)</td><td>true</td></tr>
+        
+</table>
+
+
+<h2>4. <code>abolish/1</code></h2>
+
+<p><code>abolish(Pred)</code> is true.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+abolish(@predicate_indicator)
+</pre>
+
+<h3>4.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+
+<table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal,String theory)</th></tr>
+        <tr><td>abolish(foo/2).</td><td>null</td><td>true</td></tr>
+      
+        
+        
+</table>
+
+<table concordion:execute="#result = successWithException(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal)</th><th ext:embed="successWithExceptionAndText(#goal,#theory)">Type Of Error</th></tr>
+        <tr><td>abolish(foo/_).</td><td>null</td><td>true</td><td></td></tr>
+        <tr><td>abolish(foo).</td><td>null</td><td>true</td><td></td></tr>
+         <tr><td>abolish(foo(_)).</td><td>null</td><td>true</td><td></td></tr>
+        <tr><td>abolish(abolish/1).</td><td>null</td><td>true</td><td></td></tr>
+      
+        
+        
+</table>
+
+
+</body>
+</html>
