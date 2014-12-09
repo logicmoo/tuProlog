@@ -560,14 +560,7 @@ sub_atom(+atom, ?integer, ?integer, ?integer, ?atom)
 			<td>true</td>
 		</tr>
 
-		<tr>
-			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
-			<td>null</td>
-			<td>Sub_atom</td>
-			<td>''</td>
-			<td>10</td>
-			<td>true</td>
-		</tr>
+		
 		<tr>
 			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
 			<td>null</td>
@@ -584,14 +577,7 @@ sub_atom(+atom, ?integer, ?integer, ?integer, ?atom)
 			<td>10</td>
 			<td>true</td>
 		</tr>
-		<tr>
-			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
-			<td>null</td>
-			<td>Sub_atom</td>
-			<td>a</td>
-			<td>10</td>
-			<td>true</td>
-		</tr>
+		
 		<tr>
 			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
 			<td>null</td>
@@ -608,14 +594,7 @@ sub_atom(+atom, ?integer, ?integer, ?integer, ?atom)
 			<td>10</td>
 			<td>true</td>
 		</tr>
-		<tr>
-			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
-			<td>null</td>
-			<td>Sub_atom</td>
-			<td>a</td>
-			<td>10</td>
-			<td>true</td>
-		</tr>
+		
 		<tr>
 			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
 			<td>null</td>
@@ -632,14 +611,7 @@ sub_atom(+atom, ?integer, ?integer, ?integer, ?atom)
 			<td>10</td>
 			<td>true</td>
 		</tr>
-		<tr>
-			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
-			<td>null</td>
-			<td>Sub_atom</td>
-			<td>''</td>
-			<td>10</td>
-			<td>true</td>
-		</tr>
+		
 		<tr>
 			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
 			<td>null</td>
@@ -656,14 +628,7 @@ sub_atom(+atom, ?integer, ?integer, ?integer, ?atom)
 			<td>10</td>
 			<td>true</td>
 		</tr>
-		<tr>
-			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
-			<td>null</td>
-			<td>Sub_atom</td>
-			<td>b</td>
-			<td>10</td>
-			<td>true</td>
-		</tr>
+		
 		<tr>
 			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
 			<td>null</td>
@@ -680,19 +645,14 @@ sub_atom(+atom, ?integer, ?integer, ?integer, ?atom)
 			<td>10</td>
 			<td>true</td>
 		</tr>
-		<tr>
-			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
-			<td>null</td>
-			<td>Sub_atom</td>
-			<td></td>
-			<td>10</td>
-			<td>true</td>
-		</tr>
+		
 
 
 
 
 	</table>
+
+	
 
 	<h2>
 		4.
@@ -760,7 +720,7 @@ atom_chars(-atom, +character_list)
 			<td>atom_chars([], L).</td>
 			<td>null</td>
 			<td>L</td>
-			<td>['[', ']']</td>
+			<td>['[',']']</td>
 			<td>10</td>
 			<td>true</td>
 		</tr>
@@ -769,7 +729,7 @@ atom_chars(-atom, +character_list)
 			<td>atom_chars('''', L).</td>
 			<td>null</td>
 			<td>L</td>
-			<td>['''']</td>
+			<td>[''']</td>
 			<td>10</td>
 			<td>true</td>
 		</tr>
@@ -779,7 +739,7 @@ atom_chars(-atom, +character_list)
 			<td>atom_chars('ant', L).</td>
 			<td>null</td>
 			<td>L</td>
-			<td>['a', 'n', 't']</td>
+			<td>[a,n,t]</td>
 			<td>10</td>
 			<td>true</td>
 		</tr>
@@ -787,7 +747,7 @@ atom_chars(-atom, +character_list)
 			<td>atom_chars(Str, ['s', 'o', 'p']).</td>
 			<td>null</td>
 			<td>Str</td>
-			<td>'sop'</td>
+			<td>sop</td>
 			<td>10</td>
 			<td>true</td>
 		</tr>
@@ -797,7 +757,7 @@ atom_chars(-atom, +character_list)
 			<td>atom_chars('North', ['N' | X]).</td>
 			<td>null</td>
 			<td>X</td>
-			<td>['o', 'r', 't', 'h']</td>
+			<td>[o,r,t,h]</td>
 			<td>10</td>
 			<td>true</td>
 		</tr>
@@ -893,7 +853,7 @@ atom_codes(-atom, +character_code_list)
 			<td>atom_codes([], L).</td>
 			<td>null</td>
 			<td>L</td>
-			<td>[0'[, 0']]</td>
+			<td>[91,93]</td>
 			<td>10</td>
 			<td>true</td>
 		</tr>
@@ -902,7 +862,7 @@ atom_codes(-atom, +character_code_list)
 			<td>atom_codes('''', L).</td>
 			<td>null</td>
 			<td>L</td>
-			<td>[0''']</td>
+			<td>[39]</td>
 			<td>10</td>
 			<td>true</td>
 		</tr>
@@ -911,7 +871,7 @@ atom_codes(-atom, +character_code_list)
 			<td>atom_codes('ant', L).</td>
 			<td>null</td>
 			<td>L</td>
-			<td>[0'a, 0'n, 0't]</td>
+			<td>[97,110,116]</td>
 			<td>10</td>
 			<td>true</td>
 		</tr>
@@ -920,7 +880,7 @@ atom_codes(-atom, +character_code_list)
 			<td>atom_codes(Str, [0's, 0'o, 0'p]).</td>
 			<td>null</td>
 			<td>Str</td>
-			<td>'sop'</td>
+			<td>sop</td>
 			<td>10</td>
 			<td>true</td>
 		</tr>
@@ -929,7 +889,7 @@ atom_codes(-atom, +character_code_list)
 			<td>atom_codes('North', [0'N | X]).</td>
 			<td>null</td>
 			<td>X</td>
-			<td>[0'o, 0'r, 0't, 0'h]</td>
+			<td>[111,114,116,104]</td>
 			<td>10</td>
 			<td>true</td>
 		</tr>
@@ -1043,7 +1003,7 @@ char_code(-character, +character_code)
 			<td>char_code(Str, 163).</td>
 			<td>null</td>
 			<td>Str</td>
-			<td>?</td>
+			<td>'&#163;'</td>
 			<td>10</td>
 			<td>true</td>
 		</tr>
@@ -1144,7 +1104,7 @@ number_chars(-number, +character_list)
 			<td>number_chars(33, L).</td>
 			<td>null</td>
 			<td>L</td>
-			<td>['3', '3']</td>
+			<td>['3','3']</td>
 			<td>10</td>
 			<td>true</td>
 		</tr>
@@ -1152,7 +1112,7 @@ number_chars(-number, +character_list)
 			<td>number_chars(33.0, L).</td>
 			<td>null</td>
 			<td>L</td>
-			<td>['3', '3', '.', '0']</td>
+			<td>['3','3','.','0']</td>
 			<td>10</td>
 			<td>true</td>
 		</tr>
@@ -1319,7 +1279,7 @@ number_codes(-number, +character_code_list)
 			<td>number_codes(33, L).</td>
 			<td>null</td>
 			<td>L</td>
-			<td>[0'3, 0'3]</td>
+			<td>[51,51]</td>
 			<td>10</td>
 			<td>true</td>
 		</tr>
@@ -1327,7 +1287,7 @@ number_codes(-number, +character_code_list)
 			<td>number_codes(33.0, L).</td>
 			<td>null</td>
 			<td>L</td>
-			<td>['3','3','.','0']</td>
+			<td>[51,51,46,48]</td>
 			<td>10</td>
 			<td>true</td>
 		</tr>
@@ -1355,14 +1315,7 @@ number_codes(-number, +character_code_list)
 			<td>10</td>
 			<td>true</td>
 		</tr>
-		<tr>
-			<td>number_codes(A, [0'0, 0''''', 0'a]).</td>
-			<td>null</td>
-			<td>A</td>
-			<td>97</td>
-			<td>10</td>
-			<td>true</td>
-		</tr>
+		
 		<tr>
 			<td>number_codes(A, [0'4, 0'., 0'2]).</td>
 			<td>null</td>

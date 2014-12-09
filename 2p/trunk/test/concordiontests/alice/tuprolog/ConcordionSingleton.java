@@ -124,6 +124,7 @@ public class ConcordionSingleton {
 		SolveInfo info = null;
 		List<String> results = new ArrayList<String>();
 
+
 		if (!theory.equalsIgnoreCase("null"))
 			engine.setTheory(new Theory(theory));
 		info = engine.solve(goal);
@@ -135,6 +136,7 @@ public class ConcordionSingleton {
 
 					variable = (replace == true ? replaceForVariable(
 							var.toString(), ' ') : var.toString());
+
 					Term t = info.getVarValue(variable);
 					results.add(replace == true ? replaceUnderscore(t
 							.toString()) : t.toString());
@@ -142,6 +144,7 @@ public class ConcordionSingleton {
 				}
 
 			}
+
 			if (replace)
 				variable = replaceForVariable(variable, '_');
 			Term t = info.getVarValue(variable);
@@ -156,7 +159,7 @@ public class ConcordionSingleton {
 			maxSolutions--;
 		}
 
-		System.out.println(results.toString());
+		//System.out.println(results.toString());
 		return results.contains(solution);
 
 	}
