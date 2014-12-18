@@ -1,0 +1,453 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+	xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+
+<head>
+<title>Other arithmetic functors</title>
+</head>
+
+<body>
+
+	<h1>Other arithmetic functors</h1>
+
+	<p>These subclauses define the format and the definitions of other
+		evaluable functors.</p>
+
+	<p>Templates and modes represent a specification for the type of
+		the values when the arguments of the evaluable functor are evaluated
+		as an expression, and the type of its value. A specific notation is
+		employed for the structure and type of the arguments and value:</p>
+	<ul>
+		<li><var>int-exp</var> represents an integer expression,</li>
+		<li><var>integer</var> identifies an integer value,</li>
+		<li><var>float-exp</var> represents a floating point expression,</li>
+		<li><var>float</var> identifies a floating point value.</li>
+	</ul>
+
+	<h2>
+		1.
+		<code>(**)/2</code>
+		(power)
+	</h2>
+
+	<p>
+		<code>'**'(X, Y)</code>
+		evaluates the expressions
+		<var>X</var>
+		and
+		<var>Y</var>
+		with values
+		<var>VX</var>
+		and
+		<var>VY</var>
+		, and has the value of
+		<var>VX</var>
+		raised to the power of
+		<var>VY</var>
+		. If
+		<var>VX</var>
+		and
+		<var>VY</var>
+		are both zero, the value is 1.0.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+'**'(int-exp, int-exp) = float
+'**'(float-exp, int-exp) = float
+'**'(int-exp, float-exp) = float
+'**'(float-exp, float-exp) = float
+</pre>
+
+	<p>
+		Note that
+		<code>**</code>
+		is an infix predefined operator.
+	</p>
+
+	<h3>1.1 Example tests</h3>
+
+	<p>First of all, let's start an appropriate fixture.</p>
+
+	<table concordion:execute="#result = value(#evaluable)">
+		<tr>
+			<th concordion:set="#evaluable">Evaluable</th>
+			<th concordion:assertEquals="#result">value(String evaluable)</th>
+		</tr>
+		<tr>
+			<td>'**'(5, 3).</td>
+			<td>125.0</td>
+		</tr>
+		<tr>
+			<td>'**'(-5.0, 3).</td>
+			<td>-125.0</td>
+		</tr>
+		<tr>
+			<td>'**'(5, -1).</td>
+			<td>0.2</td>
+		</tr>
+		<tr>
+			<td>'**'(5, 3.0).</td>
+			<td>125.0</td>
+		</tr>
+		<tr>
+			<td>'**'(0.0, 0).</td>
+			<td>1.0</td>
+		</tr>
+
+
+
+	</table>
+	<h2>
+		2.
+		<code>sin/1</code>
+	</h2>
+
+	<p>
+		<code>sin(X)</code>
+		evaluates the expression
+		<var>X</var>
+		with value
+		<var>VX</var>
+		and has the value of the sine of
+		<var>VX</var>
+		(measured in radians).
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+sin(float-exp) = float
+sin(int-exp) = float
+</pre>
+
+	<h3>2.1 Example tests</h3>
+
+	<p>First of all, let's start an appropriate fixture.</p>
+
+	<table concordion:execute="#result = value(#evaluable)">
+		<tr>
+			<th concordion:set="#evaluable">Evaluable</th>
+			<th concordion:assertEquals="#result">value(String evaluable)</th>
+		</tr>
+		<tr>
+			<td>sin(0.0).</td>
+			<td>0.0</td>
+		</tr>
+		<tr>
+			<td>sin(0).</td>
+			<td>0.0</td>
+		</tr>
+
+
+
+	</table>
+	<p>Now we run some tests also verifying the unification for some of
+		the variables in goals.</p>
+
+	<p>First of all, let's start an appropriate fixture containing an
+		engine.</p>
+
+	<table
+		concordion:execute="#result = successAndResult(#goal,#theory,#variable)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable)</th>
+		</tr>
+		<tr>
+			<td>PI is atan(1.0) * 4, X is sin(PI / 2.0).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>1.0</td>
+		</tr>
+		<tr>
+			<td>PI is atan(1.0) * 4, X is sin(PI / 2.0).</td>
+			<td>null</td>
+			<td>PI</td>
+			<td>3.141592653589793</td>
+		</tr>
+
+
+
+
+	</table>
+
+	<h2>
+		3.
+		<code>cos/1</code>
+	</h2>
+
+	<p>
+		<code>cos(X)</code>
+		evaluates the expression
+		<var>X</var>
+		with value
+		<var>VX</var>
+		and has the value of the cosine of
+		<var>VX</var>
+		(measured in radians).
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+cos(float-exp) = float
+cos(int-exp) = float
+</pre>
+
+	<h3>3.1 Example tests</h3>
+
+	<p>First of all, let's start an appropriate fixture.</p>
+
+	<table concordion:execute="#result = value(#evaluable)">
+		<tr>
+			<th concordion:set="#evaluable">Evaluable</th>
+			<th concordion:assertEquals="#result">value(String evaluable)</th>
+		</tr>
+		<tr>
+			<td>cos(0.0).</td>
+			<td>1.0</td>
+		</tr>
+		<tr>
+			<td>cos(0).</td>
+			<td>1.0</td>
+		</tr>
+
+
+
+	</table>
+	<p>Now we run some tests also verifying the unification for some of
+		the variables in goals.</p>
+
+	<p>First of all, let's start an appropriate fixture containing an
+		engine.</p>
+
+	<table
+		concordion:execute="#result = successAndResult(#goal,#theory,#variable)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable)</th>
+		</tr>
+		<tr>
+			<td>PI is atan(1.0) * 4, X is cos(PI / 2.0).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>6.123233995736766E-17</td>
+		</tr>
+		<tr>
+			<td>PI is atan(1.0) * 4, X is cos(PI / 2.0).</td>
+			<td>null</td>
+			<td>PI</td>
+			<td>3.141592653589793</td>
+		</tr>
+
+
+
+
+	</table>
+
+	<h2>
+		4.
+		<code>atan/1</code>
+	</h2>
+
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+atan(float-exp) = float
+atan(int-exp) = float
+</pre>
+
+	<h3>4.1 Example tests</h3>
+
+	<p>First of all, let's start an appropriate fixture.</p>
+
+	<table concordion:execute="#result = value(#evaluable)">
+		<tr>
+			<th concordion:set="#evaluable">Evaluable</th>
+			<th concordion:assertEquals="#result">value(String evaluable)</th>
+		</tr>
+		<tr>
+			<td>atan(0.0).</td>
+			<td>0.0</td>
+		</tr>
+		<tr>
+			<td>atan(0).</td>
+			<td>0.0</td>
+		</tr>
+
+
+
+	</table>
+	<p>Now we run some tests also verifying the unification for some of
+		the variables in goals.</p>
+
+	<p>First of all, let's start an appropriate fixture containing an
+		engine.</p>
+
+	<table
+		concordion:execute="#result = successAndResult(#goal,#theory,#variable)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable)</th>
+		</tr>
+		<tr>
+			<td>PI is atan(1.0) * 4.</td>
+			<td>null</td>
+			<td>PI</td>
+			<td>3.141592653589793</td>
+		</tr>
+
+
+
+
+	</table>
+
+	<h2>
+		5.
+		<code>exp/1</code>
+	</h2>
+
+	<p>
+		<code>exp(X)</code>
+		evaluates the expression
+		<var>X</var>
+		with value
+		<var>VX</var>
+		and has the value of the exponential function of
+		<var>VX</var>
+		.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+exp(float-exp) = float
+exp(int-exp) = float
+</pre>
+
+	<h3>5.1 Example tests</h3>
+
+	<p>First of all, let's start an appropriate fixture.</p>
+
+	<table concordion:execute="#result = value(#evaluable)">
+		<tr>
+			<th concordion:set="#evaluable">Evaluable</th>
+			<th concordion:assertEquals="#result">value(String evaluable)</th>
+		</tr>
+		<tr>
+			<td>exp(0.0).</td>
+			<td>1.0</td>
+		</tr>
+		<tr>
+			<td>exp(1.0).</td>
+			<td>2.7182818284590455</td>
+		</tr>
+		<tr>
+			<td>exp(0).</td>
+			<td>1.0</td>
+		</tr>
+
+
+	</table>
+
+
+	<h2>
+		6.
+		<code>log/1</code>
+	</h2>
+
+	<p>
+		<code>log(X)</code>
+		evaluates the expression
+		<var>X</var>
+		with value
+		<var>VX</var>
+		and has the value of the natural logarithm of
+		<var>VX</var>
+		.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+log(float-exp) = float
+log(int-exp) = float
+</pre>
+
+	<h3>6.1 Example tests</h3>
+
+	<p>First of all, let's start an appropriate fixture.</p>
+
+	<table concordion:execute="#result = value(#evaluable)">
+		<tr>
+			<th concordion:set="#evaluable">Evaluable</th>
+			<th concordion:assertEquals="#result">value(String evaluable)</th>
+		</tr>
+		<tr>
+			<td>log(1.0).</td>
+			<td>0.0</td>
+		</tr>
+		<tr>
+			<td>log(2.7182818284590455).</td>
+			<td>1.0</td>
+		</tr>
+
+
+	</table>
+
+	<h2>
+		7.
+		<code>sqrt/1</code>
+	</h2>
+
+	<p>
+		<code>sqrt(X)</code>
+		evaluates the expression
+		<var>X</var>
+		with value
+		<var>VX</var>
+		and has the value of the square root of
+		<var>VX</var>
+		.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+sqrt(float-exp) = float
+sqrt(int-exp) = float
+</pre>
+
+	<h3>7.1 Example tests</h3>
+
+	<p>First of all, let's start an appropriate fixture.</p>
+
+	<table concordion:execute="#result = value(#evaluable)">
+		<tr>
+			<th concordion:set="#evaluable">Evaluable</th>
+			<th concordion:assertEquals="#result">value(String evaluable)</th>
+		</tr>
+		<tr>
+			<td>sqrt(0.0).</td>
+			<td>0.0</td>
+		</tr>
+		<tr>
+			<td>sqrt(1.0).</td>
+			<td>1.0</td>
+		</tr>
+		<tr>
+			<td>sqrt(1.21).</td>
+			<td>1.1</td>
+		</tr>
+
+
+	</table>
+
+
+</body>
+</html>

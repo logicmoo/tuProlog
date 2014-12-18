@@ -1,0 +1,1341 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+	xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+<head>
+<title>Atomic term processing</title>
+</head>
+
+<body>
+
+	<h1>Atomic term processing</h1>
+
+	<p>These predicates enable atomic terms to be processed as a
+		sequence of characters and character codes. Facilities exist to split
+		and join atoms, to convert a single character to and from the
+		corresponding character code, and to convert a number to and from a
+		list of characters.</p>
+
+	<h2>
+		1.
+		<code>atom_length/2</code>
+	</h2>
+
+	<p>
+		<code>atom_length(Atom, Length)</code>
+		is true iff integer
+		<var>Length</var>
+		equals the number of characters of the name of the atom
+		<var>Atom</var>
+		.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+atom_length(+atom, ?integer)
+</pre>
+
+	<h3>1.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success or failure
+		of single goals.</p>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>atom_length('scarlet', 5).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+
+
+	<p>Now we run some tests also verifying the unification for some of
+		the variables in goals.</p>
+
+	<p>First of all, let's start an appropriate fixture containing an
+		engine.</p>
+
+
+	<table
+		concordion:execute="#result = successAndResult(#goal,#theory,#variable)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable)</th>
+		</tr>
+		<tr>
+			<td>atom_length('enchanted evening', N).</td>
+			<td>null</td>
+			<td>N</td>
+			<td>17</td>
+		</tr>
+		<tr>
+			<td>atom_length('enchanted\evening', N).</td>
+			<td>null</td>
+			<td>N</td>
+			<td>17</td>
+		</tr>
+		<tr>
+			<td>atom_length('', N).</td>
+			<td>null</td>
+			<td>N</td>
+			<td>0</td>
+		</tr>
+
+
+
+
+	</table>
+
+	<p>Tests With Exception</p>
+
+	<table
+		concordion:execute="#result = successWithException(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal)</th>
+			<th ext:embed="successWithExceptionAndText(#goal,#theory)">Type
+				Of Error</th>
+		</tr>
+		<tr>
+			<td>atom_length(Atom, 4).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>atom_length(1.23, 4).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>atom_length(atom, '4').</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+
+
+	</table>
+
+	<h2>
+		2.
+		<code>atom_concat/3</code>
+	</h2>
+
+	<p>
+		<code>atom_concat(Atom_1, Atom_2, Atom_12)</code>
+		is true iff characters of the name of the atom
+		<var>Atom_12</var>
+		are the result of concatenating the characters of the name of the atom
+		<var>Atom_2</var>
+		to the characters of the name of the atom
+		<var>Atom_1</var>
+		.
+	</p>
+
+	<p>
+		<code>atom_concat(Atom_1, Atom_2, Atom_12)</code>
+		is re-executable.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+atom_concat(?atom, ?atom, +atom)
+atom_concat(+atom, +atom, -atom)
+</pre>
+
+	<h3>2.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success or failure
+		of single goals.</p>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>atom_concat('hello', 'world', 'small world').</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+
+	<table
+		concordion:execute="#result = successAndResultsWithLimit(#goal,#theory,#variable,#solution,#limit)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:set="#limit">Limit</th>
+
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+
+		<tr>
+			<td>atom_concat('small', T, 'smallworld').</td>
+			<td>null</td>
+			<td>T</td>
+			<td>world</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>atom_concat(T, 'world', 'smallworld').</td>
+			<td>null</td>
+			<td>T</td>
+			<td>small</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>atom_concat(T1, T2, 'hello').</td>
+			<td>null</td>
+			<td>T1</td>
+			<td>''</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>atom_concat(T1, T2, 'hello').</td>
+			<td>null</td>
+			<td>T2</td>
+			<td>hello</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>atom_concat(T1, T2, 'hello').</td>
+			<td>null</td>
+			<td>T1</td>
+			<td>h</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>atom_concat(T1, T2, 'hello').</td>
+			<td>null</td>
+			<td>T2</td>
+			<td>ello</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>atom_concat(T1, T2, 'hello').</td>
+			<td>null</td>
+			<td>T1</td>
+			<td>he</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>atom_concat(T1, T2, 'hello').</td>
+			<td>null</td>
+			<td>T2</td>
+			<td>llo</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>atom_concat(T1, T2, 'hello').</td>
+			<td>null</td>
+			<td>T1</td>
+			<td>hel</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>atom_concat(T1, T2, 'hello').</td>
+			<td>null</td>
+			<td>T2</td>
+			<td>lo</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>atom_concat(T1, T2, 'hello').</td>
+			<td>null</td>
+			<td>T1</td>
+			<td>hell</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>atom_concat(T1, T2, 'hello').</td>
+			<td>null</td>
+			<td>T2</td>
+			<td>o</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>atom_concat(T1, T2, 'hello').</td>
+			<td>null</td>
+			<td>T1</td>
+			<td>hello</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>atom_concat(T1, T2, 'hello').</td>
+			<td>null</td>
+			<td>T2</td>
+			<td>''</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+
+
+
+	</table>
+
+
+	<p>Tests With Exception</p>
+
+	<table
+		concordion:execute="#result = successWithException(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal)</th>
+			<th ext:embed="successWithExceptionAndText(#goal,#theory)">Type
+				Of Error</th>
+		</tr>
+		<tr>
+			<td>atom_concat(small, V2, V4).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+
+
+	</table>
+
+
+	<p>Now we run some tests also verifying the unification for some of
+		the variables in goals.</p>
+
+	<p>First of all, let's start an appropriate fixture containing an
+		engine.</p>
+
+	<table border="1" cellspacing="0" cellpadding="3">
+		<tr>
+			<td colspan="2">fit.ActionFixture</td>
+		</tr>
+		<tr>
+			<td>start</td>
+			<td>alice.tuprolog.EngineFixture</td>
+		</tr>
+	</table>
+
+	<p>Then, ask the engine to solve a query, and check variable
+		bindings.</p>
+
+
+
+	<h2>
+		3.
+		<code>sub_atom/5</code>
+	</h2>
+
+	<p>
+		<code>sub_atom(Atom, Before, Length, After, Sub_atom)</code>
+		is true iff atom
+		<var>Atom</var>
+		can be broken into three pieces,
+		<var>AtomL</var>
+		,
+		<var>Sub_atom</var>
+		and
+		<var>AtomR</var>
+		such that
+		<var>Before</var>
+		is the number of characters of the name of
+		<var>AtomL</var>
+		,
+		<var>Length</var>
+		is the number of characters of the name of
+		<var>Sub_atom</var>
+		and
+		<var>After</var>
+		is the number of characters of the name of
+		<var>AtomR</var>
+		.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+sub_atom(+atom, ?integer, ?integer, ?integer, ?atom)
+</pre>
+
+	<p>
+		<code>sub_atom(Atom, Before, Length, After, Sub_atom)</code>
+		is re-executable.
+	</p>
+
+	<h3>3.1 Example tests</h3>
+
+	<p>We run some tests also verifying the unification for some of the
+		variables in goals.</p>
+
+	<p>First of all, let's start an appropriate fixture containing an
+		engine.</p>
+
+
+
+	<table
+		concordion:execute="#result = successAndResultsWithLimit(#goal,#theory,#variable,#solution,#limit)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:set="#limit">Limit</th>
+
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>sub_atom(abracadabra, 0, 5, _, S2).</td>
+			<td>null</td>
+			<td>S2</td>
+			<td>abrac</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>sub_atom(abracadabra, _, 5, 0, S2).</td>
+			<td>null</td>
+			<td>S2</td>
+			<td>dabra</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>sub_atom(abracadabra, 3, L, 3, S2).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>5</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>sub_atom(abracadabra, 3, L, 3, S2).</td>
+			<td>null</td>
+			<td>S2</td>
+			<td>acada</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>sub_atom(abracadabra, B, 2, A, ab).</td>
+			<td>null</td>
+			<td>B</td>
+			<td>0</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>sub_atom(abracadabra, B, 2, A, ab).</td>
+			<td>null</td>
+			<td>A</td>
+			<td>9</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>sub_atom(abracadabra, B, 2, A, ab).</td>
+			<td>null</td>
+			<td>B</td>
+			<td>7</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>sub_atom(abracadabra, B, 2, A, ab).</td>
+			<td>null</td>
+			<td>A</td>
+			<td>2</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>sub_atom('Banana', 3, 2, _, S2).</td>
+			<td>null</td>
+			<td>S2</td>
+			<td>an</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>sub_atom('charity', _, 3, _, S2).</td>
+			<td>null</td>
+			<td>S2</td>
+			<td>cha</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>sub_atom('charity', _, 3, _, S2).</td>
+			<td>null</td>
+			<td>S2</td>
+			<td>rit</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>sub_atom('charity', _, 3, _, S2).</td>
+			<td>null</td>
+			<td>S2</td>
+			<td>har</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>sub_atom('charity', _, 3, _, S2).</td>
+			<td>null</td>
+			<td>S2</td>
+			<td>ari</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>sub_atom('charity', _, 3, _, S2).</td>
+			<td>null</td>
+			<td>S2</td>
+			<td>ity</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
+			<td>null</td>
+			<td>Start</td>
+			<td>0</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
+			<td>null</td>
+			<td>Length</td>
+			<td>0</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		
+		<tr>
+			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
+			<td>null</td>
+			<td>Start</td>
+			<td>0</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
+			<td>null</td>
+			<td>Length</td>
+			<td>1</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		
+		<tr>
+			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
+			<td>null</td>
+			<td>Start</td>
+			<td>0</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
+			<td>null</td>
+			<td>Length</td>
+			<td>2</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		
+		<tr>
+			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
+			<td>null</td>
+			<td>Start</td>
+			<td>1</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
+			<td>null</td>
+			<td>Length</td>
+			<td>0</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		
+		<tr>
+			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
+			<td>null</td>
+			<td>Start</td>
+			<td>1</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
+			<td>null</td>
+			<td>Length</td>
+			<td>1</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		
+		<tr>
+			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
+			<td>null</td>
+			<td>Start</td>
+			<td>2</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>sub_atom('ab', Start, Length, _, Sub_atom).</td>
+			<td>null</td>
+			<td>Length</td>
+			<td>0</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		
+
+
+
+
+	</table>
+
+	
+
+	<h2>
+		4.
+		<code>atom_chars/2</code>
+	</h2>
+
+	<p>
+		<code>atom_chars(Atom, List)</code>
+		is true iff
+		<var>List</var>
+		is a list whose elements are the one-char atoms whose names are the
+		successive characters of the name of atom
+		<var>Atom</var>
+		.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+atom_chars(+atom, ?character_list)
+atom_chars(-atom, +character_list)
+</pre>
+
+	<h3>4.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success or failure
+		of single goals.</p>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>atom_chars('soap', ['s', 'o', 'p']).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+
+	<table
+		concordion:execute="#result = successAndResultsWithLimit(#goal,#theory,#variable,#solution,#limit)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:set="#limit">Limit</th>
+
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>atom_chars('', L).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>[]</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>atom_chars([], L).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>['[',']']</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>atom_chars('''', L).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>[''']</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+
+		<tr>
+			<td>atom_chars('ant', L).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>[a,n,t]</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>atom_chars(Str, ['s', 'o', 'p']).</td>
+			<td>null</td>
+			<td>Str</td>
+			<td>sop</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+
+		<tr>
+			<td>atom_chars('North', ['N' | X]).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>[o,r,t,h]</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+
+	</table>
+
+
+
+	<table
+		concordion:execute="#result = successWithException(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal)</th>
+			<th ext:embed="successWithExceptionAndText(#goal,#theory)">Type
+				Of Error</th>
+		</tr>
+		<tr>
+			<td>atom_chars(X, Y).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+
+
+	</table>
+
+
+	<h2>
+		5.
+		<code>atom_codes/2</code>
+	</h2>
+
+	<p>
+		<code>atom_codes(Atom, List)</code>
+		is true iff
+		<var>List</var>
+		is a list whose elements correspond to the successive characters of
+		the name
+		<var>Atom</var>
+		, and the value of each element is the character code for the
+		corresponding character of the name.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+atom_codes(+atom, ?character_code_list)
+atom_codes(-atom, +character_code_list)
+</pre>
+
+	<h3>5.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success or failure
+		of single goals.</p>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>atom_codes('soap', [0's, 0'o, 0'p]).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+	<table
+		concordion:execute="#result = successAndResultsWithLimit(#goal,#theory,#variable,#solution,#limit)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:set="#limit">Limit</th>
+
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>atom_codes('', L).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>[]</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>atom_codes([], L).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>[91,93]</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>atom_codes('''', L).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>[39]</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>atom_codes('ant', L).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>[97,110,116]</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>atom_codes(Str, [0's, 0'o, 0'p]).</td>
+			<td>null</td>
+			<td>Str</td>
+			<td>sop</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>atom_codes('North', [0'N | X]).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>[111,114,116,104]</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+
+
+
+	</table>
+
+
+
+	<p>Tests With Exception</p>
+
+	<table
+		concordion:execute="#result = successWithException(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal)</th>
+			<th ext:embed="successWithExceptionAndText(#goal,#theory)">Type
+				Of Error</th>
+		</tr>
+		<tr>
+			<td>atom_codes(X, Y).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+
+
+	</table>
+
+	<h2>
+		6.
+		<code>char_code/2</code>
+	</h2>
+
+	<p>
+		<code>char_code(Char, Code)</code>
+		is true iff the character code for the one-char atom
+		<var>Char</var>
+		is
+		<var>Code</var>
+		.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+char_code(+character, ?character_code)
+char_code(-character, +character_code)
+</pre>
+
+	<h3>6.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success or failure
+		of single goals.</p>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>char_code('b', 84).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+
+	<table
+		concordion:execute="#result = successAndResultsWithLimit(#goal,#theory,#variable,#solution,#limit)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:set="#limit">Limit</th>
+
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>char_code('a', Code).</td>
+			<td>null</td>
+			<td>Code</td>
+			<td>97</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>char_code(Str, 99).</td>
+			<td>null</td>
+			<td>Str</td>
+			<td>c</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>char_code(Str, 0'c).</td>
+			<td>null</td>
+			<td>Str</td>
+			<td>c</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>char_code(Str, 163).</td>
+			<td>null</td>
+			<td>Str</td>
+			<td>'&#163;'</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+	</table>
+
+
+	<p>Tests With Exception</p>
+
+	<table
+		concordion:execute="#result = successWithException(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal)</th>
+			<th ext:embed="successWithExceptionAndText(#goal,#theory)">Type
+				Of Error</th>
+		</tr>
+		<tr>
+			<td>char_code('ab', Int).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>char_code(C, I).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+
+
+	</table>
+
+
+
+	<h2>
+		7.
+		<code>number_chars/2</code>
+	</h2>
+
+	<p>
+		<code>number_chars(Number, List)</code>
+		is true iff
+		<var>List</var>
+		is a list whose elements are the one-char atoms corresponding to a
+		character sequence of
+		<var>Number</var>
+		which could be output.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+number_chars(+number, ?character_list)
+number_chars(-number, +character_list)
+</pre>
+
+	<h3>7.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success or failure
+		of single goals.</p>
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>number_chars(33, ['3', '3']).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>number_chars(3.3, ['3', '.', '3']).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+
+	</table>
+
+
+	<table
+		concordion:execute="#result = successAndResultsWithLimit(#goal,#theory,#variable,#solution,#limit)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:set="#limit">Limit</th>
+
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>number_chars(33, L).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>['3','3']</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>number_chars(33.0, L).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>['3','3','.','0']</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>number_chars(X, ['3', '.', '3', 'E', '+', '0']).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>3.3</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>number_chars(A, ['-', '2', '5']).</td>
+			<td>null</td>
+			<td>A</td>
+			<td>-25</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>number_chars(A, ['\t','\n', ' ', '3']).</td>
+			<td>null</td>
+			<td>A</td>
+			<td>3</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>number_chars(A, ['0', x, f]).</td>
+			<td>null</td>
+			<td>A</td>
+			<td>15</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>number_chars(A, ['0', '''''', a]).</td>
+			<td>null</td>
+			<td>A</td>
+			<td>97</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>number_chars(A, ['4', '.', '2']).</td>
+			<td>null</td>
+			<td>A</td>
+			<td>4.2</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>number_chars(A, ['4', '2', '.', '0', 'e', '-', '1']).</td>
+			<td>null</td>
+			<td>A</td>
+			<td>4.2</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+
+	</table>
+
+
+	<p>Tests With Exception</p>
+
+	<table
+		concordion:execute="#result = successWithException(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal)</th>
+			<th ext:embed="successWithExceptionAndText(#goal,#theory)">Type
+				Of Error</th>
+		</tr>
+		<tr>
+			<td>number_chars(A, ['\t','3', 'g',' ']).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>number_chars(A, ['\t','3', 'g','4']).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>number_chars(A, ['\t','3', '4','g', '5']).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>number_chars(A, ['\t', '3', '5', '-', '6']).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+
+
+	</table>
+
+	<h2>
+		8.
+		<code>number_codes/2</code>
+	</h2>
+
+	<p>
+		<code>number_codes(Number, List)</code>
+		is true iff
+		<var>List</var>
+		is a list whose elements are the character codes corresponding to a
+		character sequence of
+		<var>Number</var>
+		which could be output.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+number_codes(+number, ?character_code_list)
+number_codes(-number, +character_code_list)
+</pre>
+
+	<h3>8.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success or failure
+		of single goals.</p>
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>number_codes(33, [0'3, 0'3]).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>number_codes(3.3, [0'3, 0'., 0'3]).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+
+	</table>
+
+
+	<table
+		concordion:execute="#result = successAndResultsWithLimit(#goal,#theory,#variable,#solution,#limit)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:set="#limit">Limit</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>number_codes(33, L).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>[51,51]</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>number_codes(33.0, L).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>[51,51,46,48]</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>number_codes(A, [0'-, 0'2, 0'5]).</td>
+			<td>null</td>
+			<td>A</td>
+			<td>-25</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>number_codes(A, [0' , 0'3]).</td>
+			<td>null</td>
+			<td>A</td>
+			<td>3</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>number_codes(A, [0'0, 0'x, 0'f]).</td>
+			<td>null</td>
+			<td>A</td>
+			<td>15</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		
+		<tr>
+			<td>number_codes(A, [0'4, 0'., 0'2]).</td>
+			<td>null</td>
+			<td>A</td>
+			<td>4.2</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>number_codes(A, [0'4, 0'2, 0'., 0'0, 0'e, 0'-, 0'1]).</td>
+			<td>null</td>
+			<td>A</td>
+			<td>4.2</td>
+			<td>10</td>
+			<td>true</td>
+		</tr>
+
+
+	</table>
+
+
+</body>
+</html>

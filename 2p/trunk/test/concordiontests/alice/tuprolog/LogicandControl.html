@@ -1,0 +1,293 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+	xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+
+<head>
+<title>Logic and control</title>
+</head>
+
+<body>
+
+	<h1>Logic and control</h1>
+
+	<p>These predicates are simply derived from the control constructs
+		and provide additional facilities for affecting the control flow
+		during execution.</p>
+
+	<h2>
+		1.
+		<code>\+/1</code>
+		(not provable)
+	</h2>
+
+	<p>
+		<code>'\+'(Term)</code>
+		is true iff
+		<code>call(Term)</code>
+		is false.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+'\+'(@callable_term)
+</pre>
+
+	<p>
+		Note that
+		<code>\+</code>
+		is a predefined operator.
+	</p>
+
+	<h3>1.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success or failure
+		of single goals.</p>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>'\+'((!, false)).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'\+'(4 = 5).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'\+'(X = f(X)).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+
+	</table>
+
+	<br />
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>'\+'(true).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>\+(!).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+
+
+	<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>(X=1; X=2), \+((!, fail)).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>1</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>(X=1; X=2), \+((!, fail)).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>2</td>
+			<td>true</td>
+		</tr>
+	</table>
+
+
+
+	<p>Tests With Exception</p>
+
+	<table
+		concordion:execute="#result = successWithException(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal)</th>
+			<th ext:embed="successWithExceptionAndText(#goal,#theory)">Type
+				Of Error</th>
+		</tr>
+		<tr>
+			<td>\+(3).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>'\+'(X).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+
+
+	</table>
+
+
+
+	<h2>
+		2.
+		<code>once/1</code>
+	</h2>
+
+	<p>
+		<code>once(Term)</code>
+		is true iff
+		<code>call(Term)</code>
+		is true.
+	</p>
+
+	<p>
+		<code>once(Term)</code>
+		behaves as
+		<code>call(Goal)</code>
+		but it is not re-executable.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+once(+callable_term)
+</pre>
+
+	<h3>1.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success or failure
+		of single goals.</p>
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>once(!).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>once(repeat).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+
+	</table>
+
+	<br />
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>once(fail).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>once(X = f(X)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+	<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>once(!), (X=1; X=2).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>1</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>once(!), (X=1; X=2).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>2</td>
+			<td>true</td>
+		</tr>
+	</table>
+
+	<p>Note that there are no tests covering the cases when an error or
+		exception is thrown by the engine while solving a query using this
+		predicate.</p>
+
+	<h2>
+		3.
+		<code>repeat/0</code>
+	</h2>
+
+	<p>
+		<code>repeat</code>
+		is true.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+repeat
+</pre>
+
+	<p>
+		Note that
+		<code>repeat</code>
+		is re-executable.
+	</p>
+
+	<h3>3.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success or failure
+		of single goals.</p>
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>repeat, !, fail.</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+</body>
+</html>

@@ -1,0 +1,507 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+	xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+
+<head>
+<title>Term unification</title>
+</head>
+
+<body>
+
+	<h1>Term unification</h1>
+
+	<p>These predicates are concerned with the unification of two
+		terms.</p>
+
+	<h2>
+		1.
+		<code>=/2</code>
+		(Prolog unify)
+	</h2>
+
+	<p>
+		If
+		<code>X</code>
+		and
+		<code>Y</code>
+		are not subject to occurs check, then
+		<code>'='(X, Y)</code>
+		is true iff
+		<code>X</code>
+		and
+		<code>Y</code>
+		are unifiable.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+'='(?term, ?term)
+</pre>
+
+	<p>
+		Note that
+		<code>=</code>
+		is a predefined operator.
+	</p>
+
+	<h3>1.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>'='(1, 1).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'='(_, _).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'='(X, 1).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'='(X, Y).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'='(X=Y, X=abc).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'='(f(X,def), f(def,Y)).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+	</table>
+
+
+	<br />
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>'='(1, 2).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'='(1, 1.0).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'='(g(X), f(f(X))).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'='(f(X,1),f(a(X))).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'='(f(X, Y, X, 1), f(a(X), a(Y), Y, 2)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+
+		<tr>
+			<td>'='(f(X, Y, X), f(a(X), a(Y), Y, 2)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'='(X, a(X)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'='(f(X, 1), f(a(X), 2)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'='(f(1, X, 1), f(2, a(X), 2)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'='(f(1, X), f(2, a(X))).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+
+	</table>
+
+
+	<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>'='(X, 1).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>1</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'='(X, Y).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>X</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'='(X, Y), '='(X, abc).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>abc</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'='(X, Y), '='(X, abc).</td>
+			<td>null</td>
+			<td>Y</td>
+			<td>abc</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'='(f(X, def), f(def, Y)).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>def</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>'='(f(X, def), f(def, Y)).</td>
+			<td>null</td>
+			<td>Y</td>
+			<td>def</td>
+			<td>true</td>
+		</tr>
+
+
+	</table>
+
+
+	<h2>
+		2.
+		<code>unify_with_occurs_check/2</code>
+		(unify)
+	</h2>
+
+	<p>
+		<code>unify_with_occurs_check(X, Y)</code>
+		attempts
+	</p>
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+unify_with_occurs_check(?term, ?term)
+</pre>
+
+	<h3>2.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>unify_with_occurs_check(1,1).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>unify_with_occurs_check(X,Y).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>unify_with_occurs_check(_,_).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>unify_with_occurs_check(X,Y).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>unify_with_occurs_check(f(X,def),f(def,Y)).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+
+
+	</table>
+
+
+	<br />
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+
+		<tr>
+			<td>unify_with_occurs_check(1, 2).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>unify_with_occurs_check(1, 1.0).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>unify_with_occurs_check(g(X), f(f(X))).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>unify_with_occurs_check(f(X,1), f(a(X))).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>unify_with_occurs_check(f(X,Y,X), f(a(X), a(Y), Y, 2)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>unify_with_occurs_check(X, a(X)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>unify_with_occurs_check(f(X,1), f(a(X),2)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>unify_with_occurs_check(f(1,X,1), f(2,a(X),2)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>unify_with_occurs_check(f(1,X), f(2,a(X))).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>unify_with_occurs_check(f(X,Y,X,1), f(a(X), a(Y), Y, 2)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>unify_with_occurs_check(Y, a(Y)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+
+
+
+	</table>
+
+	<p>Test With Results</p>
+	<table
+		concordion:execute="#result = successAndResult(#goal,#theory,#variable)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable)</th>
+		</tr>
+		<tr>
+			<td>unify_with_occurs_check(X,1).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>1</td>
+		</tr>
+
+
+
+
+	</table>
+
+	<h2>
+		3.
+		<code>\=/2</code>
+		(not Prolog unifiable)
+	</h2>
+
+	<p>
+		If
+		<code>X</code>
+		and
+		<code>Y</code>
+		are not subject to occurs check, then
+		<code>\=(X, Y)</code>
+		is true iff
+		<code>X</code>
+		and
+		<code>Y</code>
+		are not unifiable.
+	</p>
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+'\='(@term, @term)
+</pre>
+
+	<p>
+		Note that
+		<code>\=</code>
+		is a predefined operator.
+	</p>
+
+	<h3>3.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>'\='(1, 2).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'\='(1, 1.0).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'\='(g(X), f(f(X))).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'\='(f(X, 1), f(a(X))).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'\='(f(X, Y, X), f(a(X), a(Y), Y, 2)).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'\='(X, a(X)).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'\='(f(X, 1), f(a(X), 2)).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'\='(f(1, X, 1), f(2, a(X), 2)).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'\='(f(1, X), f(2, a(X))).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'\='(f(X, Y, X, 1), f(a(X), a(Y), Y, 2)).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+
+	</table>
+
+
+	<br />
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>'\='(1, 1).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'\='(X, 1).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'\='(X, Y).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'\='(_, _).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'\='(f(X, def), f(def, Y)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+
+
+
+
+
+	</table>
+
+
+</body>
+</html>
