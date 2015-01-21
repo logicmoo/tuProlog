@@ -22,9 +22,25 @@ import alice.tuprolog.event.*;
 import alice.tuprolog.lib.IOLibrary;
 
 import javax.swing.*;
+import javax.swing.plaf.SliderUI;
+
+import org.fife.ui.autocomplete.AbstractCompletionProvider;
+import org.fife.ui.autocomplete.BasicCompletion;
+import org.fife.ui.autocomplete.Completion;
+import org.fife.ui.autocomplete.CompletionProvider;
+import org.fife.ui.autocomplete.DefaultCompletionProvider;
+import org.fife.ui.autocomplete.TemplateCompletion;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * The tuProlog IDE to be run on a Java2 platform. Makes use of Thinlet and
@@ -56,9 +72,12 @@ public class JavaIDE
     private void initComponents() {
         System.out.println("tuProlog system - release " + Prolog.getVersion());
 
-        Prolog engine = new Prolog();
+        final Prolog engine = new Prolog();
         
-        tabbedPane = new TheoryTabbedPane();
+        DefaultCompletionProvider commonCompletionProvider = CompletionUtils.createCompletionProvider();
+        engine.addTheoryListener(new CompletionUpdateTheoryListener(commonCompletionProvider));
+        
+        tabbedPane = new TheoryTabbedPane(commonCompletionProvider);
         tabbedPane.setEngine(engine);
         toolBar = new ToolBar(tabbedPane,this);
         tabbedPane.setToolBar(toolBar);
@@ -68,8 +87,8 @@ public class JavaIDE
 
         TheoryEditor editor = new TheoryEditor(tabbedPane);
         tabbedPane.setTheoryEditor(editor);
-
-        JavaInputField inputField = new JavaInputField();
+        
+        JavaInputField inputField = new JavaInputField(commonCompletionProvider);
         tabbedPane.setInputField(inputField);
 
         consoleManager=new ConsoleManager(tabbedPane);
@@ -149,10 +168,10 @@ public class JavaIDE
         IDEPanel.add(statusBar, BorderLayout.SOUTH);
 
         getContentPane().add(IDEPanel);
-
+        
         pack();
+        splitPaneV.setDividerLocation(200);
         setSize(new Dimension(585,675));
-        splitPaneV.setResizeWeight(0.7);
 
         // Set a title bar icon
         ImageIcon icon = new ImageIcon(getClass().getResource("img/tuProlog.gif"));
@@ -222,12 +241,11 @@ public class JavaIDE
         }
     }
 
-    class WindowListener extends WindowAdapter
+	class WindowListener extends WindowAdapter
     {
         public void windowClosing(WindowEvent w)
         {
             onClose();
         }
     }
-    
-} // end JavaIDE class
+}

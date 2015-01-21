@@ -19,6 +19,9 @@ package alice.tuprologx.ide;
 
 import javax.swing.*;
 
+import org.fife.ui.autocomplete.AutoCompletion;
+import org.fife.ui.autocomplete.CompletionProvider;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
@@ -49,7 +52,7 @@ public class JavaInputField
     private ConsoleManager console;
 
     
-    public JavaInputField() {
+    public JavaInputField(CompletionProvider completionProvider) {
         inputField = new JTextField();
         inputField.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent event) {
@@ -61,6 +64,13 @@ public class JavaInputField
                 solve();
             }
         });
+        
+        // Add text completion
+        AutoCompletion ac = new AutoCompletion(completionProvider);
+        ac.install(inputField);
+        ac.setShowDescWindow(true);
+        ac.setParameterAssistanceEnabled(true);
+        ac.setAutoCompleteSingleChoices(false);
         
         JButton solveButton = new JButton();
         URL urlImage = getClass().getResource("img/Solve18.png");

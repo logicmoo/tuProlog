@@ -71,7 +71,9 @@ public class ConsoleManager
             {
                 ide.enableTheoryCommands(false);
                 dialog.setStatusMessage("Solving...");
-                new EngineThread(engine, getGoal(), this).start();
+                // Add the dot at the end if missing - for user's convenience
+                String goal = getGoal().endsWith(".") ? getGoal() : getGoal() + ".";
+                new EngineThread(engine, goal, this).start();
             }
             catch (Exception e)
             {

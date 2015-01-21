@@ -1,9 +1,12 @@
 package alice.tuprologx.ide;
 
 import java.util.ArrayList;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import org.fife.ui.autocomplete.CompletionProvider;
 
 import alice.tuprolog.Prolog;
 
@@ -25,15 +28,17 @@ public class TheoryTabbedPane
     private JavaInputField inputField;
     private ConsoleDialog consoleDialog;
     private StatusBar statusBar;
+    private CompletionProvider completionProvider;
 
     private ArrayList<FileIDE> theoryFileNames;
     
-    public TheoryTabbedPane()
+    public TheoryTabbedPane(CompletionProvider completionProvider)
     {
         super();
         setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         addMouseListener(this);
         theoryFileNames = new ArrayList<FileIDE>();
+        this.completionProvider = completionProvider;
     }
 
     public FileIDE getTheoryTitleNamesAt(int index)
@@ -188,7 +193,7 @@ public class TheoryTabbedPane
         return ((FileIDE)theoryFileNames.get(getSelectedIndex())).getFileName();
     }
     public void newTheory() {
-        JavaEditArea editArea = new JavaEditArea();
+        JavaEditArea editArea = new JavaEditArea(completionProvider);
         addTab("untitled", editArea);
         theoryFileNames.add(new FileIDE("",null));
         setSelectedIndex(getTabCount()-1);
@@ -214,7 +219,7 @@ public class TheoryTabbedPane
         if (!found)
         {
             theoryFileNames.add(fileIDE);
-            JavaEditArea editArea = new JavaEditArea();
+            JavaEditArea editArea = new JavaEditArea(completionProvider);
             addTab(fileIDE.getFileName(), editArea);
             setSelectedIndex(getTabCount()-1);
             setEditorContent(fileIDE.getContent());
@@ -235,7 +240,7 @@ public class TheoryTabbedPane
     public void getTheory()
     {
         FileIDE fileIDE = new FileIDE(engine.getTheory().toString(),null);
-        JavaEditArea editArea = new JavaEditArea();
+        JavaEditArea editArea = new JavaEditArea(completionProvider);
         addTab("Theory loaded", editArea);
         theoryFileNames.add(fileIDE);
         setSelectedIndex(getTabCount()-1);

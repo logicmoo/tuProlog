@@ -18,16 +18,21 @@
 package alice.tuprologx.ide;
 
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
 import javax.swing.undo.*;
 import javax.swing.event.*;
 
-import alice.util.jedit.SyntaxDocument;
+import org.fife.ui.autocomplete.AutoCompletion;
+import org.fife.ui.autocomplete.CompletionProvider;
+import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
+import org.fife.ui.rsyntaxtextarea.Token;
+import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 import java.beans.*;
-import java.util.StringTokenizer;
+import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.*;
 
 /**
  * An edit area for the Java 2 platform. Makes use of an advanced Swing text area.
@@ -42,7 +47,7 @@ public class JavaEditArea extends JPanel implements TheoryEditArea, FileEditArea
     /**
 	 * The advanced Swing text area used by this edit area.
 	 */
-    private alice.util.jedit.JEditTextArea inputTheory;
+    private RSyntaxTextArea inputTheory;
     /**
 	 * The line number corresponding to the caret's current position in the text area.
 	 */
@@ -64,14 +69,30 @@ public class JavaEditArea extends JPanel implements TheoryEditArea, FileEditArea
 	 */
     private UndoManager undoManager;
 
-
-    public JavaEditArea() {
-        PrologTextArea textArea = new PrologTextArea();
-
-        setKeyBindings(textArea);
-
-        inputTheory = new alice.util.jedit.JEditTextArea(textArea);
-        inputTheory.setTokenMarker(new PrologTokenMarker());
+    public JavaEditArea(CompletionProvider completionProvider) {
+    	// Create the editor
+        inputTheory = new RSyntaxTextArea(20, 60);
+        inputTheory.setTabSize(2);
+        inputTheory.setClearWhitespaceLinesEnabled(true);
+        inputTheory.setAntiAliasingEnabled(true);
+        inputTheory.setMarkOccurrences(true);
+        
+        // Add token definitions for syntax coloring
+        AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory)TokenMakerFactory.getDefaultInstance();
+        atmf.putMapping("text/Prolog", "alice.tuprologx.ide.PrologTokenMaker2");
+        inputTheory.setSyntaxEditingStyle("text/Prolog");
+        SyntaxScheme scheme = inputTheory.getSyntaxScheme();
+        scheme.getStyle(Token.VARIABLE).foreground = Color.BLUE;
+        
+        // Add text completion
+        AutoCompletion ac = new AutoCompletion(completionProvider);
+        ac.install(inputTheory);
+        ac.setShowDescWindow(true);
+        ac.setParameterAssistanceEnabled(true);
+        ac.setAutoCompleteSingleChoices(false);
+        
+        RTextScrollPane inputTheoryScrollPane = new RTextScrollPane(inputTheory);
+        
         setLayout(new java.awt.GridBagLayout());
         java.awt.GridBagConstraints constraints = new java.awt.GridBagConstraints();
         constraints.gridx = 0;
@@ -85,7 +106,7 @@ public class JavaEditArea extends JPanel implements TheoryEditArea, FileEditArea
 
         inputTheory.addCaretListener(new CaretListener() {
             public void caretUpdate(CaretEvent event) {
-                setCaretLine(inputTheory.getCaretLine() + 1);
+                setCaretLine(inputTheory.getCaretLineNumber() + 1);
             }
         });
 
@@ -110,102 +131,16 @@ public class JavaEditArea extends JPanel implements TheoryEditArea, FileEditArea
         undoManager = new UndoManager();
         inputTheory.getDocument().addUndoableEditListener(undoManager);
 
-        add(inputTheory, constraints);
+        add(inputTheoryScrollPane, constraints);
         
         propertyChangeSupport = new PropertyChangeSupport(this);
-        
     }
-
-    /**
-     * Set key bindings for edit area actions. Note that the key bindings must
-     * be added to the inputHandler in the PrologTextArea through the facilities
-     * offered by this component from the jEdit package.
-     */
-    private void setKeyBindings(PrologTextArea textArea) {
-        // C+Z == Ctrl + Z
-        textArea.inputHandler.addKeyBinding("C+Z", new AbstractAction() {
-            public void actionPerformed(ActionEvent event) {
-                undoAction();
-            }
-        });
-        // CS+Z = Ctrl + Shift + Z
-        textArea.inputHandler.addKeyBinding("CS+Z", new AbstractAction() {
-            public void actionPerformed(ActionEvent event) {
-                redoAction();
-            }
-        });
-        // C+A == Ctrl + A
-        textArea.inputHandler.addKeyBinding("C+A", new AbstractAction() {
-            public void actionPerformed(ActionEvent event) {
-                inputTheory.selectAll();
-            }
-        });
-        // ENTER == Enter
-        textArea.inputHandler.addKeyBinding("ENTER", new AbstractAction() {
-            public void actionPerformed(ActionEvent event) {
-                if (inputTheory.isEditable())
-                {
-                    String line=inputTheory.getLineText(inputTheory.getCaretLine());
-                    int breakPoint=inputTheory.getCaretPosition();
-                    String padding = "";
-                    int paddingLength;
-                    StringTokenizer st = new StringTokenizer(line," \t\n");
-                    paddingLength = 0;
-                    String noPadding = "";
-                    if(st.hasMoreTokens())
-                    {
-                        noPadding=st.nextToken();
-                        paddingLength=line.indexOf(noPadding);
-                        padding=line.substring(0, paddingLength);
-                    }
-                    else //if line is empty or if it's made only by ' ', '\t' or '\n'
-                    {
-                        padding=line;
-                        paddingLength=line.length();
-                    }
     
-                    //String part1 = inputTheory.getText().substring(0, breakPoint);
-                    String part2 = inputTheory.getText().substring(breakPoint);
-                    /**
-                     * JEditTextArea.setText richiama 2 metodi che agiscono sul SyntaxDocument
-                     * provocando 2 "entry" nell'elenco undo/redo e quindi non va bene usare
-                     * setText, meglio agire direttamente sul SyntaxDocument
-                     */
-                    //inputTheory.setText(part1+"\n"+padding+part2);
-                    
-                    SyntaxDocument document = inputTheory.getDocument();
-                    try
-                    {
-                        document.beginStructEdit();
-                        /*
-                         * There is no way to avoid the double modification... or, if there is, I
-                         * wasn't able to find it; I've tried to get the best possible result anyway
-                         */
-                        document.remove(breakPoint, document.getLength()-breakPoint);
-                        document.insertString(breakPoint, "\n"+padding+part2, null);
-                        inputTheory.setDocument(document);
-                        inputTheory.setCaretPosition(breakPoint+padding.length()+1);
-                    }
-                    catch(BadLocationException bl)
-                    {
-                        bl.printStackTrace();
-                    }
-                    finally
-                    {
-                        document.endStructEdit();
-                    }
-                }
-            }
-        });
-    }
-
-
     public void setCaretLine(int caretLine) {
         int oldCaretLine = getCaretLine();
         this.caretLine = caretLine;
         propertyChangeSupport.firePropertyChange("caretLine", oldCaretLine, caretLine);
     }
-
 
     public int getCaretLine() {
         return caretLine;
@@ -275,12 +210,12 @@ public class JavaEditArea extends JPanel implements TheoryEditArea, FileEditArea
 
     public void setFontDimension(int dimension)
     {
-        Font font = new Font(inputTheory.getPainter().getFont().getName(),inputTheory.getPainter().getFont().getStyle(),dimension);
-        inputTheory.getPainter().setFont(font);
+        Font font = new Font(inputTheory.getFont().getName(), inputTheory.getFont().getStyle(), dimension);
+        inputTheory.setFont(font);
     }
 
     public void setEditable(boolean flag)
     {
         inputTheory.setEditable(flag);
     }
-} // end JavaEditArea class
+}

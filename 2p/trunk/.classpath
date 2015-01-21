@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/junit.jar"/>
 	<classpathentry kind="lib" path="lib/ikvm-api.jar"/>
 	<classpathentry kind="lib" path="lib/mscorlib.jar"/>
+	<classpathentry kind="lib" path="/2p-andrzej/lib/autocomplete.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
