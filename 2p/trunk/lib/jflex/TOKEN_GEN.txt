@@ -1,0 +1,1 @@
+java -cp JFlex.jar JFlex.Main PrologTokenMaker2.flex -d . --skel skeleton.default
