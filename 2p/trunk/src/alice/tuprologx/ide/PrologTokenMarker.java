@@ -3,7 +3,6 @@ package alice.tuprologx.ide;
 import alice.util.jedit.*;
 import javax.swing.text.Segment;
 
-@Deprecated
 public class PrologTokenMarker extends TokenMarker
 {
     public PrologTokenMarker()

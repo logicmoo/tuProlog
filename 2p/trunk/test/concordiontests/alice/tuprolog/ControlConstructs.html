@@ -70,28 +70,6 @@ a(2).</td><td>false</td></tr>
 
 </table>
 
-<table
-		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
-		<tr>
-			<th concordion:set="#goal">Goal</th>
-			<th concordion:set="#theory">Theory</th>
-			<th concordion:set="#variable">Variable</th>
-			<th concordion:set="#solution">Solution</th>
-			<th concordion:assertEquals="#result">success(String goal,String
-				theory,String variable,Strng solution)</th>
-		</tr>
-		 <tr><td>Z = !, call((Z = !, a(X), Z)).</td><td>null</td><td>X</td><td>1</td><td>true</td></tr>
-        <tr><td>Z = !, call((Z = !, a(X), Z)).</td><td>null</td><td>Z</td><td>!</td><td>true</td></tr>
-        
-                <tr><td>call((Z = !, a(X), Z)).</td><td>null</td><td>X</td><td>1</td><td>true</td></tr>
-                <tr><td>call((Z = !, a(X), Z)).</td><td>null</td><td>Z</td><td>!</td><td>true</td></tr>
-                <tr><td>call((Z = !, a(X), Z)).</td><td>null</td><td>X</td><td>2</td><td>true</td></tr>
-                <tr><td>call((Z = !, a(X), Z)).</td><td>null</td><td>Z</td><td>!</td><td>true</td></tr>
-        
-
-        
-        
-</table>
 
 
 

@@ -2,14 +2,11 @@
 	
 <project name="tuProlog build file" basedir=".." default="help">
 
-	<taskdef name="fit" classname="com.cmdev.fit.ant.FitTask">
-		<classpath>
-			<fileset dir="lib">
-				<include name="fit.jar"/>
-				<include name="antfit.jar"/> 
-			</fileset>
-		</classpath>
-	</taskdef>
+	
+	  <path id="compile.classpath">
+	        <fileset dir="lib" includes="*.jar"/>
+	    </path>
+	
 	
 	<path id="path.svnant">
  		<pathelement location="lib/svnant.jar"/>
@@ -45,6 +42,8 @@
 			<copy todir="${build.classes.dir}/alice/tuprologx/ide/img">
 				<fileset dir="${src.dir}/alice/tuprologx/ide/img"/>
 			</copy>
+	    	
+	    	<copy file="${src.dir}/alice/tuprologx/ide/docs.txt" todir="${build.classes.dir}/alice/tuprologx/ide"/>
 			
 	    </sequential>
 	</macrodef>
@@ -62,7 +61,9 @@
     			
     			<mkdir dir="${build.tests.dir}"/>
     			<mkdir dir="${build.tests.dir}/unit"/>
-    			<mkdir dir="${build.tests.dir}/fixtures"/>
+		    	
+    			<!-- <mkdir dir="${build.tests.dir}/fixtures"/> -->
+		    	<mkdir dir="${build.tests.dir}/concordion"/>
     			
     			<javac destdir="${build.tests.dir}/unit" debug="@{debug}" 
     				deprecation="false" optimize="@{optimize}" failonerror="true" includeantruntime="false" target="${target}" source="${target}">
@@ -70,13 +71,6 @@
     	            <classpath refid="ant-classpath"/>
     	        	<classpath location="${build.classes.dir}"/>
     	        </javac>
-    			
-    			<javac destdir="${build.tests.dir}/fixtures" debug="@{debug}"
-    				deprecation="false" optimize="@{optimize}" failonerror="true" target="${target}" source="${target}">
-    		        <src path="${test.dir}/fit/fixtures"/>
-    		        <classpath refid="ant-classpath"/>
-    		    	<classpath location="${build.classes.dir}"/>
-    			</javac>
 		    	
 	 		</sequential>
 	</macrodef>
@@ -88,6 +82,8 @@
 			<delete includeemptydirs="true">
 	    		<fileset dir="${build.archives.dir}" includes="**/*"/>
 	    	</delete>
+			
+
 	    	
 	    	<jar destfile="${build.archives.dir}/2p.jar" basedir="${build.classes.dir}">
 	    	    <manifest>
@@ -98,8 +94,14 @@
 	    	      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
 	    	      	<attribute name="Implementation-Version" value="${engine.version}.${JavaSpecific.version}"/>
 	    	      	<!-- details -->
-	    	   		<attribute name="Main-Class" value="alice.tuprologx.ide.GUILauncher"/>
+	    	    	
+	    	    	<attribute name="Main-Class" value="alice.tuprologx.ide.GUILauncher"/>
+	    	    	<attribute name="Class-Path" value="."/>
 	    	    </manifest>
+	    		
+	    		<zipgroupfileset excludes="META-INF/*.SF" dir="${lib.dir}" includes="*.jar"/>
+	    		<zipgroupfileset excludes="META-INF/*.SF" dir="${lib.dir}/jflex" includes="*.jar"/>
+	    
 	    	  </jar>
 	    	
 	    	<jar destfile="${build.archives.dir}/tuprolog.jar" 	basedir="${build.classes.dir}" 
@@ -127,17 +129,15 @@
 			    </manifest>
 		 	</jar>
 	    	
-	    	<jar destfile="${build.tests.dir}/fixtures.jar" basedir="${build.tests.dir}/fixtures">
+<!--	    	<jar destfile="${build.tests.dir}/fixtures.jar" basedir="${build.tests.dir}/fixtures">
 		    	<manifest>
-			      	<!-- Who is building this jar? -->
 			      	<attribute name="Built-By" value="${user.name}"/>
-			      	<!-- Information about the program itself -->
 			      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
 			      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
 			      	<attribute name="Implementation-Version" value="${engine.version}.${JavaSpecific.version}"/>
 			    </manifest>
 	    	</jar>
-	    	
+-->
 	    	<echo>Look directories ${build.archives.dir} and ${build.tests.dir}</echo>
 		</sequential>
 	</macrodef>
@@ -269,8 +269,7 @@
 			06.unit.test.report	run unit tests (junit) and save the report in html format
 								Destination: ${build.unit.reports.dir}
 		
-			07.fit.test   		run acceptance tests (FIT) and save the report in html format
-								Destination: ${build.fit.reports.dir}
+			07.concordion.test  run acceptance tests (Concordion) and save the report in html format
 		
 			08.package        	create the application jar files
 								Destination: ${build.archives.dir}
@@ -317,8 +316,7 @@
         <mkdir dir="${build.classes.dir}"/>
         <mkdir dir="${build.tests.dir}"/>
         <mkdir dir="${build.archives.dir}"/>
-		<mkdir dir="${build.unit.reports.dir}"/>
-		<mkdir dir="${build.fit.reports.dir}"/>
+		<mkdir dir="${build.unit.reports.dir}"/>		
 		<mkdir dir="${build.archives.net.dir}"/>
 		<mkdir dir="${lib.dir}"/>
 		<delete dir="${tmp.dir}" />
@@ -362,28 +360,53 @@
 		<echo>Look directory ${build.unit.reports.dir}/html-report</echo>
 	</target>
 	
-	<target name="07.fit.test" depends="05.build.tests">
+	<target name="07.concordion.test" depends="05.build.tests">
+		<property name="dir.concordion.output" value="../build/tests/concordion"/>
 		
-		<delete includeemptydirs="true">
-			<fileset dir="${build.fit.reports.dir}" includes="**/*"/>
-		</delete>
+		<mkdir dir="../build/tests/concordion/classes"/>
+		<javac classpathref="compile.classpath"
+			destdir="../build/tests/concordion/classes"
+		    srcdir="src:test/concordiontests"
+		    debug="yes"
+		    failonerror="yes"
+		    source="1.5"
+		    target="1.5"
+		    includeantruntime="no"
+		/>
+
+		<copy todir="../build/tests/concordion/classes">
+			<!-- <fileset dir="test/concordiontests" /> -->
+			<fileset dir="test/concordiontests" />
+		</copy>
 		
-		<fit destdir="${build.fit.reports.dir}" usewiki="false" fork="true">
-			<classpath refid="ant-classpath"/>
-			<classpath path="${build.classes.dir}"/>
-			<classpath path="${build.tests.dir}/fixtures"/>
+		<mkdir dir="../build/tests/concordion/test-output"/>
+		<mkdir dir="../build/tests/concordion/concordion-output"/>
+
+		<junit fork="yes" forkmode="once" printsummary="yes" showoutput="yes">
+			<jvmarg value="-Dconcordion.output.dir=../build/tests/concordion/concordion-output"/>
+		            <classpath>
+		                <path refid="compile.classpath"/>
+		                <pathelement location="../build/tests/concordion/classes"/>
+		            </classpath>
+
+		            <formatter type="plain" usefile="false"/>
+
+		            <batchtest todir="../build/tests/concordion/test-output">
+		                <fileset dir="test/concordiontests">
+		                    <include name="**/*Test.java"/>
+		                    <include name="**/*General.java"/>
+		                    <exclude name="**/Abstract*"/>
+		                </fileset>
+		            </batchtest>
+		        </junit>
+
+		        
 		
-			<fileset dir="${test.dir}/fit/doc">
-				<include name="AcceptanceTests.html"/> 
-		    </fileset>
-			
-		</fit>
 		
-		<echo>Look directory ${build.fit.reports.dir}</echo>
 	</target>
     
     <target name="08.package" depends="01.set.classpath, 04.prepare" description="Create runnable Jar" >
-    
+  
     	<build debug="false" optimize="true"/>
     	<build-tests debug="false" optimize="true"/>
     	
@@ -439,31 +462,6 @@
 				<arg value="-main:org.junit.runner.JUnitCore" />
 	            <arg value="${lib.dir}/junit.jar" />
 	        </exec>
-	 	
-	 		<echo>Building Fit...</echo>
-	 		<exec executable="${ikvmc}">
-	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Text.dll" />
-	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
-	 			<arg value="-reference:${build.archives.net.dir}/lib/junit.exe" />
-	 			<arg value="-classloader:ikvm.runtime.AppDomainAssemblyClassLoader" />	<!-- See Appendix E Alessandro Montanari's thesis -->
-	            <arg value="-target:library" />
-	            <arg value="-compressresources" />
-	            <arg value="-out:${build.archives.net.dir}/lib/fit.dll" />
-	            <arg value="${lib.dir}/fit.jar" />
-	 		 </exec>
-	 		<echo>Building Javassist...</echo>
-	 		<exec executable="${ikvmc}">
-	 				<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" />
- 	 		    	<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Util.dll" />
- 		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
-	 				<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.SwingAWT.dll" />
-	 				<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Tools.dll" />
-	 				<!-- <arg value="-debug"/> -->
- 		            <arg value="-target:library" />
- 		            <arg value="-compressresources" />
- 		            <arg value="-out:${build.archives.net.dir}/javassist.dll" />
- 		            <arg value="${lib.dir}/javassist.jar" />
-	 		</exec>
 	        
 	        <echo>Building 2p...</echo>
 	 		<exec executable="${ikvmc}">
@@ -471,12 +469,7 @@
 	 			<arg value="-reference:mscorlib.dll" /><!-- Added by Mannino-->
 	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" /> <!-- Added by Mannino-->
 	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.Runtime.dll" />
-	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Beans.dll" />
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Corba.dll" />
-	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Remoting.dll" />
-	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Misc.dll" />
-	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.SwingAWT.dll" />
-	            <arg value="-reference:${build.archives.net.dir}/javassist.dll" />
 				<!-- <arg value="-debug"/> -->
 		 		<arg value="-classloader:ikvm.runtime.ClassPathAssemblyClassLoader"/>
 	            <arg value="-target:winexe" />
@@ -499,47 +492,10 @@
  		            <arg value="${build.archives.dir}/tuprolog.jar" />
 	 		</exec>
 	 	
-	 	<!--
-	 		<echo>Building tuprolog extensions...</echo>
-	 		<exec executable="${ikvmc}">
-					<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Beans.dll" />
-		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Corba.dll" />
-		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Remoting.dll" />
-		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
-		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Misc.dll" />
-		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.SwingAWT.dll" />
-		            <arg value="-reference:${build.archives.net.dir}/archives/javassist.dll" />
- 		            <arg value="-target:library" />
- 		            <arg value="-compressresources" />
- 		            <arg value="-version:${project.version}" />
- 		            <arg value="-out:${build.archives.net.dir}/archives/tuprolog-extensions.dll" />
- 		            <arg value="${build.archives.dir}/tuprolog-extensions.jar" />
-	 		</exec>
-	 	
-	 		<echo>Building tuprolog ide...</echo>
-	 		<exec executable="${ikvmc}">
-					<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Beans.dll" />
-		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Corba.dll" />
-		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Remoting.dll" />
-		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
-		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Misc.dll" />
-		            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.SwingAWT.dll" />
-		            <arg value="-reference:${build.archives.net.dir}/archives/javassist.dll" />
- 		            <arg value="-target:library" />
- 		            <arg value="-compressresources" />
- 		            <arg value="-version:${project.version}" />
- 		            <arg value="-out:${build.archives.net.dir}/archives/tuprolog-ide.dll" />
- 		            <arg value="${build.archives.dir}/tuprolog-ide.jar" />
-	 		</exec>
-	 	
-	 		--> 
-	 	
 		 	<echo>Building Unit Tests...</echo>
 			<exec executable="${ikvmc}">
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Text.dll" />
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
-				<arg value="-reference:${build.archives.net.dir}/lib/junit.exe" />
-	            <arg value="-reference:${build.archives.net.dir}/javassist.dll" />
 				<arg value="-reference:mscorlib.dll" />							<!-- Added by Mannino-->
 				<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" />	<!-- Added by Mannino-->
 	            <arg value="-target:library" />
@@ -548,19 +504,6 @@
 				<arg value="${build.archives.dir}/2p.jar"/>
 	            <arg value="${build.tests.dir}/unit-tests.jar"/>
 	        </exec>
-	 	
-	 		<echo>Building FIT Fixtures...</echo>
-			<exec executable="${ikvmc}">
-	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Text.dll" />
-	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
-				<arg value="-reference:${build.archives.net.dir}/lib/junit.exe" />
-				<arg value="-reference:${build.archives.net.dir}/lib/fit.dll" />
-				<arg value="-reference:${build.archives.net.dir}/2p.exe" />
-	            <arg value="-target:library" />
-	            <arg value="-compressresources" />
-	            <arg value="-out:${build.archives.net.dir}/test/fixtures.dll" />
-	            <arg value="${build.tests.dir}/fixtures.jar"/>
-			</exec>
 	 	
 	 	 <echo>Look directory ${build.archives.net.dir}</echo>
 	    </target>
@@ -587,7 +530,7 @@
 	    	<echo>Look directory ${doc.dir}/javadoc</echo>
 	    </target>
 	
-		<target name="11.release.bin" depends="01.set.classpath, 04.prepare, 06.unit.test.report, 07.fit.test, 08.package, 10.javadoc " description="Creates the structure for the release">
+		<target name="11.release.bin" depends="01.set.classpath, 04.prepare, 06.unit.test.report, 08.package, 10.javadoc " description="Creates the structure for the release">
 			
 			<delete includeemptydirs="true">
 				<fileset dir="${build.release.dir}" includes="**/*"/>
@@ -622,6 +565,8 @@
 			<copy todir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}">
 				<fileset dir=".">
 					<include name="LICENSE.txt"/>
+					<include name="JFLEXLicense.rtf"/>
+					<include name="RSyntaxTextArea_Autocomplete.rtf"/>
 				</fileset>
 			</copy>
 		

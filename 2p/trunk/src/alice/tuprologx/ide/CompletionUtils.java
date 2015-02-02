@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ class CompletionUtils{
 
         // Built-ins and libraries
         try {
-            URL builtinsDocs = CompletionUtils.class.getResource("docs.txt");
+            InputStream builtinsDocs = CompletionUtils.class.getClassLoader().getResourceAsStream("alice/tuprologx/ide/docs.txt");
 			createCompletionsFromDocs(provider, builtinsDocs);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,8 +74,8 @@ class CompletionUtils{
     }
 
     public static void createCompletionsFromDocs(AbstractCompletionProvider provider,
-			URL builtinsDocs) throws FileNotFoundException, URISyntaxException {
-		BufferedReader br = new BufferedReader(new FileReader(new File(builtinsDocs.toURI())));
+			InputStream builtinsDocs) throws FileNotFoundException, URISyntaxException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(builtinsDocs));
 		String line;
 		try {
 			String library = null;

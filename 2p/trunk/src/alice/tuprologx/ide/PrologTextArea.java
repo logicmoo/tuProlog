@@ -11,7 +11,6 @@ package alice.tuprologx.ide;
 import alice.util.jedit.*;
 import java.awt.Color;
 
-@Deprecated
 public class PrologTextArea extends TextAreaDefaults
 {
     public PrologTextArea()
