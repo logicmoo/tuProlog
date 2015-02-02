@@ -11,8 +11,8 @@ tuProlog and related packages are released under the GNU Lesser General Public L
 This version is intended to be the last stable version supporting Java 7: the next major release, tuProlog 3.0, will include support for lambda expressions and therefore require Java 8.
 
 ### **New features**###
-* some further bug fixes;+
-* new editor in the Java/.NET GUI, makes the Visual Studio code generators for P@.NET compatible with Visual Studio 2012/13 and
+* some further bug fixes;
+* new editor in the Java/.NET GUI, makes the Visual Studio code generators for P@.NET compatible with Visual Studio 2012/13;
 * new acceptance test suite based on the Concordion framework, instead of the old-fashioned FIT framework.
 
 ### **Download** ###
