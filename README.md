@@ -4,31 +4,26 @@ tuProlog is a light-weight Prolog system for distributed applications and infras
 
 tuProlog and related packages are released under the GNU Lesser General Public License, so no payment is required for using it. However, we welcome donations (see menu aside).
 
-**Current version: tuProlog 2.9.1 (released on October 16, 2014)**
+**Current version: tuProlog 2.9.2 (released on February 2, 2015)**
 
 ## **Highlights** ##
 
 This version is intended to be the last stable version supporting Java 7: the next major release, tuProlog 3.0, will include support for lambda expressions and therefore require Java 8.
 
-### **Bug fixes ** ###
-* the behaviour of setof / bagof has been finally fixed, correcting the old-dated bug causing variable bindings to be erroneously lost in some corner cases;
-* the behaviour of the disjunction predicate (’;’) has also been fixed, correcting the other old-dated bug causing the disjunction to be associated in the wrong way in some specific corner cases;
-* the behaviour of the functor predicate, previosly entering an endless loop in the corner case when the ?rst argument was unbound and the second referred to the term itself, has also been fixed.
-
 ### **New features**###
-* improved class loading in both JavaSE and Android editions, enabling external resources to be loaded on the Android platform, too;
-* improved support to keyboard input on the Java IDE; a new input tab has been added to the console, replacing the old-fashioned input dialog;
-* compliance with the Java scripting engine specification (JSR-233), with new Java methods to explicitly retrieve and set the standard I/O streams.
+* some further bug fixes;
+* new editor in the Java/.NET GUI, makes the Visual Studio code generators for P@.NET compatible with Visual Studio 2012/13;
+* new acceptance test suite based on the Concordion framework, instead of the old-fashioned FIT framework.
 
 ### **Download** ###
 All tuProlog versions are now available from this site
 except for the Eclipse plugin which must be downloaded and installed directly from the Eclipse Update Manager - see detailed instructions.
 
-Java: tuProlog 2.9.0 (zip) (requires Java 7)
-.NET:tuProlog 2.9-0-NET (zip) (requires .NET framework 4)
-Android:tuProlog 2.9.0 Android (apk) (requires Android 2.3.3)
+Java: tuProlog 2.9.2 (zip) (requires Java 7)
+.NET:tuProlog 2.9-2-NET (zip) (requires .NET framework 4)
+Android:tuProlog 2.9.1 Android (apk) (requires Android 2.3.3)
 Eclipse:  install from Eclipse Update Manager -- see below for details.
-MANUAL: tuProlog 2.9.0 User Guide (pdf)
+MANUAL: tuProlog 2.9.2 User Guide (pdf)
 
 ### **Installation** ###
 
