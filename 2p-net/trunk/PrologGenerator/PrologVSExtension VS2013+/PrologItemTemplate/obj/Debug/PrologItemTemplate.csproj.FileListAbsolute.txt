@@ -1,0 +1,20 @@
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologItemTemplate\bin\Debug\ItemTemplates\CSharp\1033\PrologItemTemplate.zip
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.csprojResolveAssemblyReference.cache
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologItemTemplate\obj\Debug\CSharp\1033\PrologItemTemplate.zip
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.dll
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.pdb
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologItemTemplate\bin\Debug\ItemTemplates\CSharp\1033\PrologItemTemplate.zip
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.csprojResolveAssemblyReference.cache
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologItemTemplate\obj\Debug\CSharp\1033\PrologItemTemplate.zip
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.dll
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.pdb
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologItemTemplate\bin\Debug\ItemTemplates\CSharp\1033\PrologItemTemplate.zip
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.csprojResolveAssemblyReference.cache
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologItemTemplate\obj\Debug\CSharp\1033\PrologItemTemplate.zip
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.dll
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.pdb
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologItemTemplate\bin\Debug\ItemTemplates\CSharp\1033\PrologItemTemplate.zip
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologItemTemplate\obj\Debug\PrologItemTemplate.csprojResolveAssemblyReference.cache
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologItemTemplate\obj\Debug\CSharp\1033\PrologItemTemplate.zip
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologItemTemplate\obj\Debug\PrologItemTemplate.dll
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologItemTemplate\obj\Debug\PrologItemTemplate.pdb

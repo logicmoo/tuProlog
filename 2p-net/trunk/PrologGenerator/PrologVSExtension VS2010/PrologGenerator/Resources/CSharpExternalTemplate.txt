@@ -1,0 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using alice.tuprolog;
+using java.io;
+
+namespace #NameSpace {
+	 public class #ClassName : Prolog { 
+			 public #ClassName(){ 
+					 setTheory(new Theory(new FileInputStream("#ExtFile"))); 
+		} 
+
+	 } 
+}

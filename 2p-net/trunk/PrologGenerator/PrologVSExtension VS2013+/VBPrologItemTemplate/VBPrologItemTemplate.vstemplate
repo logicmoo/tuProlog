@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:sdk="http://schemas.microsoft.com/developer/vstemplate-sdkextension/2010">
+  <TemplateData>
+    <Name>VBPrologItemTemplate</Name>
+    <Description>Prolog File for Visual Basic</Description>
+    <Icon>PrologTemplateIcon.ico</Icon>
+    <TemplateID>bd77af7c-429e-4c14-bc42-b9ac25a322a0</TemplateID>
+    <DefaultName>PrologSource.pl</DefaultName>
+    <ProjectType>VisualBasic</ProjectType>
+    <RequiredFrameworkVersion>2.0</RequiredFrameworkVersion>
+    <NumberOfParentCategoriesToRollUp>1</NumberOfParentCategoriesToRollUp>
+  </TemplateData>
+  <TemplateContent>
+    <ProjectItem ReplaceParameters="true" CustomTool="PrologGenerator">PrologSource.pl</ProjectItem>
+  </TemplateContent>
+</VSTemplate>

@@ -1,0 +1,18 @@
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\VBPrologItemTemplate\bin\Debug\ItemTemplates\VisualBasic\1033\VBPrologItemTemplate.zip
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.vbprojResolveAssemblyReference.cache
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VisualBasic\1033\VBPrologItemTemplate.zip
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.dll
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.pdb
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\VBPrologItemTemplate\bin\Debug\ItemTemplates\VisualBasic\1033\VBPrologItemTemplate.zip
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VisualBasic\1033\VBPrologItemTemplate.zip
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.dll
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.pdb
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\VBPrologItemTemplate\bin\Debug\ItemTemplates\VisualBasic\1033\VBPrologItemTemplate.zip
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VisualBasic\1033\VBPrologItemTemplate.zip
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.dll
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.pdb
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\VBPrologItemTemplate\bin\Debug\ItemTemplates\VisualBasic\1033\VBPrologItemTemplate.zip
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\VBPrologItemTemplate\obj\Debug\VisualBasic\1033\VBPrologItemTemplate.zip
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.dll
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.pdb
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.vbprojResolveAssemblyReference.cache

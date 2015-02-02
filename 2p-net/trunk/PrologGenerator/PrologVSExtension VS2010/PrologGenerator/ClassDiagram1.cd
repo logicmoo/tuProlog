@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PrologGenerator.BaseCodeGenerator">
+    <Position X="7.5" Y="3.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAIAAQAIAAEAAAAMABIABAAABACAIA=</HashCode>
+      <FileName>BaseCodeGenerator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.121" />
+  </Class>
+  <Class Name="PrologGenerator.BaseCodeGeneratorWithSite">
+    <Position X="7.5" Y="5.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAQQAAAIAAAAAAQAAFACAABgAAAEACAEA=</HashCode>
+      <FileName>BaseCodeGeneratorWithSite.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.1" />
+  </Class>
+  <Class Name="PrologGenerator.PrologGenerator">
+    <Position X="7.5" Y="7.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AABAAAAAIAAAAAAIAAAAAAAAAAAEAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>PrologGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.VisualStudio.Shell.CodeGeneratorRegistrationAttribute" Collapsed="true">
+    <Position X="7" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AgAgAAAABAAQCAAAAABAAAABAAAlAAgAAAAhEAQAEAI=</HashCode>
+      <FileName>C:\Program Files (x86)\Microsoft Visual Studio 2010 SDK\VisualStudioIntegration\Common\Source\CSharp\RegistrationAttributes\CodeGeneratorRegistrationAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Samples.VisualStudio.GeneratorSample.Strings" Collapsed="true">
+    <Position X="8" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACiEQAACAAAQiAQBEAQAASAAAAAAAAkEAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Microsoft.VisualStudio.Shell.Interop.IVsSingleFileGenerator">
+    <Position X="4.25" Y="3.5" Width="1.75" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Microsoft.VisualStudio.OLE.Interop.IObjectWithSite">
+    <Position X="4.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

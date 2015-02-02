@@ -1,0 +1,40 @@
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\bin\Debug\PrologTestSolution.exe.config
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\bin\Debug\PrologTestSolution.exe
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\bin\Debug\PrologTestSolution.pdb
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\obj\Debug\PrologTestSolution.GUI.resources
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\obj\Debug\PrologTestSolution.Properties.Resources.resources
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\obj\Debug\PrologTestSolution.csproj.GenerateResource.Cache
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\obj\Debug\PrologTestSolution.exe
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\obj\Debug\PrologTestSolution.pdb
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.Runtime.dll
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Util.dll
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Security.dll
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Text.dll
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.XML.API.dll
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Naming.dll
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.SwingAWT.dll
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Beans.dll
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Media.dll
+c:\users\michele\documents\visual studio 2013\Projects\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.AWT.WinForms.dll
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution vs2013\PrologTestSolution\bin\Debug\PrologTestSolution.exe.config
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution vs2013\PrologTestSolution\obj\Debug\PrologTestSolution.exe
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution vs2013\PrologTestSolution\obj\Debug\PrologTestSolution.pdb
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\bin\Debug\PrologTestSolution.exe.config
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\obj\Debug\PrologTestSolution.exe
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\obj\Debug\PrologTestSolution.pdb
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\obj\Debug\PrologTestSolution.csprojResolveAssemblyReference.cache
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\obj\Debug\PrologTestSolution.GUI.resources
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\obj\Debug\PrologTestSolution.Properties.Resources.resources
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\obj\Debug\PrologTestSolution.csproj.GenerateResource.Cache
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\bin\Debug\PrologTestSolution.exe
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\bin\Debug\PrologTestSolution.pdb
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.Runtime.dll
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Util.dll
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Security.dll
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Text.dll
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.XML.API.dll
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Naming.dll
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.SwingAWT.dll
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Beans.dll
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.OpenJDK.Media.dll
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologTestSolution\PrologTestSolution\bin\Debug\IKVM.AWT.WinForms.dll

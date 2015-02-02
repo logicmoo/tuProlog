@@ -1,0 +1,13 @@
+Imports alice.tuprolog
+Module #NameSpace
+
+	Public Class #ClassName
+		Inherits Prolog
+
+		Public Sub New()
+			Me.setTheory(New Theory(New FileInputStream("#ExtFile")))
+
+		End Sub
+
+	End Class
+End Module
