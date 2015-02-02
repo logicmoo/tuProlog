@@ -1,0 +1,94 @@
+9 Patch Control
+
+1
+1
+1
+tuprolog-guide.tex
+23
+10
+6
+
+tuprolog-guide.tex
+TeX:UNIX
+152154107 0 -1 337 -1 4130 30 30 1036 353 0 1 346 1584 -1 -1 0 0 77 -1 -1 77 1 0 4130 -1  0 -1 0
+bibliography.bib
+BibTeX:UNIX
+1147890 0 113 72 108 61 60 60 916 384 0 1 580 558 -1 -1 0 0 28 0 0 28 1 0 61 108  0 -1 0
+tuprolog-libraries.tex
+TeX:UNIX
+17936379 0 -1 97630 -1 0 60 60 916 310 0 1 40 0 40 378 0 0 32023 -1 -1 31757 1 0 0 -1  0 -1 0
+tuprolog-basics.tex
+TeX:UNIX
+1159163 0 -1 41150 -1 0 120 120 976 370 0 1 40 0 615 273 0 2 41306 -1 -1 41300 1 0 0 -1  0 -1 0
+getting-started.tex
+TeX:UNIX
+17936379 0 -1 19021 -1 18977 120 120 976 444 0 1 301 324 40 972 1 0 36585 -1 -1 36585 3 0 18977 -1 5 36585 -1 7 36585 -1  0 -1 0
+installing-tuprolog.tex
+TeX:UNIX
+17936379 0 -1 7467 -1 7613 30 30 886 280 0 1 670 558 -1 -1 0 0 70 -1 -1 70 1 0 7613 -1  0 -1 0
+mpp-in-java.tex
+TeX:UNIX
+286371835 0 -1 21232 -1 21232 60 60 916 310 0 1 1102 324 67 414 0 0 112035 -1 -1 112033 1 0 21232 -1  0 -1 0
+mpp-in-dotnet.tex
+TeX:UNIX
+17936379 0 -1 30904 -1 30947 120 120 976 370 0 1 427 288 454 414 1 0 43298 -1 -1 43298 1 0 30947 -1  0 -1 0
+version-history.tex
+TeX:UNIX
+17936379 0 -1 2085 -1 2297 120 120 976 370 0 1 337 324 40 558 0 0 26182 -1 -1 72 1 0 2297 -1  0 -1 0
+mpp-in-android.tex
+TeX:UNIX
+1159163 0 -1 2463 -1 2342 54 54 1248 475 0 1 544 450 -1 -1 0 0 72 -1 -1 72 1 0 2342 -1  0 -1 0
+:\Home\Ricerca\DC-tuPrologLambda\v0\DC-tuPrologLambda.tex
+TeX:UNIX
+269594619 0 -1 0 -1 0 54 54 1179 475 0 1 40 0 -1 -1 0 0 -1 -1 -1 -1 1 0 0 -1  0 -1 0
+what-is-tuprolog.tex
+TeX:UNIX
+286371835 0 68 152 -1 0 90 90 976 337 0 1 40 0 -1 -1 0 0 72 -1 -1 72 1 0 0 -1  0 -1 0
+exceptions.tex
+TeX:UNIX
+286371835 0 -1 14734 -1 0 120 120 976 370 0 -1 25 0 -1 -1 0 0 72 -1 -1 72 1 0 0 -1  0 0 0
+tmp.tex
+TeX
+269496315 0 -1 1111 -1 1615 108 108 1298 562 0 -1 25 306 -1 -1 0 0 0 -1 -1 0 1 0 1615 -1  0 0 0
+:\Home\Ricerca\00Archived\2005\SCICO-tuProlog2005\v4-Definitiva accettata\DOR-2p-Java\tuprolog-system.tex
+TeX:UNIX
+269594619 1 -1 27695 -1 28046 60 60 916 310 0 -1 25 378 25 210 0 1 20035 -1 -1 19626 1 0 28046 -1  0 0 0
+:\Home\Ricerca\00Archived\2005\SCICO-tuProlog2005\v4-Definitiva accettata\DOR-2p-Java\examples.tex
+TeX:UNIX
+269594619 1 -1 9195 -1 9803 120 120 976 444 0 -1 25 399 -1 -1 0 0 -1 -1 -1 -1 1 0 9803 -1  0 0 0
+:\Home\Ricerca\00Archived\2005\SCICO-tuProlog2005\v4-Definitiva accettata\DOR-2p-Java\tuprolog-inside.tex
+TeX:UNIX
+269594619 0 -1 0 -1 0 90 90 946 414 0 -1 25 0 -1 -1 0 0 -1 -1 -1 -1 1 0 0 -1  0 0 0
+:\Home\Ricerca\00Archived\2005\SCICO-tuProlog2005\v4-Definitiva accettata\DOR-2p-Java\motivations.tex
+TeX:UNIX
+269594619 0 -1 0 -1 0 60 60 916 384 0 -1 25 0 -1 -1 0 0 -1 -1 -1 -1 1 0 0 -1  0 0 0
+:\Home\Ricerca\00Archived\2005\SCICO-tuProlog2005\v4-Definitiva accettata\DOR-2p-Java\javalibrary-table.tex
+TeX:UNIX
+269594619 1 -1 5587 -1 0 30 30 886 280 0 -1 25 0 -1 -1 0 0 -1 -1 -1 -1 1 0 0 -1  0 0 0
+ide.tex
+TeX:UNIX
+269594619 1 -1 0 -1 13612 30 30 886 280 0 -1 265 336 -1 -1 0 0 17 -1 -1 17 1 0 13612 -1  0 0 0
+:\Home\Ricerca\00Rejected\DORV-tuProlog IPL\DOV-IPL.tex
+TeX:UNIX
+269594619 0 -1 0 -1 337 0 0 711 399 0 -1 235 105 -1 -1 0 0 80 -1 -1 80 1 0 337 -1  0 0 0
+:\Home\Ricerca\00Rejected\DORV-tuProlog IPL\DOV-IPL.sty
+TeX:STY:UNIX
+269594610 0 0 1 0 1 30 30 1066 296 0 -1 25 0 -1 -1 0 0 81 0 0 81 1 0 1 0  0 0 0
+:\Program Files\MiKTeX 2.9\tex\latex\psnfss\pifont.sty
+TeX:STY:UNIX
+269594610 7 63 2 63 14 30 30 1096 289 0 -1 155 252 -1 -1 0 0 3 0 0 3 1 0 14 63  0 0 0
+
+*tuprolog-guide.tex
+>
+*what-is-tuprolog
+*installing-tuprolog
+*getting-started
+*tuprolog-basics
+*tuprolog-libraries
+*exceptions
+*mpp-in-java
+*mpp-in-dotnet
+*mpp-in-android
+*version-history
+*bibliography
+<
