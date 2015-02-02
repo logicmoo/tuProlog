@@ -1,0 +1,62 @@
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologGenerator\bin\Debug\ItemTemplates\PrologItemTemplate.zip
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologGenerator\bin\Debug\ItemTemplates\VBPrologItemTemplate.zip
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.XML
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.dll
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pdb
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pkgdef
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.vsix
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologGenerator\bin\Debug\extension.vsixmanifest
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.csprojResolveAssemblyReference.cache
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.FileResource.resources
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.Strings.resources
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.csproj.GenerateResource.Cache
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.dll
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pdb
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pkgdef
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.latest.pkgdef
+C:\Users\Michele\documents\visual studio 2013\Projects\PrologVSExtension\PrologGenerator\obj\Debug\extension.vsixmanifest
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.XML
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.dll
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pdb
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pkgdef
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.vsix
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologGenerator\bin\Debug\extension.vsixmanifest
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.csprojResolveAssemblyReference.cache
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.FileResource.resources
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.Strings.resources
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.csproj.GenerateResource.Cache
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.dll
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pdb
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pkgdef
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.latest.pkgdef
+C:\Users\Michele\Desktop\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\extension.vsixmanifest
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.XML
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.dll
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pdb
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pkgdef
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.vsix
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologGenerator\bin\Debug\extension.vsixmanifest
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.csprojResolveAssemblyReference.cache
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.FileResource.resources
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.Strings.resources
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.csproj.GenerateResource.Cache
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.dll
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pdb
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pkgdef
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.latest.pkgdef
+C:\Users\Michele\Dropbox\Università\Tesi\My Extension\PrologVSExtension\PrologGenerator\obj\Debug\extension.vsixmanifest
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologGenerator\bin\Debug\PrologGenerator.XML
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologGenerator\bin\Debug\PrologGenerator.dll
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologGenerator\bin\Debug\PrologGenerator.pdb
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologGenerator\bin\Debug\PrologGenerator.pkgdef
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologGenerator\bin\Debug\PrologGenerator.vsix
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologGenerator\bin\Debug\extension.vsixmanifest
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologGenerator\obj\Debug\PrologGenerator.csprojResolveAssemblyReference.cache
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologGenerator\obj\Debug\PrologGenerator.FileResource.resources
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologGenerator\obj\Debug\PrologGenerator.Strings.resources
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologGenerator\obj\Debug\PrologGenerator.csproj.GenerateResource.Cache
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologGenerator\obj\Debug\PrologGenerator.dll
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologGenerator\obj\Debug\PrologGenerator.pdb
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologGenerator\obj\Debug\PrologGenerator.pkgdef
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologGenerator\obj\Debug\PrologGenerator.latest.pkgdef
+C:\Users\Michele\Desktop\PrologVSExtension VS2013+\PrologGenerator\obj\Debug\extension.vsixmanifest

@@ -1,0 +1,12 @@
+C:\Users\fabio\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Fabio Gravina\PrologGenerator\1.0\\PrologGenerator.dll
+C:\Users\fabio\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Fabio Gravina\PrologGenerator\1.0\\PrologGenerator.pkgdef
+C:\Users\fabio\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Fabio Gravina\PrologGenerator\1.0\\extension.vsixmanifest
+C:\Users\fabio\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Fabio Gravina\PrologGenerator\1.0\\PrologGenerator.pdb
+C:\Users\fabio\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Fabio Gravina\PrologGenerator\1.0\ItemTemplates\\PrologItemTemplate.zip
+C:\Users\fabio\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Fabio Gravina\PrologGenerator\1.0\ItemTemplates\\VBPrologItemTemplate.zip
+C:\Users\Michele\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Fabio Gravina\PrologGenerator\1.0\\PrologGenerator.dll
+C:\Users\Michele\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Fabio Gravina\PrologGenerator\1.0\\PrologGenerator.pkgdef
+C:\Users\Michele\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Fabio Gravina\PrologGenerator\1.0\\extension.vsixmanifest
+C:\Users\Michele\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Fabio Gravina\PrologGenerator\1.0\ItemTemplates\\PrologItemTemplate.zip
+C:\Users\Michele\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Fabio Gravina\PrologGenerator\1.0\ItemTemplates\\VBPrologItemTemplate.zip
+C:\Users\Michele\AppData\Local\Microsoft\VisualStudio\10.0Exp\Extensions\Fabio Gravina\PrologGenerator\1.0\\PrologGenerator.pdb

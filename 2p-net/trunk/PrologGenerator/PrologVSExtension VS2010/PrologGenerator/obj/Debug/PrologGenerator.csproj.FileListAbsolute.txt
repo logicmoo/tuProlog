@@ -1,0 +1,132 @@
+G:\Tesi\PrologGenerator\obj\Debug\ResolveAssemblyReference.cache
+G:\Tesi\PrologGenerator\obj\Debug\GenerateResource.read.1.tlog
+G:\Tesi\PrologGenerator\obj\Debug\GenerateResource.write.1.tlog
+G:\Tesi\PrologGenerator\bin\Debug\extension.vsixmanifest
+G:\Tesi\PrologGenerator\obj\Debug\extension.vsixmanifest
+G:\Tesi\PrologGenerator\bin\Debug\PrologGenerator.xml
+G:\Tesi\PrologGenerator\bin\Debug\PrologGenerator.dll
+G:\Tesi\PrologGenerator\bin\Debug\PrologGenerator.pdb
+G:\Tesi\PrologGenerator\bin\Debug\PrologGenerator.pkgdef
+G:\Tesi\PrologGenerator\bin\Debug\PrologGenerator.vsix
+G:\Tesi\PrologGenerator\obj\Debug\PrologGenerator.Strings.resources
+G:\Tesi\PrologGenerator\obj\Debug\PrologGenerator.dll
+G:\Tesi\PrologGenerator\obj\Debug\PrologGenerator.pdb
+G:\Tesi\PrologGenerator\obj\Debug\PrologGenerator.pkgdef
+G:\Tesi\PrologGenerator\obj\Debug\PrologGenerator.latest.pkgdef
+G:\Tesi\PrologGenerator\obj\Debug\PrologGenerator.Generated.resources
+G:\Tesi\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.xml
+G:\Tesi\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.dll
+G:\Tesi\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pdb
+G:\Tesi\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pkgdef
+G:\Tesi\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.vsix
+G:\Tesi\PrologVSExtension\PrologGenerator\bin\Debug\extension.vsixmanifest
+G:\Tesi\PrologVSExtension\PrologGenerator\obj\Debug\ResolveAssemblyReference.cache
+G:\Tesi\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.Generated.resources
+G:\Tesi\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.Strings.resources
+G:\Tesi\PrologVSExtension\PrologGenerator\obj\Debug\GenerateResource.read.1.tlog
+G:\Tesi\PrologVSExtension\PrologGenerator\obj\Debug\GenerateResource.write.1.tlog
+G:\Tesi\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.dll
+G:\Tesi\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pdb
+G:\Tesi\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pkgdef
+G:\Tesi\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.latest.pkgdef
+G:\Tesi\PrologVSExtension\PrologGenerator\obj\Debug\extension.vsixmanifest
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.dll
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pdb
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pkgdef
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.vsix
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\extension.vsixmanifest
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.Generated.resources
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.Strings.resources
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\GenerateResource.read.1.tlog
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\GenerateResource.write.1.tlog
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.dll
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pdb
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pkgdef
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.latest.pkgdef
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\extension.vsixmanifest
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.xml
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.xml
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.dll
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pdb
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pkgdef
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.vsix
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\extension.vsixmanifest
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.Generated.resources
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.Strings.resources
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\GenerateResource.read.1.tlog
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\GenerateResource.write.1.tlog
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.dll
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pdb
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pkgdef
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.latest.pkgdef
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\extension.vsixmanifest
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.xml
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.dll
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pdb
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pkgdef
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.vsix
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\extension.vsixmanifest
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.Generated.resources
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.Strings.resources
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\GenerateResource.read.1.tlog
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\GenerateResource.write.1.tlog
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.dll
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pdb
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pkgdef
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.latest.pkgdef
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\extension.vsixmanifest
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.xml
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.dll
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pdb
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pkgdef
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.vsix
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\extension.vsixmanifest
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.Strings.resources
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\GenerateResource.read.1.tlog
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\GenerateResource.write.1.tlog
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.dll
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pdb
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pkgdef
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.latest.pkgdef
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\extension.vsixmanifest
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.FileResource.resources
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.dll
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pdb
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pkgdef
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.vsix
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\extension.vsixmanifest
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.FileResource.resources
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.Strings.resources
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\GenerateResource.read.1.tlog
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\GenerateResource.write.1.tlog
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.dll
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pdb
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pkgdef
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.latest.pkgdef
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\obj\Debug\extension.vsixmanifest
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.xml
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\ItemTemplates\PrologItemTemplate.zip
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologGenerator\bin\Debug\ItemTemplates\VBPrologItemTemplate.zip
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\bin\Debug\ItemTemplates\PrologItemTemplate.zip
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\bin\Debug\ItemTemplates\VBPrologItemTemplate.zip
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.xml
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.dll
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pdb
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.pkgdef
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\bin\Debug\PrologGenerator.vsix
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\bin\Debug\extension.vsixmanifest
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\bin\Debug\Microsoft.VisualStudio.Settings.dll
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\bin\Debug\Microsoft.VisualStudio.Settings.xml
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.FileResource.resources
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.Strings.resources
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.csproj.GenerateResource.Cache
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.dll
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pdb
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.pkgdef
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\obj\Debug\PrologGenerator.latest.pkgdef
+C:\Users\Michele\Desktop\PrologVSExtension\PrologGenerator\obj\Debug\extension.vsixmanifest

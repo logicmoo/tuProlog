@@ -1,0 +1,16 @@
+Imports alice.tuprolog
+Module #NameSpace
+
+    Public Class #ClassName
+        Inherits Prolog
+        Dim th As String = <a>
+		#Theory
+		</a>.Value
+
+        Public Sub New()
+            Me.setTheory(New Theory(th))
+
+        End Sub
+
+    End Class
+End Module

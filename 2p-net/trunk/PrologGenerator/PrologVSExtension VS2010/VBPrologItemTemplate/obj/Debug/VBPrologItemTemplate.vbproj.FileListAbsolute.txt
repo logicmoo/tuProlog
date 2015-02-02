@@ -1,0 +1,19 @@
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\VBPrologItemTemplate\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.dll
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.pdb
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VisualBasic\1033\VBPrologItemTemplate.zip
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\VBPrologItemTemplate\bin\Debug\ItemTemplates\VisualBasic\1033\VBPrologItemTemplate.zip
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\VBPrologItemTemplate\bin\Debug\ItemTemplates\VisualBasic\1033\VBPrologItemTemplate.zip
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\VBPrologItemTemplate\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VisualBasic\1033\VBPrologItemTemplate.zip
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.dll
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.pdb
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\VBPrologItemTemplate\bin\Debug\ItemTemplates\VisualBasic\1033\VBPrologItemTemplate.zip
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\VBPrologItemTemplate\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VisualBasic\1033\VBPrologItemTemplate.zip
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.dll
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.pdb
+C:\Users\Michele\Desktop\PrologVSExtension\VBPrologItemTemplate\bin\Debug\ItemTemplates\VisualBasic\1033\VBPrologItemTemplate.zip
+C:\Users\Michele\Desktop\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VisualBasic\1033\VBPrologItemTemplate.zip
+C:\Users\Michele\Desktop\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.dll
+C:\Users\Michele\Desktop\PrologVSExtension\VBPrologItemTemplate\obj\Debug\VBPrologItemTemplate.pdb

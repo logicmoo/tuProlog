@@ -1,0 +1,39 @@
+G:\Tesi\PrologItemTemplate\PrologItemTemplate\bin\Debug\ItemTemplates\CSharp\1033\PrologItemTemplate.zip
+G:\Tesi\PrologItemTemplate\PrologItemTemplate\obj\Debug\ResolveAssemblyReference.cache
+G:\Tesi\PrologItemTemplate\PrologItemTemplate\obj\Debug\CSharp\1033\PrologItemTemplate.zip
+G:\Tesi\PrologItemTemplate\PrologItemTemplate\obj\Debug\PrologItemTemplate.dll
+G:\Tesi\PrologItemTemplate\PrologItemTemplate\obj\Debug\PrologItemTemplate.pdb
+G:\Tesi\PrologVSExtension\PrologItemTemplate\bin\Debug\ItemTemplates\CSharp\1033\PrologItemTemplate.zip
+G:\Tesi\PrologVSExtension\PrologItemTemplate\obj\Debug\ResolveAssemblyReference.cache
+G:\Tesi\PrologVSExtension\PrologItemTemplate\obj\Debug\CSharp\1033\PrologItemTemplate.zip
+G:\Tesi\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.dll
+G:\Tesi\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.pdb
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologItemTemplate\bin\Debug\ItemTemplates\CSharp\1033\PrologItemTemplate.zip
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\CSharp\1033\PrologItemTemplate.zip
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.dll
+C:\Users\Daniela\Desktop\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.pdb
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologItemTemplate\bin\Debug\ItemTemplates\CSharp\1033\PrologItemTemplate.zip
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\CSharp\1033\PrologItemTemplate.zip
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.dll
+C:\Users\Fabio\Desktop\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.pdb
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologItemTemplate\bin\Debug\ItemTemplates\CSharp\1033\PrologItemTemplate.zip
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\CSharp\1033\PrologItemTemplate.zip
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.dll
+C:\Users\fabio\Desktop\Fabio\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.pdb
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologItemTemplate\bin\Debug\ItemTemplates\CSharp\1033\PrologItemTemplate.zip
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\CSharp\1033\PrologItemTemplate.zip
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.dll
+C:\Users\fabio\Dropbox\Mia Tesi\Fabio\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.pdb
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologItemTemplate\bin\Debug\ItemTemplates\CSharp\1033\PrologItemTemplate.zip
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\CSharp\1033\PrologItemTemplate.zip
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.dll
+C:\Users\fabio\Dropbox\Fabio Private Folder\Fabio\Fabio\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.pdb
+C:\Users\Michele\Desktop\PrologVSExtension\PrologItemTemplate\obj\Debug\CSharp\1033\PrologItemTemplate.zip
+C:\Users\Michele\Desktop\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.dll
+C:\Users\Michele\Desktop\PrologVSExtension\PrologItemTemplate\obj\Debug\PrologItemTemplate.pdb
+C:\Users\Michele\Desktop\PrologVSExtension\PrologItemTemplate\bin\Debug\ItemTemplates\CSharp\1033\PrologItemTemplate.zip

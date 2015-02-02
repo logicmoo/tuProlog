@@ -1,0 +1,2 @@
+﻿%NameSpace MyNameSpace
+%ClassName MyClassName
