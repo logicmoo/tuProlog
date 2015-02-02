@@ -23,6 +23,7 @@
    2.7.2       & Swing & yes & -- & 504K (+600K javassist) & many bug fixes, new SpyFrame \\% and query tree view\\
    2.8         & Swing & yes & -- & 537K (+600K javassist) & classpath issues, many bugfixes, first keyboard input support in GUI\\
    2.9         & Swing & yes & -- & 537K (+600K javassist) & setof/bagof bug fixes, better class loading in Android, keyboard input support via input tab, extensive ISO-compliance testing\\
+   2.9.2       & Swing & yes & -- & 537K (+600K javassist) & further bug fixes, new editor in Java/.NET GUI, Visual Studio code generators for P@.NET now compatible with Visual Studio 2012/13, and new acceptance test suite based on the Concordion framework instead of the old-fashioned FIT framework\\
    \hline
  \end{tabular}
  \caption{Version comparison}\label{tab:version-history-comparison}
@@ -349,6 +350,9 @@ More precisely:
       The behaviour has been extensively verified onto an International conformance test suite \cite{test-suite-bagof}.
 \end{itemize}
 
+\subsection{From Version 2.9 to Version 2.9.2}
+
+Released on February 2, 2015, this minor version, still compatible with Java 7, includes some further bug fixes, adopts a new editor in the Java/.NET GUI, makes the Visual Studio code generators for P@.NET compatible with Visual Studio 2012/13 and, as for as the internal project structure is concerned, adopts a new acceptance test suite based on the Concordion framework, instead of the old-fashioned FIT framework.
 
 \section{Acknowledgments}
 
@@ -381,6 +385,9 @@ The following people deserve a big thanks for their help and support in \tuprolo
   \item Extensive bug fix in the engine state machine, for \texttt{setof} and \texttt{bagof} in 2.9.0: Roberta Calegari (2014)
   \item Further bug fixing (see issues \# 20, 14, 16 on Google Code), and other minor issues: Roberta Calegari (2014)
   \item New input tab for keyboard input in 2.9.0: Matteo Librenti (2014)
-  \item Support for the theory/class loading in Android in 2.9.0: Alessio Mercurio 2014)
+  \item Support for the theory/class loading in Android in 2.9.0: Alessio Mercurio (2014)
+  \item Concordion test suite: Marcello Colameo (2014)
+  \item code generators for Visual Studio 2012/13: Michele Francesco Di Lella (2014)
+  \item new Java IDE, exploiting the \texttt{RSyntaxTextArea} open source component from Fifesoft http://fifesoft.com/rsyntaxtextarea/: Andrzej Olszak (2015)
 \end{itemize}
 
