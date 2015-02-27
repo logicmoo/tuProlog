@@ -7,7 +7,7 @@
  		<pathelement location="ant/lib/svnClientAdapter.jar"/>
 		<pathelement location="ant/lib/svnkit-javahl16-1.7.9.jar"/>
 		<pathelement location="ant/lib/sqljet-1.1.7.jar"/>
-		<pathelement location="ant/lib/svnkit-1.7.9.jar"/>
+		<pathelement location="ant/lib/svnkit-1.8.8.jar"/>
 		<pathelement location="ant/lib/antlr-runtime-3.4.jar"/>
 		<pathelement location="ant/lib/sequence-library-1.0.2.jar"/>
  		<!-- ... -->
@@ -233,6 +233,8 @@
 		<!-- Copy the IKVM files -->
 		<copy todir="${release.lib.dir}">
 			<fileset dir="${ikvm.dir}/bin/">
+				<include name="*.dll"/>
+				<!--
 				<include name="IKVM.OpenJDK.XML.API.dll"/>
 				<include name="IKVM.OpenJDK.Security.dll"/>
 				<include name="IKVM.OpenJDK.Naming.dll"/>
@@ -240,7 +242,7 @@
 				<include name="IKVM.AWT.WinForms.dll"/>
 				<include name="IKVM.OpenJDK.Beans.dll"/>
 				<include name="IKVM.OpenJDK.Corba.dll"/>
-				<include name="IKVM.OpenJDK.Remoting.dll"/>
+				<include name="IKVM.OpenJDK.Remoting.dll"/>s
 				<include name="IKVM.OpenJDK.Util.dll"/>
 				<include name="IKVM.OpenJDK.Text.dll"/>
 				<include name="IKVM.OpenJDK.Core.dll"/>
@@ -248,7 +250,7 @@
 				<include name="IKVM.OpenJDK.Tools.dll"/>
 				<include name="IKVM.OpenJDK.SwingAWT.dll"/>
 				<include name="IKVM.Runtime.dll"/> 
-				<include name="IKVM.Reflection.dll"/> <!-- Added by Mannino-->
+				<include name="IKVM.Reflection.dll"/> --> <!-- Added by Mannino-->
 			</fileset>
 			
 			<!-- Copy also tuprolog.jar needed for the examples and the README -->
@@ -260,8 +262,11 @@
 		
 		<zip destfile="release/${project.name}.zip" basedir="${release.dir}" />
 		
+		<delete dir="${release.dir}"/>
+		
 	</target>
-	
+
+	<!--
 	<target name="02.tag" depends="01.release.bin" description="Tags the code">
 			
 			<property name="TagMessage" value="Tag .NET ${engine.version}.${netSpecific.version}"/>
@@ -279,7 +284,9 @@
 				javahl="false" />
 			
 		    <echo>Tagging the code...</echo>
+		    -->
 			<!-- It is not possible to put echo messahes inside the svn tag -->
+	<!--
 			<svn refid="settings">
 			    
 				<copy
@@ -299,4 +306,5 @@
 			
 			</svn>
 		</target>
+		-->
 </project>
