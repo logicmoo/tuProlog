@@ -25,7 +25,7 @@ public class PJProlog /*extends alice.tuprolog.Prolog*/ {
     public PJProlog() {
         engine = new alice.tuprolog.Prolog();        
         try {
-            engine.unloadLibrary("alice.tuprolog.lib.JavaLibrary");
+            engine.unloadLibrary("alice.tuprolog.lib.OOLibrary");
             engine.loadLibrary("alice.tuprologx.pj.lib.PJLibraryNew");
             engine.loadLibrary("alice.tuprolog.lib.DCGLibrary");
         }
@@ -116,12 +116,12 @@ public class PJProlog /*extends alice.tuprolog.Prolog*/ {
     }
     
      public alice.tuprolog.Struct registerJavaObject(Object o) {
-        return ((alice.tuprolog.lib.JavaLibrary)engine.getLibrary("alice.tuprologx.pj.lib.PJLibraryNew")).register(o);
+        return ((alice.tuprolog.lib.OOLibrary)engine.getLibrary("alice.tuprologx.pj.lib.PJLibraryNew")).register(o);
      }
      
      public Object getJavaObject(alice.tuprolog.Struct t) { 
         try {
-            return ((alice.tuprolog.lib.JavaLibrary)engine.getLibrary("alice.tuprologx.pj.lib.PJLibraryNew")).getRegisteredObject(t);
+            return ((alice.tuprolog.lib.OOLibrary)engine.getLibrary("alice.tuprologx.pj.lib.PJLibraryNew")).getRegisteredObject(t);
         }
         catch (Exception e) {
             return null;

@@ -1092,6 +1092,7 @@ public class BasicLibrary extends Library {
                 +
                 // catch/3
                 "catch(Goal, Catcher, Handler) :- call(Goal).\n"
+               
                 //
                 // All solutions predicates
                 //
@@ -1243,11 +1244,14 @@ public class BasicLibrary extends Library {
                 + "bagof(Template, Goal, List), \n"
                 + "quicksort(List, '@<', OrderedList), \n"
                 + "no_duplicates(OrderedList, Instances). \n"
-                +
+                
+                // RC, ED Jul 14
+                +"forall(A,B):- \\+(call(A),\\+call(B)). \n"
+                
                 //
                 // theory management predicates
                 //
-                "assert(C) :- assertz(C). \n"
+                + "assert(C) :- assertz(C). \n"
                 + "retract(Rule) :- retract_guard(Rule), Rule = ':-'(Head, Body), !, clause(Head, Body), '$retract'(Rule). \n"
                 + "retract(Fact) :- retract_guard(Fact), clause(Fact, true), '$retract'(Fact). \n"
                 + "retractall(Head) :- retract_guard(Head), findall(':-'(Head, Body), clause(Head, Body), L), '$retract_clause_list'(L), !. \n"

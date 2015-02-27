@@ -5,6 +5,8 @@ import javax.swing.*;
 import alice.tuprolog.Prolog;
 
 
+
+
 import java.awt.*;
 import java.net.URL;
 
@@ -14,7 +16,7 @@ public class AboutFrame extends GenericFrame
 
     public AboutFrame(JFrame mainWindow)
     {
-        super("About tuProlog IDE", mainWindow, 275, 135, true, true);
+        super("About tuProlog", mainWindow, 275, 135, true, true);
         initComponents();
     }
 
@@ -31,10 +33,11 @@ public class AboutFrame extends GenericFrame
         //platformMessage += " platform version ";
         //platformMessage += alice.util.VersionInfo.getCompleteVersion();
         JLabel versionIDE=new JLabel(" tuProlog for " + alice.util.VersionInfo.getPlatform() + " version " + alice.util.VersionInfo.getCompleteVersion() + "   ");
-        
-        JLabel copyright=new JLabel(" Copyright 2001-2013 ");
-        JLabel unibo=new JLabel(" Universita' di Bologna, Italy.");
-        JLabel url=new JLabel(" http://tuprolog.unibo.it");
+        JLabel copyright=new JLabel(" \u00a9 2001-2015 @ Apice Research Group");
+        JLabel unibo=new JLabel(" Alma Mater Studiorum-Universita' di Bologna");
+        JLabel country=new JLabel(" Italy");
+        JLabel url=new JLabel("http://tuprolog.unibo.it");
+        url.setFont(new Font("Courier New", Font.PLAIN, 12));
         
         c.setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -50,13 +53,13 @@ public class AboutFrame extends GenericFrame
         constraints.gridy=2;
         c.add(versionIDE,constraints);
         constraints.gridy=3;
-        c.add(new JLabel(" "),constraints);
-        constraints.gridy=4;
-        c.add(url,constraints);
-        constraints.gridy=5;
-        c.add(unibo,constraints);
-        constraints.gridy=6;
         c.add(copyright,constraints);
+        constraints.gridy=4;
+        c.add(unibo,constraints);
+        constraints.gridy=5;
+        c.add(country,constraints);
+        constraints.gridy=6;
+        c.add(url,constraints);
         pack();
         setVisible(true);
     }

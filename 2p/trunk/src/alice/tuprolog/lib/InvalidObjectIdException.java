@@ -22,7 +22,7 @@ import alice.tuprolog.PrologException;
  * This exception is raised when a not valid identifier is used
  * to register an object in the JavaLibrary
  *
- * @see JavaLibrary
+ * @see OOLibrary
  *
  *
  *

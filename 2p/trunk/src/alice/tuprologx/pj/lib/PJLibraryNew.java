@@ -53,7 +53,7 @@ import alice.tuprolog.lib.*;
  *
  */
 @SuppressWarnings("serial")
-public class PJLibraryNew extends JavaLibrary {
+public class PJLibraryNew extends OOLibrary {
 	
 	/**
 	 * library theory

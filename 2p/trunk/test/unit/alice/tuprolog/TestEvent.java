@@ -49,7 +49,7 @@ public class TestEvent {
         engine.addLibraryListener(l);
 
         engine.loadLibrary("alice.tuprolog.lib.BasicLibrary");
-        engine.loadLibrary("alice.tuprolog.lib.JavaLibrary");
+        engine.loadLibrary("alice.tuprolog.lib.OOLibrary");
         engine.loadLibrary("alice.tuprolog.lib.IOLibrary");
         
         Theory th = new Theory(
