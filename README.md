@@ -4,23 +4,26 @@ tuProlog is a light-weight Prolog system for distributed applications and infras
 
 tuProlog and related packages are released under the GNU Lesser General Public License, so no payment is required for using it. However, we welcome donations (see menu aside).
 
-**Current version: tuProlog 2.9.2 (released on February 2, 2015)**
+**Current version: tuProlog 3.0 (released on February 26, 2015)**
 
 ## **Highlights** ##
 
-This version is intended to be the last stable version supporting Java 7: the next major release, tuProlog 3.0, will include support for lambda expressions and therefore require Java 8.
+The big news is the introduction of the new_lambda/3 predicate, which brings the power of Java 8 lambda expressions to the tuProlog world. Since lambdas require Java 8, the minimum platform for tuProlog 3 is now Java 8 *with JDK* (not just a pure JRE): users not interested in the new_lambda/3 predicate, however, can go for a standard JRE, as usual. 
+Accordingly, this version is currently released for Java SE and .NET platforms only, since Java 8 support in not available in Android 4.4 -- we are waiting for Android 5. For similar reasons, the Eclipse plugin is under an extensive refactoring, and will not be available for a while
+
+tuProlog 2.9.2 is intended to be the last stable version supporting Java 7.
 
 ### **New features**###
-* some further bug fixes;
-* new editor in the Java/.NET GUI, makes the Visual Studio code generators for P@.NET compatible with Visual Studio 2012/13;
-* new acceptance test suite based on the Concordion framework, instead of the old-fashioned FIT framework.
+* support for lambda expressions;
+* Java8-style lambdas are also supported in the .NET;
+* old-fashioned JavaLibrary has been replaced by a more modern OOLibrary, with new, non "Java-prone" predicate names; however, the old JavaLibrary remains available for backward compatibility.
 
 ### **Download** ###
 All tuProlog versions are now available from this site
 except for the Eclipse plugin which must be downloaded and installed directly from the Eclipse Update Manager - see detailed instructions.
 
-Java: tuProlog 2.9.2 (zip) (requires Java 7)
-.NET:tuProlog 2.9-2-NET (zip) (requires .NET framework 4)
+Java: tuProlog 3.0.0 (zip) (requires Java 7)
+.NET:tuProlog 2.0.0-NET (zip) (requires .NET framework 4)
 Android:tuProlog 2.9.1 Android (apk) (requires Android 2.3.3)
 Eclipse:  install from Eclipse Update Manager -- see below for details.
 MANUAL: tuProlog 2.9.2 User Guide (pdf)
@@ -28,7 +31,7 @@ MANUAL: tuProlog 2.9.2 User Guide (pdf)
 ### **Installation** ###
 
 **Java version
-**Just unzip the release archive in a folder of your choice, and double click the executable 2p.jar
+**Just unzip the release archive in a folder of your choice, and double click the executable 2p.jar To exploit the new_lambda/3 predicate, please launch tuProlog as "javaw -jar 2p.jar", after setting the system path to the JDK -- otherwise, most operating systems will use a JRE, which does not contain the Java compiler, causing the new primitive to fail. We suggest that you set up a desktop shortcut icon with the proper launch command.
 
 **.NET version**
 Just unzip the release archive in a folder of your choice, and double click the executable 2p.exe
