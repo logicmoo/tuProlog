@@ -22,7 +22,6 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 using alice.tuprolog;
-using alice.tuprolog.lib;
 using System.Reflection;
 using System.CodeDom.Compiler;
 using System.IO;
@@ -31,7 +30,7 @@ using ikvm.runtime;
 
 namespace OOLibrary
 {
-    public class OOLibrary : JavaLibrary
+    public class OOLibrary : alice.tuprolog.lib.OOLibrary
     {
         /// <summary>
         /// Conventions loaded (keys) and objects bind to them (values)
