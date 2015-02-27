@@ -22,25 +22,11 @@ import alice.tuprolog.event.*;
 import alice.tuprolog.lib.IOLibrary;
 
 import javax.swing.*;
-import javax.swing.plaf.SliderUI;
-
-import org.fife.ui.autocomplete.AbstractCompletionProvider;
-import org.fife.ui.autocomplete.BasicCompletion;
-import org.fife.ui.autocomplete.Completion;
-import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
-import org.fife.ui.autocomplete.TemplateCompletion;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
+
 
 /**
  * The tuProlog IDE to be run on a Java2 platform. Makes use of Thinlet and

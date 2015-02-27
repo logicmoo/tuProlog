@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import alice.tuprolog.lib.InvalidObjectIdException;
-import alice.tuprolog.lib.JavaLibrary;
+import alice.tuprolog.lib.OOLibrary;
 import junit.framework.TestCase;
 
 public class JavaLibraryTestCase extends TestCase {
@@ -17,7 +17,7 @@ public class JavaLibraryTestCase extends TestCase {
 	String paths = null;
 	
 	public void testGetPrimitives() {
-		Library library = new JavaLibrary();
+		Library library = new OOLibrary();
 		Map<Integer, List<PrimitiveInfo>> primitives = library.getPrimitives();
 		assertEquals(3, primitives.size());
 		assertEquals(0, primitives.get(PrimitiveInfo.DIRECTIVE).size());
@@ -26,7 +26,7 @@ public class JavaLibraryTestCase extends TestCase {
 	}
 
 	public void testAnonymousObjectRegistration() throws InvalidTheoryException, InvalidObjectIdException {	
-		JavaLibrary lib = (JavaLibrary) engine.getLibrary("alice.tuprolog.lib.JavaLibrary");
+		OOLibrary lib = (OOLibrary) engine.getLibrary("alice.tuprolog.lib.OOLibrary");
 		String theory = "demo(X) :- X <- update. \n";
 		engine.setTheory(new Theory(theory));
 		TestCounter counter = new TestCounter();
@@ -42,7 +42,7 @@ public class JavaLibraryTestCase extends TestCase {
 
 	public void testDynamicObjectsRetrival() throws PrologException {
 		Prolog engine = new Prolog();
-		JavaLibrary lib = (JavaLibrary) engine.getLibrary("alice.tuprolog.lib.JavaLibrary");
+		OOLibrary lib = (OOLibrary) engine.getLibrary("alice.tuprolog.lib.OOLibrary");
 		String theory = "demo(C) :- \n" +
 				"java_object('alice.tuprolog.TestCounter', [], C), \n" +
 				"C <- update, \n" +
@@ -275,7 +275,7 @@ public class JavaLibraryTestCase extends TestCase {
 		engine.setTheory(new Theory(theory));
 		info = engine.solve("demo(Res).");
 		assertEquals(true, info.isSuccess());
-		JavaLibrary lib = (JavaLibrary) engine.getLibrary("alice.tuprolog.lib.JavaLibrary");
+		OOLibrary lib = (OOLibrary) engine.getLibrary("alice.tuprolog.lib.OOLibrary");
 		Struct id = (Struct) info.getTerm("Res");
 		Object obj = lib.getRegisteredObject(id);
 		assertNull(obj);

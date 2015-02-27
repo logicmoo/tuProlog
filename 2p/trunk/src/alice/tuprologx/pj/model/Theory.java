@@ -24,7 +24,7 @@ public class Theory extends List<Clause<?,?>> {
     static {
         engine = new alice.tuprolog.Prolog();
         try {
-            engine.unloadLibrary("alice.tuprolog.lib.JavaLibrary");
+            engine.unloadLibrary("alice.tuprolog.lib.OOLibrary");
             engine.loadLibrary("alice.tuprologx.pj.lib.PJLibrary");
             engine.loadLibrary("alice.tuprolog.lib.DCGLibrary");
         }

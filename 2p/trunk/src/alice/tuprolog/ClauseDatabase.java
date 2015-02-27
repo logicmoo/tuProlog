@@ -27,6 +27,7 @@ import java.util.*;
  *
  * Reviewed by Paolo Contessi
  */
+
 class ClauseDatabase extends HashMap<String,FamilyClausesList> implements Iterable<ClauseInfo> {
 	private static final long serialVersionUID = 1L;
 	void addFirst(String key, ClauseInfo d) {

@@ -105,7 +105,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 			if (System.getProperty("java.vm.name").equals("IKVM.NET"))
 				loadLibrary("OOLibrary.OOLibrary, OOLibrary");
 			else
-				loadLibrary("alice.tuprolog.lib.JavaLibrary");
+				loadLibrary("alice.tuprolog.lib.OOLibrary");
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

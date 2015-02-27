@@ -82,8 +82,6 @@
 			<delete includeemptydirs="true">
 	    		<fileset dir="${build.archives.dir}" includes="**/*"/>
 	    	</delete>
-			
-
 	    	
 	    	<jar destfile="${build.archives.dir}/2p.jar" basedir="${build.classes.dir}">
 	    	    <manifest>
@@ -406,7 +404,7 @@
 	</target>
     
     <target name="08.package" depends="01.set.classpath, 04.prepare" description="Create runnable Jar" >
-  
+    
     	<build debug="false" optimize="true"/>
     	<build-tests debug="false" optimize="true"/>
     	
@@ -431,9 +429,11 @@
 	 		<mkdir dir="${build.archives.net.dir}/lib"/>
 	 		<mkdir dir="${build.archives.net.dir}/test"/>
 	 	
+	 		<!-- Copy all ikvm dlls to be sure that 2p runs correctly -->
 	 		<copy todir="${build.archives.net.dir}">
 	 			<fileset dir="${ikvm.dir}/bin/">
-	 				<include name="IKVM.OpenJDK.XML.API.dll"/>
+	 				<include name="*.dll"/>
+	 				<!-- <include name="IKVM.OpenJDK.XML.API.dll"/>
 	 				<include name="IKVM.OpenJDK.Security.dll"/>
 	 				<include name="IKVM.OpenJDK.Naming.dll"/>
 	 				<include name="IKVM.OpenJDK.Media.dll"/>
@@ -448,13 +448,12 @@
 	 				<include name="IKVM.OpenJDK.Tools.dll"/>
 	 				<include name="IKVM.OpenJDK.SwingAWT.dll"/>
 	 				<include name="IKVM.Runtime.dll"/> 
-	 				<include name="IKVM.Reflection.dll"/> <!-- Added by Mannino-->
+	 				<include name="IKVM.Reflection.dll"/> --> <!-- Added by Mannino--> 
 	 			</fileset>
 	 		</copy>
 
 	        <echo>Building JUnit...</echo>
 			<exec executable="${ikvmc}">
-	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Text.dll" />
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
 	            <arg value="-target:exe" />
 	            <arg value="-compressresources" />
@@ -462,6 +461,20 @@
 				<arg value="-main:org.junit.runner.JUnitCore" />
 	            <arg value="${lib.dir}/junit.jar" />
 	        </exec>
+	 	
+
+	 		<!--
+	 	    <echo>Building commons-lang...</echo>
+	 	 	<exec executable="${ikvmc}">
+	 	 		<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" />
+	 	 	 	<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
+	 	 		<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Tools.dll" />
+	 	 	 	<arg value="-target:library" />
+	 	 	 	<arg value="-compressresources" />
+	 	 	 	<arg value="-out:${build.archives.net.dir}/commons-lang3-3.3.2.dll" />
+	 	 	 	<arg value="${lib.dir}/commons-lang3-3.3.2.jar" />
+	 		 </exec>
+	 		 -->
 	        
 	        <echo>Building 2p...</echo>
 	 		<exec executable="${ikvmc}">
@@ -469,7 +482,12 @@
 	 			<arg value="-reference:mscorlib.dll" /><!-- Added by Mannino-->
 	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" /> <!-- Added by Mannino-->
 	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.Runtime.dll" />
+	 			<!-- <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Beans.dll" />
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Corba.dll" />
+	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Remoting.dll" />
+	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Misc.dll" />
+	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.SwingAWT.dll" /> -->
+	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Tools.dll" />
 				<!-- <arg value="-debug"/> -->
 		 		<arg value="-classloader:ikvm.runtime.ClassPathAssemblyClassLoader"/>
 	            <arg value="-target:winexe" />
@@ -494,7 +512,7 @@
 	 	
 		 	<echo>Building Unit Tests...</echo>
 			<exec executable="${ikvmc}">
-	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Text.dll" />
+	            <!-- <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Text.dll" /> -->
 	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
 				<arg value="-reference:mscorlib.dll" />							<!-- Added by Mannino-->
 				<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" />	<!-- Added by Mannino-->
@@ -504,6 +522,7 @@
 				<arg value="${build.archives.dir}/2p.jar"/>
 	            <arg value="${build.tests.dir}/unit-tests.jar"/>
 	        </exec>
+	 	
 	 	
 	 	 <echo>Look directory ${build.archives.net.dir}</echo>
 	    </target>
@@ -530,7 +549,7 @@
 	    	<echo>Look directory ${doc.dir}/javadoc</echo>
 	    </target>
 	
-		<target name="11.release.bin" depends="01.set.classpath, 04.prepare, 06.unit.test.report, 08.package, 10.javadoc " description="Creates the structure for the release">
+		<target name="11.release.bin" depends="01.set.classpath, 04.prepare, 06.unit.test.report, 08.package, 10.javadoc, 09.build.NET" description="Creates the structure for the release">
 			
 			<delete includeemptydirs="true">
 				<fileset dir="${build.release.dir}" includes="**/*"/>
@@ -574,6 +593,8 @@
 		       	 basedir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}"
 		 	 	/>
 			
+			<delete dir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}"/>
+			
 			<echo>Look directory ${build.release.dir}</echo>
 		</target>
 	
@@ -605,7 +626,7 @@
 			<!--  I use <name> </name> because in this way I'm sure that I replace the name of the project and nothing else called 2p -->
 			<replace file="${tmp.dir}/.project" token="&lt;name&gt;2p&lt;/name&gt;" value="&lt;name&gt;tuProlog REL-${engine.version}.${JavaSpecific.version}&lt;/name&gt;"/>
 		
-		<echo>Tagging the code...</echo>
+		<echo>Tagging the code (be patient this will take a while)...</echo>
 		<!-- It is not possible to put echo messahes inside the svn tag -->
 		<svn refid="settings">
 		    
@@ -652,12 +673,22 @@
 				recurse="false" >
 			</import>  
 			
+			<!--
+			<import
+				path="${build.archives.net.dir}/commons-lang3-3.3.2.dll" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/commons-lang3-3.3.2.dll"
+				message="${TagMessage}" 
+				recurse="false" >
+			</import>
+			
+			
 			<import
 				path="${build.archives.net.dir}/javassist.dll" 
 				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/javassist.dll"
 				message="${TagMessage}" 
 				recurse="false" >
 			</import>  
+			-->
 			
 			<import
 				path="${build.archives.net.dir}/lib" 
