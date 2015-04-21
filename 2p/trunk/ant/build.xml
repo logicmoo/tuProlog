@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 	
-<project name="tuProlog build file" basedir=".." default="help">
+<project name="tuProlog build file" basedir=".." default="08.package">
 
 	
 	  <path id="compile.classpath">
@@ -44,7 +44,7 @@
 			</copy>
 	    	
 	    	<copy file="${src.dir}/alice/tuprologx/ide/docs.txt" todir="${build.classes.dir}/alice/tuprologx/ide"/>
-			
+	    	
 	    </sequential>
 	</macrodef>
 	
@@ -96,6 +96,11 @@
 	    	    	<attribute name="Main-Class" value="alice.tuprologx.ide.GUILauncher"/>
 	    	    	<attribute name="Class-Path" value="."/>
 	    	    </manifest>
+				
+	    		<!-- JSR223 service -->
+	    		<service type="javax.script.ScriptEngineFactory" 
+	    			provider="alice.tuprolog.scriptengine.PrologScriptEngineFactory"/>
+	    	
 	    		
 	    		<zipgroupfileset excludes="META-INF/*.SF" dir="${lib.dir}" includes="*.jar"/>
 	    		<zipgroupfileset excludes="META-INF/*.SF" dir="${lib.dir}/jflex" includes="*.jar"/>
@@ -114,6 +119,11 @@
 	    	      	<attribute name="Implementation-Version" value="${engine.version}"/>
 	    	      	<!-- details -->
 	    	    </manifest>
+	    		
+	    		<!-- JSR223 service -->
+	    		<service type="javax.script.ScriptEngineFactory" 
+	    			provider="alice.tuprolog.scriptengine.PrologScriptEngineFactory"/>
+	    			
 	    	 </jar>
 	    	
 	    	<jar destfile="${build.tests.dir}/unit-tests.jar" basedir="${build.tests.dir}/unit">
