@@ -18,14 +18,12 @@
 package alice.tuprolog.lib;
 
 
-import alice.tuprolog.Library;
-
 /**
  * 
  * @deprecated From tuProlog 3.0, use alice.tuprolog.lib.OOLibrary.
  */
 @SuppressWarnings("serial")
 @Deprecated
-public class JavaLibrary extends Library {
+public class JavaLibrary extends OOLibrary {
 
 }
