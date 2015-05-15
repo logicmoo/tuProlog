@@ -132,6 +132,7 @@ public class TheoryManager implements Serializable {
 				ClauseInfo d = it.next();
 				if (clause.match(d.getClause())) {
 					it.remove();
+					break;
 				}
 			}
 		}
