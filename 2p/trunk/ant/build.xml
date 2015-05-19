@@ -21,50 +21,55 @@
 	      classpathref="path.svnant"	
 	/>
 	
-	
+	<!-- Compila i sorgenti di tu prolog -->
 	<macrodef name="build">
 	    <attribute name="debug"/>
 		<attribute name="optimize"/>
 	    <sequential>
 	    	
 	    	<echo>Building...</echo>
-	    	
+	    	<!-- Elimina la precendente build -->
 	    	<delete includeemptydirs="true">
 				<fileset dir="${build.classes.dir}" includes="**/*"/>
 			</delete>
 			
+	    	<!-- Compila i file .java -->
 			<javac destdir="${build.classes.dir}" debug="@{debug}"
 			deprecation="false" optimize="@{optimize}" failonerror="true" includeantruntime="false" target="${target}" source="${target}">
 	            <src path="${src.dir}"/>
 	            <classpath refid="ant-classpath"/>
 	        </javac>
 			
+	    	<!-- Copia le immagini necessarie alla GUI nella cartella dei file compilati -->
 			<copy todir="${build.classes.dir}/alice/tuprologx/ide/img">
 				<fileset dir="${src.dir}/alice/tuprologx/ide/img"/>
 			</copy>
 	    	
+	    	<!-- Copia il file docs.txt nella cartella dei file compilati -->
 	    	<copy file="${src.dir}/alice/tuprologx/ide/docs.txt" todir="${build.classes.dir}/alice/tuprologx/ide"/>
 	    	
 	    </sequential>
 	</macrodef>
 	
+	<!-- Compila i sorgenti dei test (?) -->
 	<macrodef name="build-tests">
 		    <attribute name="debug"/>
 			<attribute name="optimize"/>
 		    <sequential>
 		    	
 		    	<echo>Building tests...</echo>
-		    	
+		    	<!-- Elimina la precendente build -->
 		    	<delete includeemptydirs="true">
     				<fileset dir="${build.tests.dir}" includes="**/*"/>
     			</delete>
-    			
+    			<!-- Crea un po' di directory dove inserire i file compilati -->
     			<mkdir dir="${build.tests.dir}"/>
     			<mkdir dir="${build.tests.dir}/unit"/>
 		    	
     			<!-- <mkdir dir="${build.tests.dir}/fixtures"/> -->
 		    	<mkdir dir="${build.tests.dir}/concordion"/>
     			
+		    	<!-- Compila i file .java -->
     			<javac destdir="${build.tests.dir}/unit" debug="@{debug}" 
     				deprecation="false" optimize="@{optimize}" failonerror="true" includeantruntime="false" target="${target}" source="${target}">
     	            <src path="${test.dir}/unit"/>
@@ -75,14 +80,16 @@
 	 		</sequential>
 	</macrodef>
 	
-	
+	<!-- Da definire -->
 	<macrodef name="package">
 		<sequential>
 			
+			<!-- Elimina i precedenti archivi -->
 			<delete includeemptydirs="true">
 	    		<fileset dir="${build.archives.dir}" includes="**/*"/>
 	    	</delete>
-	    	
+			
+	    	<!-- Crea il jar eseguibile (GUI di tuprolog) -->
 	    	<jar destfile="${build.archives.dir}/2p.jar" basedir="${build.classes.dir}">
 	    	    <manifest>
 	    	      	<!-- Who is building this jar? -->
@@ -101,12 +108,14 @@
 	    		<service type="javax.script.ScriptEngineFactory" 
 	    			provider="alice.tuprolog.scriptengine.PrologScriptEngineFactory"/>
 	    	
-	    		
+	    		<!-- Copia tutte le librerie necessarie al funzionamento della GUI -->
 	    		<zipgroupfileset excludes="META-INF/*.SF" dir="${lib.dir}" includes="*.jar"/>
 	    		<zipgroupfileset excludes="META-INF/*.SF" dir="${lib.dir}/jflex" includes="*.jar"/>
 	    
 	    	  </jar>
 	    	
+			<!-- Crea il jar "libreria di tuProlog, escludendo tutte le classi non necessarie a questa
+			(ossia quelle che hanno servono per la GUI) -->
 	    	<jar destfile="${build.archives.dir}/tuprolog.jar" 	basedir="${build.classes.dir}" 
 	    														includes="alice/tuprolog/**, alice/util/**"
 	    	       												excludes="alice/tuprologx/**, alice/util/jedit/**">
@@ -126,6 +135,7 @@
 	    			
 	    	 </jar>
 	    	
+			<!-- Crea il jar dei test -->
 	    	<jar destfile="${build.tests.dir}/unit-tests.jar" basedir="${build.tests.dir}/unit">
 		    	<manifest>
 			      	<!-- Who is building this jar? -->
@@ -155,32 +165,56 @@
 	<!-- ================ -->
 	
 	<!-- idea: in the build directory delete and recreate each directory only inside a target that has to modify that directory-->
-
+	<!-- Inizializza tutte le proprietà necessarie allo script -->
 	<target name="00.init.properties" description="Sets up properties">
 		<echo message="Remember to set up the properties in the file ant/environment.properties !!!"/>
-		<!-- Environment properties -->
+		<!-- Environment properties (devo vedere cosa contiene)-->
 		<property file="ant/environment.properties"/>
-		<!-- Project properties -->
+		<!-- Project properties (idem) -->
 		<property file="ant/project.properties"/>
 		
 		<!-- Project structure -->
-	    <property name="src.dir" value="src"/>
-	    <property name="test.dir" value="test"/>
+		
+		<!-- Cartella dei sorgenti -->
+	    <property name="src.dir" value="src"/> 
+	    
+		<!-- Cartella dei sorgenti dei test -->
+		<property name="test.dir" value="test"/>
+		
+		<!-- Cartella della documentazione -->
 		<property name="doc.dir" value="doc"/>
+		
+		<!-- Cartella destinazione della build -->
 		<property name="build.dir" value="build"/>
+		
+		<!-- Cartella destinazione dei file .class -->
 	    <property name="build.classes.dir" value="${build.dir}/classes"/>
+		
+		<!-- Cartella destinazione dei file .class dei test -->
 	    <property name="build.tests.dir" value="${build.dir}/tests"/>
+		
+		<!-- Cartella destinazione degli archivi (.jar) -->
 	    <property name="build.archives.dir" value="${build.dir}/archives"/>
+		
+		<!-- Da vedere -->
 		<property name="build.release.dir" value="release"/>
+		
+		<!-- Da vedere -->
 		<property name="build.unit.reports.dir" value="${build.dir}/reports/unit"/>
+		
+		<!-- Da vedere -->
 		<property name="build.fit.reports.dir" value="${build.dir}/reports/fit"/>
 		
+		<!-- Cartella destinazione degli archivi .NET -->
 		<property name="build.archives.net.dir" value="${build.archives.dir}/net"/>
 		
+		<!-- Cartella delle librerie da includere negli archivi -->
 		<property name="lib.dir" value="lib"/>
+		
+		<!-- Cartella temporanea -->
 		<property name="tmp.dir" value="tmp"/>
 
-		
+		<!-- Carica la proprietà ${engine.version} dal file VersionInfo.java -->
 		<loadfile srcfile="${src.dir}/alice/util/VersionInfo.java" property="engine.version">
 			<filterchain>
 		    	<linecontains>
@@ -194,6 +228,7 @@
 		    </filterchain>
 		 </loadfile>
 		
+		<!-- Carica la proprietà ${JavaSpecific.version} dal file VersionInfo.java -->
 		<loadfile srcfile="${src.dir}/alice/util/VersionInfo.java" property="JavaSpecific.version">
 			<filterchain>
 		    	<linecontains>
@@ -207,6 +242,7 @@
 		    </filterchain>
 		 </loadfile>
 		
+		<!-- Carica la proprietà ${NETSpecifi.version} dal file VersionInfo.java -->
 		<loadfile srcfile="${src.dir}/alice/util/VersionInfo.java" property="NETSpecific.version">
 			<filterchain>
 		    	<linecontains>
@@ -538,10 +574,13 @@
 	    </target>
 
 	    <target name="10.javadoc" depends="01.set.classpath" description="Creates Javadocs">
+	    		
 	    	
 	    	<delete includeemptydirs="true">
 	    	    <fileset dir="${doc.dir}/javadoc" includes="**/*"/>
-	    	</delete>
+	    	</delete> 	
+	    	
+	    	<mkdir dir="${doc.dir}/javadoc"/> 
 	    	
 	    	<javadoc sourcepath="${src.dir}"
 	               destdir="${doc.dir}/javadoc"

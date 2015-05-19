@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="tuProlog build file" basedir="../../.." default="configure">
-
+<project name="tuProlog build file" basedir="../../.." default="print-properties">
 
 	<!-- Compila i sorgenti di tuProlog -->
 	<macrodef name="m-compile">
@@ -140,7 +139,7 @@
 	
 	<target name="configure">
 		<!-- Temp -->
-		
+		<!--
 		<taskdef name="configure" classname="antext.Configure"/>
 		
 		<configure>
@@ -155,15 +154,15 @@
 				<button name="release" display="Release" targets="release-net"/>
 			</buttongroup>
 		</configure>
-		
+		-->
 		<!-- End Temp -->	
 	</target>
-
+	
 
 	<target name="init">
 
 		
-		<property file="environment.properties"/>
+		
 
 		<!-- Project structure - Java Folder -->
 
@@ -221,9 +220,11 @@
 
 		<property name="net.helper.dir" value="${net.dir}/ant/HelperVersion"/>
 
-		<property name="net.release.dir" value="${net.dir}/releasetemp"/>
+		<property name="net.release.dir" value="${net.dir}/release"/>
 
 		<property name="net.release.lib.dir" value="${net.release.dir}/lib"/>
+		
+		<property file="${java.dir}/ant/environment.properties"/>
 
 
 		<!-- Carica la proprietà ${engine.version} dal file VersionInfo.java -->
@@ -498,7 +499,7 @@
 		<echo>Look directory ${net.build.dir}</echo>
 	</target>
 
-	<target name="compile-net" depends="init" description="Compile the OOLibary .NET">
+	<target name="build-net" depends="init" description="Compile the OOLibary .NET">
 		<!-- Compile OOLib and Conventions -->
 		<exec dir="${net.oolib.dir}" executable="${msbuild.exec}">
 			<arg value="/property:Configuration=Release"/>
@@ -559,7 +560,7 @@
 		<echo>Look directory ${java.release.dir}</echo>
 	</target>
 
-	<target name="release-net" depends="compile-net" description="Create the structure for the .NET release">
+	<target name="release-net" depends="build-net" description="Create the structure for the .NET release">
 
 		<!-- However, the new 2p.exe has to be copied in the HelperVersion directory -->
 
