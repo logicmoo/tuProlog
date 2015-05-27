@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="tuProlog build file" basedir="../../.." default="print-properties">
+<project name="tuProlog build file" basedir="../../.." default="configure">
 
 	<!-- Compila i sorgenti di tuProlog -->
-	<macrodef name="m-compile">
+	<macrodef name="m-compile-java">
 		<sequential>
 
 			<echo>Compiling classes...</echo>
@@ -13,8 +13,12 @@
 			</delete>
 
 			<!-- Compila i file .java -->
-			<javac destdir="${java.build.classes.dir}" debug="${javac.debug}"
-			deprecation="false" optimize="${javac.optimize}" failonerror="true" includeantruntime="false" target="${javac.target}" source="${javac.target}">
+			<javac
+			fork="yes" executable="${jdk8.home}/bin/javac.exe"
+			destdir="${java.build.classes.dir}" debug="${javac.debug}"
+			deprecation="false" optimize="${javac.optimize}" 
+			failonerror="true" includeantruntime="false" 
+			target="${javac.target}" source="${javac.target}">
 				<src path="${java.src.dir}"/>
 				<classpath refid="ant-classpath"/>
 			</javac>
@@ -31,7 +35,7 @@
 	</macrodef>
 
 	<!-- Compila i sorgenti dei test (?) -->
-	<macrodef name="m-compile-tests">
+	<macrodef name="m-compile-java-tests">
 		<sequential>
 
 			<echo>Building tests...</echo>
@@ -47,13 +51,61 @@
 			<mkdir dir="${java.build.tests.dir}/concordion"/>
 
 			<!-- Compila i file .java -->
-			<javac destdir="${java.build.tests.dir}/unit" debug="${javac.debug}" 
-				deprecation="false" optimize="${javac.optimize}" failonerror="true" includeantruntime="false" target="${target}" source="${target}">
+			<javac
+			fork="yes" executable="${jdk8.home}/bin/javac.exe"
+			destdir="${java.build.tests.dir}/unit" debug="${javac.debug}" 
+			deprecation="false" optimize="${javac.optimize}" failonerror="true" includeantruntime="false" target="${javac.target}" source="${javac.target}">
 				<src path="${java.test.dir}/unit"/>
 				<classpath refid="ant-classpath"/>
 				<classpath location="${java.build.classes.dir}"/>
 			</javac>
 
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="m-package-java-for-android">
+		<sequential>
+			
+			<delete dir="${java.tmp.dir}"/>
+			
+			<mkdir dir="${java.tmp.dir}"/>
+			<mkdir dir="${java.tmp.dir}/classes"/>		
+			
+			<!-- Compila i file .java -->
+			
+			<javac
+			fork="yes" executable="${jdk7.home}/bin/javac.exe"
+			destdir="${java.tmp.dir}/classes" debug="${javac.debug}"
+			deprecation="false" optimize="${javac.optimize}" 
+			failonerror="true" includeantruntime="false" 
+			target="1.7" source="1.7">
+				<src path="${java.src.dir}"/>
+				
+				<include name="alice/tuprolog/**"/>
+				<include name="alice/util/**"/>
+				
+				<exclude name="alice/tuprologx/**"/>
+				<exclude name="alice/util/jedit/**"/>
+				<exclude name="alice/tuprolog/scriptengine/**"/>
+				
+				<classpath refid="ant-classpath"/>
+			</javac>
+
+			<jar destfile="${android.libs.dir}/tuprolog.jar" basedir="${java.tmp.dir}/classes">
+				<manifest>
+					<!-- Who is building this jar? -->
+					<attribute name="Built-By" value="${user.name}"/>
+					<!-- Information about the program itself -->
+					<attribute name="Implementation-Vendor" value="tuProlog team"/>
+					<attribute name="Implementation-Title" value="tuProlog Engine"/>
+					<attribute name="Implementation-Version" value="${engine.version}"/>
+					<!-- details -->
+				</manifest>
+
+			</jar>
+			
+			<delete dir="${java.tmp.dir}"/>
+			
 		</sequential>
 	</macrodef>
 
@@ -139,30 +191,38 @@
 	
 	<target name="configure">
 		<!-- Temp -->
-		<!--
-		<taskdef name="configure" classname="antext.Configure"/>
 		
+		<taskdef name="configure" classname="antext.ConfigureTask"/>
+			
 		<configure>
-			<propertyfile path="environment.properties"/>
-			<buttongroup name="java" display="Java">
-				<button name="build" display="Build" targets="build-java"/>
-				<button name="ikvm" display="Build + IKVM" targets="build-java, ikvm-net"/>
-				<button name="release" display="Release" targets="release-java"/>
-			</buttongroup>
-			<buttongroup name="net" display=".NET">
-				<button name="build" display="Build" targets="compile-net"/>
-				<button name="release" display="Release" targets="release-net"/>
-			</buttongroup>
+			<propertyfile path="2p/trunk/ant/environment.properties">
+				<propertydef name="msbuild.exec" display="MSBuild" type="file"/>
+				<propertydef name="ikvm.dir" display="IKVM Directory" type="directory"/>
+				<propertydef name="csc.exec" display="C# Compiler" type="file"/>
+				<propertydef name="ikvmc" display="IKVM Compiler" type="file"/>
+				<propertydef name="javac.target" display="Javac Target" type="string"/>
+				<propertydef name="javac.debug" display="Javac Debug" type="boolean"/>
+				<propertydef name="jdk8.home" display="JDK8 Home" type="directory"/>
+				<propertydef name="jdk7.home" display="JDK7 Home" type="directory"/>
+				<propertydef name="javac.optimize" display="Javac Optimize" type="boolean"/>
+			</propertyfile>
+			<buildoptiongroup name="java" display="Java">
+				<buildoption name="build" display="Build" targets="build-java"/>
+				<buildoption name="ikvm" display="Build + IKVM" targets="build-java, ikvm-net"/>
+				<buildoption name="android" display="Build for Android" targets="build-java-for-android"/>
+				<buildoption name="release" display="Release" targets="release-java"/>
+			</buildoptiongroup>
+			<buildoptiongroup name="net" display=".NET">
+				<buildoption name="build" display="Build" targets="build-net"/>
+				<buildoption name="release" display="Release" targets="release-net"/>
+			</buildoptiongroup>
 		</configure>
-		-->
+		
 		<!-- End Temp -->	
 	</target>
 	
 
 	<target name="init">
-
-		
-		
 
 		<!-- Project structure - Java Folder -->
 
@@ -196,8 +256,6 @@
 		<mkdir dir="${java.doc.dir}"/>
 		<mkdir dir="${java.doc.javadoc.dir}"/>
 		<mkdir dir="${java.lib.dir}"/>
-		<delete dir="${java.tmp.dir}" />
-		<mkdir dir="${java.tmp.dir}"/>
 
 		<!-- Project structure - .NET Folder -->
 
@@ -225,6 +283,12 @@
 		<property name="net.release.lib.dir" value="${net.release.dir}/lib"/>
 		
 		<property file="${java.dir}/ant/environment.properties"/>
+		
+		<!-- Project Structure - Android Fodler -->
+		
+		<property name="android.dir" value="${basedir}/2p-android/trunk"/>
+		
+		<property name="android.libs.dir" value="${android.dir}/libs"/>
 
 
 		<!-- Carica la proprietà ${engine.version} dal file VersionInfo.java -->
@@ -327,7 +391,7 @@
 		<echo message=" "/>
 	</target>
 
-	<target name="generate-javadoc" depends="init" description="Creates Javadocs" if="${opt.build.java}">
+	<target name="generate-javadoc" depends="init" description="Creates Javadocs">
 
 		<delete includeemptydirs="true">
 			<fileset dir="${java.doc.javadoc.dir}" includes="**/*"/>
@@ -350,11 +414,18 @@
 	</target>
 
 	<target name="compile-java" depends="init" description="Compile Java classes">
-		<m-compile/>
-		<m-compile-tests/>
+		<m-compile-java/>
+		<m-compile-java-tests/>
+	</target>
+	
+	<target name="build-java-for-android" depends="init">
+		<m-package-java-for-android/>
 	</target>
 
 	<target name="unit-test" depends="init">
+		
+		<delete dir="${java.tmp.dir}"/>
+		<mkdir dir="${java.tmp.dir}"/>
 
 		<delete includeemptydirs="true">
 			<fileset dir="${java.build.unit.reports.dir}" includes="**/*"/>
@@ -371,6 +442,9 @@
 			<classpath location="${java.build.classes.dir}"/>
 			<classpath location="${java.build.tests.dir}/unit"/>
 		</junit>
+		
+		<delete dir="${java.tmp.dir}"/>
+		
 	</target>
 
 	<target name="unit-test-report" depends="unit-test">
