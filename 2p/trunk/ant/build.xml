@@ -34,8 +34,8 @@
 			</delete>
 			
 	    	<!-- Compila i file .java -->
-			<javac destdir="${build.classes.dir}" debug="@{debug}"
-			deprecation="false" optimize="@{optimize}" failonerror="true" includeantruntime="false" target="${target}" source="${target}">
+			<javac destdir="${build.classes.dir}" debug="false"
+			deprecation="false" optimize="true" failonerror="true" includeantruntime="false" target="1.8" source="1.8">
 	            <src path="${src.dir}"/>
 	            <classpath refid="ant-classpath"/>
 	        </javac>
@@ -70,8 +70,8 @@
 		    	<mkdir dir="${build.tests.dir}/concordion"/>
     			
 		    	<!-- Compila i file .java -->
-    			<javac destdir="${build.tests.dir}/unit" debug="@{debug}" 
-    				deprecation="false" optimize="@{optimize}" failonerror="true" includeantruntime="false" target="${target}" source="${target}">
+    			<javac destdir="${build.tests.dir}/unit" debug="false" 
+    				deprecation="false" optimize="true" failonerror="true" includeantruntime="false" target="1.8" source="1.8">
     	            <src path="${test.dir}/unit"/>
     	            <classpath refid="ant-classpath"/>
     	        	<classpath location="${build.classes.dir}"/>
@@ -413,19 +413,18 @@
 		    srcdir="src:test/concordiontests"
 		    debug="yes"
 		    failonerror="yes"
-		    source="1.5"
-		    target="1.5"
+		    source="1.8"
+		    target="1.8"
 		    includeantruntime="no"
 		/>
-
+		
 		<copy todir="../build/tests/concordion/classes">
-			<!-- <fileset dir="test/concordiontests" /> -->
 			<fileset dir="test/concordiontests" />
 		</copy>
 		
 		<mkdir dir="../build/tests/concordion/test-output"/>
 		<mkdir dir="../build/tests/concordion/concordion-output"/>
-
+		
 		<junit fork="yes" forkmode="once" printsummary="yes" showoutput="yes">
 			<jvmarg value="-Dconcordion.output.dir=../build/tests/concordion/concordion-output"/>
 		            <classpath>
@@ -444,8 +443,8 @@
 		            </batchtest>
 		        </junit>
 
-		        
-		
+		      
+			
 		
 	</target>
     
