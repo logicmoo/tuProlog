@@ -1,5 +1,6 @@
 package alice.tuprologx.android;
 
+
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;

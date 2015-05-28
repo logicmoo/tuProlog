@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="tuProlog build file" basedir="../../.." default="configure">
-
+	
 	<!-- Compila i sorgenti di tuProlog -->
 	<macrodef name="m-compile-java">
 		<sequential>
@@ -38,19 +38,20 @@
 	<macrodef name="m-compile-java-tests">
 		<sequential>
 
-			<echo>Building tests...</echo>
+			
 			<!-- Elimina la precendente build -->
 			<delete includeemptydirs="true">
 				<fileset dir="${java.build.tests.dir}" includes="**/*"/>
 			</delete>
+
 			<!-- Crea un po' di directory dove inserire i file compilati -->
 			<mkdir dir="${java.build.tests.dir}"/>
 			<mkdir dir="${java.build.tests.dir}/unit"/>
-
-			<!-- <mkdir dir="${build.tests.dir}/fixtures"/> -->
 			<mkdir dir="${java.build.tests.dir}/concordion"/>
-
-			<!-- Compila i file .java -->
+			<mkdir dir="${java.build.tests.dir}/concordion/classes"/>
+			
+			<echo>Building unit tests...</echo>
+			<!-- Compila i file dei test unit -->
 			<javac
 			fork="yes" executable="${jdk8.home}/bin/javac.exe"
 			destdir="${java.build.tests.dir}/unit" debug="${javac.debug}" 
@@ -59,20 +60,29 @@
 				<classpath refid="ant-classpath"/>
 				<classpath location="${java.build.classes.dir}"/>
 			</javac>
-
+			
+			<echo>Building concordion tests</echo>
+			<!-- Compila i file dei test concordion -->
+			<javac
+			fork="yes" executable="${jdk8.home}/bin/javac.exe"
+			destdir="${java.build.tests.dir}/concordion/classes" debug="yes" 
+			deprecation="false" optimize="yes" failonerror="true" includeantruntime="no" target="${javac.target}" source="${javac.target}">
+				<src path="${java.test.dir}/concordiontests"/>
+				<src path="${java.src.dir}"/>
+				<classpath refid="compile-classpath"/>
+			</javac>
 		</sequential>
 	</macrodef>
-	
+
 	<macrodef name="m-package-java-for-android">
 		<sequential>
-			
+
 			<delete dir="${java.tmp.dir}"/>
-			
+
 			<mkdir dir="${java.tmp.dir}"/>
-			<mkdir dir="${java.tmp.dir}/classes"/>		
-			
+			<mkdir dir="${java.tmp.dir}/classes"/>
+
 			<!-- Compila i file .java -->
-			
 			<javac
 			fork="yes" executable="${jdk7.home}/bin/javac.exe"
 			destdir="${java.tmp.dir}/classes" debug="${javac.debug}"
@@ -80,17 +90,17 @@
 			failonerror="true" includeantruntime="false" 
 			target="1.7" source="1.7">
 				<src path="${java.src.dir}"/>
-				
+
 				<include name="alice/tuprolog/**"/>
 				<include name="alice/util/**"/>
-				
+
 				<exclude name="alice/tuprologx/**"/>
 				<exclude name="alice/util/jedit/**"/>
 				<exclude name="alice/tuprolog/scriptengine/**"/>
-				
+
 				<classpath refid="ant-classpath"/>
 			</javac>
-
+			
 			<jar destfile="${android.libs.dir}/tuprolog.jar" basedir="${java.tmp.dir}/classes">
 				<manifest>
 					<!-- Who is building this jar? -->
@@ -103,9 +113,9 @@
 				</manifest>
 
 			</jar>
-			
+
 			<delete dir="${java.tmp.dir}"/>
-			
+
 		</sequential>
 	</macrodef>
 
@@ -188,12 +198,12 @@
 			<echo>Look directories ${java.build.archives.dir} and ${java.build.tests.dir}</echo>
 		</sequential>
 	</macrodef>
-	
+
 	<target name="configure">
 		<!-- Temp -->
-		
+
 		<taskdef name="configure" classname="antext.ConfigureTask"/>
-			
+
 		<configure>
 			<propertyfile path="2p/trunk/ant/environment.properties">
 				<propertydef name="msbuild.exec" display="MSBuild" type="file"/>
@@ -217,10 +227,10 @@
 				<buildoption name="release" display="Release" targets="release-net"/>
 			</buildoptiongroup>
 		</configure>
-		
-		<!-- End Temp -->	
+
+		<!-- End Temp -->
 	</target>
-	
+
 
 	<target name="init">
 
@@ -237,25 +247,21 @@
 		<property name="java.build.classes.dir" value="${java.build.dir}/classes"/>
 		<property name="java.build.tests.dir" value="${java.build.dir}/tests"/>
 		<property name="java.build.archives.dir" value="${java.build.dir}/archives"/>
-		<property name="java.build.unit.reports.dir" value="${java.build.dir}/reports/unit"/>
-		<property name="java.build.fit.reports.dir" value="${java.build.dir}/reports/fit"/>
+		<property name="java.build.reports.unit.dir" value="${java.build.dir}/reports/unit"/>
+		<property name="java.build.reports.concordion.dir" value="${java.build.dir}/reports/concordion"/>
 
 		<property name="java.release.dir" value="${java.dir}/release"/>
 
 		<property name="java.tmp.dir" value="${java.dir}/tmp"/>
 
 		<property name="java.lib.dir" value="${java.dir}/lib"/>
-
-		<mkdir dir="${java.src.dir}"/>
-		<mkdir dir="${java.lib.dir}"/>
+		
 		<mkdir dir="${java.build.dir}"/>
-		<mkdir dir="${java.build.classes.dir}"/>
 		<mkdir dir="${java.build.tests.dir}"/>
+		<mkdir dir="${java.build.classes.dir}"/>
 		<mkdir dir="${java.build.archives.dir}"/>
-		<mkdir dir="${java.build.unit.reports.dir}"/>
-		<mkdir dir="${java.doc.dir}"/>
-		<mkdir dir="${java.doc.javadoc.dir}"/>
-		<mkdir dir="${java.lib.dir}"/>
+		<mkdir dir="${java.build.reports.unit.dir}"/>
+		<mkdir dir="${java.build.reports.concordion.dir}"/>
 
 		<!-- Project structure - .NET Folder -->
 
@@ -281,13 +287,13 @@
 		<property name="net.release.dir" value="${net.dir}/release"/>
 
 		<property name="net.release.lib.dir" value="${net.release.dir}/lib"/>
-		
+
 		<property file="${java.dir}/ant/environment.properties"/>
-		
+
 		<!-- Project Structure - Android Fodler -->
-		
+
 		<property name="android.dir" value="${basedir}/2p-android/trunk"/>
-		
+
 		<property name="android.libs.dir" value="${android.dir}/libs"/>
 
 
@@ -345,7 +351,14 @@
 			<!-- Project classes -->
 			<pathelement path="${java.build.classes.dir}"/>
 		</path>
-		
+
+		<path id="compile-classpath">
+			<!-- Project-specific libraries -->
+			<fileset dir="${java.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</path>
+
 
 
 	</target>
@@ -417,18 +430,18 @@
 		<m-compile-java/>
 		<m-compile-java-tests/>
 	</target>
-	
+
 	<target name="build-java-for-android" depends="init">
 		<m-package-java-for-android/>
 	</target>
 
-	<target name="unit-test" depends="init">
-		
+	<target name="unit-test" depends="compile-java">
+
 		<delete dir="${java.tmp.dir}"/>
 		<mkdir dir="${java.tmp.dir}"/>
 
 		<delete includeemptydirs="true">
-			<fileset dir="${java.build.unit.reports.dir}" includes="**/*"/>
+			<fileset dir="${java.build.reports.unit.dir}" includes="**/*"/>
 		</delete>
 
 		<!-- We have to set the "dir" attribute in order to start the JVM from the root of the project,
@@ -436,36 +449,65 @@
 		<junit fork="yes" printsummary="yes" tempdir="${java.tmp.dir}" dir="">
 			<formatter type="xml" />
 			<!--<test name="${suite}" />-->
-			<test name="alice.tuprolog.TuPrologTestSuite" todir="${java.build.unit.reports.dir}"/>
-			<test name="alice.tuprolog.ExceptionsTestSuite" todir="${java.build.unit.reports.dir}"/>
+			<test name="alice.tuprolog.TuPrologTestSuite" todir="${java.build.reports.unit.dir}"/>
+			<test name="alice.tuprolog.ExceptionsTestSuite" todir="${java.build.reports.unit.dir}"/>
 			<classpath refid="ant-classpath"/>
 			<classpath location="${java.build.classes.dir}"/>
 			<classpath location="${java.build.tests.dir}/unit"/>
 		</junit>
-		
+
 		<delete dir="${java.tmp.dir}"/>
-		
+
 	</target>
 
 	<target name="unit-test-report" depends="unit-test">
-		<junitreport todir="${java.build.unit.reports.dir}">
-			<fileset dir="${java.build.unit.reports.dir}">
+		<junitreport todir="${java.build.reports.unit.dir}">
+			<fileset dir="${java.build.reports.unit.dir}">
 				<include name="TEST-*.xml"/>
 			</fileset>
-			<report styledir="${java.dir}/ant" format="frames" todir="${java.build.unit.reports.dir}/html-report"/>
+			<report styledir="${java.dir}/ant" format="frames" todir="${java.build.reports.unit.dir}/html-report"/>
 		</junitreport>
-		<echo>Look directory ${java.build.unit.reports.dir}/html-report</echo>
+		<echo>Look directory ${java.build.reports.unit.dir}/html-report</echo>
+	</target>
+
+	<target name="concordion-tests" depends="compile-java">
+		
+		<copy todir="${java.build.tests.dir}/concordion/classes">
+			<fileset dir="${java.test.dir}/concordiontests" />
+		</copy>
+		
+		<mkdir dir="${java.build.tests.dir}/concordion/test-output"/>
+		<mkdir dir="${java.build.tests.dir}/concordion/concordion-output"/>
+
+		<junit fork="yes" forkmode="once" printsummary="yes" showoutput="yes">
+			<jvmarg value="-Dconcordion.output.dir=${java.build.reports.concordion.dir}" />
+			<classpath>
+				<path refid="compile-classpath" />
+				<pathelement location="${java.build.tests.dir}/concordion/classes" />
+			</classpath>
+
+			<formatter type="plain" usefile="false" />
+
+			<batchtest todir="${java.build.tests.dir}/concordion/test-output">
+				<fileset dir="${java.test.dir}/concordiontests">
+					<include name="**/*Test.java" />
+					<include name="**/*General.java" />
+					<exclude name="**/Abstract*" />
+				</fileset>
+			</batchtest>
+		</junit>
+
 	</target>
 
 	<target name="build-java" depends="compile-java" description="Build JAR archives">
-		<m-package-java/>
+		<m-package-java />
 	</target>
 
 	<target name="ikvm-net" depends="init" description="Build .NET files">
 
-		<delete dir="${net.lib.dir}"/>
+		<delete dir="${net.lib.dir}" />
 
-		<mkdir dir="${net.lib.dir}"/>
+		<mkdir dir="${net.lib.dir}" />
 
 		<mkdir dir="${net.lib.test.dir}"/>
 		<mkdir dir="${net.lib.junit.dir}"/>
@@ -585,7 +627,7 @@
 		</exec>
 	</target>
 
-	<target name="release-java" depends="build-java, unit-test-report, generate-javadoc" description="Creates the structure for the JAVA release">
+	<target name="release-java" depends="build-java, unit-test-report, concordion-tests, generate-javadoc" description="Creates the structure for the JAVA release">
 
 		<delete includeemptydirs="true">
 			<fileset dir="${java.release.dir}" includes="**/*"/>
@@ -725,11 +767,11 @@
 		<copy todir="${net.release.out.dir}/examples">
 			<fileset dir="${net.examples.dir}"/>
 		</copy>
-		
+
 		<copy todir="${net.release.out.dir}/licenses">
 			<fileset dir="${net.licenses.dir}"/>
 		</copy>
-		
+
 		<!-- Copy OOLib, conventions, javassist, 2p.exe and tuprolog.dll -->
 		<!-- Ho commentato javaassist perchè non presente nella cartella -->
 		<copy todir="${net.release.out.lib.dir}">
@@ -738,27 +780,27 @@
 				<!-- <include name="javassist.dll"/> -->
 			</fileset>
 		</copy>
-		
+
 		<copy todir="${net.release.out.lib.dir}">
 			<fileset dir="${net.oolib.conventions.bin.dir}">
 				<include name="Conventions.dll"/>
 			</fileset>
 		</copy>
-		
+
 		<copy todir="${net.release.out.dir}">
 			<fileset dir="${net.lib.dir}">
 				<include name="tuprolog.dll"/>
 				<include name="2p.exe"/>
 			</fileset>
 		</copy>
-		
+
 		<!-- Copy config file -->
 		<copy todir="${net.release.out.dir}">
 			<fileset dir="${net.dir}/ant">
 				<include name="2p.exe.config"/>
 			</fileset>
 		</copy>
-		
+
 		<!-- Copy manual -->
 		<copy todir="${net.release.out.dir}/doc">
 			<fileset dir="${net.doc.dir}">
@@ -786,11 +828,12 @@
 				<include name="IKVM.OpenJDK.Tools.dll"/>
 				<include name="IKVM.OpenJDK.SwingAWT.dll"/>
 				<include name="IKVM.Runtime.dll"/> 
-				<include name="IKVM.Reflection.dll"/> --> <!-- Added by Mannino-->
+				<include name="IKVM.Reflection.dll"/> -->
+				<!-- Added by Mannino-->
 			</fileset>
-			
+
 			<!-- Copy also tuprolog.jar needed for the examples and the README -->
-			
+
 			<!-- Commentato perchè nella release non è presente tuprolog.jar
 			
 			<fileset dir="${net.lib.dir}">
@@ -798,13 +841,13 @@
 				<include name="README.txt"/>
 			</fileset>
 			-->
-		</copy>			
-		
+		</copy>
+
 		<!-- IKVM version -->
 		<echo append="false" file="${net.release.out.dir}/ikvm-version-${ikvm.version}.txt"/>
 
 		<!-- Change the reference to the libraries in the examples -->
-			
+
 		<!-- Derivative -->
 		<replace 	file="${net.release.out.dir}/examples/Prolog from .NET/DerivativeExample/DerivativeExample/DerivativeExample.csproj"
 					token="&lt;HintPath&gt;..\..\..\..\lib\2p.exe&lt;/HintPath&gt;"
@@ -851,9 +894,9 @@
 
 		<!-- Zip della release -->
 		<zip destfile="${net.release.dir}/${net.outputname}.zip" basedir="${net.release.out.dir}" />
-		
+
 		<!-- Elimina cartella temporanea -->
-		<delete dir="${net.release.out.dir}"/>		
+		<delete dir="${net.release.out.dir}"/>
 
 
 	</target>
