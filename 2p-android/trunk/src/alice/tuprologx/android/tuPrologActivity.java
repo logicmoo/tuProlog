@@ -83,7 +83,7 @@ public class tuPrologActivity extends Activity {
       AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
       alert.setTitle("About tuProlog");
-		try {
+		try {	
 				alert.setMessage(""
 						+ "- tuProlog for Android - \n Version: "
 						+ tuPrologActivity
