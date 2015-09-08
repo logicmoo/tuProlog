@@ -23,11 +23,15 @@
 					<include name="*.jar"/>
 				</fileset>			
 			</classpath>
-			
 		</javac>
 		
-		<jar destfile="${basedir}/release/antext.jar" basedir="${basedir}/bin">
-		</jar>
+		<mkdir dir="${basedir}/bin/res"/>
+		<copy todir="${basedir}/bin/res">
+			<fileset dir="${basedir}/res"/>
+		</copy>
 		
+		<jar destfile="${basedir}/release/antext.jar" basedir="${basedir}/bin">
+			
+		</jar>
 	</target>
 </project>

@@ -4,10 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Map;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -15,6 +17,8 @@ import javax.swing.border.EmptyBorder;
 import antext.PropertyDef;
 import antext.PropertyFile;
 import antext.ui.propertyfield.BooleanPropertyField;
+import antext.ui.propertyfield.AbstractFilePropertyField;
+import antext.ui.propertyfield.DirectoryPropertyField;
 import antext.ui.propertyfield.FilePropertyField;
 import antext.ui.propertyfield.PropertyField;
 import antext.ui.propertyfield.StringPropertyField;
@@ -53,22 +57,16 @@ public class PropertyFilePanel extends JPanel {
 			String propertyDisplay = propertyFile.getPropertyDisplay(propertyName);
 			
 			PropertyField editField = null;
-			
-			switch(propertyFile.getPropertyType(propertyName)) {
-			case PropertyDef.TYPE_STRING: 
-				editField = new StringPropertyField(propertyFile, propertyName); 
-				break;
-			case PropertyDef.TYPE_FILE:
-				editField = new FilePropertyField(propertyFile, propertyName);
-				break;
-			case PropertyDef.TYPE_DIRECTORY:
-				editField = new FilePropertyField(propertyFile, propertyName, true);
-				break;
-			case PropertyDef.TYPE_BOOLEAN:
-				editField = new BooleanPropertyField(propertyFile, propertyName);
-				break;
-			default:
-				editField = new StringPropertyField(propertyFile, propertyName);
+			try {
+				editField = PropertyField.create(propertyFile, propertyName);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(
+					null, 
+					"There was an error while loading property \"" + propertyName + "\":\n" + e.getMessage(),
+					"An error has occurred", 
+					JOptionPane.ERROR_MESSAGE
+				);
+				continue;
 			}
 			
 			editFields.add(editField);

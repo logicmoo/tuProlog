@@ -33,7 +33,7 @@ public class BooleanPropertyField extends PropertyField {
 
 	@Override
 	public int getStatus() {
-		return STATUS_OK;
+		return STATUS_HIDE;
 	}
 
 	@Override

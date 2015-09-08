@@ -62,7 +62,7 @@ public class PropertyFile extends ConfigureTaskNestedElement {
 		return def;
 	}
 	
-	public int getPropertyType(String propertyName) {
+	public String getPropertyType(String propertyName) {
 		
 		for(PropertyDef def : propertyDefs) {
 			if(def.getName().equals(propertyName)) {
@@ -70,7 +70,7 @@ public class PropertyFile extends ConfigureTaskNestedElement {
 			}
 		}
 		
-		return PropertyDef.TYPE_STRING;
+		return null;
 	}
 	
 	public String getPropertyDisplay(String propertyName) {
