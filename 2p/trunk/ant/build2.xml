@@ -1,0 +1,903 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="tuProlog build file" basedir="../../.." default="configure">
+	
+	<!-- Compila i sorgenti di tuProlog -->
+	<macrodef name="m-compile-java">
+		<sequential>
+
+			<echo>Compiling classes...</echo>
+			<!-- Elimina la precendente build -->
+			<delete includeemptydirs="true">
+				<fileset dir="${java.build.classes.dir}" includes="**/*"/>
+			</delete>
+
+			<!-- Compila i file .java -->
+			<javac
+			fork="yes" executable="${jdk8.home}/bin/javac.exe"
+			destdir="${java.build.classes.dir}" debug="${javac.debug}"
+			deprecation="false" optimize="${javac.optimize}" 
+			failonerror="true" includeantruntime="false" 
+			target="${javac.target}" source="${javac.target}">
+				<src path="${java.src.dir}"/>
+				<classpath refid="ant-classpath"/>
+			</javac>
+
+			<!-- Copia le immagini necessarie alla GUI nella cartella dei file compilati -->
+			<copy todir="${java.build.classes.dir}/alice/tuprologx/ide/img">
+				<fileset dir="${java.src.dir}/alice/tuprologx/ide/img"/>
+			</copy>
+
+			<!-- Copia il file docs.txt nella cartella dei file compilati -->
+			<copy file="${java.src.dir}/alice/tuprologx/ide/docs.txt" todir="${java.build.classes.dir}/alice/tuprologx/ide"/>
+
+		</sequential>
+	</macrodef>
+
+	<!-- Compila i sorgenti dei test (?) -->
+	<macrodef name="m-compile-java-tests">
+		<sequential>
+
+			
+			<!-- Elimina la precendente build -->
+			<delete includeemptydirs="true">
+				<fileset dir="${java.build.tests.dir}" includes="**/*"/>
+			</delete>
+
+			<!-- Crea un po' di directory dove inserire i file compilati -->
+			<mkdir dir="${java.build.tests.dir}"/>
+			<mkdir dir="${java.build.tests.dir}/unit"/>
+			<mkdir dir="${java.build.tests.dir}/concordion"/>
+			<mkdir dir="${java.build.tests.dir}/concordion/classes"/>
+			
+			<echo>Building unit tests...</echo>
+			<!-- Compila i file dei test unit -->
+			<javac
+			fork="yes" executable="${jdk8.home}/bin/javac.exe"
+			destdir="${java.build.tests.dir}/unit" debug="${javac.debug}" 
+			deprecation="false" optimize="${javac.optimize}" failonerror="true" includeantruntime="false" target="${javac.target}" source="${javac.target}">
+				<src path="${java.test.dir}/unit"/>
+				<classpath refid="ant-classpath"/>
+				<classpath location="${java.build.classes.dir}"/>
+			</javac>
+			
+			<echo>Building concordion tests</echo>
+			<!-- Compila i file dei test concordion -->
+			<javac
+			fork="yes" executable="${jdk8.home}/bin/javac.exe"
+			destdir="${java.build.tests.dir}/concordion/classes" debug="yes" 
+			deprecation="false" optimize="yes" failonerror="true" includeantruntime="no" target="${javac.target}" source="${javac.target}">
+				<src path="${java.test.dir}/concordiontests"/>
+				<src path="${java.src.dir}"/>
+				<classpath refid="compile-classpath"/>
+			</javac>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="m-package-java-for-android">
+		<sequential>
+
+			<delete dir="${java.tmp.dir}"/>
+
+			<mkdir dir="${java.tmp.dir}"/>
+			<mkdir dir="${java.tmp.dir}/classes"/>
+
+			<!-- Compila i file .java -->
+			<javac
+			fork="yes" executable="${jdk7.home}/bin/javac.exe"
+			destdir="${java.tmp.dir}/classes" debug="${javac.debug}"
+			deprecation="false" optimize="${javac.optimize}" 
+			failonerror="true" includeantruntime="false" 
+			target="1.7" source="1.7">
+				<src path="${java.src.dir}"/>
+
+				<include name="alice/tuprolog/**"/>
+				<include name="alice/util/**"/>
+
+				<exclude name="alice/tuprologx/**"/>
+				<exclude name="alice/util/jedit/**"/>
+				<exclude name="alice/tuprolog/scriptengine/**"/>
+
+				<classpath refid="ant-classpath"/>
+			</javac>
+			
+			<jar destfile="${android.libs.dir}/tuprolog.jar" basedir="${java.tmp.dir}/classes">
+				<manifest>
+					<!-- Who is building this jar? -->
+					<attribute name="Built-By" value="${user.name}"/>
+					<!-- Information about the program itself -->
+					<attribute name="Implementation-Vendor" value="tuProlog team"/>
+					<attribute name="Implementation-Title" value="tuProlog Engine"/>
+					<attribute name="Implementation-Version" value="${engine.version}"/>
+					<!-- details -->
+				</manifest>
+
+			</jar>
+
+			<delete dir="${java.tmp.dir}"/>
+
+		</sequential>
+	</macrodef>
+
+	<!-- Crea il jar eseguibile (GUI) e il jar libreria -->
+	<macrodef name="m-package-java">
+		<sequential>
+
+			<!-- Elimina i precedenti archivi -->
+			<delete includeemptydirs="true">
+				<fileset dir="${java.build.archives.dir}" includes="**/*"/>
+			</delete>
+
+			<!-- Crea il jar eseguibile (GUI di tuprolog) -->
+			<jar destfile="${java.build.archives.dir}/2p.jar" basedir="${java.build.classes.dir}">
+				<manifest>
+					<!-- Who is building this jar? -->
+					<attribute name="Built-By" value="${user.name}"/>
+					<!-- Information about the program itself -->
+					<attribute name="Implementation-Vendor" value="tuProlog team"/>
+					<attribute name="Implementation-Title" value="tuProlog Engine"/>
+					<attribute name="Implementation-Version" value="${engine.version}.${JavaSpecific.version}"/>
+					<!-- details -->
+
+					<attribute name="Main-Class" value="alice.tuprologx.ide.GUILauncher"/>
+					<attribute name="Class-Path" value="."/>
+				</manifest>
+
+				<!-- JSR223 service -->
+				<service type="javax.script.ScriptEngineFactory" 
+	    			provider="alice.tuprolog.scriptengine.PrologScriptEngineFactory"/>
+
+				<!-- Copia tutte le librerie necessarie al funzionamento della GUI -->
+				<zipgroupfileset excludes="META-INF/*.SF" dir="${java.lib.dir}" includes="*.jar"/>
+				<zipgroupfileset excludes="META-INF/*.SF" dir="${java.lib.dir}/jflex" includes="*.jar"/>
+
+			</jar>
+
+			<!-- Crea il jar "libreria di tuProlog, escludendo tutte le classi non necessarie a questa
+			(ossia quelle che hanno servono per la GUI) -->
+			<jar destfile="${java.build.archives.dir}/tuprolog.jar" 	basedir="${java.build.classes.dir}" 
+	    																includes="alice/tuprolog/**, alice/util/**"
+	    	       														excludes="alice/tuprologx/**, alice/util/jedit/**">
+				<manifest>
+					<!-- Who is building this jar? -->
+					<attribute name="Built-By" value="${user.name}"/>
+					<!-- Information about the program itself -->
+					<attribute name="Implementation-Vendor" value="tuProlog team"/>
+					<attribute name="Implementation-Title" value="tuProlog Engine"/>
+					<attribute name="Implementation-Version" value="${engine.version}"/>
+					<!-- details -->
+				</manifest>
+
+				<!-- JSR223 service -->
+				<service type="javax.script.ScriptEngineFactory" 
+	    			provider="alice.tuprolog.scriptengine.PrologScriptEngineFactory"/>
+
+			</jar>
+
+			<!-- Crea il jar dei test -->
+			<jar destfile="${java.build.tests.dir}/unit-tests.jar" basedir="${java.build.tests.dir}/unit">
+				<manifest>
+					<!-- Who is building this jar? -->
+					<attribute name="Built-By" value="${user.name}"/>
+					<!-- Information about the program itself -->
+					<attribute name="Implementation-Vendor" value="tuProlog team"/>
+					<attribute name="Implementation-Title" value="tuProlog Engine"/>
+					<attribute name="Implementation-Version" value="${engine.version}.${JavaSpecific.version}"/>
+				</manifest>
+			</jar>
+
+			<!--	    	<jar destfile="${build.tests.dir}/fixtures.jar" basedir="${build.tests.dir}/fixtures">
+		    	<manifest>
+			      	<attribute name="Built-By" value="${user.name}"/>
+			      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
+			      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
+			      	<attribute name="Implementation-Version" value="${engine.version}.${JavaSpecific.version}"/>
+			    </manifest>
+	    	</jar>
+-->
+			<echo>Look directories ${java.build.archives.dir} and ${java.build.tests.dir}</echo>
+		</sequential>
+	</macrodef>
+
+	<target name="configure">
+		<!-- Temp -->
+
+		<taskdef name="configure" classname="antext.ConfigureTask"/>
+
+		<configure>
+			<propertyfile path="2p/trunk/ant/environment.properties">
+				<propertydef name="msbuild.exec" display="MSBuild" type="file"/>
+				<propertydef name="ikvm.dir" display="IKVM Directory" type="directory"/>
+				<propertydef name="csc.exec" display="C# Compiler" type="file"/>
+				<propertydef name="ikvmc" display="IKVM Compiler" type="file"/>
+				<propertydef name="javac.target" display="Javac Target" type="string"/>
+				<propertydef name="javac.debug" display="Javac Debug" type="boolean"/>
+				<propertydef name="jdk8.home" display="JDK8 Home" type="directory"/>
+				<propertydef name="jdk7.home" display="JDK7 Home" type="directory"/>
+				<propertydef name="javac.optimize" display="Javac Optimize" type="boolean"/>
+			</propertyfile>
+			<buildoptiongroup name="java" display="Java">
+				<buildoption name="build" display="Build" targets="build-java"/>
+				<buildoption name="ikvm" display="Build + IKVM" targets="build-java, ikvm-net"/>
+				<buildoption name="android" display="Build for Android" targets="build-java-for-android"/>
+				<buildoption name="release" display="Release" targets="release-java"/>
+			</buildoptiongroup>
+			<buildoptiongroup name="net" display=".NET">
+				<buildoption name="build" display="Build" targets="build-net"/>
+				<buildoption name="release" display="Release" targets="release-net"/>
+			</buildoptiongroup>
+		</configure>
+
+		<!-- End Temp -->
+	</target>
+
+
+	<target name="init">
+
+		<!-- Project structure - Java Folder -->
+
+		<property name="java.dir" value="${basedir}/2p/trunk"/>
+
+		<property name="java.src.dir" value="${java.dir}/src"/>
+		<property name="java.test.dir" value="${java.dir}/test"/>
+		<property name="java.doc.dir" value="${java.dir}/doc"/>
+		<property name="java.doc.javadoc.dir" value="${java.doc.dir}/javadoc"/>
+		<property name="java.build.dir" value="${java.dir}/build"/>
+
+		<property name="java.build.classes.dir" value="${java.build.dir}/classes"/>
+		<property name="java.build.tests.dir" value="${java.build.dir}/tests"/>
+		<property name="java.build.archives.dir" value="${java.build.dir}/archives"/>
+		<property name="java.build.reports.unit.dir" value="${java.build.dir}/reports/unit"/>
+		<property name="java.build.reports.concordion.dir" value="${java.build.dir}/reports/concordion"/>
+
+		<property name="java.release.dir" value="${java.dir}/release"/>
+
+		<property name="java.tmp.dir" value="${java.dir}/tmp"/>
+
+		<property name="java.lib.dir" value="${java.dir}/lib"/>
+		
+		<mkdir dir="${java.build.dir}"/>
+		<mkdir dir="${java.build.tests.dir}"/>
+		<mkdir dir="${java.build.classes.dir}"/>
+		<mkdir dir="${java.build.archives.dir}"/>
+		<mkdir dir="${java.build.reports.unit.dir}"/>
+		<mkdir dir="${java.build.reports.concordion.dir}"/>
+
+		<!-- Project structure - .NET Folder -->
+
+		<property name="net.dir" value="${basedir}/2p-net/trunk"/>
+
+		<property name="net.lib.dir" value="${net.dir}/lib" />
+
+		<property name="net.lib.test.dir" value="${net.lib.dir}/test"/>
+		<property name="net.lib.junit.dir" value="${net.lib.dir}/junit" />
+
+		<property name="net.doc.dir" value="${net.dir}/doc"/>
+
+		<property name="net.oolib.dir" value="${net.dir}/OOLibrary"/>
+		<property name="net.oolib.bin.dir" value="${net.oolib.dir}/OOLibrary/bin/Release"/>
+		<property name="net.oolib.conventions.bin.dir" value="${net.oolib.dir}/Conventions/bin/Release"/>
+
+		<property name="net.examples.dir" value="${net.dir}/examples"/>
+
+		<property name="net.licenses.dir" value="${net.dir}/licenses"/>
+
+		<property name="net.helper.dir" value="${net.dir}/ant/HelperVersion"/>
+
+		<property name="net.release.dir" value="${net.dir}/release"/>
+
+		<property name="net.release.lib.dir" value="${net.release.dir}/lib"/>
+
+		<property file="${java.dir}/ant/environment.properties"/>
+
+		<!-- Project Structure - Android Fodler -->
+
+		<property name="android.dir" value="${basedir}/2p-android/trunk"/>
+
+		<property name="android.libs.dir" value="${android.dir}/libs"/>
+
+
+		<!-- Carica la proprietà ${engine.version} dal file VersionInfo.java -->
+		<loadfile srcfile="${java.src.dir}/alice/util/VersionInfo.java" property="engine.version">
+			<filterchain>
+				<linecontains>
+					<contains value="String ENGINE_VERSION"/>
+				</linecontains>
+				<deletecharacters chars="\n\r"/>
+				<!-- Do not get a number with a new line at the end -->
+				<tokenfilter>
+					<replaceregex pattern="[^0-9]+&quot;" replace=""/>
+					<replaceregex pattern="&quot;.*" replace=""/>
+				</tokenfilter>
+			</filterchain>
+		</loadfile>
+
+		<!-- Carica la proprietà ${JavaSpecific.version} dal file VersionInfo.java -->
+		<loadfile srcfile="${java.src.dir}/alice/util/VersionInfo.java" property="JavaSpecific.version">
+			<filterchain>
+				<linecontains>
+					<contains value="String JAVA_SPECIFIC_VERSION"/>
+				</linecontains>
+				<deletecharacters chars="\n\r"/>
+				<!-- Do not get a number with a new line at the end -->
+				<tokenfilter>
+					<replaceregex pattern="[^0-9]+&quot;" replace=""/>
+					<replaceregex pattern="&quot;.*" replace=""/>
+				</tokenfilter>
+			</filterchain>
+		</loadfile>
+
+		<!-- Carica la proprietà ${NETSpecific.version} dal file VersionInfo.java -->
+		<loadfile srcfile="${java.src.dir}/alice/util/VersionInfo.java" property="NETSpecific.version">
+			<filterchain>
+				<linecontains>
+					<contains value="String NET_SPECIFIC_VERSION"/>
+				</linecontains>
+				<deletecharacters chars="\n\r"/>
+				<!-- Do not get a number with a new line at the end -->
+				<tokenfilter>
+					<replaceregex pattern="[^0-9]+&quot;" replace=""/>
+					<replaceregex pattern="&quot;.*" replace=""/>
+				</tokenfilter>
+			</filterchain>
+		</loadfile>
+
+		<!-- Classpath -->
+		<path id="ant-classpath">
+			<!-- Project-specific libraries -->
+			<fileset dir="${java.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+			<!-- Project classes -->
+			<pathelement path="${java.build.classes.dir}"/>
+		</path>
+
+		<path id="compile-classpath">
+			<!-- Project-specific libraries -->
+			<fileset dir="${java.lib.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</path>
+
+
+
+	</target>
+
+	<target name="print-properties" description="Prints properties on screen for verification purpose" >
+		<echo message="-----------------------------------"/>
+		<echo message="Properties are:"/>
+		<echo message="-----------------------------------"/>
+		<echo message="{ant.project.name} is '${ant.project.name}'"/>
+		<echo message="{basedir} is '${basedir}'"/>
+		<echo message="-----------------------------------"/>
+		<echo message="{java.dir} is '${java.dir}'"/>
+		<echo message="{java.src.dir} is '${java.src.dir}'"/>
+		<echo message="{java.test.dir} is '${java.test.dir}'"/>
+		<echo message="{java.build.classes.dir} is '${java.build.classes.dir}'"/>
+		<echo message="{java.build.tests.dir} is '${java.build.tests.dir}'"/>
+		<echo message="{java.build.archives.dir} is '${java.build.archives.dir}'"/>
+		<echo message="{java.lib.dir} is '${java.lib.dir}'"/>
+		<echo message="{java.tmp.dir} is '${java.tmp.dir}'"/>
+		<echo message="{java.test.dir} is '${java.test.dir}'"/>
+		<echo message="-----------------------------------"/>
+		<echo message="{net.dir} is '${net.dir}'"/>
+		<echo message="{net.lib.dir} is '${net.lib.dir}'"/>
+		<echo message="{net.lib.test.dir} is '${net.lib.test.dir}'"/>
+		<echo message="{net.lib.junit.dir} is '${net.lib.junit.dir}'"/>
+		<echo message="{net.oolib.dir} is '${net.oolib.dir}'"/>
+		<echo message="{net.oolib.bin.dir} is '${net.oolib.bin.dir}'"/>
+		<echo message="{net.oolib.conversions.bin.dir} is '${net.oolib.conventions.bin.dir}'"/>
+		<echo message="{net.licenses.dir} is '${net.licenses.dir}'"/>
+		<echo message="{net.helper.dir} is '${net.helper.dir}'"/>
+		<echo message="{net.examples.dir} is '${net.examples.dir}'"/>
+		<echo message="-----------------------------------"/>
+		<echo message="{engine.version} is '${engine.version}'"/>
+		<echo message="{JavaSpecific.version} is '${JavaSpecific.version}'"/>
+		<echo message="{NETSpecific.version} is '${NETSpecific.version}'"/>
+		<echo message="..................................."/>
+		<echo message="{java.home} is '${java.home}'"/>
+		<echo message="..................................."/>
+		<echo message="{ikvm.dir} is '${ikvm.dir}'"/>
+		<echo message="{ikvmc} is '${ikvmc}'"/>
+		<echo message="..................................."/>
+		<echo message="{csc.exec} is '${csc.exec}'"/>
+		<echo message=" "/>
+	</target>
+
+	<target name="generate-javadoc" depends="init" description="Creates Javadocs">
+
+		<delete includeemptydirs="true">
+			<fileset dir="${java.doc.javadoc.dir}" includes="**/*"/>
+		</delete>
+
+		<javadoc sourcepath="${java.src.dir}"
+               destdir="${java.doc.javadoc.dir}"
+               author="true"
+               version="true"
+               use="true"
+               windowtitle="tuProlog API"
+               doctitle="tuProlog"
+               verbose="no"
+               encoding="ISO-8859-1"
+               breakiterator="yes">
+			<link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
+		</javadoc>
+
+		<echo>Look directory ${java.doc.javadoc.dir}</echo>
+	</target>
+
+	<target name="compile-java" depends="init" description="Compile Java classes">
+		<m-compile-java/>
+		<m-compile-java-tests/>
+	</target>
+
+	<target name="build-java-for-android" depends="init">
+		<m-package-java-for-android/>
+	</target>
+
+	<target name="unit-test" depends="compile-java">
+
+		<delete dir="${java.tmp.dir}"/>
+		<mkdir dir="${java.tmp.dir}"/>
+
+		<delete includeemptydirs="true">
+			<fileset dir="${java.build.reports.unit.dir}" includes="**/*"/>
+		</delete>
+
+		<!-- We have to set the "dir" attribute in order to start the JVM from the root of the project,
+		in this way the paths used in DynamicURLClassLoaderTestCase.java and JavaLibraryTestCase.java are correct -->
+		<junit fork="yes" printsummary="yes" tempdir="${java.tmp.dir}" dir="">
+			<formatter type="xml" />
+			<!--<test name="${suite}" />-->
+			<test name="alice.tuprolog.TuPrologTestSuite" todir="${java.build.reports.unit.dir}"/>
+			<test name="alice.tuprolog.ExceptionsTestSuite" todir="${java.build.reports.unit.dir}"/>
+			<classpath refid="ant-classpath"/>
+			<classpath location="${java.build.classes.dir}"/>
+			<classpath location="${java.build.tests.dir}/unit"/>
+		</junit>
+
+		<delete dir="${java.tmp.dir}"/>
+
+	</target>
+
+	<target name="unit-test-report" depends="unit-test">
+		<junitreport todir="${java.build.reports.unit.dir}">
+			<fileset dir="${java.build.reports.unit.dir}">
+				<include name="TEST-*.xml"/>
+			</fileset>
+			<report styledir="${java.dir}/ant" format="frames" todir="${java.build.reports.unit.dir}/html-report"/>
+		</junitreport>
+		<echo>Look directory ${java.build.reports.unit.dir}/html-report</echo>
+	</target>
+
+	<target name="concordion-tests" depends="compile-java">
+		
+		<copy todir="${java.build.tests.dir}/concordion/classes">
+			<fileset dir="${java.test.dir}/concordiontests" />
+		</copy>
+		
+		<mkdir dir="${java.build.tests.dir}/concordion/test-output"/>
+		<mkdir dir="${java.build.tests.dir}/concordion/concordion-output"/>
+
+		<junit fork="yes" forkmode="once" printsummary="yes" showoutput="yes">
+			<jvmarg value="-Dconcordion.output.dir=${java.build.reports.concordion.dir}" />
+			<classpath>
+				<path refid="compile-classpath" />
+				<pathelement location="${java.build.tests.dir}/concordion/classes" />
+			</classpath>
+
+			<formatter type="plain" usefile="false" />
+
+			<batchtest todir="${java.build.tests.dir}/concordion/test-output">
+				<fileset dir="${java.test.dir}/concordiontests">
+					<include name="**/*Test.java" />
+					<include name="**/*General.java" />
+					<exclude name="**/Abstract*" />
+				</fileset>
+			</batchtest>
+		</junit>
+
+	</target>
+
+	<target name="build-java" depends="compile-java" description="Build JAR archives">
+		<m-package-java />
+	</target>
+
+	<target name="ikvm-net" depends="init" description="Build .NET files">
+
+		<delete dir="${net.lib.dir}" />
+
+		<mkdir dir="${net.lib.dir}" />
+
+		<mkdir dir="${net.lib.test.dir}"/>
+		<mkdir dir="${net.lib.junit.dir}"/>
+
+		<!-- Copy all ikvm dlls to be sure that 2p runs correctly -->
+		<copy todir="${net.lib.dir}">
+			<fileset dir="${ikvm.dir}/bin/">
+				<include name="*.dll"/>
+				<!-- <include name="IKVM.OpenJDK.XML.API.dll"/>
+ 				<include name="IKVM.OpenJDK.Security.dll"/>
+ 				<include name="IKVM.OpenJDK.Naming.dll"/>
+ 				<include name="IKVM.OpenJDK.Media.dll"/>
+ 				<include name="IKVM.AWT.WinForms.dll"/>
+ 				<include name="IKVM.OpenJDK.Beans.dll"/>
+ 				<include name="IKVM.OpenJDK.Corba.dll"/>
+ 				<include name="IKVM.OpenJDK.Remoting.dll"/>
+ 				<include name="IKVM.OpenJDK.Util.dll"/>
+ 				<include name="IKVM.OpenJDK.Text.dll"/>
+ 				<include name="IKVM.OpenJDK.Core.dll"/>
+ 				<include name="IKVM.OpenJDK.Misc.dll"/>
+ 				<include name="IKVM.OpenJDK.Tools.dll"/>
+ 				<include name="IKVM.OpenJDK.SwingAWT.dll"/>
+ 				<include name="IKVM.Runtime.dll"/> 
+ 				<include name="IKVM.Reflection.dll"/> -->
+				<!-- Added by Mannino-->
+			</fileset>
+		</copy>
+
+		<echo>Building JUnit...</echo>
+		<exec executable="${ikvmc}">
+			<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
+			<arg value="-target:exe" />
+			<arg value="-compressresources" />
+			<arg value="-out:${net.lib.junit.dir}/junit.exe" />
+			<arg value="-main:org.junit.runner.JUnitCore" />
+			<arg value="${java.lib.dir}/junit.jar" />
+		</exec>
+
+
+		<!--
+ 	    <echo>Building commons-lang...</echo>
+ 	 	<exec executable="${ikvmc}">
+ 	 		<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" />
+ 	 	 	<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
+ 	 		<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Tools.dll" />
+ 	 	 	<arg value="-target:library" />
+ 	 	 	<arg value="-compressresources" />
+ 	 	 	<arg value="-out:${build.archives.net.dir}/commons-lang3-3.3.2.dll" />
+ 	 	 	<arg value="${lib.dir}/commons-lang3-3.3.2.jar" />
+ 		 </exec>
+ 		 -->
+
+		<echo>Building 2p...</echo>
+		<exec executable="${ikvmc}">
+			<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
+			<arg value="-reference:mscorlib.dll" />
+			<!-- Added by Mannino-->
+			<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" />
+			<!-- Added by Mannino-->
+			<arg value="-reference:${ikvm.dir}/bin/IKVM.Runtime.dll" />
+			<!-- <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Beans.dll" />
+            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Corba.dll" />
+            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Remoting.dll" />
+            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Misc.dll" />
+            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.SwingAWT.dll" /> -->
+			<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Tools.dll" />
+			<!-- <arg value="-debug"/> -->
+			<arg value="-classloader:ikvm.runtime.ClassPathAssemblyClassLoader"/>
+			<arg value="-target:winexe" />
+			<arg value="-compressresources" />
+			<arg value="-version:${engine.version}.${NETSpecific.version}" />
+			<arg value="-out:${net.lib.dir}/2p.exe" />
+			<arg value="${java.build.archives.dir}/2p.jar" />
+		</exec>
+
+		<echo>Building tuprolog...</echo>
+		<exec executable="${ikvmc}">
+			<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
+			<arg value="-reference:mscorlib.dll" />
+			<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" />
+			<arg value="-classloader:ikvm.runtime.ClassPathAssemblyClassLoader"/>
+			<arg value="-target:library" />
+			<arg value="-compressresources" />
+			<arg value="-version:${engine.version}.${NETSpecific.version}" />
+			<arg value="-out:${net.lib.dir}/tuprolog.dll" />
+			<arg value="${java.build.archives.dir}/tuprolog.jar" />
+		</exec>
+
+		<echo>Building Unit Tests...</echo>
+		<exec executable="${ikvmc}">
+			<!-- <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Text.dll" /> -->
+			<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
+			<arg value="-reference:mscorlib.dll" />
+			<!-- Added by Mannino-->
+			<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" />
+			<!-- Added by Mannino-->
+			<arg value="-target:library" />
+			<arg value="-compressresources" />
+			<arg value="-out:${net.lib.test.dir}/2pWithUnitTests.dll" />
+			<arg value="${java.build.archives.dir}/2p.jar"/>
+			<arg value="${java.build.tests.dir}/unit-tests.jar"/>
+		</exec>
+
+
+		<echo>Look directory ${net.build.dir}</echo>
+	</target>
+
+	<target name="build-net" depends="init" description="Compile the OOLibary .NET">
+		<!-- Compile OOLib and Conventions -->
+		<exec dir="${net.oolib.dir}" executable="${msbuild.exec}">
+			<arg value="/property:Configuration=Release"/>
+			<arg value="/t:Clean"/>
+		</exec>
+
+		<exec dir="${net.oolib.dir}" executable="${msbuild.exec}">
+			<arg value="/property:Configuration=Release"/>
+		</exec>
+	</target>
+
+	<target name="release-java" depends="build-java, unit-test-report, concordion-tests, generate-javadoc" description="Creates the structure for the JAVA release">
+
+		<delete includeemptydirs="true">
+			<fileset dir="${java.release.dir}" includes="**/*"/>
+		</delete>
+
+		<mkdir dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}"/>
+		<mkdir dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/bin"/>
+		<mkdir dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib"/>
+		<mkdir dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/reports"/>
+		<mkdir dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/doc"/>
+
+		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/reports">
+			<fileset dir="${java.build.dir}/reports"/>
+		</copy>
+
+		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/bin">
+			<fileset dir="${java.build.archives.dir}">
+				<include name="*.jar"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib">
+			<fileset dir="${java.lib.dir}">
+				<include name="javassist.jar"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/doc">
+			<fileset dir="${java.doc.dir}"/>
+		</copy>
+
+		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}">
+			<fileset dir=".">
+				<include name="LICENSE.txt"/>
+				<include name="JFLEXLicense.rtf"/>
+				<include name="RSyntaxTextArea_Autocomplete.rtf"/>
+			</fileset>
+		</copy>
+
+		<zip destfile="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}.zip"
+	       	 basedir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}"
+	 	 	/>
+
+		<delete dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}"/>
+
+		<echo>Look directory ${java.release.dir}</echo>
+	</target>
+
+	<target name="release-net" depends="build-net" description="Create the structure for the .NET release">
+
+		<!-- However, the new 2p.exe has to be copied in the HelperVersion directory -->
+
+
+		<copy todir="${net.helper.dir}">
+			<fileset dir="${net.lib.dir}">
+				<include name="2p.exe"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${net.helper.dir}">
+			<fileset dir="${ikvm.dir}/bin/">
+				<include name="IKVM.OpenJDK.Core.dll"/>
+				<include name="IKVM.Runtime.dll"/>
+			</fileset>
+		</copy>
+
+		<exec dir="${net.helper.dir}" executable="${csc.exec}">
+			<arg value="/reference:2p.exe,IKVM.OpenJDK.Core.dll"/>
+			<arg value="HelperVersion.cs"/>
+		</exec>
+
+		<exec outputproperty="complete.version" executable="${net.helper.dir}/HelperVersion.exe" />
+
+		<loadresource property="engine.version">
+			<propertyresource name="complete.version" />
+			<filterchain>
+				<tokenfilter>
+					<trim />
+					<replaceregex pattern="\.[0-9]+$" replace="" />
+				</tokenfilter>
+			</filterchain>
+		</loadresource>
+
+		<loadresource property="NETSpecific.version">
+			<propertyresource name="complete.version" />
+			<filterchain>
+				<tokenfilter>
+					<trim />
+					<replaceregex pattern="^[0-9]+\.[0-9]+\." replace="" />
+				</tokenfilter>
+			</filterchain>
+		</loadresource>
+
+		<!-- Leggi la versione di IKVM (completa) -->
+		<exec outputproperty="ikvm.version.complete" executable="${ikvm.dir}/bin/ikvm.exe">
+			<arg value="-version"/>
+		</exec>
+
+		<!-- Leggi la versione di IKVM.OpenJDK.Core -->
+		<loadresource property="ikvm.version">
+			<propertyresource name="ikvm.version.complete"/>
+			<filterchain>
+				<linecontains>
+					<contains value="IKVM.OpenJDK.Core:"/>
+				</linecontains>
+				<deletecharacters chars="\n\r"/>
+				<!-- Do not get a number with a new line at the end -->
+				<tokenfilter>
+					<replaceregex pattern="^.+:" replace="" />
+					<trim/>
+				</tokenfilter>
+			</filterchain>
+		</loadresource>
+
+		<echo message="ikvm.version=${ikvm.version}"/>
+
+		<echo message="engine.version=${engine.version}"/>
+		<echo message="NETSpecific.version=${NETSpecific.version}"/>
+
+		<!-- Prima era project.name -->
+		<property name="net.outputname" value="2p.NET-${engine.version}.${NETSpecific.version}"/>
+
+		<!-- Prima era release.dir -->
+		<property name="net.release.out.dir" value="${net.release.dir}/${net.outputname}"/>
+		<property name="net.release.out.lib.dir" value="${net.release.out.dir}/lib"/>
+
+		<!-- Ora viene il bello -->
+
+		<delete dir="${net.release.out.dir}" />
+		<delete file="${net.outputname}.zip"/>
+		<mkdir dir="${net.release.out.dir}"/>
+		<mkdir dir="${net.release.out.lib.dir}"/>
+		<mkdir dir="${net.release.out.dir}/licenses"/>
+		<mkdir dir="${net.release.out.dir}/doc"/>
+		<mkdir dir="${net.release.out.dir}/examples"/>
+
+		<copy todir="${net.release.out.dir}/examples">
+			<fileset dir="${net.examples.dir}"/>
+		</copy>
+
+		<copy todir="${net.release.out.dir}/licenses">
+			<fileset dir="${net.licenses.dir}"/>
+		</copy>
+
+		<!-- Copy OOLib, conventions, javassist, 2p.exe and tuprolog.dll -->
+		<!-- Ho commentato javaassist perchè non presente nella cartella -->
+		<copy todir="${net.release.out.lib.dir}">
+			<fileset dir="${net.oolib.bin.dir}">
+				<include name="OOLibrary.dll"/>
+				<!-- <include name="javassist.dll"/> -->
+			</fileset>
+		</copy>
+
+		<copy todir="${net.release.out.lib.dir}">
+			<fileset dir="${net.oolib.conventions.bin.dir}">
+				<include name="Conventions.dll"/>
+			</fileset>
+		</copy>
+
+		<copy todir="${net.release.out.dir}">
+			<fileset dir="${net.lib.dir}">
+				<include name="tuprolog.dll"/>
+				<include name="2p.exe"/>
+			</fileset>
+		</copy>
+
+		<!-- Copy config file -->
+		<copy todir="${net.release.out.dir}">
+			<fileset dir="${net.dir}/ant">
+				<include name="2p.exe.config"/>
+			</fileset>
+		</copy>
+
+		<!-- Copy manual -->
+		<copy todir="${net.release.out.dir}/doc">
+			<fileset dir="${net.doc.dir}">
+				<include name="tuprolog-guide.pdf"/>
+			</fileset>
+		</copy>
+
+		<!-- Copy the IKVM files -->
+		<copy todir="${net.release.out.lib.dir}">
+			<fileset dir="${ikvm.dir}/bin/">
+				<include name="*.dll"/>
+				<!--
+				<include name="IKVM.OpenJDK.XML.API.dll"/>
+				<include name="IKVM.OpenJDK.Security.dll"/>
+				<include name="IKVM.OpenJDK.Naming.dll"/>
+				<include name="IKVM.OpenJDK.Media.dll"/>
+				<include name="IKVM.AWT.WinForms.dll"/>
+				<include name="IKVM.OpenJDK.Beans.dll"/>
+				<include name="IKVM.OpenJDK.Corba.dll"/>
+				<include name="IKVM.OpenJDK.Remoting.dll"/>s
+				<include name="IKVM.OpenJDK.Util.dll"/>
+				<include name="IKVM.OpenJDK.Text.dll"/>
+				<include name="IKVM.OpenJDK.Core.dll"/>
+				<include name="IKVM.OpenJDK.Misc.dll"/>
+				<include name="IKVM.OpenJDK.Tools.dll"/>
+				<include name="IKVM.OpenJDK.SwingAWT.dll"/>
+				<include name="IKVM.Runtime.dll"/> 
+				<include name="IKVM.Reflection.dll"/> -->
+				<!-- Added by Mannino-->
+			</fileset>
+
+			<!-- Copy also tuprolog.jar needed for the examples and the README -->
+
+			<!-- Commentato perchè nella release non è presente tuprolog.jar
+			
+			<fileset dir="${net.lib.dir}">
+				<include name="tuprolog.jar"/>
+				<include name="README.txt"/>
+			</fileset>
+			-->
+		</copy>
+
+		<!-- IKVM version -->
+		<echo append="false" file="${net.release.out.dir}/ikvm-version-${ikvm.version}.txt"/>
+
+		<!-- Change the reference to the libraries in the examples -->
+
+		<!-- Derivative -->
+		<replace 	file="${net.release.out.dir}/examples/Prolog from .NET/DerivativeExample/DerivativeExample/DerivativeExample.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\lib\2p.exe&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\2p.exe&lt;/HintPath&gt;"/>
+
+		<!-- Simple TicTacToe -->
+		<replace 	file="${net.release.out.dir}/examples/Prolog from .NET/tic tac toe/main/tictactoe.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\lib\2p.exe&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\2p.exe&lt;/HintPath&gt;"/>
+
+		<replace 	file="${net.release.out.dir}/examples/Prolog from .NET/tic tac toe/main/tictactoe.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\OOLibrary\Conventions\bin\Release\Conventions.dll&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\lib\Conventions.dll&lt;/HintPath&gt;"/>
+
+		<replace 	file="${net.release.out.dir}/examples/Prolog from .NET/tic tac toe/main/tictactoe.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\OOLibrary\OOLibrary\bin\Release\OOLibrary.dll&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\lib\OOLibrary.dll&lt;/HintPath&gt;"/>
+
+		<!-- Distributed TicTacToe -->
+		<replace 	file="${net.release.out.dir}/examples/Prolog from .NET/DistributedTicTacToe/TicTacToeClient/WindowsGame1/WindowsGame1/TicTacToeGame.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\..\..\lib\2p.exe&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\..\..\2p.exe&lt;/HintPath&gt;"/>
+
+		<replace 	file="${net.release.out.dir}/examples/Prolog from .NET/DistributedTicTacToe/TicTacToeClient/WindowsGame1/WindowsGame1/TicTacToeGame.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\..\..\OOLibrary\Conventions\bin\Release\Conventions.dll&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\..\..\lib\Conventions.dll&lt;/HintPath&gt;"/>
+
+		<replace 	file="${net.release.out.dir}/examples/Prolog from .NET/DistributedTicTacToe/TicTacToeClient/WindowsGame1/WindowsGame1/TicTacToeGame.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\..\..\OOLibrary\OOLibrary\bin\Release\OOLibrary.dll&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\..\..\lib\OOLibrary.dll&lt;/HintPath&gt;"/>
+
+		<!-- StockAnalyzer-->
+		<replace 	file="${net.release.out.dir}/examples/Prolog from .NET/StockAnalyzer/StockAnalyzer/StockAnalyzerCS/StockAnalyzerCS.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\..\lib\2p.exe&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\..\2p.exe&lt;/HintPath&gt;"/>
+
+		<replace 	file="${net.release.out.dir}/examples/Prolog from .NET/StockAnalyzer/StockAnalyzer/StockAnalyzerCS/StockAnalyzerCS.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\..\OOLibrary\Conventions\bin\Release\Conventions.dll&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\..\lib\Conventions.dll&lt;/HintPath&gt;"/>
+
+		<replace 	file="${net.release.out.dir}/examples/Prolog from .NET/StockAnalyzer/StockAnalyzer/StockAnalyzerCS/StockAnalyzerCS.csproj"
+					token="&lt;HintPath&gt;..\..\..\..\..\OOLibrary\OOLibrary\bin\Release\OOLibrary.dll&lt;/HintPath&gt;"
+					value="&lt;HintPath&gt;..\..\..\..\..\lib\OOLibrary.dll&lt;/HintPath&gt;"/>
+
+		<!-- Zip della release -->
+		<zip destfile="${net.release.dir}/${net.outputname}.zip" basedir="${net.release.out.dir}" />
+
+		<!-- Elimina cartella temporanea -->
+		<delete dir="${net.release.out.dir}"/>
+
+
+	</target>
+</project>

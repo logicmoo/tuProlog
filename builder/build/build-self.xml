@@ -1,0 +1,37 @@
+<project name="tuProlog build file" basedir=".." default="build">
+	<target name="build">
+		
+		<delete dir="${basedir}/bin"/>
+		<delete dir="${basedir}/release"/>
+		
+		<mkdir dir="${basedir}/bin"/>
+		<mkdir dir="${basedir}/release"/>
+		
+		<javac
+			destdir="${basedir}/bin" 
+			debug="no" 
+			deprecation="false" 
+			optimize="yes" 
+			failonerror="true" 
+			includeantruntime="no" 
+			target="1.8" source="1.8">
+			
+			<src path="${basedir}/src"/>
+			
+			<classpath>
+				<fileset dir="${basedir}/lib">
+					<include name="*.jar"/>
+				</fileset>			
+			</classpath>
+		</javac>
+		
+		<mkdir dir="${basedir}/bin/res"/>
+		<copy todir="${basedir}/bin/res">
+			<fileset dir="${basedir}/res"/>
+		</copy>
+		
+		<jar destfile="${basedir}/release/antext.jar" basedir="${basedir}/bin">
+			
+		</jar>
+	</target>
+</project>
