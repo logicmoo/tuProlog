@@ -2,8 +2,11 @@ package antext.ui.propertyfield;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,6 +19,9 @@ public abstract class PropertyField extends JPanel {
 	
 	public static final int STATUS_OK = 0;
 	public static final int STATUS_WARNING = 1;
+	public static final int STATUS_HIDE = 10;
+	
+	private static HashMap<String, Class<?>> DATA_TYPES;
 	
 	private ArrayList<Listener> listeners;
 	
@@ -23,6 +29,32 @@ public abstract class PropertyField extends JPanel {
 	
 	protected PropertyFile propertyFile;
 	protected String propertyName;
+	
+	
+	static {
+		DATA_TYPES = new HashMap<>();
+		
+		DATA_TYPES.put("string", StringPropertyField.class);
+		DATA_TYPES.put("boolean", BooleanPropertyField.class);
+		DATA_TYPES.put("file", FilePropertyField.class);
+		DATA_TYPES.put("directory", DirectoryPropertyField.class);
+	}
+	
+	public static PropertyField create(PropertyFile propertyFile, String propertyName) throws NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		String typeName = propertyFile.getPropertyType(propertyName);
+		Class<?> clazz = null;
+		
+		if(typeName == null)
+			clazz = DATA_TYPES.get("string");
+		else
+			clazz = DATA_TYPES.get(typeName);
+		
+		if(clazz != null) {
+			Constructor<?> ctor = clazz.getConstructor(PropertyFile.class, String.class);
+			return (PropertyField)ctor.newInstance(propertyFile, propertyName);
+		} else
+			throw new IllegalArgumentException("TypeName not found: " + typeName);
+	}
 	
 	public PropertyField(PropertyFile file, String propertyName) {
 		this.propertyFile = file;
@@ -41,6 +73,8 @@ public abstract class PropertyField extends JPanel {
 		initializeComponent();
 		
 		setValue(file.getProperties().getProperty(propertyName).toString());
+		
+		updateStatus();
 	}
 	
 	
@@ -88,7 +122,7 @@ public abstract class PropertyField extends JPanel {
 			lblStatus.setToolTipText(getStatusToolTop());
 			break;
 		default:
-			lblStatus.setIcon(ResourceLoader.getImage("ok"));
+			lblStatus.setIcon(null);
 			lblStatus.setToolTipText("");
 		}
 		

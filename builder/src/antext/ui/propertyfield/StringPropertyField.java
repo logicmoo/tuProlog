@@ -33,7 +33,7 @@ public class StringPropertyField extends PropertyField {
 
 	@Override
 	public int getStatus() {
-		return STATUS_OK;
+		return STATUS_HIDE;
 	}
 
 	@Override
