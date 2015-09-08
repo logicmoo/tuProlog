@@ -4,6 +4,7 @@ import java.io.File;
 
 import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.Theory;
+import alice.util.VersionInfo;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -82,7 +83,7 @@ public class tuPrologActivity extends Activity {
       AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
       alert.setTitle("About tuProlog");
-		try {
+		try {	
 				alert.setMessage(""
 						+ "- tuProlog for Android - \n Version: "
 						+ tuPrologActivity
@@ -91,7 +92,10 @@ public class tuPrologActivity extends Activity {
 								.getPackageInfo(
 										tuPrologActivity.getContext()
 												.getPackageName(), 0).versionName
+						+ "\nCore: " + VersionInfo.getEngineVersion() 
 						+ "\n\nhttp://tuprolog.alice.unibo.it");
+				
+				
 			} catch (NameNotFoundException e) {
 				// TODO Auto-generated catch block
 			e.printStackTrace();

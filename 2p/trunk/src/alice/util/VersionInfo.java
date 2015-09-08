@@ -1,6 +1,6 @@
 package alice.util;
 
-public class VersionInfo 
+public class VersionInfo
 {
 	private static final String ENGINE_VERSION = "3.0";
 	private static final String JAVA_SPECIFIC_VERSION = "0";
@@ -37,4 +37,7 @@ public class VersionInfo
 	{
 		return getEngineVersion() + "." + getSpecificVersion();
 	}
+	
+	/* Ant Task Implementation (for the the build file */
+	
 }
