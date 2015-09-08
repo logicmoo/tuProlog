@@ -4,7 +4,7 @@ tuProlog is a light-weight Prolog system for distributed applications and infras
 
 tuProlog and related packages are released under the GNU Lesser General Public License, so no payment is required for using it. However, we welcome donations (see menu aside).
 
-**Current version: tuProlog 3.0 (released on February 26, 2015)**
+**Current version: tuProlog 3.0.1 (released on September 8, 2015)**
 
 ## **Highlights** ##
 
@@ -22,8 +22,9 @@ tuProlog 2.9.2 is intended to be the last stable version supporting Java 7.
 All tuProlog versions are now available from this site
 except for the Eclipse plugin which must be downloaded and installed directly from the Eclipse Update Manager - see detailed instructions.
 
-Java: tuProlog 3.0.0 (zip) (requires Java 7)
-.NET:tuProlog 2.0.0-NET (zip) (requires .NET framework 4)
+Java: tuProlog 3.0.1 (zip) (requires Java 8)
+Java: tuProlog 2.9.2 (zip) (requires Java 7)
+.NET:tuProlog 3.0.0-NET (zip) (requires .NET framework 4)
 Android:tuProlog 2.9.1 Android (apk) (requires Android 2.3.3)
 Eclipse:  install from Eclipse Update Manager -- see below for details.
 MANUAL: tuProlog 2.9.2 User Guide (pdf)
