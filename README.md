@@ -1,6 +1,6 @@
 # **Focus** #
 
-**tuProlog and related packages are released under the GNU Lesser General Public License, so no payment is required for using it.
+**tuProlog and related packages are released under the GNU Lesser General Public License, so no payment is required for using it.**
 
 tuProlog is a light-weight Prolog system for distributed applications and infrastructures, intentionally designed around a minimal core (containing only the most essential properties of a Prolog engine), to be later configured by (statically and dynamically) loading/unloading libraries of predicates. tuProlog also natively supports multi-paradigm programming, providing a clean, seamless integration model between Prolog and mainstream object-oriented languages -- namely Java, for tuProlog Java version, and any .NET-based language (C#, F#..), for tuProlog .NET version. It is also easily deployable, just requiring the presence of a Java/CLR virtual machine and an invocation upon a single self-contained archive file. Interoperability is further developed along the two main lines of Internet standard patterns and coordination models.
 
