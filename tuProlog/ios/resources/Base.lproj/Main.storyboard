@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1134" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Rw5-ns-KcI">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <scenes>
+        <!--MyViewController-->
+        <scene sceneID="HF5-hW-DZA">
+            <objects>
+                <viewController title="MyViewController" modalPresentationStyle="pageSheet" id="Rw5-ns-KcI" customClass="MyViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="WrT-94-kTm"/>
+                        <viewControllerLayoutGuide type="bottom" id="GRf-jy-2iC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xOT-TG-81E">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gLW-q4-Nd0">
+                                <rect key="frame" x="195" y="166" width="125" height="30"/>
+                                <state key="normal" title="Set Theory">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="setTheory" destination="Rw5-ns-KcI" eventType="touchUpInside" id="UHQ-wJ-YLu"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="? -" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aM1-IN-ysb">
+                                <rect key="frame" x="5" y="196" width="23" height="22"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rDM-tY-ojY">
+                                <rect key="frame" x="37" y="228" width="43" height="33"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Solve">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="solve" destination="Rw5-ns-KcI" eventType="touchUpInside" id="oaZ-yb-f8A"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D5t-2L-E2w">
+                                <rect key="frame" x="88" y="228" width="366" height="33"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Next">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="getNextSolution" destination="Rw5-ns-KcI" eventType="touchUpInside" id="loX-dp-14p"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" fixedFrame="YES" keyboardDismissMode="onDrag" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XId-zy-R82">
+                                <rect key="frame" x="41" y="285" width="279" height="135"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
+                            </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" keyboardDismissMode="onDrag" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6kj-9V-1OH">
+                                <rect key="frame" x="41" y="428" width="279" height="43"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="1" green="0.14571831860000001" blue="0.17496746369999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MO2-Pe-8IG">
+                                <rect key="frame" x="-7" y="0.0" width="334" height="66"/>
+                                <items>
+                                    <navigationItem title="tuProlog" id="XrK-OE-6Db"/>
+                                </items>
+                            </navigationBar>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Insert a goal" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="dtV-Sx-C36">
+                                <rect key="frame" x="29" y="194" width="279" height="26"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" returnKeyType="search"/>
+                                <connections>
+                                    <action selector="hideKeyboard" destination="Rw5-ns-KcI" eventType="editingDidEnd" id="2WN-UQ-Apv"/>
+                                </connections>
+                            </textField>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" fixedFrame="YES" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" minimumZoomScale="9" maximumZoomScale="11" keyboardDismissMode="onDrag" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KgQ-u3-bwR">
+                                <rect key="frame" x="16" y="73" width="279" height="93"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <accessibility key="accessibilityConfiguration" hint="">
+                                    <accessibilityTraits key="traits" none="YES" button="YES"/>
+                                </accessibility>
+                                <attributedString key="attributedText"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Rw5-ns-KcI" id="nFZ-Jx-Ljp"/>
+                                </connections>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Solution" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eZS-Ca-7QI">
+                                <rect key="frame" x="37" y="264" width="113" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="goalTextField" destination="dtV-Sx-C36" id="YVA-Gg-bkB"/>
+                        <outlet property="nextButton" destination="D5t-2L-E2w" id="i2O-hs-vgd"/>
+                        <outlet property="solutionTextView" destination="XId-zy-R82" id="VVP-ED-N2E"/>
+                        <outlet property="solveButton" destination="rDM-tY-ojY" id="qXH-wE-IPr"/>
+                        <outlet property="theoryButton" destination="gLW-q4-Nd0" id="8sN-cX-ryM"/>
+                        <outlet property="theoryTextView" destination="KgQ-u3-bwR" id="Kkr-BS-Rps"/>
+                        <outlet property="warningsTextView" destination="6kj-9V-1OH" id="IrN-L5-xYJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MK6-Qu-SKr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="625" y="507"/>
+        </scene>
+    </scenes>
+</document>
