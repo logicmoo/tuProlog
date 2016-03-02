@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="iPhone-4s" type="com.robovm.idea.running.RoboVmIOSConfigurationType" factoryName="RoboVM iOS">
+    <module name="ios" />
+    <option name="moduleName" value="ios" />
+    <option name="targetType" value="Simulator" />
+    <option name="deviceArch" value="thumbv7" />
+    <option name="signingIdentity" value="Auto (matches 'iPhone Developer|iOS Development')" />
+    <option name="provisioningProfile" value="Auto" />
+    <option name="simArch" value="x86" />
+    <option name="simulatorName" value="com.apple.CoreSimulator.SimDeviceType.iPhone-4s" />
+    <option name="arguments" value="" />
+    <option name="workingDir" value="" />
+    <method />
+  </configuration>
+</component>
