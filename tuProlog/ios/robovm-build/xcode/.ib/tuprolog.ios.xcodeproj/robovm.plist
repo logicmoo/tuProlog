@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>classToHeader</key>
+	<dict>
+		<key>/Users/vito/Desktop/progetto tesi/tuProlog/ios/build/classes/main/com/mycompany/tuprolog/MyViewController.class</key>
+		<string>/Users/vito/Desktop/progetto tesi/tuProlog/ios/robovm-build/xcode/.ib/com.mycompany.tuprolog/MyViewController.h</string>
+	</dict>
+	<key>implementationToBuild</key>
+	<dict>
+		<key>A046D16BE04A4BF88B620A33</key>
+		<string>9AE47D50241D44DCA84A0348</string>
+	</dict>
+</dict>
+</plist>

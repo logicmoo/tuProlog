@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/vito/Desktop/progetto tesi/tuProlog/core/build/libs/core.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c3c45de0ba1be3e4ac920f9d8502004b7a452019">
+        <dex dex="/Users/vito/Desktop/progetto tesi/tuProlog/android/build/intermediates/pre-dexed/debug/core-7fc3ff24a1feb2411cb95a2ca8a416c3c436eea0.jar" />
+    </item>
+
+</items>
