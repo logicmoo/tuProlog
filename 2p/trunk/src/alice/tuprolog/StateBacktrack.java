@@ -19,6 +19,7 @@ package alice.tuprolog;
 
 import java.util.*;
 
+import alice.tuprolog.SubGoalId;
 import alice.util.OneWayList;
 
 
@@ -28,28 +29,24 @@ import alice.util.OneWayList;
  */
 public class StateBacktrack extends State {
     
-
-    
     public StateBacktrack(EngineRunner c) {
         this.c = c;
         stateName = "Back";
     }
-    
     
     /* (non-Javadoc)
      * @see alice.tuprolog.AbstractRunState#doJob()
      */
     void doJob(Engine e) {
         ChoicePointContext curChoice = e.choicePointSelector.fetch();
-        //verify ChoicePoint
         if (curChoice == null) {
             e.nextState = c.END_FALSE;
             Struct goal = e.currentContext.currentGoal;
-            // COMMENTED OUT BY ED ON JAN 25, 2011
-            // DE-COMMENTED BY ED ON JAN 28, 2011
-            c.warn("The predicate " + goal.getPredicateIndicator() + " is unknown.");
+            if(!c.getTheoryManager().checkExistance(goal.getPredicateIndicator())) //Alberto
+            	c.warn("The predicate " + goal.getPredicateIndicator() + " is unknown.");
             return;
         }
+        
         e.currentAlternative = curChoice;
         
         //deunify variables and reload old goal
@@ -60,7 +57,6 @@ public class StateBacktrack extends State {
             return;
         }
         e.currentContext.currentGoal = (Struct) curGoal;
-        
         
         // Rende coerente l'execution_stack
         ExecutionContext curCtx = e.currentContext;
@@ -78,7 +74,8 @@ public class StateBacktrack extends State {
                 pointer = pointer.getTail();
             }
             curCtx.trailingVars = pointer;
-            if (curCtx.fatherCtx == null) break;
+            if (curCtx.fatherCtx == null) 
+            	break;
             stopDeunify = curCtx.fatherVarsList;
             fatherIndex = curCtx.fatherGoalId;
             curCtx = curCtx.fatherCtx;

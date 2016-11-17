@@ -2,6 +2,8 @@ package alice.tuprologx.ide;
 
 import alice.tuprolog.*;
 import alice.tuprolog.event.*;
+import alice.tuprolog.InvalidTheoryException;
+import alice.tuprolog.event.QueryListener;
 import alice.tuprolog.lib.IOLibrary;
 import alice.tuprologx.ide.EngineThread;
 
@@ -47,8 +49,7 @@ public class ConsoleManager
 
     public void solve()
     {
-    	//dialog.setTermPanel(engine.termSolve(getGoal()));
-    	
+    	ConsoleDialog.sol = ""; //Alberto
     	resetInputStream();
         dialog.clearResults();
         if (!getGoal().equals(""))

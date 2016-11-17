@@ -3,12 +3,15 @@ package alice.tuprologx.ide;
 import alice.util.*;
 import alice.tuprolog.*;
 import alice.tuprolog.event.ExceptionEvent;
-import alice.tuprolog.event.ExceptionListener;
 import alice.tuprolog.event.OutputEvent;
-import alice.tuprolog.event.OutputListener;
 import alice.tuprolog.event.SpyEvent;
-import alice.tuprolog.event.SpyListener;
 import alice.tuprolog.event.WarningEvent;
+import alice.tuprolog.InvalidTheoryException;
+import alice.tuprolog.MalformedGoalException;
+import alice.tuprolog.NoSolutionException;
+import alice.tuprolog.event.ExceptionListener;
+import alice.tuprolog.event.OutputListener;
+import alice.tuprolog.event.SpyListener;
 import alice.tuprolog.event.WarningListener;
 import alice.tuprolog.lib.IOLibrary;
 
@@ -23,6 +26,8 @@ public class CUIConsole extends Automaton implements Serializable, OutputListene
 
     static final String incipit =
         "tuProlog system - release " + Prolog.getVersion() + "\n";
+    
+    static String sol = ""; //to do -> correct output of CUI console in order to show multiple results
        
     public CUIConsole(String[] args){
 

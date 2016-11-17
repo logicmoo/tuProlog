@@ -48,7 +48,7 @@ public class JavaIDE
     private static ConsoleManager consoleManager;
 
     public JavaIDE() {
-        super("tuProlog IDE");
+        super("tuProlog "+Prolog.getVersion()+" IDE");
         initComponents();
     }
 

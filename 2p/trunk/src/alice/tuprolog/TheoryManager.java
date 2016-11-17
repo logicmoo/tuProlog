@@ -26,7 +26,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-
+import alice.tuprolog.InvalidTermException;
+import alice.tuprolog.InvalidTheoryException;
 import alice.util.Tools;
 
 /**
@@ -47,7 +48,9 @@ import alice.util.Tools;
  * @see Theory
  */
 public class TheoryManager implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
+	
 	private ClauseDatabase dynamicDBase;
 	private ClauseDatabase staticDBase;
 	private ClauseDatabase retractDBase;
@@ -117,7 +120,6 @@ public class TheoryManager implements Serializable {
 	    	for (int i = 0; i < family.size(); i++) {
 	 	       familyQuery.add(family.get(i));
 	 	    }
-	    	//familyQuery.addAll(family);
 	    	retractDBase.put("ctxId "+ctx.getId(), familyQuery);
 	    }
 	   else {
@@ -176,7 +178,6 @@ public class TheoryManager implements Serializable {
 	 */
 	public synchronized List<ClauseInfo> find(Term headt) {
 		if (headt instanceof Struct) {
-			//String key = ((Struct) headt).getPredicateIndicator();
 			List<ClauseInfo> list = dynamicDBase.getPredicates(headt);
 			if (list.isEmpty())
 				list = staticDBase.getPredicates(headt);
@@ -184,13 +185,6 @@ public class TheoryManager implements Serializable {
 		}
 
 		if (headt instanceof Var){
-			//            List l = new LinkedList();
-			//            for (Iterator iterator = clauseDBase.iterator(); iterator.hasNext();) {
-			//                ClauseInfo ci =  (ClauseInfo) iterator.next();
-			//                if(ci.dynamic)
-			//                    l.add(ci);
-			//            }
-			//            return l;
 			throw new RuntimeException();
 		}
 		return new LinkedList<ClauseInfo>();
@@ -205,28 +199,19 @@ public class TheoryManager implements Serializable {
 	 */
 	public synchronized void consult(Theory theory, boolean dynamicTheory, String libName) throws InvalidTheoryException {
 		startGoalStack = new Stack<Term>();
-		/*Castagna 06/2011*/   	
 		int clause = 1;
-		/**/
-		// iterate all clauses in theory and assert them
 		try {
 			for (Iterator<? extends Term> it = theory.iterator(engine); it.hasNext();) {
-				/*Castagna 06/2011*/
-				clause++;
-				/**/	
+				clause++;	
 				Struct d = (Struct) it.next();
 				if (!runDirective(d))
 					assertZ(d, dynamicTheory, libName, true);
 			}
 		} catch (InvalidTermException e) {
-			/*Castagna 06/2011*/
-			//throw new InvalidTheoryException(e.getMessage());
 			throw new InvalidTheoryException(e.getMessage(), clause, e.line, e.pos);
-			/**/
 		}
 
 		if (libName == null)
-			//lastConsultedTheory.append(theory);
 			lastConsultedTheory = theory;
 	}
 
@@ -362,4 +347,8 @@ public class TheoryManager implements Serializable {
 		this.retractDBase=new ClauseDatabase();
 	}
 
+	//Alberto
+	public boolean checkExistance(String predicateIndicator){
+		return (this.dynamicDBase.containsKey(predicateIndicator) || this.staticDBase.containsKey(predicateIndicator));
+	}
 }

@@ -1,9 +1,10 @@
 package alice.tuprologx.ide;
 
 import alice.tuprolog.event.SpyEvent;
-import alice.tuprolog.event.SpyListener;
 import alice.tuprolog.event.WarningEvent;
+import alice.tuprolog.event.SpyListener;
 import alice.tuprolog.event.WarningListener;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
