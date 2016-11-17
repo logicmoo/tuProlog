@@ -17,10 +17,11 @@
  */
 package alice.tuprolog.lib;
 
-import java.util.ArrayList;
+import java.util.IdentityHashMap;
 
 import alice.tuprolog.*;
 import alice.tuprolog.Number;
+import alice.tuprolog.InvalidTheoryException;
 
 /**
  * This class defines a set of basic built-in predicates for the tuProlog engine
@@ -31,9 +32,10 @@ import alice.tuprolog.Number;
  * 
  */
 public class BasicLibrary extends Library {
+	
 	private static final long serialVersionUID = 1L;
-    public BasicLibrary() {
-    }
+	
+    public BasicLibrary() {}
 
     //
     // meta-predicates
@@ -57,10 +59,7 @@ public class BasicLibrary extends Library {
             getEngine().setTheory(new Theory(theory.getName()));
             return true;
         } catch (InvalidTheoryException ex) {
-            /*Castagna 06/2011*/			
-			//throw PrologError.syntax_error(engine.getEngineManager(), ex.line, ex.pos, new Struct(ex.getMessage()));
 			throw PrologError.syntax_error(engine.getEngineManager(), ex.clause, ex.line, ex.pos, new Struct(ex.getMessage()));
-			/**/
         }
     }
 
@@ -82,10 +81,7 @@ public class BasicLibrary extends Library {
             getEngine().addTheory(new Theory(theory.getName()));
             return true;
         } catch (InvalidTheoryException ex) {
-            /*Castagna 06/2011*/
-        	//throw PrologError.syntax_error(engine.getEngineManager(), ex.line, ex.pos, new Struct(ex.getMessage()));
         	throw PrologError.syntax_error(engine.getEngineManager(), ex.clause, ex.line, ex.pos, new Struct(ex.getMessage()));
-        	/**/
         }
     }
 
@@ -99,20 +95,6 @@ public class BasicLibrary extends Library {
             return false;
         }
     }
-
-// 	  MANNINO 14/09/2012
-    
-//    public boolean load_library_2(Term className, Term libName) {
-//        Struct clName = (Struct) className.getTerm();
-//        libName = libName.getTerm();
-//        try {
-//            Library lib = getEngine().loadLibrary(
-//                    alice.util.Tools.removeApices(clName.getName()));
-//            return unify(libName, new Struct(lib.getName()));
-//        } catch (Exception ex) {
-//            return false;
-//        }
-//    }
 
     /**
      * Loads a library constructed from a theory.
@@ -225,7 +207,6 @@ public class BasicLibrary extends Library {
     public boolean notrace_0() {
         return nospy_0();
     }
-    /**/
     
     public boolean warning_0() {
         getEngine().setWarning(true);
@@ -307,7 +288,6 @@ public class BasicLibrary extends Library {
         // errore durante la valutazione
         if (t instanceof ArithmeticException) {
             ArithmeticException cause = (ArithmeticException) t;
-            // System.out.println(cause.getMessage());
             if (cause.getMessage().equals("/ by zero"))
                 throw PrologError.evaluation_error(engine.getEngineManager(),
                         arg, "zero_divisor");
@@ -341,7 +321,6 @@ public class BasicLibrary extends Library {
         alice.tuprolog.Number val0n = (alice.tuprolog.Number) val0;
         alice.tuprolog.Number val1n = (alice.tuprolog.Number) val1;
         if (val0n.isInteger() && val1n.isInteger()) {
-            //return (val0n.intValue() == val1n.intValue()) ? true : false;
             // by ED: note that this would work also with intValue, even with Long args,
             // because in that case both values would be wrong, but 'equally wrong' :)
             // However, it is much better to always operate consistently on long values
@@ -410,7 +389,6 @@ public class BasicLibrary extends Library {
     private boolean expression_greater_than(alice.tuprolog.Number num0,
             alice.tuprolog.Number num1) {
         if (num0.isInteger() && num1.isInteger()) {
-            //    return num0.intValue() > num1.intValue();
             return num0.longValue() > num1.longValue();
         } else {
             return num0.doubleValue() > num1.doubleValue();
@@ -476,7 +454,6 @@ public class BasicLibrary extends Library {
     private boolean expression_less_than(alice.tuprolog.Number num0,
             alice.tuprolog.Number num1) {
         if (num0.isInteger() && num1.isInteger()) {
-//            return num0.intValue() < num1.intValue();
             return num0.longValue() < num1.longValue();
         } else {
             return num0.doubleValue() < num1.doubleValue();
@@ -492,7 +469,6 @@ public class BasicLibrary extends Library {
     public boolean term_greater_than_2(Term arg0, Term arg1) throws PrologError {
         arg0 = arg0.getTerm();
         arg1 = arg1.getTerm();
-        //System.out.println("Confronto "+arg0+" con "+arg1);
         return arg0.isGreater(arg1);
     }
 
@@ -549,8 +525,6 @@ public class BasicLibrary extends Library {
 
         }
         if (val0 != null && val0 instanceof Number) {
-            // return new Int(~((alice.tuprolog.Number) val0).intValue());
-            // CORRECTED BY ED ON JAN 28, 2011
             return new alice.tuprolog.Long(~((alice.tuprolog.Number) val0).longValue());
         } else {
             return null;
@@ -704,8 +678,6 @@ public class BasicLibrary extends Library {
                 && val1 instanceof Number) {
             alice.tuprolog.Number val0n = (alice.tuprolog.Number) val0;
             alice.tuprolog.Number val1n = (alice.tuprolog.Number) val1;
-            // return new Int(val0n.intValue() >> val1n.intValue());
-            // CORRECTED BY ED ON JAN 28, 2011
             return new alice.tuprolog.Long(val0n.longValue() >> val1n.longValue());
         } else {
             return null;
@@ -725,8 +697,6 @@ public class BasicLibrary extends Library {
                 && val1 instanceof Number) {
             alice.tuprolog.Number val0n = (alice.tuprolog.Number) val0;
             alice.tuprolog.Number val1n = (alice.tuprolog.Number) val1;
-            // return new Int(val0n.intValue() << val1n.intValue());
-            // CORRECTED BY ED ON JAN 28, 2011
             return new alice.tuprolog.Long(val0n.longValue() << val1n.longValue());
         } else {
             return null;
@@ -746,8 +716,6 @@ public class BasicLibrary extends Library {
                 && val1 instanceof Number) {
             alice.tuprolog.Number val0n = (alice.tuprolog.Number) val0;
             alice.tuprolog.Number val1n = (alice.tuprolog.Number) val1;
-            // return new Int(val0n.intValue() & val1n.intValue());
-            // CORRECTED BY ED ON JAN 28, 2011
             return new alice.tuprolog.Long(val0n.longValue() & val1n.longValue());
         } else {
             return null;
@@ -767,8 +735,6 @@ public class BasicLibrary extends Library {
                 && val1 instanceof Number) {
             alice.tuprolog.Number val0n = (alice.tuprolog.Number) val0;
             alice.tuprolog.Number val1n = (alice.tuprolog.Number) val1;
-            // return new Int(val0n.intValue() | val1n.intValue());
-            // CORRECTED BY ED ON JAN 28, 2011
             return new alice.tuprolog.Long(val0n.longValue() | val1n.longValue());
         } else {
             return null;
@@ -785,8 +751,6 @@ public class BasicLibrary extends Library {
     public boolean text_term_2(Term arg0, Term arg1) {
         arg0 = arg0.getTerm();
         arg1 = arg1.getTerm();
-        /*System.out.println(arg0);
-        System.out.println(arg1);*/
         getEngine().stdOutput(arg0.toString() + 
         "\n" + arg1.toString());
         if (!arg0.isGround()) {
@@ -1036,21 +1000,14 @@ public class BasicLibrary extends Library {
                 //
                 // meta-predicates
                 //
-                "'=..'(T, [T]) :- atomic(T), !. \n                                                          "
-                + "'=..'(T,L)  :- compound(T),!, '$tolist'(T,L). \n                                                          "
-                + "'=..'(T,L)  :- nonvar(L), catch('$fromlist'(T,L),Error,false). \n                                                          "
+                "'=..'(T, [T]) :- atomic(T), !. \n"
+                + "'=..'(T,L)  :- compound(T),!, '$tolist'(T,L). \n"
+                + "'=..'(T,L)  :- nonvar(L), catch('$fromlist'(T,L),Error,false). \n"
                 
-                /* commented by Roberta Calegari 29/04/14 it causes a loop: functor bug issue 14 google code, rewritten functor predicate
-                + "functor(Term, Name, Arity) :- atomic(Term), !, Name = Term, Arity = 0. \n"
-                + "functor(Term, Name, Arity) :- compound(Term), !, Term =.. [Name | Args], length(Args, Arity). \n"
-                + "functor(Term, Name, Arity) :- var(Term), atomic(Name), Arity == 0, !, Term = Name. \n"
-                + "functor(Term, Name, Arity) :- var(Term), atom(Name), integer(Arity), Arity > 0, current_prolog_flag(max_arity, Max), Arity=<Max, !, newlist([], Arity, L), Term =.. [Name | L]. \n"
-                */
                 + "functor(Term, Functor, Arity) :- \\+ var(Term), !, Term =.. [Functor|ArgList],length(ArgList, Arity).\n"
                 + "functor(Term, Functor, Arity) :- var(Term), atomic(Functor), Arity == 0, !, Term = Functor.\n"
                 + "functor(Term, Functor, Arity) :- var(Term), current_prolog_flag(max_arity, Max), Arity>Max, !, false.\n"
                 + "functor(Term, Functor, Arity) :- var(Term), atom(Functor), number(Arity), Arity > 0, !,length(ArgList, Arity),Term =.. [Functor|ArgList].\n"
-                //+ "functor(_Term, _Functor, _Arity) :- throw('Arguments are not sufficiently instantiated.').\n"
                 + "functor(_Term, _Functor, _Arity) :-false.\n"
                 
                 
@@ -1065,8 +1022,8 @@ public class BasicLibrary extends Library {
                 // execution
                 // as mandated by ISO Standard, see section 7.8.3.1
                 "call(G) :- call_guard(G), '$call'(G). \n"
-                + "'\\+'(P):- P,!,fail.\n                                                                            "
-                + "'\\+'(_).\n                                                                                             "
+                + "'\\+'(P):- P,!,fail.\n"
+                + "'\\+'(_).\n"
                 + "C -> T ; B :- !, or((call(C), !, call(T)), '$call'(B)). \n"
                 + "C -> T :- call(C), !, call(T). \n"
                 + "or(A, B) :- '$call'(A). \n"
@@ -1075,20 +1032,15 @@ public class BasicLibrary extends Library {
                 + "A ; B :- '$call'(A). \n"
                 + "A ; B :- '$call'(B). \n "
                 
-                + "unify_with_occurs_check(X,Y):- "+ /*not_occurs_in(X,Y),*/"!,X=Y.\n" 
-                /*+ "not_occurs_in(X,Y) :- var(Y), X \\== Y.\n"
-                + "not_occurs_in(X,Y) :- nonvar(Y), constant(Y).\n"
-                + "not_occurs_in(X,Y) :- nonvar(Y), compound(Y), functor(Y,F,N), not_occurs_in(N,X,Y).\n"
-                + "not_occurs_in(N,X,Y) :-	N > 0, arg(N,Y,Arg), not_occurs_in(X,Arg), N1 is N-1, not_occurs_in(N1,X,Y).\n"
-                + "not_occurs_in(0,X,Y).\n"*/
-                
-                + "current_op(Pri,Type,Name):-get_operators_list(L),member(op(Pri,Type,Name),L).\n                          "
-                + "once(X) :- myonce(X).\n                                                                                  "
-                + "myonce(X):-X,!.\n                                                                                        "
-                + "repeat. \n                                                                                              "
-                + "repeat        :- repeat. \n                                                                             "
-                + "not(G)        :- G,!,fail. \n                                                                     "
-                + "not(_). \n                                                                                              "
+                + "unify_with_occurs_check(X,Y):- !,X=Y.\n" 
+         
+                + "current_op(Pri,Type,Name):-get_operators_list(L),member(op(Pri,Type,Name),L).\n"
+                + "once(X) :- myonce(X).\n"
+                + "myonce(X):-X,!.\n"
+                + "repeat. \n"
+                + "repeat        :- repeat. \n"
+                + "not(G)        :- G,!,fail. \n"
+                + "not(_). \n"
                 +
                 // catch/3
                 "catch(Goal, Catcher, Handler) :- call(Goal).\n"
@@ -1144,22 +1096,18 @@ public class BasicLibrary extends Library {
                 + "is_member(E, [H | _]) :- E == H, !. \n"
                 + "is_member(E, [_ | T]) :- is_member(E, T). \n"
                 + "'$wt_list'([], []). \n"
-                + "'$wt_list'([W + T | STail], [WW + T | WTTail]) :- copy_term(W, WW), '$wt_list'(STail, WTTail). \n"
+                + "'$wt_list'([W + T | STail], [WW + T | WTTail]) :- '$wt_copyAndRetainFreeVar'(W, WW), '$wt_list'(STail, WTTail). \n"
                 + "'$s_next'(Witness, WT_List, S_Next) :- copy_term(Witness, W2), '$s_next0'(W2, WT_List, S_Next), !. \n"
                 
-                /*Roberta Calegari Sep 2013*/
+                /*Roberta Calegari Sep 2013*/ //Alberto Ott 2016
                 +"bagof(Template, Goal, Instances) :- \n"
                 + "all_solutions_predicates_guard(Template, Goal, Instances), \n"
                 + "free_variables_set(Goal, Template, Set), \n"
                 + "Witness =.. [witness | Set], \n"
                 + "iterated_goal_term(Goal, G), \n"
                 +"all_solutions_predicates_guard(Template, G, Instances),"
-                + "'splitAndSolve'(Witness, S, Instances,Set,Template,G,Goal). \n"  
-                //+ "'splitAndSolve'(Witness, S, Instances1,Set,Template,G,Goal),"
-                //+"write('  Instances: '),write(Instances),"
-                //+"write('  Instances1: '),write(Instances1),"
-                //+"Instances=Instances1. \n"
-                /*INIT utility function used by bagof*/
+                + "'splitAndSolve'(Witness, Instances, Template, G, Goal). \n" 
+                
                 +"count([],0). \n"
                 +"count([T1|Ts],N):- count(Ts,N1), N is (N1+1). \n"
                 +"is_list(X) :- var(X), !,fail. \n"
@@ -1171,7 +1119,8 @@ public class BasicLibrary extends Library {
                 +"list_to_term(Atom,Atom). \n"
                 +"quantVar(X^Others, [X|ListOthers]) :- !,quantVar(Others, ListOthers). \n"
                 +"quantVar(_Others, []). \n"
-                +"'splitAndSolve'(Witness, S, Instances,Set,Template,G,Goal):- splitSemicolon(G,L), \n"
+                
+                +"'splitAndSolve'(Witness, Instances, Template, G, Goal):- splitSemicolon(G,L), \n"
                 +"variable_set(Template,TT), \n"
                 +"quantVar(Goal, Qvars), \n"
                 +"append(TT,Qvars,L1), \n"
@@ -1179,7 +1128,7 @@ public class BasicLibrary extends Library {
                 +"member(E,OutputList), \n"
                 +"list_to_term(E, GoalE), \n"
                 +"findall(Witness + Template, GoalE, S), \n"
-                +"'bag0'(Witness, S, Instances,Set,Template,GoalE). \n"
+                +"'bag0'(Witness, S, Instances). \n"
                 
                 +"splitSemicolon(';'(G1,Gs),[G1|Ls]) :-!, splitSemicolon(Gs,Ls). \n"
                 +"splitSemicolon(G1,[G1]). \n"
@@ -1207,44 +1156,25 @@ public class BasicLibrary extends Library {
                 +"'occurs0'(Template, H):- \n"
                 +"H =.. [_Functor | Arguments], \n"
                 +"'check_sub_goal'(Template, H, _Functor, Arguments). \n"
-                +"'bag0'(_, [], _,_,_,_) :- !, fail. \n"
-                +"'bag0'(Witness, S, Instances,Set,Template,Goal) :- \n"
+                
+                +"'bag0'(_, [], _) :- !, fail. \n"
+                
+                +"'bag0'(Witness, S, Instances) :- \n" 
                 +"S==[] -> fail, !; \n"
                 +"'$wt_list'(S, WT_List), \n"
-                +"'$wt_unify'(Witness, WT_List, Instances,Set,Template,Goal). \n"
-                //+"'$wt_unify'(Witness, WT_List, T_List,Set,Template,Goal), \n"
-                //+"Instances = T_List. \n"
-                //+"write('T_List: '),write(T_List). \n"
+                +"'$wt_unify'(Witness, WT_List, Instances). \n"
                 
-                +"'bag0'(Witness, S, Instances,Set,Template,Goal) :- \n"
-                +"'$wt_list'(S, WT_List), \n"
-                +"'$s_next'(Witness, WT_List, S_Next),  \n"
-                +"'bag0'(Witness, S_Next, Instances,Set,Template,Goal). \n"
-   
-                /*END utility function used by bagof*/
-                /*+ "bagof(Template, Goal, Instances) :- \n"
-                + "all_solutions_predicates_guard(Template, Goal, Instances), \n"
-                + "free_variables_set(Goal, Template, Set), \n"
-                + "Witness =.. [witness | Set], \n"
-                + "iterated_goal_term(Goal, G), \n"
-                + "findall(Witness + Template, G, S), \n"
-                + "'$bagof0'(Witness, S, Instances). \n"
-                + "'$bagof0'(_, [], _) :- !, fail. \n"
-                + "'$bagof0'(Witness, S, Instances) :- \n"
-                + "'$wt_list'(S, WT_List), \n"
-                + "'$wt_unify'(Witness, WT_List, T_List), \n"
-                + "Instances = T_List. \n"
-                + "'$bagof0'(Witness, S, Instances) :- \n"
-                + "'$wt_list'(S, WT_List), \n"
-                + "'$s_next'(Witness, WT_List, S_Next), \n"
-                + "'$bagof0'(Witness, S_Next, Instances). \n"*/
+ 				+"'bag0'(Witness, S, Instances) :- \n"
+ 				+"'$wt_list'(S, WT_List), \n"
+ 				+"'$s_next'(Witness, WT_List, S_Next),  \n"
+ 				+"'bag0'(Witness, S_Next, Instances). \n"
                 
                 + "setof(Template, Goal, Instances) :- \n"
                 + "all_solutions_predicates_guard(Template, Goal, Instances), \n"
                 + "bagof(Template, Goal, List), \n"
                 + "quicksort(List, '@<', OrderedList), \n"
                 + "no_duplicates(OrderedList, Instances). \n"
-                
+
                 // RC, ED Jul 14
                 +"forall(A,B):- \\+(call(A),\\+call(B)). \n"
                 
@@ -1262,9 +1192,9 @@ public class BasicLibrary extends Library {
                 // auxiliary predicates
                 //
                 
-                " member(E,L) :- member_guard(E,L), member0(E,L).\n                                                                                     "
-                + "member0(E,[E|_]). \n                                                                       "
-                + "member0(E,[_|L]):- member0(E,L). \n                                                                       "
+                " member(E,L) :- member_guard(E,L), member0(E,L).\n"
+                + "member0(E,[E|_]). \n"
+                + "member0(E,[_|L]):- member0(E,L). \n"
                 + "length(L, S) :- number(S), !, lengthN(L, S), !. \n"
                 + "length(L, S) :- var(S), lengthX(L, S). \n"
                 + "lengthN([],0). \n"
@@ -1272,23 +1202,19 @@ public class BasicLibrary extends Library {
                 + "lengthN([_|L], N) :- M is N - 1, lengthN(L,M). \n"
                 + "lengthX([],0). \n"
                 + "lengthX([_|L], N) :- lengthX(L,M), N is M + 1. \n"
-                + "append([],L2,L2). \n                                                                                    "
-                + "append([E|T1],L2,[E|T2]):- append(T1,L2,T2). \n                                                         "
-                + "reverse(L1,L2):- reverse_guard(L1,L2), reverse0(L1,[],L2). \n                                                                 "
-                + "reverse0([],Acc,Acc). \n                                                                                "
-                + "reverse0([H|T],Acc,Y):- reverse0(T,[H|Acc],Y). \n                                                       "
-                + "delete(E,S,D) :- delete_guard(E,S,D), delete0(E,S,D). \n                                                                                     "
-                + "delete0(E,[],[]). \n                                                                                     "
-                + "delete0(E,[E|T],L):- !,delete0(E,T,L). \n                                                                 "
-                + "delete0(E,[H|T],[H|L]):- delete0(E,T,L). \n                                                               "
-                + "element(P,L,E):- element_guard(P,L,E), element0(P,L,E). \n                                                                              "
-                + "element0(1,[E|L],E):- !. \n                                                                              "
-                + "element0(N,[_|L],E):- M is N - 1,element0(M,L,E). \n                                                      "
-                /* commented by Roberta Calegari 29/04/14 it causes a loop
-                + "newlist(Ls,0,Ls):- !. \n                                                                                "
-                + "newlist(Ls,N,Ld):- !, append(X,Ls,Ld), length(X,N). \n                                                                                "
-                + "newlist(Ls,N,Ld):- M is N - 1,newlist([_|Ls],M,Ld). \n                                                  "
-                */
+                + "append([],L2,L2). \n"
+                + "append([E|T1],L2,[E|T2]):- append(T1,L2,T2). \n"
+                + "reverse(L1,L2):- reverse_guard(L1,L2), reverse0(L1,[],L2). \n"
+                + "reverse0([],Acc,Acc). \n"
+                + "reverse0([H|T],Acc,Y):- reverse0(T,[H|Acc],Y). \n"
+                + "delete(E,S,D) :- delete_guard(E,S,D), delete0(E,S,D). \n"
+                + "delete0(E,[],[]). \n"
+                + "delete0(E,[E|T],L):- !,delete0(E,T,L). \n"
+                + "delete0(E,[H|T],[H|L]):- delete0(E,T,L). \n"
+                + "element(P,L,E):- element_guard(P,L,E), element0(P,L,E). \n"
+                + "element0(1,[E|L],E):- !. \n"
+                + "element0(N,[_|L],E):- M is N - 1,element0(M,L,E). \n"
+                
                 + "quicksort([],Pred,[]).                             \n"
                 + "quicksort([X|Tail],Pred,Sorted):-                  \n"
                 + "   split(X,Tail,Pred,Small,Big),                   \n"
@@ -1346,15 +1272,12 @@ public class BasicLibrary extends Library {
 
     public boolean all_solutions_predicates_guard_3(Term arg0, Term arg1,
             Term arg2) throws PrologError {
-    	//System.out.println("Entro qui.... ");
         arg1 = arg1.getTerm();
-        //System.out.println("Arg1 "+arg1);
+        
         if (arg1 instanceof Var){
-        	//System.out.println("ECCEZIONE 1 ");
             throw PrologError.instantiation_error(engine.getEngineManager(), 2);
         }
         if (!arg1.isAtom() && !arg1.isCompound()){
-        	//System.out.println("ECCEZIONE 2 ");
             throw PrologError.type_error(engine.getEngineManager(), 2,
                     "callable", arg1); 
          }
@@ -1407,6 +1330,14 @@ public class BasicLibrary extends Library {
 
     // Internal Java predicates which are part of the bagof/3 and setof/3
     // algorithm
+    
+    //Alberto
+  	public boolean $wt_copyAndRetainFreeVar_2(Term arg0, Term arg1) {
+  	  	arg0 = arg0.getTerm();
+  	  	arg1 = arg1.getTerm();
+  	  	int id = engine.getEngineManager().getEnv().getNDemoSteps();
+  	  	return unify(arg1, arg0.copyAndRetainFreeVar(new IdentityHashMap<Var,Var>(), id));
+  	}
 
     public boolean $wt_unify_3(Term witness, Term wtList, Term tList) {
         Struct list = (Struct) wtList.getTerm();
@@ -1420,71 +1351,8 @@ public class BasicLibrary extends Library {
         }
         return unify(tList, result);
     }
-    
-    public boolean $wt_unify_6(Term witness, Term wtList, Term tList, Term varSet,Term temp, Term goal) {
-    	/*System.out.println("witness "+witness);
-    	System.out.println("wtList "+wtList);
-    	System.out.println("tList "+tList+" "+((Var)tList).getLink());
-    	System.out.println("varSet "+varSet);
-    	System.out.println("template "+temp);
-    	*/
-    	//se ci sono variabili libere nel goal alla fine il risultato deve essere relinked
-    	Struct freeVarList = (Struct) varSet.getTerm();
-    	java.util.Iterator<? extends Term> it1 = freeVarList.listIterator();
-    	if (it1.hasNext()) {
-    		(engine.getEngineManager()).setRelinkVar(true);
-    		//ArrayList<String> l = new ArrayList<String>(); 
-    		
-    		(engine.getEngineManager()).setBagOFvarSet(varSet);
-    		(engine.getEngineManager()).setBagOFgoal(goal);
-    		if ((engine.getEngineManager()).getBagOFbag()==null)
-    			(engine.getEngineManager()).setBagOFbag(tList);
-    		
-    	}
-    		
-    	
-    	//System.out.println("template "+temp);
-    	//System.out.println("goal "+goal);
-        Struct list = (Struct) wtList.getTerm();
-        Struct varList = (Struct) varSet.getTerm();
-        //String goalString = goal.toString();
-        //System.out.println("goal string "+goalString);
-        
-        //System.out.println("termini wtList "+list);
-        Struct result = new Struct();
-        for (java.util.Iterator<? extends Term> it = list.listIterator(); it.hasNext();) {
-            Struct element = (Struct) it.next();
-            //System.out.println("termine wtList "+element);
-            Term w = element.getArg(0);
-            Term t = element.getArg(1);
-            //System.out.println("termine W wtList "+w);
-            //System.out.println("termine T wtList "+t);
-            if (unify(witness, w)){
-            	//System.out.println("=====witness  "+witness+" unifica con w "+w+" metto t nel risultato "+t);
-            	result.append(t);
-            	//System.out.println("=====****result  "+result);
-            	ArrayList<Term> l = (engine.getEngineManager()).getBagOFres();
-            	ArrayList<String> lString = (engine.getEngineManager()).getBagOFresString();
-            	if(l==null){
-            		l=new ArrayList<Term>();
-            		lString=new ArrayList<String>();
-            	}
-            	l.add(t);
-            	//if(t instanceof Var)
-            	lString.add(t.toString());
-            	/*for(int m=0; m<l.size(); m++){
-            		System.out.println("=====****elemento lista engine.getEngineManager()).getBagOFres()  "+l.get(m));
-            	}*/
-            	(engine.getEngineManager()).setBagOFres(l);
-            	(engine.getEngineManager()).setBagOFresString(lString);
-                //System.out.println("Ho unificato witness con w appendo t al risultato ");
-            }
-        } 
-        return unify(tList, result);
-    }
-
    
-  public boolean $s_next0_3(Term witness, Term wtList, Term sNext) {
+    public boolean $s_next0_3(Term witness, Term wtList, Term sNext) {
         Struct list = (Struct) wtList.getTerm();
         Struct result = new Struct();
         for (java.util.Iterator<? extends Term> it = list.listIterator(); it.hasNext();) {
@@ -1518,5 +1386,4 @@ public class BasicLibrary extends Library {
                 { "//", "expression_integer_div", "functor" },
                 { "\\", "expression_bitwise_not", "functor" } };
     }
-
 }

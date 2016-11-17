@@ -30,8 +30,6 @@ import alice.util.OneWayList;
  */
 public class StateRuleSelection extends State {
     
-    
-    
     public StateRuleSelection(EngineRunner c) {
         this.c = c;
         stateName = "Init";
@@ -53,7 +51,6 @@ public class StateRuleSelection extends State {
         if (alternative == null) {
             /* from normal evaluation */
             fromBacktracking = false;
-            //List varsList = new LinkedList();
             List<Var> varsList = new ArrayList<Var>();
             e.currentContext.trailingVars = new OneWayList<List<Var>>(varsList,e.currentContext.trailingVars);
             clauseStore = ClauseStore.build(goal, varsList, c.find(goal));
@@ -117,7 +114,6 @@ public class StateRuleSelection extends State {
         if (ec.haveAlternatives && !fromBacktracking) {
             ChoicePointContext cpc = new ChoicePointContext();
             cpc.compatibleGoals = clauseStore;
-//            c.saveLastTheoryStatus();
             cpc.executionContext = curCtx;
             cpc.indexSubGoal = curCtx.goalsToEval.getCurrentGoalId();
             cpc.varsToDeunify = e.currentContext.trailingVars;
@@ -125,10 +121,12 @@ public class StateRuleSelection extends State {
         }
         //distruzione cpc
         if (!ec.haveAlternatives && fromBacktracking) {            
-                    e.choicePointSelector.removeUnusedChoicePoints();
-                }
+            e.choicePointSelector.removeUnusedChoicePoints();
+        }
         
-        ec.performTailRecursionOptimization(e);
+        //Alberto
+        if(!ec.tryToPerformTailRecursionOptimization(e))
+        	ec.updateContextAndDepth(e);
         
         ec.saveParentState();
         e.currentContext = ec;

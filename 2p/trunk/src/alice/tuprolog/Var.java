@@ -19,6 +19,9 @@ package alice.tuprolog;
 
 import java.util.*;
 
+import alice.tuprolog.InvalidTermException;
+import alice.tuprolog.TermVisitor;
+
 /**
  * This class represents a variable term.
  * Variables are identified by a name (which must starts with
@@ -30,15 +33,31 @@ import java.util.*;
 public class Var extends Term {
 
 	private static final long serialVersionUID = 1L;
+	
+	/* Identify kind of renaming */
+	final static int ORIGINAL = -1;
+	final static int PROGRESSIVE = -2;
+	
+	private static long fingerprint = 0; //Alberto //static version as global counter
+	
 	final static String ANY = "_";
+	
 	// the name identifying the var
 	private String name;
-	private StringBuilder completeName;     /* Reviewed by Paolo Contessi: String -> StringBuilder */
-	private Term   link;            /* link is used for unification process */
-	private long   timestamp;        /* timestamp is used for fix vars order */
-	private int    id;            /* id of ExecCtx owners of this var util for renaming*/
+	private StringBuilder completeName;    /* Reviewed by Paolo Contessi */
+	private Term   link;                   /* link is used for unification process */
+	private long   internalTimestamp;      /* internalTimestamp is used for fix vars order (resolveTerm()) */
+	private int    ctxid;                  /* id of ExecCtx owners of this var util for renaming*/
 
+	//Alberto
+	private long fingerPrint; //fingerPrint is a unique id (per run) used for var comparison
 
+	//Alberto
+	static long getFingerprint(){ //called by Var constructors
+		fingerprint++;
+		return fingerprint;
+	}
+	
 	/**
 	 * Creates a variable identified by a name.
 	 *
@@ -50,7 +69,9 @@ public class Var extends Term {
 	 */
 	public Var(String n) {
 		link = null;
-		id = -1; //no execCtx owners
+		ctxid = Var.ORIGINAL; //no execCtx owners
+		internalTimestamp = 0;
+		fingerPrint = getFingerprint();
 		if (n.equals(ANY)) {
 			name = null;
 			completeName = new StringBuilder();
@@ -63,7 +84,6 @@ public class Var extends Term {
 		}
 	}
 
-
 	/**
 	 * Creates an anonymous variable
 	 *
@@ -73,10 +93,10 @@ public class Var extends Term {
 		name = null;
 		completeName = new StringBuilder();
 		link = null;
-		id = ORIGINAL;
-		timestamp = 0;
+		ctxid = Var.ORIGINAL;
+		internalTimestamp = 0;
+		fingerPrint = getFingerprint();
 	}
-
 
 	/**
 	 * Creates a internal engine variable.
@@ -86,45 +106,40 @@ public class Var extends Term {
 	 * @param alias code to discriminate external vars
 	 * @param time is timestamp
 	 */
-	private Var(String n, int id, int alias, long time) {
+	private Var(String n, int id, int alias, long count) {
 		name = n;
 		completeName = new StringBuilder();
-		timestamp = time;
+		internalTimestamp = count;
+		fingerPrint = getFingerprint();
 		link  = null;
-		if(id < 0) id = ORIGINAL;
+		if(id < 0) id = Var.ORIGINAL;
 		rename(id,alias);
 	}
-
-	/* Identify kind of renaming */
-	final static int ORIGINAL = -1;
-	final static int PROGRESSIVE = -2;
 
 	/**
 	 * Rename variable (assign completeName) 
 	 */
-	void rename(int idExecCtx, int count) { /* Reviewed by Paolo Contessi: String -> StringBuilder */
-		id = idExecCtx;
+	void rename(int idExecCtx, int count) { /* Reviewed by Paolo Contessi */
+		ctxid = idExecCtx;
 
-		if (id > -1) {
-			//completeName = name + "_e" + idExecCtx;
+		if (ctxid > Var.ORIGINAL) {
 			completeName = completeName
 					.delete(0, completeName.length())
-					.append(name).append("_e").append(id);
+					.append(name).append("_e").append(ctxid);
 		}
 
-		else if (id == ORIGINAL) { //completeName = name;
+		else if (ctxid == ORIGINAL) {
 			completeName = completeName
 					.delete(0, completeName.length())
 					.append(name);
 		}
 
-		else if (id == PROGRESSIVE) { //completeName = "_"+count;
+		else if (ctxid == PROGRESSIVE) {
 			completeName = completeName
 					.delete(0, completeName.length())
 					.append("_").append(count);
 		}
 	}
-
 
 	/**
 	 * Gets a copy of this variable.
@@ -134,13 +149,30 @@ public class Var extends Term {
 	 * a variable with the same time identifier is found in the list,
 	 * then the variable in the list is returned.
 	 */
+	@Override
 	Term copy(AbstractMap<Var,Var> vMap, int idExecCtx) {
 		Term tt = getTerm();
 		if (tt == this) {
 			Var v = (Var)(vMap.get(this));
 			if (v == null) {
 				//No occurence of v before
-				v = new Var(name,idExecCtx,0,timestamp);
+				v = new Var(name,idExecCtx,0,internalTimestamp);
+				vMap.put(this,v);
+			}
+			return v;
+		} else {
+			return tt.copy(vMap, idExecCtx);
+		}
+	}
+	
+	@Override //Alberto 
+	public Term copyAndRetainFreeVar(AbstractMap<Var,Var> vMap, int idExecCtx) {
+		Term tt = getTerm();
+		if (tt == this) {
+			Var v = (Var)(vMap.get(this));
+			if (v == null) {
+				//No occurence of v before
+				v = this; //!!!
 				vMap.put(this,v);
 			}
 			return v;
@@ -149,15 +181,15 @@ public class Var extends Term {
 		}
 	}
 
-
 	/**
 	 * Gets a copy of this variable.
 	 */
+	@Override
 	Term copy(AbstractMap<Var,Var> vMap, AbstractMap<Term,Var> substMap) {
 		Var v;
 		Object temp = vMap.get(this);
 		if (temp == null) {
-			v = new Var(null,Var.PROGRESSIVE,vMap.size(),timestamp);//name,Var.PROGRESSIVE,vMap.size(),timestamp);
+			v = new Var(null,Var.PROGRESSIVE,vMap.size(),internalTimestamp);
 			vMap.put(this,v);
 		} else {
 			v = (Var) temp;
@@ -179,14 +211,12 @@ public class Var extends Term {
 		return v;
 	}
 
-
 	/**
 	 * De-unify the variable
 	 */
 	public void free() {
 		link = null;
 	}
-
 
 	/**
 	 * De-unify the variables of list
@@ -197,7 +227,6 @@ public class Var extends Term {
 		}
 	}
 
-
 	/**
 	 * Gets the name of the variable
 	 */
@@ -205,7 +234,6 @@ public class Var extends Term {
 		if (name!=null) {
 			return completeName.toString();
 		} else {
-			//return ANY+timestamp;
 			return ANY;
 		}
 	}
@@ -217,11 +245,9 @@ public class Var extends Term {
 		if (name!=null) {
 			return name;
 		} else {
-			//return ANY+timestamp;
-			return ANY + hashCode();
+			return ANY + ""+this.fingerPrint; //Alberto
 		}
 	}
-
 
 	/**
 	 *  Gets the term which is referred by the variable.
@@ -243,7 +269,6 @@ public class Var extends Term {
 		return tt;
 	}
 
-
 	/**
 	 * Gets the term which is direct referred by the variable.
 	 */
@@ -261,11 +286,9 @@ public class Var extends Term {
 	/**
 	 * Set the timestamp
 	 */
-	void setTimestamp(long t) {
-		timestamp = t;
+	void setInternalTimestamp(long t) {
+		internalTimestamp = t;
 	}
-
-	//
 
 	public boolean isNumber() {
 		return false;
@@ -332,8 +355,6 @@ public class Var extends Term {
 		}
 	}
 
-	//
-
 	/**
 	 * Tests if this variable is ANY
 	 */
@@ -348,7 +369,6 @@ public class Var extends Term {
 	 public boolean isBound() {
 		 return link != null;
 	 }
-
 
 	/**
 	 * finds var occurence in a Struct, doing occur-check.
@@ -374,10 +394,7 @@ public class Var extends Term {
 			 }
 		 }
 		 return false;
-
 	 }
-
-	 //
 
 	 /**
 	  * Resolve the occurence of variables in a Term
@@ -387,13 +404,10 @@ public class Var extends Term {
 		 if (tt != this) {
 			 return tt.resolveTerm(count);
 		 } else {
-			 timestamp = count;
+			 internalTimestamp = count;
 			 return count++;
 		 }
 	 }
-
-
-	 //
 
 	 /**
 	  * var unification.
@@ -426,82 +440,40 @@ public class Var extends Term {
 		 if(tt == this) {
 			 t = t.getTerm();
 			 if (t instanceof Var) { 
+				 ((Var)t).fingerPrint = this.fingerPrint; //Alberto
 				 if (this == t) {
 					 try{
 						 vl1.add(this);                
-					 } catch(NullPointerException e) {/* vl1==null mean nothing intresting for the caller */}
+					 } catch(NullPointerException e) {}
 					 return true;
 				 }
 			 } else if (t instanceof Struct) {
-				 ;
 				 // occur-check
 				 if (occurCheck(vl2, (Struct)t)) {
 					 return false;
 				 }
-			 } else if (!(t instanceof Number) && !(t instanceof AbstractSocket)) {
+			 } else if (!(t instanceof Number)) {
 				 return false;
 			 }
 			 link = t;
 			 try {
 				 vl1.add(this);                
-			 } catch(NullPointerException e) {/* vl1==null mean nothing intresting for the caller */}
-			 //System.out.println("VAR "+name+" BOUND to "+link+" - time: "+time+" - mark: "+mark);
+			 } catch(NullPointerException e) {}
 			 return true;
 		 } else {
 			 return (tt.unify(vl1, vl2, t));
 		 }
 	 }
 
-
-	 /**
-	  * Gets a copy of this variable
-	  */
-	 /*    public Term copy(int idExecCtx) {
-     Term tt = getTerm();
-     if(tt == this) {
-     if(idExecCtx > 0 && id > 0) thisCopy++;
-     return new Var(name,idExecCtx,thisCopy,antialias,timestamp);
-     } else {
-     return (tt.copy(idExecCtx));
-     }
-     }
-	  */
-
 	 public boolean isGreater(Term t) {
 		 Term tt = getTerm();
 		 if (tt == this) {
 			 t = t.getTerm();
 			 if (!(t instanceof Var)) return false;
-			 return timestamp > ((Var)t).timestamp;
+			 return fingerPrint > ((Var)t).fingerPrint; //Alberto
 		 }
 		 else {
 			 return tt.isGreater(t);
-		 }
-	 }
-
-	 public boolean isGreaterRelink(Term t,ArrayList<String> vorder) {
-		 Term tt = getTerm();
-		 if (tt == this) {
-			 t = t.getTerm();
-			 if (!(t instanceof Var)) return false;
-			 //System.out.println("Compare di tt "+tt+" con t "+t);
-			 //System.out.println("vorder "+vorder);
-			 //System.out.println("indice tt "+vorder.indexOf(((Var)tt).getName())+" indice t "+vorder.indexOf(((Var)t).getName()));
-			 //return timestamp > ((Var)t).timestamp;
-			 return vorder.indexOf(((Var)tt).getName())>vorder.indexOf(((Var)t).getName());
-		 }
-		 else {
-			 return tt.isGreaterRelink(t,vorder);
-		 }
-	 }
-	 
-	 public boolean isEqual(Term t) {
-		 Term tt = getTerm();
-		 if(tt == this) {
-			 t = t.getTerm();
-			 return (t instanceof Var && timestamp == ((Var)t).timestamp);
-		 } else {
-			 return tt.isEqual(t);
 		 }
 	 }
 	 
@@ -525,7 +497,7 @@ public class Var extends Term {
 			 }
 		 } else {
 			 if (tt == this) {
-				 return ANY + hashCode();
+				 return ANY + ""+this.fingerPrint; //Alberto
 			 } else {
 				 return tt.toString();
 			 }
@@ -549,7 +521,7 @@ public class Var extends Term {
 			 }
 		 } else {
 			 if (tt == this) {
-				 return ANY + hashCode();
+				 return ANY + ""+this.fingerPrint; //Alberto
 			 } else {
 				 return tt.toString();
 			 }
@@ -561,6 +533,4 @@ public class Var extends Term {
 	 public void accept(TermVisitor tv) {
 		 tv.visit(this);
 	 }
-	 /**/
-
 }

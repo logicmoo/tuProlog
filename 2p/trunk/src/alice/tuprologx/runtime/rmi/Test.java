@@ -7,7 +7,8 @@ import java.rmi.registry.*;
 
 public class Test
 {
-    public static void main(String args[])
+    @SuppressWarnings("deprecation")
+	public static void main(String args[])
     {
         if (args.length<2){
             System.err.println("args:  <host> <goal>");

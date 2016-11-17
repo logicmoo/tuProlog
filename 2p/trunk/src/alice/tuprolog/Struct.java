@@ -18,16 +18,20 @@
 package alice.tuprolog;
 
 import java.util.AbstractMap;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import alice.tuprolog.InvalidTermException;
+import alice.tuprolog.TermVisitor;
 
 /**
  * Struct class represents both compound prolog term
  * and atom term (considered as 0-arity compound).
  */
 public class Struct extends Term {
+	
 	private static final long serialVersionUID = 1L;
     
     /**
@@ -132,7 +136,6 @@ public class Struct extends Term {
         resolved = true;
     }
     
-    
     /**
      * Builds a list providing head and tail
      */
@@ -236,7 +239,7 @@ public class Struct extends Term {
      *
      * (Only for internal service)
      */
-    void setArg(int index, Term argument) {
+    public void setArg(int index, Term argument) {
         arg[index] = argument;
     }
     
@@ -251,7 +254,6 @@ public class Struct extends Term {
                 return arg[index];
             return arg[index].getTerm();
     }
-    
     
     // checking type and properties of the Term
     
@@ -269,7 +271,6 @@ public class Struct extends Term {
     public boolean isVar() {
         return false;
     }
-    
     
     // check type services
     
@@ -303,14 +304,11 @@ public class Struct extends Term {
      */
     public boolean isClause() {
         return(name.equals(":-") && arity > 1 && arg[0].getTerm() instanceof Struct);
-        //return(name.equals(":-") && arity == 2 && arg[0].getTerm() instanceof Struct);
     }    
     
     public Term getTerm() {
         return this;
     }
-    
-    //
     
     /**
      * Gets an argument inside this structure, given its name
@@ -342,9 +340,6 @@ public class Struct extends Term {
         return null;
     }
     
-    
-    //
-    
     /**
      * Test if a term is greater than other
      */
@@ -374,59 +369,6 @@ public class Struct extends Term {
         return false;
     }
     
-    public boolean isGreaterRelink(Term t,ArrayList<String> vorder) {
-        t = t.getTerm();
-        if (!(t instanceof Struct)) {
-            return true;
-        } else {
-            Struct ts = (Struct) t;
-            int tarity = ts.arity;
-            if (arity > tarity) {
-                return true;
-            } else if (arity == tarity) {
-            	//System.out.println("Compare di "+name+" con "+ts.name);
-                if (name.compareTo(ts.name) > 0) {
-                    return true;
-                } else if (name.compareTo(ts.name) == 0) {
-                    for (int c = 0;c < arity;c++) {
-                    	//System.out.println("Compare di "+arg[c]+" con "+ts.arg[c]);
-                        if (arg[c].isGreaterRelink(ts.arg[c],vorder)) {
-                            return true;
-                        } else if (!arg[c].isEqual(ts.arg[c])) {
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * Test if a term is equal to other
-     */
-    public boolean isEqual(Term t) {
-        t = t.getTerm();
-        if (t instanceof Struct) {
-            Struct ts = (Struct) t;
-            if (arity == ts.arity && name.equals(ts.name)) {
-                for (int c = 0;c < arity;c++) {
-                    if (!arg[c].isEqual(ts.arg[c])) {
-                        return false;
-                    }
-                }
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-    
-    //
-    
-    
     /**
      * Gets a copy of this structure
      * @param vMap is needed for register occurence of same variables
@@ -443,6 +385,19 @@ public class Struct extends Term {
         return t;
     }
     
+    @Override //Alberto
+	public Term copyAndRetainFreeVar(AbstractMap<Var,Var> vMap, int idExecCtx) {
+    	Struct t = new Struct(arity);
+        t.resolved  = resolved;
+        t.name      = name;
+        t.predicateIndicator   = predicateIndicator;
+        t.primitive = primitive;
+        for (int c = 0;c < arity;c++) {
+            t.arg[c] = arg[c].getTerm().copyAndRetainFreeVar(vMap, idExecCtx); 
+            //qui una .getTerm() necessaria solo in $wt_list!
+        }
+        return t;
+	}
     
     /**
      * Gets a copy of this structure
@@ -460,7 +415,6 @@ public class Struct extends Term {
         return t;
     }
     
-    
     /**
      * resolve term
      */
@@ -472,7 +426,6 @@ public class Struct extends Term {
             return resolveTerm(vars,count);
         }
     }
-    
     
     /**
      * Resolve name of terms
@@ -492,7 +445,7 @@ public class Struct extends Term {
                 //--------------------------------
                 if (term instanceof Var) {
                     Var t = (Var) term;
-                    t.setTimestamp(newcount++);
+                    t.setInternalTimestamp(newcount++);
                     if (!t.isAnonymous()) {
                         // searching a variable with the same name in the list
                         String name= t.getName();
@@ -554,7 +507,7 @@ public class Struct extends Term {
     public Struct listTail() {
         if (!isList())
             throw new UnsupportedOperationException("The structure " + this + " is not a list.");
-        return (Struct) arg[1].getTerm() ;
+        return (Struct) arg[1].getTerm();
     }
     
     /**
@@ -604,7 +557,6 @@ public class Struct extends Term {
         return new Struct(new Struct(name),t);
     }
     
-    
     /**
      * Gets a flat Struct from this structure considered as a List
      *
@@ -627,7 +579,6 @@ public class Struct extends Term {
         return new Struct(((Struct) ft).name, al);
     }
     
-    
     /**
      * Appends an element to this structure supposed to be a list
      */
@@ -635,7 +586,7 @@ public class Struct extends Term {
         if (isEmptyList()) {
             name = ".";
             arity = 2;
-                        predicateIndicator = name + "/" + arity; /* Added by Paolo Contessi */
+            predicateIndicator = name + "/" + arity; /* Added by Paolo Contessi */
             arg = new Term[arity];
             arg[0] = t; arg[1] = new Struct();
         } else if (arg[1].isList()) {
@@ -644,7 +595,6 @@ public class Struct extends Term {
             arg[1] = t;
         }
     }
-    
     
     /**
      * Inserts (at the head) an element to this structure supposed to be a list
@@ -656,8 +606,6 @@ public class Struct extends Term {
         arg[0] = t;
         arg[1] = co;
     }
-    
-    //
     
     /**
      * Try to unify two terms
@@ -685,11 +633,8 @@ public class Struct extends Term {
         return false;
     }
     
-    
     /** dummy method */
     public void free() {}
-    
-    //
     
     /**
 	 * Set primitive behaviour associated at structure
@@ -711,8 +656,6 @@ public class Struct extends Term {
     public boolean isPrimitive() {
         return primitive != null;
     }
-    
-    //
     
     /**
      * Gets the string representation of this structure
@@ -796,7 +739,6 @@ public class Struct extends Term {
             }
             buf.append(","+tail.toString());
             return buf.toString();
-            //    return arg[0]+","+((Struct)arg[1]).toString0_bracket();
         }
     }
     
@@ -814,9 +756,9 @@ public class Struct extends Term {
         }
     }
     
-    String toStringAsArg(OperatorManager op,int prio,boolean x) {
-        int      p = 0;
-        String   v = "";
+    String toStringAsArg(OperatorManager op, int prio, boolean x) {
+        int p = 0;
+        String v = "";
         
         if (name.equals(".") && arity == 2) {
             if (arg[0].isEmptyList()) {
@@ -920,6 +862,4 @@ public class Struct extends Term {
 	public void accept(TermVisitor tv) {
 		tv.visit(this);
 	}
-    /**/
-    
 }

@@ -17,6 +17,9 @@
  */
 package alice.tuprolog;
 
+import alice.tuprolog.HaltException;
+import alice.tuprolog.JavaException;
+
 /**
  * @author Alex Benini
  */
@@ -75,5 +78,4 @@ public class StateGoalEvaluation extends State {
 			e.nextState = c.RULE_SELECTION;
 		}
 	}
-
 }

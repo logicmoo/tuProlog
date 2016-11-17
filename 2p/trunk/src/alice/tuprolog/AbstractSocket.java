@@ -110,6 +110,12 @@ public abstract class AbstractSocket extends Term{
 	Term copy(AbstractMap<Var, Var> vMap, AbstractMap<Term, Var> substMap) {
 		return this;
 	}
+	
+	@Override
+	public Term copyAndRetainFreeVar(AbstractMap<Var, Var> vMap, int idExecCtx) {
+		// TODO Auto-generated method stub
+		return this;
+	}
 
 
 

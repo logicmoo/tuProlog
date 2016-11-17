@@ -16,7 +16,6 @@ import alice.tuprolog.Term;
 import alice.tuprolog.Theory;
 import alice.tuprologx.spyframe.SpyFrame;
 
-
 public class ToolBar extends JPanel
 {
     

@@ -32,7 +32,7 @@ public class PrologTestCase extends TestCase {
 		assertNotNull(engine.getLibrary("alice.tuprolog.StringLibrary"));
 		Library javaLibrary = new alice.tuprolog.lib.OOLibrary();
 		engine.loadLibrary(javaLibrary);
-		assertSame(javaLibrary, engine.getLibrary("alice.tuprolog.lib.JavaLibrary"));
+		assertSame(javaLibrary, engine.getLibrary("alice.tuprolog.lib.OOLibrary"));
 	}
 	
 	public void testGetLibraryWithName() throws InvalidLibraryException {
