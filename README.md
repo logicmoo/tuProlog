@@ -15,7 +15,9 @@ tuProlog 2.9.2 is intended to be the last stable version supporting Java 7.
 
 ### **New features**###
 This version aims to provide a stable environment
+
 * completing the pending bugfixes, with special regards to the old annoying bugs regarding the behaviour of setof, bagof;
+
 * improving the editor in the Java/.NET GUI.
 
 ### **Download** ###
