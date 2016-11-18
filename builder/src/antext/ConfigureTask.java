@@ -1,5 +1,7 @@
 package antext;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +15,15 @@ import antext.ui.ConfigureDialog;
 
 public class ConfigureTask extends Task {
 	
+	protected Object lock;
+	
 	protected ConfigureDialog dialog;
 	protected ArrayList<PropertyFile> propertyFiles;
 	protected BuildOptions buildOptions;
 	
 	public ConfigureTask() {
 		propertyFiles = new ArrayList<>();
+		lock = new Object();
 	}
 	
 	public List<PropertyFile> getPropertyFiles() {
@@ -31,8 +36,30 @@ public class ConfigureTask extends Task {
 		/*
 		try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());}
 		catch(Exception ex) {}*/
+		
+		
 		dialog = new ConfigureDialog(this);
+		/*
+		dialog.addWindowListener(new WindowAdapter() {
+			@Override
+	        public void windowClosing(WindowEvent arg0) {
+				System.out.println("Closed");
+				synchronized (lock) {
+					lock.notify();	
+				}	
+			}
+		});*/
+		
 		dialog.setVisible(true);
+		/*
+		dialog.toFront();
+		
+		synchronized (lock) {
+			try { lock.wait(); }
+			catch(InterruptedException ex) {}
+		}*/
+		
+		
 	}
 	
 	public void startBuild() {
@@ -44,6 +71,7 @@ public class ConfigureTask extends Task {
 			return;
 		}		
 		dialog.dispose();
+		// dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
 	}
 	
 	public void insertOption(Option option) {

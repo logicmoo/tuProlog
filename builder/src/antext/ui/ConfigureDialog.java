@@ -4,6 +4,7 @@ import java.awt.Dialog;
 import java.io.IOException;
 
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
@@ -11,8 +12,8 @@ import antext.ConfigureTask;
 import antext.PropertyFile;
 
 @SuppressWarnings("serial")
-public class ConfigureDialog extends JDialog {
-	
+//public class ConfigureDialog extends JFrame {
+public class ConfigureDialog extends JDialog {	
 	private ConfigureTask configure;
 	
 	private JTabbedPane uiTabbedPane;
@@ -28,6 +29,8 @@ public class ConfigureDialog extends JDialog {
 		setTitle(configure.getProject().getName());
 		
 		pack();
+		
+		validate();
 	}
 	
 	public void updatePropertyFiles() throws IOException {
