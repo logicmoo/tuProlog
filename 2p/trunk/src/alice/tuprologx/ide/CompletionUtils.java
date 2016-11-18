@@ -24,6 +24,7 @@ import org.fife.ui.autocomplete.TemplateCompletion;
 import alice.tuprolog.event.TheoryEvent;
 import alice.tuprolog.event.TheoryListener;
 
+
 class CompletionUtils{
 
 	public static final int THEORY_COMPLETIONS_RELEVANCE = 300;

@@ -183,6 +183,12 @@ public abstract class Number extends Term implements Comparable<Number> {
         return this;
     }
     
+    @Override
+	public Term copyAndRetainFreeVar(AbstractMap<Var, Var> vMap, int idExecCtx) {
+		// TODO Auto-generated method stub
+		return this;
+	}
+    
     
     long resolveTerm(long count) {
         return count;

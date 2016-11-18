@@ -17,7 +17,6 @@
  */
 package alice.tuprologx.ide;
 
-
 /**
  * A common interface to an IDE. This interface is not public, since it is intended for internal use, and could be subject to several changes in future releases.
  * @author     <a href="mailto:giulio.piancastelli@studio.unibo.it">Giulio Piancastelli</a>

@@ -20,6 +20,7 @@ package alice.tuprologx.ide;
 //import javax.swing.JOptionPane;
 
 import alice.tuprolog.*;
+import alice.tuprolog.MalformedGoalException;
 
 /**
  * 

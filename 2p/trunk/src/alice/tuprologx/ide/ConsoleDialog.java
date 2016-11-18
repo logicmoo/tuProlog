@@ -3,6 +3,9 @@ package alice.tuprologx.ide;
 import alice.tuprolog.event.*;
 //import alice.tuprologx.spyframe.TermPanel;
 import alice.tuprolog.NoSolutionException;
+import alice.tuprolog.event.ExceptionListener;
+import alice.tuprolog.event.OutputListener;
+import alice.tuprolog.event.ReadListener;
 import alice.tuprolog.SolveInfo;
 //import alice.tuprolog.Term;
 import alice.tuprolog.Var;
@@ -52,6 +55,8 @@ public class ConsoleDialog
     /*Castagna 06/2011*/  
 	private boolean	exceptionEnabled;
 	/**/
+	
+	static String sol = ""; //used in showing all results (before only one result was shown at a time)
 
    private IOFileOperations fileManager;
 
@@ -96,11 +101,7 @@ public class ConsoleDialog
         solution = new JTextPane();
         solution.setEditable(false);
         tp.addTab("solution", new JScrollPane(solution));
-        /*
-        String s = "null";
-      	callTree = new TermPanel(Term.createTerm(s));
-      	tp.addTab("call tree", new JScrollPane(callTree));
-        */
+        
         tableSolve = new PrologTable();
         tp.addTab("bindings",new JScrollPane(tableSolve));
 
@@ -426,16 +427,22 @@ public class ConsoleDialog
                     setStatusMessage("Yes. Other alternatives can be explored.");
                 }
                 // visualize solution on the solution pane
-                String lastSolution = binds + "\nSolution: " + info.getSolution();
-                if(info.getSetOfSolution()!=null)
-                	lastSolution = binds + "\nSolution: " + info.getSetOfSolution();
-                solution.setText(lastSolution);
+                
+                //Alberto
+                if(sol.equalsIgnoreCase(""))
+                	sol = binds + "\nSolution: " + info.getSolution()+"\n";
+                else
+                	sol = sol +"\n"+binds + "\nSolution: " + info.getSolution()+"\n";
+                
+                solution.setText(sol);
+                
                 // store bindings for visualization on the binding pane
                 for (Var v: info.getBindingVars()) {
                     if (!v.isAnonymous())
                         bindings.add(v);
                 }
-                    
+                
+                solution.setCaretPosition(sol.length()); 
             }
             else
             {
@@ -444,9 +451,13 @@ public class ConsoleDialog
                 /*Castagna 06/2011*/  				
 				if(info.isHalted())
 					solution.setText("halt.");
-				else
-				/**/	
-                solution.setText("no.");
+				else{
+					//Alberto
+					if(sol.equals(""))
+						solution.setText("no.");
+					else
+						solution.setText(sol+"\nno.");
+				}
                 setStatusMessage("No. Ready.");
             }
             draw();
@@ -468,17 +479,12 @@ public class ConsoleDialog
         for (int i = 0; i < querySolutions.length; i++) {
             SolveInfo s = querySolutions[i].getSolveInfo();
             if (s.isSuccess()) {
-                //System.out.println("s.toString() "+s.toString()+" lunghezza "+s.toString().length()); 
-                //System.out.println("querySolutionsString.get(i) "+querySolutionsString.get(i)+" lunghezza "+querySolutionsString.get(i).length());
             	
             	if (s.toString().length()<querySolutionsString.get(i).length()){
                 	buffer.append(querySolutionsString.get(i)).append("\nSolution: ");
                 }
                 else
                 	buffer.append(s.toString()).append("\nSolution: ");
-                
-            	if(s.getSetOfSolution()!=null)
-                	buffer.append(s.getSetOfSolution()).append("\nSolution: ");
             	
                 try {
                     buffer.append(s.getSolution().toString());
@@ -565,7 +571,7 @@ public class ConsoleDialog
                     }
                 }
             } catch (NoSolutionException e) {
-                // e.printStackTrace();
+                
                 throw new AssertionError(e);
             }
             return variables;
@@ -841,8 +847,6 @@ public class ConsoleDialog
 		exceptionEnabled = enable;
 		setExceptionJTextPaneRendering();
 	}
-	/**/
-	
 	
 	/*Castagna 06/2011*/  	
 	private void setExceptionJTextPaneRendering()
@@ -868,10 +872,4 @@ public class ConsoleDialog
 			bClear.setEnabled(false);
 		}		
 	}
-	/**/
-	/*
-	public void setTermPanel(Term t)
-	{
-		callTree.setTerm(t);	
-	}*/
 }

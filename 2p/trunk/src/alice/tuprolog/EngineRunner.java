@@ -1,7 +1,3 @@
-/*
- *
- *
- */
 package alice.tuprolog;
 
 import java.util.LinkedList;
@@ -12,25 +8,22 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import alice.tuprolog.NoMoreSolutionException;
+
 /**
  * @author Alex Benini
  *
  * Core engine
  */
 public class EngineRunner implements java.io.Serializable, Runnable{
+	
 	private static final long serialVersionUID = 1L;
-    private Prolog                              mediator;
-    private TheoryManager       theoryManager;
-    private PrimitiveManager    primitiveManager;
-    private LibraryManager      libraryManager;
-    private EngineManager             engineManager;
     
-    private boolean relinkVar = false;
-	private ArrayList<Term> bagOFres;
-	private ArrayList<String> bagOFresString;
-	private Term bagOFvarSet;
-	private Term bagOfgoal;
-	private Term bagOfBag;
+	private Prolog mediator;
+    private TheoryManager theoryManager;
+    private PrimitiveManager primitiveManager;
+    private LibraryManager libraryManager;
+    private EngineManager engineManager;
 
     private int id;
     private int pid;
@@ -46,16 +39,15 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     
     /* Current environment */
     Engine env;
+    
     /* Last environment used */
     private Engine last_env;
+    
     /* Stack environments of nidicate solving */
     private LinkedList<Engine> stackEnv = new LinkedList<Engine>();
-    private SolveInfo sinfo;
-    private String sinfoSetOf;
     
-    /**
-         * States
-         */
+    private SolveInfo sinfo;
+    
     final State INIT;
     final State GOAL_EVALUATION;
     final State EXCEPTION;
@@ -72,23 +64,21 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     public static final int TRUE    =  1;
     public static final int TRUE_CP =  2;
     
-    
     public EngineRunner(int id) {
-        /* Istanzio gli stati */
-        INIT            = new StateInit(this);
-        GOAL_EVALUATION = new StateGoalEvaluation(this);
+    	
+        INIT             = new StateInit(this);
+        GOAL_EVALUATION  = new StateGoalEvaluation(this);
         EXCEPTION        = new StateException(this);
-        RULE_SELECTION  = new StateRuleSelection(this);
-        GOAL_SELECTION  = new StateGoalSelection(this);
-        BACKTRACK       = new StateBacktrack(this);
-        END_FALSE       = new StateEnd(this,FALSE);
-        END_TRUE        = new StateEnd(this,TRUE);
-        END_TRUE_CP     = new StateEnd(this,TRUE_CP);
-        END_HALT        = new StateEnd(this,HALT);
+        RULE_SELECTION   = new StateRuleSelection(this);
+        GOAL_SELECTION   = new StateGoalSelection(this);
+        BACKTRACK        = new StateBacktrack(this);
+        END_FALSE        = new StateEnd(this,FALSE);
+        END_TRUE         = new StateEnd(this,TRUE);
+        END_TRUE_CP      = new StateEnd(this,TRUE_CP);
+        END_HALT         = new StateEnd(this,HALT);
                 
-                this.id = id;
+        this.id = id;
     }
-    
     
     /**
      * Config this Manager
@@ -120,16 +110,15 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     }
     
     /*Castagna 06/2011*/
-        void exception(String message) {
-                mediator.exception(message);
-        }
-        /**/
+    void exception(String message) {
+        mediator.exception(message);
+    }
         
-        public void detach(){
+    public void detach(){
         detached = true;
     }
     
-        public boolean isDetached(){
+    public boolean isDetached(){
         return detached;
     }
         
@@ -141,25 +130,25 @@ public class EngineRunner implements java.io.Serializable, Runnable{
      * @see SolveInfo
      **/
    private void threadSolve() {        
-        sinfo = solve();
-        solving = false;    
+	   sinfo = solve();
+       solving = false;    
         
-        lockVar.lock();
-                try{
-                        cond.signalAll();
-                }
-                finally{
-                        lockVar.unlock();
-                }
+       lockVar.lock();
+       try{
+    	   cond.signalAll();
+       }
+       finally{
+    	   lockVar.unlock();
+       }
             
-        if (sinfo.hasOpenAlternatives()) {
-            if(next.isEmpty() || !next.get(countNext)){
-                synchronized(semaphore){        
-                try {
-                        semaphore.wait();       //Mi metto in attesa di eventuali altre richieste
-                        } catch (InterruptedException e) {
-                                e.printStackTrace();
-                        }  
+       if (sinfo.hasOpenAlternatives()) {
+    	   if(next.isEmpty() || !next.get(countNext)){
+    		   synchronized(semaphore){        
+    			   try {
+    				   semaphore.wait(); //Mi metto in attesa di eventuali altre richieste
+                   } catch (InterruptedException e) {
+                	   e.printStackTrace();
+                   }  
                 }
             }         
         }
@@ -171,7 +160,6 @@ public class EngineRunner implements java.io.Serializable, Runnable{
             
             libraryManager.onSolveBegin(query);
             primitiveManager.identifyPredicate(query);
-//            theoryManager.transBegin();
             
             freeze();
             env = new Engine(this, query);
@@ -184,8 +172,6 @@ public class EngineRunner implements java.io.Serializable, Runnable{
                     result.getResultDemo(),
                     result.getResultVars()
             );
-            if(this.sinfoSetOf!=null)
-            	sinfo.setSetOfSolution(sinfoSetOf);
             if (!sinfo.hasOpenAlternatives()) 
                 solveEnd();
            return sinfo;
@@ -206,24 +192,23 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     	solving = true;
         next.set(countNext, false);
         countNext++;
-   
-                sinfo = solveNext();
+        sinfo = solveNext();
                 
-                solving = false;
+        solving = false;
 
-                lockVar.lock();
-                try{
-                        cond.signalAll();
-                }
-                finally{
-                        lockVar.unlock();
-                }
+        lockVar.lock();
+        try{
+        	cond.signalAll();
+        }
+        finally{
+        	lockVar.unlock();
+        }
         
         if (sinfo.hasOpenAlternatives()){
         	if(countNext>(next.size()-1) || !next.get(countNext)){
                 try{
 	                synchronized(semaphore){
-	                        semaphore.wait();       //Mi metto in attesa di eventuali altre richieste
+	                        semaphore.wait(); //Mi metto in attesa di eventuali altre richieste
 	                }
                 }
             catch(InterruptedException e) {}
@@ -235,6 +220,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
         if (hasOpenAlternatives()) {
             refreeze();
             env.nextState = BACKTRACK;
+            
             StateEnd result = env.run();
             defreeze();
             sinfo = new SolveInfo(
@@ -243,8 +229,6 @@ public class EngineRunner implements java.io.Serializable, Runnable{
                     result.getResultDemo(),
                     result.getResultVars()
             );
-            if(this.sinfoSetOf!=null)
-            	sinfo.setSetOfSolution(sinfoSetOf);
             
             if (!sinfo.hasOpenAlternatives()){
                 solveEnd();             
@@ -268,11 +252,8 @@ public class EngineRunner implements java.io.Serializable, Runnable{
      * Accepts current solution
      */
     public void solveEnd() {
-//        theoryManager.transEnd(sinfo.isSuccess());
-//        theoryManager.optimize();
         libraryManager.onSolveEnd();
     }
-    
     
     private void freeze() {
         if(env==null) return;
@@ -293,11 +274,6 @@ public class EngineRunner implements java.io.Serializable, Runnable{
         env = (Engine)(stackEnv.removeLast());
     }
     
-    
-    /*
-     * Utility functions for Finite State Machine
-     */
-    
     List<ClauseInfo> find(Term t) {
         return theoryManager.find(t);
     }
@@ -306,20 +282,14 @@ public class EngineRunner implements java.io.Serializable, Runnable{
         primitiveManager.identifyPredicate(t);
     }
     
-//    void saveLastTheoryStatus() {
-//        theoryManager.transFreeze();
-//    }
-    
     void pushSubGoal(SubGoalTree goals) {
         env.currentContext.goalsToEval.pushSubGoal(goals);
     }
     
-    
     void cut() {
         env.choicePointSelector.cut(env.currentContext.choicePointAfterCut);
     }
-    
-    
+     
     ExecutionContext getCurrentContext() {
         return (env==null)? null : env.currentContext;
     }
@@ -348,49 +318,48 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     }
 
 
-        @Override
-        public void run() {
-                solving = true;
-                pid = (int) Thread.currentThread().getId();
+    @Override
+    public void run() {
+    	solving = true;
+        pid = (int) Thread.currentThread().getId();
                 
-                if (sinfo == null) {
-                        threadSolve();
-                }
-                try {
-                        while(hasOpenAlternatives())
-                                if(next.get(countNext))
-                                        threadSolveNext();
-                } catch (NoMoreSolutionException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                }
-        }    
-        
-        public int getId(){
-                return id;
+        if (sinfo == null) {
+        	threadSolve();
         }
-        
-        public int getPid(){
-                return pid;
+        try {
+        	while(hasOpenAlternatives())
+        		if(next.get(countNext))
+        			threadSolveNext();
+        } catch (NoMoreSolutionException e) {
+        	e.printStackTrace();
         }
+    }    
         
-        public SolveInfo getSolution(){
-                return sinfo;
-        }
+    public int getId(){
+    	return id;
+    }
         
-        public void setGoal(Term goal){
-                this.query = goal;
-        }
+    public int getPid(){
+    	return pid;
+    }
+        
+    public SolveInfo getSolution(){
+    	return sinfo;
+    }
+        
+    public void setGoal(Term goal){
+    	this.query = goal;
+    }
 
-        public boolean nextSolution() {
-                solving = true;
-                next.add(true);
+    public boolean nextSolution() {
+    	solving = true;
+        next.add(true);
                 
-                synchronized(semaphore){        
-                        semaphore.notify();                     
-                }
-                return true;
+        synchronized(semaphore){        
+        	semaphore.notify();                     
         }
+        return true;
+    }
         
         public SolveInfo read(){
                 lockVar.lock();
@@ -449,57 +418,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
             return theoryManager;
          }
         
-        public boolean getRelinkVar(){
-    		return this.relinkVar;
-    	}
-        public void setRelinkVar(boolean b){
-    		this.relinkVar=b;
-    	}
-        
-        public ArrayList<Term> getBagOFres(){
-    		return this.bagOFres;
-    	}
-        public void setBagOFres(ArrayList<Term> l){
-    		this.bagOFres=l;
-    	}
-        public ArrayList<String> getBagOFresString(){
-    		return this.bagOFresString;
-    	}
-        public void setBagOFresString(ArrayList<String> l){
-    		this.bagOFresString=l;
-    	}
-        public Term getBagOFvarSet(){
-    		return this.bagOFvarSet;
-    	}
-        public void setBagOFvarSet(Term l){
-    		this.bagOFvarSet=l;
-    	}
-        public Term getBagOFgoal(){
-    		return this.bagOfgoal;
-    	}
-        public void setBagOFgoal(Term l){
-    		this.bagOfgoal=l;
-    	}
-        public Term getBagOFBag(){
-    		return this.bagOfBag;
-    	}
-        public void setBagOFBag(Term l){
-    		this.bagOfBag=l;
-    	}
         public EngineManager getEngineMan(){
     		return this.engineManager;
     	}
-        public String getSetOfSolution() {
-        	if(sinfo!=null)
-        		return sinfo.getSetOfSolution();
-        	else return null;
-        }
-        public void setSetOfSolution(String s) {
-        	if(sinfo!=null)
-        		sinfo.setSetOfSolution(s);
-        	this.sinfoSetOf=s;
-        }
-        public void clearSinfoSetOf() {
-        	this.sinfoSetOf=null;
-        }
 }

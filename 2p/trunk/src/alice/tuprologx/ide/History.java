@@ -25,6 +25,7 @@ import java.util.ArrayList;
  * @author    <a href="mailto:giulio.piancastelli@studio.unibo.it">Giulio Piancastelli</a>
  * @version    1.0 - Tuesday 6th July, 2004
  */
+
 class History {
     
     private ArrayList<String> history;

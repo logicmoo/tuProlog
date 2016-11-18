@@ -1,9 +1,5 @@
 package alice.tuprolog;
 
-//import java.io.File;
-//import java.io.IOException;
-
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -11,11 +7,15 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
+import alice.tuprolog.NoMoreSolutionException;
+
 public class EngineManager implements java.io.Serializable {
+	
 	private static final long serialVersionUID = 1L;
+	
 	private Prolog vm;
-	private Hashtable<Integer, EngineRunner> runners;	//key: id; obj: runner
-	private Hashtable<Integer, Integer> threads;	//key: pid; obj: id
+	private Hashtable<Integer, EngineRunner> runners;	//key: id;  obj: runner
+	private Hashtable<Integer, Integer> threads;	    //key: pid; obj: id
 	private int rootID = 0;
 	private EngineRunner er1;
 	private int id = 0;
@@ -29,7 +29,6 @@ public class EngineManager implements java.io.Serializable {
 		threads = new Hashtable<Integer,Integer>();
 		queues =new Hashtable<String, TermQueue>();
 		locks = new Hashtable<String, ReentrantLock>();
-		
 		er1 = new EngineRunner(rootID);
 		er1.initialize(vm);	
 	}
@@ -58,11 +57,7 @@ public class EngineManager implements java.io.Serializable {
 	public SolveInfo join(int id) {
 		EngineRunner er = findRunner(id);
 		if (er==null || er.isDetached()) return null;
-		/*toSPY
-		 * System.out.println("Thread id "+runnerId()+" - prelevo la soluzione (join)");*/
 		SolveInfo solution = er.read();
-		/*toSPY
-		 * System.out.println("Soluzione: "+solution);*/
 		removeRunner(id);
 		return solution;
 	}
@@ -70,13 +65,7 @@ public class EngineManager implements java.io.Serializable {
 	public SolveInfo read (int id) {
 		EngineRunner er = findRunner(id);
 		if (er==null || er.isDetached()) return null;
-		/*toSPY
-		 * System.out.println("Thread id "+runnerId()+" - prelevo la soluzione (read) del thread di id: "+er.getId());
-		 */
 		SolveInfo solution = er.read();
-		/*toSPY
-		 * System.out.println("Soluzione: "+solution);
-		 */
 		return solution;
 	}
 	
@@ -89,9 +78,6 @@ public class EngineManager implements java.io.Serializable {
 	public boolean nextSolution (int id){
 		EngineRunner er = findRunner(id);
 		if (er==null || er.isDetached()) return false;
-		/*toSPY
-		 * System.out.println("Thread id "+runnerId()+" - next_solution: risveglio il thread di id: "+er.getId());
-		 */
 		boolean bool = er.nextSolution();
 		return bool;
 	}
@@ -220,14 +206,9 @@ public class EngineManager implements java.io.Serializable {
 	}
 	
 	public synchronized SolveInfo solve(Term query) {
-		this.clearSinfoSetOf();
 		er1.setGoal(query);
-		
 		SolveInfo s = er1.solve();
-		//System.out.println("ENGINE MAN solve(Term) risultato: "+s);
 		return s;
-		
-		//return er1.solve();
 	}
 	
 	public void solveEnd() {
@@ -345,9 +326,6 @@ public class EngineManager implements java.io.Serializable {
 			return mutexLock(name);
 		}
 		mutex.lock();
-		/*toSPY
-		 * System.out.println("Thread id "+runnerId()+ " - mi sono impossessato del lock");
-		 */
 		return true;
 	}
 
@@ -355,9 +333,6 @@ public class EngineManager implements java.io.Serializable {
 	public boolean mutexTryLock(String name){
 		ReentrantLock mutex=locks.get(name);
 		if (mutex==null) return false;
-		/*toSPY
-		 * System.out.println("Thread id "+runnerId()+ " - provo ad impossessarmi del lock");
-		 */
 		return mutex.tryLock();
 	}
 	
@@ -366,9 +341,6 @@ public class EngineManager implements java.io.Serializable {
 		if (mutex==null) return false;
 		try{
 			mutex.unlock();
-			/*toSPY
-			 * System.out.println("Thread id "+runnerId()+ " - Ho liberato il lock");
-			 */
 			return true;
 		}
 		catch(IllegalMonitorStateException e){
@@ -402,7 +374,7 @@ public class EngineManager implements java.io.Serializable {
 		}
 	}
 
-	Engine getEnv() {
+	public Engine getEnv() {
 		EngineRunner er=findRunner();
 		return er.env;
 	}
@@ -411,68 +383,4 @@ public class EngineManager implements java.io.Serializable {
 		EngineRunner er=findRunner();
 		er.identify(t);
 	}	
-	
-	public boolean getRelinkVar(){
-		EngineRunner r = this.findRunner();
-		return r.getRelinkVar();
-	}
-	
-	public void setRelinkVar(boolean b){
-		EngineRunner r = this.findRunner();
-		r.setRelinkVar(b);
-	}
-	
-	public ArrayList<Term> getBagOFres(){
-		EngineRunner r = this.findRunner();
-		return r.getBagOFres();
-	}
-    public void setBagOFres(ArrayList<Term> l){
-    	EngineRunner r = this.findRunner();
-		r.setBagOFres(l);
-	}
-    public ArrayList<String> getBagOFresString(){
-		EngineRunner r = this.findRunner();
-		return r.getBagOFresString();
-	}
-    public void setBagOFresString(ArrayList<String> l){
-    	EngineRunner r = this.findRunner();
-		r.setBagOFresString(l);
-	}
-    public Term getBagOFvarSet(){
-    	EngineRunner r = this.findRunner();
-		return r.getBagOFvarSet();
-	}
-    public void setBagOFvarSet(Term l){
-    	EngineRunner r = this.findRunner();
-		r.setBagOFvarSet(l);
-	}
-    public Term getBagOFgoal(){
-    	EngineRunner r = this.findRunner();
-		return r.getBagOFgoal();
-	}
-    public void setBagOFgoal(Term l){
-    	EngineRunner r = this.findRunner();
-    	r.setBagOFgoal(l);
-	}
-    public Term getBagOFbag(){
-    	EngineRunner r = this.findRunner();
-		return r.getBagOFBag();
-	}
-    public void setBagOFbag(Term l){
-    	EngineRunner r = this.findRunner();
-    	r.setBagOFBag(l);
-	}
-    public String getSetOfSolution() {
-    	EngineRunner r = this.findRunner();
-        return r.getSetOfSolution();
-    }
-    public void setSetOfSolution(String s) {
-    	EngineRunner r = this.findRunner();
-        r.setSetOfSolution(s);
-    }
-    public void clearSinfoSetOf() {
-    	EngineRunner r = this.findRunner();
-    	r.clearSinfoSetOf();
-    }
 }
-

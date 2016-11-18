@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import alice.tuprolog.event.LibraryEvent;
-import alice.tuprolog.event.LibraryListener;
 import alice.tuprolog.InvalidLibraryException;
+import alice.tuprolog.event.LibraryListener;
 
 public class LibraryDialogFrame extends GenericFrame implements LibraryListener
 {
@@ -506,7 +506,7 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
         onClose();
     }
 
-    /** @see alice.tuprolog.event.LibraryListener#libraryLoaded(alice.tuprolog.event.LibraryEvent) */
+    /** @see alice.tuprolog.interfaces.event.LibraryListener#libraryLoaded(alice.tuprolog.event.LibraryEvent) */
     public void libraryLoaded(LibraryEvent event)
     {
         String libraryName = event.getLibraryName();
@@ -547,7 +547,7 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
         displayLibraryManagerStatus();
     }
 
-    /** @see alice.tuprolog.event.LibraryListener#libraryUnloaded(alice.tuprolog.event.LibraryEvent) */
+    /** @see alice.tuprolog.interfaces.event.LibraryListener#libraryUnloaded(alice.tuprolog.event.LibraryEvent) */
     public void libraryUnloaded(LibraryEvent event)
     {
         librariesDisplayPanel.removeAll();
