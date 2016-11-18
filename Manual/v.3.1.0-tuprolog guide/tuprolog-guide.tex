@@ -1,0 +1,161 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                           %
+%   tuProlog 3.1.0 Documentation - 2016 edition                             %
+%                                                                           %
+%   E.Denti, April 2015                                                     %
+%                                                                           %
+%   Based on former contributions by A.Omicini, A.Ricci, G.Piancastelli     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt]{report}
+\usepackage[bookmarks=true,bookmarksopen=true,bookmarksnumbered]{hyperref}
+\usepackage{graphicx}
+\usepackage{color} % ED
+\usepackage{fancyvrb}
+\usepackage{caption}
+%\usepackage{url}
+%\usepackage{breakurl}
+%\usepackage[breaklinks]{hyperref}
+\def\UrlBreaks{\do\/\do-}
+%\usepackage{wrapfig}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+\usepackage{listings}
+\lstloadlanguages{Prolog,Java}
+\lstset{language=Prolog,
+	basicstyle=\scriptsize\ttfamily,
+	backgroundcolor=\color{WhiteSmoke},
+	frame=single,
+	tabsize=2,
+	sensitive=true,
+	showspaces=false, showtabs=false, showstringspaces=false,
+	commentstyle=\color{SkyBlue},
+	stringstyle=\color{red},
+%	keywordstyle=\color{RoyalBlue},
+%	morekeywords={<-, returns}
+}
+\definecolor{armygreen}{rgb}{0.29, 0.33, 0.13}
+\definecolor{camouflagegreen}{rgb}{0.47, 0.53, 0.42}
+\lstdefinelanguage{tuProlog}[]{Prolog}{
+	alsoletter={<-},
+	emph={returns,<-,java_object,java_class,java_array_set,class,new_object,load_convention,},
+	emphstyle=\color{RoyalBlue}
+}
+\lstset{language=Java,
+	basicstyle=\scriptsize\ttfamily,
+%	numbers=left,
+	tabsize=2,
+	sensitive=true,
+	showspaces=false, showtabs=false, showstringspaces=false,
+%	numbersep=5pt,
+	commentstyle=\color{SkyBlue},
+%	keywordstyle=\color{RoyalBlue}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\xa[1]{\appendixname~\ref{app:#1}}
+\newcommand\labelsec[1]{\label{sec:#1}}
+\newcommand\xch[1]{\chaptername~\ref{ch:#1}}
+\newcommand\xchp[1]{\chaptername~\ref{ch:#1} \onpagename~\pageref{ch:#1}}
+\newcommand\xs[1]{\sectionname~\ref{sec:#1}}
+\newcommand\xsp[1]{\sectionname~\ref{sec:#1} \onpagename~\pageref{sec:#1}}
+\newcommand\labelssec[1]{\label{ssec:#1}}
+\newcommand\xss[1]{\subsectionname~\ref{ssec:#1}}
+\newcommand\xssp[1]{\subsectionname~\ref{ssec:#1} \onpagename~\pageref{ssec:#1}}
+\newcommand\labelsssec[1]{\label{sssec:#1}}
+\newcommand\xsss[1]{\subsectionname~\ref{sssec:#1}}
+\newcommand\xsssp[1]{\subsectionname~\ref{sssec:#1} \onpagename~\pageref{sssec:#1}}
+\newcommand\labelfig[1]{\label{fig:#1}}
+\newcommand\xf[1]{\figurename~\ref{fig:#1}}
+\newcommand\xff[2]{\figurenames~\ref{fig:#1}~and~\ref{fig:#2}}
+\newcommand\xfp[1]{\figurename~\ref{fig:#1} \onpagename~\pageref{fig:#1}}
+\newcommand\labeltab[1]{\label{tb:#1}}
+\newcommand\xt[1]{\tablename~\ref{tb:#1}}
+\newcommand\xtt[2]{\tablenames~\ref{tb:#1}~and~\ref{ab:#2}}
+\newcommand\xtp[1]{\tablename~\ref{tb:#1} \onpagename~\pageref{tb:#1}}
+\newcommand\labelenum[1]{\label{enum:#1}}
+\newcommand\xen[1]{(\ref{enum:#1})}
+\newcommand\xenp[1]{(\ref{enum:#1}) \onpagename~\pageref{enum:#1}}
+%******************************************************************************%
+\newcommand\bti[1]{\texttt{\textbf{#1}}}
+\newcommand\bt[1]{\texttt{#1}}
+\newcommand\template[1]{\textit{Template: }\texttt{#1}}
+\newcommand\exception[1]{\textit{Exception: }\texttt{#1}}
+\newcommand\ttit[1]{\texttt{\textit{#1}}}
+%******************************************************************************%
+\newcommand{\LIA}{\mbox{\textsf{LIA}}}
+\newcommand{\aclt}{\mbox{$\mathcal{ACLT}$}}
+\newcommand{\respect}{\mbox{\sf{{R}e{S}pec{T}}}}
+\newcommand{\luce}{\mbox{\sf{{L}u{C}e}}}
+\newcommand{\tucson}{\mbox{\sf{{T}u{CS}o{N}}}}
+\newcommand{\alice}{\mbox{\sf{{aliCE}}}}
+\newcommand{\apice}{\mbox{\sf{{APICe}}}}
+\newcommand{\tuprolog}{\mbox{{\sf{tu}}Prolog}}
+%******************************************************************************%
+\newcommand\version[1]{\mbox{Document revision: #1}}
+\newcommand\creationdate[1]{\mbox{Creation date: #1}}
+\newcommand\lastchangesdate[1]{\mbox{Last Changes date: #1}}
+\newcommand\noa[2]{\noindent\emph{Note of the author (#1): }#2\\\\}
+\newcommand\logo{
+    \begin{figure}[tp]
+        \begin{center}
+            \includegraphics[width=5cm]{images/logo}
+        \end{center}
+\end{figure}
+}
+%******************************************************************************%
+\newcommand{\classname}[1]{\texttt{#1}}
+\newcommand{\varname}[1]{\texttt{#1}}
+\newcommand{\predicate}[1]{\texttt{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\keycap}[1]{\textbf{#1}}
+\newcommand{\guibutton}[1]{\textsf{#1}}
+\newcommand{\userinput}[1]{\texttt{#1}}
+\newcommand{\figref}[1]{\figurename~\ref{#1}}
+%******************************************************************************%
+\title{{\Huge{\bf{\tuprolog{} Manual\\\mbox{ }\\}}}
+        \tuprolog{} version: 3.1.0\\\mbox{ }\\
+{\small\today\\}
+}
+\author{ \mbox{ }\\ \textsc{Enrico Denti}\\Alma Mater Studiorum--Universit\`{a} di Bologna, Italy
+}
+
+\date{}
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
+\begin{document}
+
+\logo
+
+\maketitle
+
+\tableofcontents
+
+%******************************************************************************%
+\include{what-is-tuprolog}
+%******************************************************************************%
+\include{installing-tuprolog}
+%******************************************************************************%
+\include{getting-started}
+%******************************************************************************%
+\include{tuprolog-basics}
+%******************************************************************************%
+\include{tuprolog-libraries}
+%******************************************************************************%
+\include{exceptions}
+%******************************************************************************%
+\include{mpp-in-java}
+%******************************************************************************%
+\include{mpp-in-dotnet}
+%******************************************************************************%
+\include{mpp-in-android}
+%******************************************************************************%
+\include{version-history}
+%******************************************************************************%
+\bibliography{bibliography}
+\bibliographystyle{plain}
+%******************************************************************************%
+\end{document}
+%******************************************************************************%
