@@ -4,24 +4,25 @@
 
 tuProlog is a light-weight Prolog system for distributed applications and infrastructures, intentionally designed around a minimal core (containing only the most essential properties of a Prolog engine), to be later configured by (statically and dynamically) loading/unloading libraries of predicates. tuProlog also natively supports multi-paradigm programming, providing a clean, seamless integration model between Prolog and mainstream object-oriented languages -- namely Java, for tuProlog Java version, and any .NET-based language (C#, F#..), for tuProlog .NET version. It is also easily deployable, just requiring the presence of a Java/CLR virtual machine and an invocation upon a single self-contained archive file. Interoperability is further developed along the two main lines of Internet standard patterns and coordination models.
 
-**Current version: tuProlog 3.0.1 (released on September 8, 2015)**
+**Current version: tuProlog 3.1.0 (released on November 18, 2016)**
 
 ## **Highlights** ##
 
-The big news is the introduction of the new_lambda/3 predicate, which brings the power of Java 8 lambda expressions to the tuProlog world. Since lambdas require Java 8, the minimum platform for tuProlog 3 is now Java 8 *with JDK* (not just a pure JRE): users not interested in the new_lambda/3 predicate, however, can go for a standard JRE, as usual. 
+The minimum platform for tuProlog 3 is Java 8 *with JDK* (not just a pure JRE): users not interested in the new_lambda/3 predicate, however, can go for a standard JRE, as usual. 
 Accordingly, this version is currently released for Java SE and .NET platforms only, since Java 8 support in not available in Android 4.4 -- we are waiting for Android 5. For similar reasons, the Eclipse plugin is under an extensive refactoring, and will not be available for a while
 
 tuProlog 2.9.2 is intended to be the last stable version supporting Java 7.
 
 ### **New features**###
-* support for lambda expressions;
-* Java8-style lambdas are also supported in the .NET;
-* old-fashioned JavaLibrary has been replaced by a more modern OOLibrary, with new, non "Java-prone" predicate names; however, the old JavaLibrary remains available for backward compatibility.
+This version aims to provide a stable environment
+* completing the pending bugfixes, with special regards to the old annoying bugs regarding the behaviour of setof, bagof;
+* improving the editor in the Java/.NET GUI.
 
 ### **Download** ###
 All tuProlog versions are now available from this site
 except for the Eclipse plugin which must be downloaded and installed directly from the Eclipse Update Manager - see detailed instructions.
 
+Java: tuProlog 3.1.0 (zip) (requires Java 8)
 Java: tuProlog 3.0.1 (zip) (requires Java 8)
 Java: tuProlog 2.9.2 (zip) (requires Java 7)
 .NET:tuProlog 3.0.0-NET (zip) (requires .NET framework 4)
