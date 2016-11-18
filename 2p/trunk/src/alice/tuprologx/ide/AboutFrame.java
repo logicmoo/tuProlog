@@ -4,9 +4,6 @@ import javax.swing.*;
 
 import alice.tuprolog.Prolog;
 
-
-
-
 import java.awt.*;
 import java.net.URL;
 

@@ -15,6 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 package alice.tuprolog;
 
 import java.util.*;
@@ -24,21 +25,18 @@ import alice.tuprolog.interfaces.IEngine;
 /**
  * @author Alex Benini
  */
-public class Engine /*Castagna 06/2011*/implements IEngine/**/{    
-
-	//PrintStream log;
-	State  nextState;
-	Term   query;
+public class Engine implements IEngine {    
+	
+	int nDemoSteps;
+	boolean mustStop;
+	State nextState;
+	Term query;
 	Struct startGoal;
 	Collection<Var> goalVars;
-	int    nDemoSteps;
 	ExecutionContext currentContext; 
-	//ClauseStore clauseSelector;
 	ChoicePointContext currentAlternative;
 	ChoicePointStore choicePointSelector;
-	boolean mustStop;
 	EngineRunner manager;
-
 
 	public Engine(EngineRunner manager, Term query) {
 		this.manager = manager;        
@@ -48,13 +46,19 @@ public class Engine /*Castagna 06/2011*/implements IEngine/**/{
 		this.manager.getTheoryManager().clearRetractDB();
 	}
 
+	//Alberto
+	public int getNDemoSteps(){
+		return nDemoSteps;
+	}
 
 	public String toString() {
 		try {
-			return
-					"ExecutionStack: \n"+currentContext+"\n"+
+			return	"ExecutionStack: \n"+currentContext+"\n"+
 					"ChoicePointStore: \n"+choicePointSelector+"\n\n";
-		} catch(Exception ex) { return ""; }
+		} 
+		catch(Exception ex) { 
+			return ""; 
+		}
 	}
 
 	void mustStop() {
@@ -73,21 +77,16 @@ public class Engine /*Castagna 06/2011*/implements IEngine/**/{
 				break;
 			}
 			action = nextState.toString();
-
+			
 			nextState.doJob(this);
 			manager.spy(action, this);
 			
 
 		} while (!(nextState instanceof StateEnd));
 		nextState.doJob(this);
-
+		
 		return (StateEnd)(nextState);
 	}
-
-
-	/*
-	 * Methods for spyListeners
-	 */
 
 	public Term getQuery() {
 		return query;
@@ -117,10 +116,6 @@ public class Engine /*Castagna 06/2011*/implements IEngine/**/{
 		this.goalVars = goalVars.values();
 	}
 
-	//    void cut() {
-		//        choicePointSelector.cut(currentContext.depth -1);
-		//    }
-
 	void initialize(ExecutionContext eCtx) {
 		currentContext = eCtx;
 		choicePointSelector = new ChoicePointStore();
@@ -128,9 +123,7 @@ public class Engine /*Castagna 06/2011*/implements IEngine/**/{
 		currentAlternative = null;
 	}
 	
-	public String getNextStateName()
-	{
+	public String getNextStateName(){
 		return nextState.stateName;
 	}
-
 }

@@ -26,13 +26,10 @@ import alice.tuprolog.Term;
  */
 public class StateGoalSelection extends State {
     
-    
-    
     public StateGoalSelection(EngineRunner c) {
         this.c = c;
         stateName = "Call";
-    }
-    
+    }    
     
     /* (non-Javadoc)
      * @see alice.tuprolog.AbstractRunState#doJob()
@@ -70,7 +67,6 @@ public class StateGoalSelection extends State {
                 e.nextState = c.GOAL_EVALUATION;
                 return;
             }            
-        }//while
+        }
     }
-    
 }

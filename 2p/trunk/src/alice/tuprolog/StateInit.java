@@ -26,17 +26,16 @@ import alice.tuprolog.Struct;
  */
 public class StateInit extends State {
     
-    
     public StateInit(EngineRunner c) {
         this.c = c;
         stateName = "Goal";
     }
     
-    
     /* (non-Javadoc)
      * @see alice.tuprolog.AbstractRunState#doJob()
      */
     void doJob(Engine e) {
+    	
         e.prepareGoal();
         
         /* Initialize first executionContext */
@@ -50,7 +49,6 @@ public class StateInit extends State {
         
         /* Initialize VM environment */
         e.initialize(eCtx);
-        
         
         /* Set the future state */
         e.nextState = c.GOAL_SELECTION;

@@ -15,11 +15,13 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 package alice.tuprolog;
 
 import java.util.*;
 
 import alice.tuprolog.Struct;
+import alice.tuprolog.SubGoalId;
 import alice.util.OneWayList;
 
 
@@ -48,21 +50,13 @@ public class ExecutionContext {
     
     public int getId() { return id; }
     
-    
     public String toString(){
-        return "         id: "+id+"\n"+
-        "     currentGoal:  "+currentGoal+"\n"+
-        "     clause:       "+clause+"\n"+
+        return "        id: "+id+"\n"+
+        "      currentGoal: "+currentGoal+"\n"+
+        "           clause: "+clause+"\n"+
         "     subGoalStore: "+goalsToEval+"\n"+
-        "     trailingVars: "+trailingVars+"\n"+
-        //((fatherCtx==null)?"":fatherCtx.toString());
-        "";
+        "     trailingVars: "+trailingVars+"\n";
     }
-    
-    
-    /*
-     * Methods for spyListeners
-     */
     
     public int getDepth() {
         return depth;
@@ -108,7 +102,6 @@ public class ExecutionContext {
             fatherVarsList = fatherCtx.trailingVars;
         }
     }
-    
    
     /**
      * If no open alternatives, no other term to execute and
@@ -118,19 +111,23 @@ public class ExecutionContext {
      * got TAIL RECURSION OPTIMIZATION!   
      */
    
-    void performTailRecursionOptimization(Engine e){
-        	
-    	 	if(!haveAlternatives && e.currentContext.goalsToEval.getCurSGId() == null && !e.currentContext.goalsToEval.haveSubGoals() && !(e.currentContext.currentGoal.getName().equalsIgnoreCase("catch") || e.currentContext.currentGoal.getName().equalsIgnoreCase("java_catch")))
-        		{
-    	 			fatherCtx = e.currentContext.fatherCtx;
-    	 			//position of the new context in the list
-    	 			depth = e.currentContext.depth;
-        		}
-        	
-        	else
-        		{
-        			fatherCtx = e.currentContext;
-        			depth = e.currentContext.depth +1; 
-        		}
-        }
+    //Alberto
+    boolean tryToPerformTailRecursionOptimization(Engine e)
+    {
+    	if(!haveAlternatives && e.currentContext.goalsToEval.getCurSGId() == null && !e.currentContext.goalsToEval.haveSubGoals() && !(e.currentContext.currentGoal.getName().equalsIgnoreCase("catch") || e.currentContext.currentGoal.getName().equalsIgnoreCase("java_catch")))
+    	{
+    		fatherCtx = e.currentContext.fatherCtx;
+    		depth = e.currentContext.depth;
+    		return true;
+    	}
+    	else
+    		return false;
+    }
+
+    //Alberto
+	void updateContextAndDepth(Engine e)
+	{
+		fatherCtx = e.currentContext;
+        depth = e.currentContext.depth +1; 
+	}
 }

@@ -3,6 +3,7 @@ package alice.tuprologx.ide;
 /**
  * @author  ale
  */
+
 public interface Console
 {
     public boolean hasOpenAlternatives();

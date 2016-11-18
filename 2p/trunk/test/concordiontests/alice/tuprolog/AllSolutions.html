@@ -113,13 +113,13 @@ bagof(?term, +callable_term, ?list)
         <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:set="#variable">Variable</th><th concordion:assertEquals="#result">success(String goal,String theory,String variable)</th></tr>
         <tr><td>bagof(X,(X=1;X=2), S).</td><td>null</td><td>S</td><td>[1,2]</td></tr>
         <tr><td>bagof(X,(X=1;X=2), X).</td><td>null</td><td>X</td><td>[1,2]</td></tr>
-        <tr><td>bagof(X,(X=Y;X=Z), S1).</td><td>null</td><td>S1</td><td>[Y_,Z_]</td></tr>
+        <tr><td>bagof(X,(X=Y;X=Z), S1).</td><td>null</td><td>S1</td><td>[Y,Z]</td></tr>
         <tr><td>bagof(1,(Y=1;Y=2), L).</td><td>null</td><td>L</td><td>[1]</td></tr>
         <tr><td>bagof(f(X,Y), (X=a;Y=b), L1).</td><td>null</td><td>L1</td><td>[f(a,_),f(_,b)]</td></tr>
         <tr><td>bagof(X, Y^((X=1,Y=1);(X=2;Y=2)), L2).</td><td>null</td><td>L2</td><td>[1,2,_]</td></tr>
         <tr><td>bagof(X, Y^((X=1;Y=1);(X=2;Y=2)), L3).</td><td>null</td><td>L3</td><td>[1,_,2,_]</td></tr>
         <tr><td>bagof(X, Y^((X=1;Y=2);X=3), Si1).</td><td>null</td><td>Si1</td><td>[1,_,3]</td></tr>
-        <tr><td>bagof(X, (X=Y;X=Z;Y=1), S3).</td><td>null</td><td>S3</td><td>[Y_,Z_]</td></tr>
+        <tr><td>bagof(X, (X=Y;X=Z;Y=1), S3).</td><td>null</td><td>S3</td><td>[Y,Z]</td></tr>
         
         
         
@@ -191,16 +191,16 @@ setof(?term, +callable_term, ?list)
         <tr><td>setof(X,(X=1;X=2),X).</td><td>null</td><td>X</td><td>[1,2]</td></tr>
         <tr><td>setof(X,(X=2;X=1),S).</td><td>null</td><td>S</td><td>[1,2]</td></tr>
         <tr><td>setof(X,(X=2;X=2),S).</td><td>null</td><td>S</td><td>[2]</td></tr>
-        <tr><td>setof(X,(X=Y;X=Z),S).</td><td>null</td><td>S</td><td>[Y_,Z_]</td></tr>
+        <tr><td>setof(X,(X=Y;X=Z),S).</td><td>null</td><td>S</td><td>[Y,Z]</td></tr>
         <tr><td>setof(1,(Y=2;Y=1),L).</td><td>null</td><td>L</td><td>[1]</td></tr>
         <tr><td>setof(f(X,Y),(X=a;Y=b),L).</td><td>null</td><td>L</td><td>[f(_,b),f(a,_)]</td></tr>
         <tr><td>setof(X,Y^((X=1,Y=1);(X=2,Y=2)),S).</td><td>null</td><td>S</td><td>[1,2]</td></tr>
         <tr><td>setof(X,Y^((X=1;Y=1);(X=2,Y=2)),S).</td><td>null</td><td>S</td><td>[_,1,2]</td></tr>
         <tr><td>setof(X,Y^((X=1,Y=1);X=3),S).</td><td>null</td><td>S</td><td>[1,3]</td></tr>
-        <tr><td>setof(X,(X=Y;X=Z;Y=1),S).</td><td>null</td><td>S</td><td>[Y_,Z_]</td></tr>
+        <tr><td>setof(X,(X=Y;X=Z;Y=1),S).</td><td>null</td><td>S</td><td>[Y,Z]</td></tr>
         <tr><td>setof(X,a(X,Y),L).</td><td>a(1,f(_)). a(2,f(_)).</td><td>L</td><td>[1,2]</td></tr>
-        <tr><td>setof(X,member(X,[f(U,b),f(V,c)]),L).</td><td>null</td><td>L</td><td>[f(U_,b),f(V_,c)]</td></tr>
-        <tr><td>setof(X,member(X,[V,U,f(U),f(V)]),L).</td><td>null</td><td>L</td><td>[V_,U_,f(V_),f(U_)]</td></tr>
+        <tr><td>setof(X,member(X,[f(U,b),f(V,c)]),L).</td><td>null</td><td>L</td><td>[f(U,b),f(V,c)]</td></tr>
+        <tr><td>setof(X,member(X,[V,U,f(U),f(V)]),L).</td><td>null</td><td>L</td><td>[V,U,f(V),f(U)]</td></tr>
          <tr><td>setof(X,member(X,[V,U,f(U),f(V)]),[a,b,f(a),f(b)]). </td><td>null</td><td>V</td><td>a</td></tr>
        
        

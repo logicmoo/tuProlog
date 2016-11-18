@@ -15,16 +15,19 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 package alice.tuprolog;
 
 import java.io.Serializable;
 import java.util.AbstractMap;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.List;
 
+import alice.tuprolog.InvalidTermException;
+import alice.tuprolog.TermVisitor;
 import alice.util.OneWayList;
 
 /**
@@ -34,6 +37,7 @@ import alice.util.OneWayList;
  * @see  Number
  */
 public abstract class Term implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 
     // true and false constants
@@ -63,8 +67,6 @@ public abstract class Term implements Serializable {
     /** is this term a null term?*/
     public abstract boolean isEmptyList();
     
-    //
-    
     /** is this term a constant prolog term? */
     public abstract boolean isAtomic();
     
@@ -93,17 +95,27 @@ public abstract class Term implements Serializable {
         return isEqual((Term) t);
     }
     
-    
     /**
      * is term greater than term t?
      */
     public abstract boolean isGreater(Term t);
-    public abstract boolean isGreaterRelink(Term t, ArrayList<String> vorder);
     
     /**
      * Tests if this term is (logically) equal to another
      */
-    public abstract boolean isEqual(Term t);
+    public boolean isEqual(Term t){ //Alberto
+    	return this.toString().equals(t.toString());
+    }
+    
+    /**
+     * Tests if this term (as java object) is equal to another
+     */
+    public boolean isEqualObject(Term t){ //Alberto
+    	if (!(t instanceof Term))
+            return false;
+    	else 
+    		return this == t;
+    }
     
     /**
 	 * Gets the actual term referred by this Term. if the Term is a bound variable, the method gets the Term linked to the variable
@@ -151,10 +163,13 @@ public abstract class Term implements Serializable {
      */
     public Term copyResult(Collection<Var> goalVars, List<Var> resultVars) {
         IdentityHashMap<Var,Var> originals = new IdentityHashMap<Var,Var>();
-        for (Var key: goalVars) {
+        for (Var key: goalVars) 
+        {
             Var clone = new Var();
             if (!key.isAnonymous())
-                clone = new Var(key.getOriginalName());
+            {
+                clone =  new Var(key.getOriginalName()); 
+            }
             originals.put(key,clone);
             resultVars.add(clone);
         }
@@ -170,6 +185,9 @@ public abstract class Term implements Serializable {
      * @param idExecCtx Execution Context identifier
      */
     abstract Term copy(AbstractMap<Var,Var> vMap, int idExecCtx);
+    
+    //Alberto
+    public abstract Term copyAndRetainFreeVar(AbstractMap<Var,Var> vMap, int idExecCtx);
     
     /**
      * gets a copy for result.
@@ -234,8 +252,8 @@ public abstract class Term implements Serializable {
     public boolean match(Term t) {
         resolveTerm();
         t.resolveTerm();
-        List<Var> v1 = new LinkedList<Var>(); /* Reviewed by: Paolo Contessi (was: ArrayList()) */
-        List<Var> v2 = new LinkedList<Var>(); /* Reviewed by: Paolo Contessi (was: ArrayList()) */
+        List<Var> v1 = new LinkedList<Var>();
+        List<Var> v2 = new LinkedList<Var>();
         boolean ok = unify(v1,v2,t);
         Var.free(v1);
         Var.free(v2);
@@ -327,8 +345,6 @@ public abstract class Term implements Serializable {
         return toString();
     }
     
-    //
-    
     /**
      * The iterated-goal term G of a term T is a term defined
      * recursively as follows:
@@ -348,5 +364,4 @@ public abstract class Term implements Serializable {
 	 * @param tv - Visitor
 	 */
 	public abstract void accept(TermVisitor tv);
-    /**/
 }
