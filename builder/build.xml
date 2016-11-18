@@ -15,7 +15,7 @@
 
 			<!-- Compila i file .java -->
 			<javac
-			fork="yes" executable="@{jdk-home}/bin/javac.exe"
+			fork="yes" executable="@{jdk-home}"
 			destdir="@{classes-dir}" debug="${javac.debug}"
 			deprecation="false" optimize="${javac.optimize}" 
 			failonerror="true" includeantruntime="false">
@@ -55,7 +55,7 @@
 			<echo>Building unit tests...</echo>
 			<!-- Compila i file dei test unit -->
 			<javac
-			fork="yes" executable="${java.jdk.home}/bin/javac.exe"
+			fork="yes" executable="${java.jdk.home}"
 			destdir="${java.build.tests.dir}/unit" debug="${javac.debug}" 
 			deprecation="false" optimize="${javac.optimize}" failonerror="true" includeantruntime="false">
 				<src path="${java.test.dir}/unit"/>
@@ -66,7 +66,7 @@
 			<echo>Building concordion tests</echo>
 			<!-- Compila i file dei test concordion -->
 			<javac
-			fork="yes" executable="${java.jdk.home}/bin/javac.exe"
+			fork="yes" executable="${java.jdk.home}"
 			destdir="${java.build.tests.dir}/concordion/classes" debug="yes" 
 			deprecation="false" optimize="yes" failonerror="true" includeantruntime="no">
 				<src path="${java.test.dir}/concordiontests"/>
@@ -522,7 +522,6 @@
 			<batchtest todir="${java.build.tests.dir}/concordion/test-output">
 				<fileset dir="${java.test.dir}/concordiontests">
 					<include name="**/*Test.java" />
-					<include name="**/*General.java" />
 					<exclude name="**/Abstract*" />
 				</fileset>
 			</batchtest>
