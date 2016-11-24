@@ -389,5 +389,6 @@ public class EngineManager implements java.io.Serializable {
 	public void serializeQueryState(SerializableEngineState brain) {
 		brain.setQuery(this.findRunner().getQuery());
 		brain.setNumberAskedResults(this.findRunner().env.nResultAsked);
+		brain.setHasOpenAlternatives(this.findRunner().env.hasOpenAlternatives);
 	}	
 }

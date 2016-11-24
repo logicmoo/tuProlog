@@ -189,7 +189,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 		p.theoryManager.reloadKnowledgeBase(brain);
 		int i = 0;
 		int n = brain.getNumberAskedResults();
-		if(n>0){
+		if(brain.hasOpenAlternatives()){
 			p.solve(brain.getQuery());
 			while(i<n){
 				try {

@@ -14,6 +14,8 @@ public class SerializableEngineState {
 	
 	private String[] libraries;
 	
+	private boolean hasOpenAlternatives;
+	
 	public ClauseDatabase getDynamicDBase() {
 		return dynamicDBase;
 	}
@@ -52,6 +54,14 @@ public class SerializableEngineState {
 
 	public String[] getLibraries() {
 		return this.libraries;
+	}
+
+	public void setHasOpenAlternatives(boolean hasOpenAlternatives) {
+		this.hasOpenAlternatives = hasOpenAlternatives;
+	}
+	
+	public boolean  hasOpenAlternatives(){
+		return this.hasOpenAlternatives;
 	}
 	
 }
