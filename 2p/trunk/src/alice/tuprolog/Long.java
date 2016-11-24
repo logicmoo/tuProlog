@@ -17,7 +17,6 @@
  */
 package alice.tuprolog;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -142,32 +141,7 @@ public class Long extends Number {
             return false;
         }
     }
-    public boolean isGreaterRelink(Term t, ArrayList<String> vorder) {
-        t = t.getTerm();
-        if (t instanceof Number) {
-            return value > ( (Number) t ).longValue();
-        } else if (t instanceof Struct) {
-            return false;
-        } else if (t instanceof Var) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
-    /**
-     * Returns true if this integer term is equal that the term provided.
-     * For number term argument, the int value is considered.
-     */
-    public boolean isEqual(Term t) {
-        t = t.getTerm();
-        if (t instanceof Number) {
-            return value == ( (Number) t ).longValue();
-        } else {
-            return false;
-        }
-    }
-    
+
     /**
      * Tries to unify a term with the provided term argument.
      * This service is to be used in demonstration context.
