@@ -29,6 +29,7 @@ public class Engine implements IEngine {
 	
 	int nDemoSteps;
 	int nResultAsked; //Alberto
+	boolean hasOpenAlternatives; //Alberto
 	boolean mustStop;
 	State nextState;
 	Term query;
