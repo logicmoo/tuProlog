@@ -117,8 +117,6 @@ public abstract class AbstractSocket extends Term{
 		return this;
 	}
 
-
-
 	@Override
 	public void accept(TermVisitor tv) {
 		// TODO Auto-generated method stub

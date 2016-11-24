@@ -23,6 +23,15 @@ import java.io.*;
 import alice.tuprolog.event.*;
 import alice.tuprolog.interfaces.IProlog;
 //import alice.tuprologx.ide.ToolBar;
+import alice.tuprolog.event.ExceptionListener;
+import alice.tuprolog.event.LibraryListener;
+import alice.tuprolog.event.OutputListener;
+import  alice.tuprolog.event.QueryListener;
+import  alice.tuprolog.event.SpyListener;
+import  alice.tuprolog.event.TheoryListener;
+import  alice.tuprolog.event.WarningListener;
+import alice.tuprolog.json.JSONSerializerManager;
+import alice.tuprolog.json.SerializableEngineState;
 
 
 
@@ -76,7 +85,6 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
     /* path history for including documents */
     private ArrayList<String> absolutePathList;
     private String lastPath;
-
 
 	/**
 	 * Builds a prolog engine with default libraries loaded.
@@ -168,7 +176,41 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 		primitiveManager.initialize(this);
 		engineManager.initialize(this);
 	}
-
+	
+	//Alberto
+	public static Prolog fromJSON(String jsonString) {
+		SerializableEngineState brain = JSONSerializerManager.fromJSON(jsonString, SerializableEngineState.class);
+		Prolog p = null;
+		try {
+			p = new Prolog(brain.getLibraries());
+		} catch (InvalidLibraryException e) {
+			e.printStackTrace();
+		}
+		p.theoryManager.reloadKnowledgeBase(brain);
+		int i = 0;
+		int n = brain.getNumberAskedResults();
+		if(n>0){
+			p.solve(brain.getQuery());
+			while(i<n){
+				try {
+					p.solveNext();
+				} catch (NoMoreSolutionException e) {
+					e.printStackTrace();
+				}
+				i++;
+			}
+		}
+		return p;
+	}
+	
+	//Alberto
+	public String toJSON(){
+	    SerializableEngineState brain = new SerializableEngineState();
+	    this.theoryManager.serializeKnowledgeBase(brain);
+	    this.engineManager.serializeQueryState(brain);
+	    brain.setLibraries(this.getCurrentLibraries());
+	    return JSONSerializerManager.toJSON(brain);
+	}
 
 	/**
 	 * Gets the component managing flags
@@ -1046,6 +1088,5 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 			Term t = Term.createTerm(s);
 			return t;
 		}
-	}
-
+    }
 }

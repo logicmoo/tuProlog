@@ -28,6 +28,7 @@ import java.util.Stack;
 
 import alice.tuprolog.InvalidTermException;
 import alice.tuprolog.InvalidTheoryException;
+import alice.tuprolog.json.SerializableEngineState;
 import alice.util.Tools;
 
 /**
@@ -350,5 +351,18 @@ public class TheoryManager implements Serializable {
 	//Alberto
 	public boolean checkExistance(String predicateIndicator){
 		return (this.dynamicDBase.containsKey(predicateIndicator) || this.staticDBase.containsKey(predicateIndicator));
+	}
+	
+	//Alberto
+	public void serializeKnowledgeBase(SerializableEngineState brain){
+		brain.setDynamicDBase(this.dynamicDBase);
+		brain.setRetractDBase(this.retractDBase);
+	}
+
+	//Alberto
+	public void reloadKnowledgeBase(SerializableEngineState brain) {
+		this.dynamicDBase = brain.getDynamicDBase();
+		this.retractDBase = brain.getRetractDBase();
+		this.rebindPrimitives();
 	}
 }

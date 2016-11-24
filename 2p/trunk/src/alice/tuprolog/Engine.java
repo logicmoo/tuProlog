@@ -28,6 +28,7 @@ import alice.tuprolog.interfaces.IEngine;
 public class Engine implements IEngine {    
 	
 	int nDemoSteps;
+	int nResultAsked; //Alberto
 	boolean mustStop;
 	State nextState;
 	Term query;
