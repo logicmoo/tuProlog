@@ -42,7 +42,9 @@ public abstract class Term implements Serializable {
 
     // true and false constants
     public static final Term TRUE  = new Struct("true");
-    public static final Term FALSE = new Struct("false");    
+    public static final Term FALSE = new Struct("false");   
+    
+    //boolean isCyclic = false; //Alberto
     
     // checking type and properties of the Term
     

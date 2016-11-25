@@ -238,6 +238,9 @@ public class EngineRunner implements java.io.Serializable, Runnable{
                     result.getResultVars()
             );
             
+            //Alberto
+            env.hasOpenAlternatives = sinfo.hasOpenAlternatives();
+            
             if (!sinfo.hasOpenAlternatives()){
                 solveEnd();             
             }
