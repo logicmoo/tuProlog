@@ -194,9 +194,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 			while(i<n){
 				try {
 					p.solveNext();
-				} catch (NoMoreSolutionException e) {
-					e.printStackTrace();
-				}
+				} catch (NoMoreSolutionException e) {}
 				i++;
 			}
 		}
@@ -208,7 +206,6 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	    SerializableEngineState brain = new SerializableEngineState();
 	    this.theoryManager.serializeKnowledgeBase(brain);
 	    this.engineManager.serializeQueryState(brain);
-	    brain.setLibraries(this.getCurrentLibraries());
 	    return JSONSerializerManager.toJSON(brain);
 	}
 

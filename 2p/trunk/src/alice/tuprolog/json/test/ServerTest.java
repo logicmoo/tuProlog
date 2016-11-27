@@ -7,6 +7,7 @@ import alice.tuprolog.Prolog;
 
 import java.io.*;
 
+//Alberto
 public class ServerTest extends Thread {
 	private ServerSocket serverSocket;
 

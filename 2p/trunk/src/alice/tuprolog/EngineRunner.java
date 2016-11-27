@@ -179,8 +179,8 @@ public class EngineRunner implements java.io.Serializable, Runnable{
             if (!sinfo.hasOpenAlternatives()) 
                 solveEnd();
             
-           //Alberto
-           env.nResultAsked = 0;
+            //Alberto
+            env.nResultAsked = 0;
            
            return sinfo;
         } catch (Exception ex) {

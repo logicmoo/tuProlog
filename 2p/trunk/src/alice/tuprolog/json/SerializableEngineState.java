@@ -6,7 +6,7 @@ import alice.tuprolog.Term;
 //Alberto
 public class SerializableEngineState {
 	
-	private ClauseDatabase dynamicDBase;
+	private String dynamicDBase;
 	private ClauseDatabase retractDBase;
 	
 	private Term query;
@@ -16,11 +16,11 @@ public class SerializableEngineState {
 	
 	private boolean hasOpenAlternatives;
 	
-	public ClauseDatabase getDynamicDBase() {
+	public String getDynamicDBase() {
 		return dynamicDBase;
 	}
 	
-	public void setDynamicDBase(ClauseDatabase dynamicDBase) {
+	public void setDynamicDBase(String dynamicDBase) {
 		this.dynamicDBase = dynamicDBase;
 	}
 
