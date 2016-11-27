@@ -107,11 +107,10 @@ public class Var extends Term {
 	 * @param isCyclic 
 	 * @param time is timestamp
 	 */
-	private Var(String n, int id, int alias, long count/*, boolean isCyclic*/) {
+	private Var(String n, int id, int alias, long count) {
 		name = n;
 		completeName = new StringBuilder();
 		internalTimestamp = count;
-		//this.isCyclic = isCyclic;
 		fingerPrint = getFingerprint();
 		link  = null;
 		if(id < 0) id = Var.ORIGINAL;
@@ -158,7 +157,7 @@ public class Var extends Term {
 			Var v = (Var)(vMap.get(this));
 			if (v == null) {
 				//No occurence of v before
-				v = new Var(name,idExecCtx,0,internalTimestamp/*, this.isCyclic*/);
+				v = new Var(name,idExecCtx,0,internalTimestamp);
 				vMap.put(this,v);
 			}
 			return v;
@@ -191,14 +190,11 @@ public class Var extends Term {
 		Var v;
 		Object temp = vMap.get(this);
 		if (temp == null) {
-			v = new Var(null,Var.PROGRESSIVE,vMap.size(),internalTimestamp/*, this.isCyclic*/);
+			v = new Var(null,Var.PROGRESSIVE,vMap.size(),internalTimestamp);
 			vMap.put(this,v);
 		} else {
 			v = (Var) temp;
 		}
-		
-		/*if(v.isCyclic)
-			return v;*/
 		
 		Term t = getTerm();
 		if (t instanceof Var) {
@@ -456,7 +452,6 @@ public class Var extends Term {
 			 } else if (t instanceof Struct) {
 				 // occur-check
 				 if (occurCheck(vl2, (Struct)t)) {
-					 //this.isCyclic = true;
 					 return false;
 				 }
 			 } else if (!(t instanceof Number)) {
