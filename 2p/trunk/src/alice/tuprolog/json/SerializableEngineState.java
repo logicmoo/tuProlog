@@ -9,10 +9,11 @@ public class SerializableEngineState {
 	
 	private Term query;
 	private int nAskedResults;
+	private boolean hasOpenAlternatives;
 	
 	private String[] libraries;
 	
-	private boolean hasOpenAlternatives;
+	private long serializationTimestamp; 
 	
 	public String getDynamicDBase() {
 		return dynamicDBase;
@@ -52,6 +53,14 @@ public class SerializableEngineState {
 	
 	public boolean  hasOpenAlternatives(){
 		return this.hasOpenAlternatives;
+	}
+
+	public long getSerializationTimestamp() {
+		return serializationTimestamp;
+	}
+
+	public void setSerializationTimestamp(long serializationTimestamp) {
+		this.serializationTimestamp = serializationTimestamp;
 	}
 	
 }

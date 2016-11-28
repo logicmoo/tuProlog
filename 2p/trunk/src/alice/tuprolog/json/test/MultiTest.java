@@ -37,7 +37,6 @@ public class MultiTest {
 			engine.solve("assert(p(r)).");
 			engine.solve("assert(r(u)).");
 			engine.solve("retract(r(u)).");
-			System.out.println(engine.getTheory());
 		} catch (MalformedGoalException e) {
 			e.printStackTrace();
 		}
@@ -53,9 +52,9 @@ public class MultiTest {
 			System.out.println(g);
 		System.out.println("\n?- mio_predicato(ciao, ciao).");
 		try {
-			System.out.println(engine.solve("mio_predicato('ciao', 'ciao').").toString());
+			System.out.println(engine2.solve("mio_predicato('ciao', 'ciao').").toString());
 			System.out.println("\n?- r(u).");
-			System.out.println(engine.solve("r(u).").toString());
+			System.out.println(engine2.solve("r(u).").toString());
 		} catch (MalformedGoalException e) {
 			e.printStackTrace();
 		}
