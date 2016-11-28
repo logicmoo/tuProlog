@@ -387,13 +387,13 @@ public class EngineManager implements java.io.Serializable {
 
 	//Alberto
 	public void serializeQueryState(SerializableEngineState brain) {
-		brain.setQuery(this.findRunner().getQuery());
-		if(this.findRunner().env == null) {
+		brain.setQuery(findRunner().getQuery());
+		if(findRunner().env == null) {
 			brain.setNumberAskedResults(0);
 			brain.setHasOpenAlternatives(false);
 		} else {
-			brain.setNumberAskedResults(this.findRunner().env.getNResultAsked());
-			brain.setHasOpenAlternatives(this.findRunner().env.hasOpenAlternatives());
+			brain.setNumberAskedResults(findRunner().env.getNResultAsked());
+			brain.setHasOpenAlternatives(findRunner().env.hasOpenAlternatives());
 		}
 	}	
 }

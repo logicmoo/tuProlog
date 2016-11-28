@@ -1,5 +1,6 @@
 package alice.tuprolog.json.test;
 
+import alice.tuprolog.InvalidLibraryException;
 import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.MalformedGoalException;
 import alice.tuprolog.NoMoreSolutionException;
@@ -17,8 +18,49 @@ public class MultiTest {
 		prova2();
 		prova3();
 		provaSita();
+		prova4();
 	}
 	
+	private static void prova4() {
+		Prolog engine = new Prolog();
+		try {
+			engine.loadLibrary("alice.tuprolog.json.test.TestLibrary");
+		} catch (InvalidLibraryException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			System.out.println("?- mio_predicato(ciao, ciao).");
+			System.out.println(engine.solve("mio_predicato('ciao', 'ciao').").toString()+"\n");
+			engine.solve("assert(p(u)).");
+			engine.solve("assert(p(w)).");
+			engine.solve("assert(p(r)).");
+			engine.solve("assert(r(u)).");
+			engine.solve("retract(r(u)).");
+			System.out.println(engine.getTheory());
+		} catch (MalformedGoalException e) {
+			e.printStackTrace();
+		}
+		String json = engine.toJSON();
+		
+		System.out.println("\n"+json);
+		
+		Prolog engine2 = Prolog.fromJSON(json);
+		
+		System.out.println("Nuovo motore dal Json...\n");
+		String[] s = engine2.getCurrentLibraries();
+		for(String g : s)
+			System.out.println(g);
+		System.out.println("\n?- mio_predicato(ciao, ciao).");
+		try {
+			System.out.println(engine.solve("mio_predicato('ciao', 'ciao').").toString());
+			System.out.println("\n?- r(u).");
+			System.out.println(engine.solve("r(u).").toString());
+		} catch (MalformedGoalException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void prova1() {
 		Prolog engine = new Prolog();
 		String json = engine.toJSON();
