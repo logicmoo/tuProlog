@@ -357,6 +357,7 @@ public class TheoryManager implements Serializable {
 	public void serializeKnowledgeBase(SerializableEngineState brain){
 		brain.setDynamicDBase(getTheory(true));
 		brain.setLibraries(engine.getCurrentLibraries());
+		brain.setSerializationTimestamp(System.currentTimeMillis());
 	}
 
 	//Alberto
