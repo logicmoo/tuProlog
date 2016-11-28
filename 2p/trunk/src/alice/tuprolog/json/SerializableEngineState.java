@@ -1,13 +1,11 @@
 package alice.tuprolog.json;
 
-import alice.tuprolog.ClauseDatabase;
 import alice.tuprolog.Term;
 
 //Alberto
 public class SerializableEngineState {
 	
 	private String dynamicDBase;
-	private ClauseDatabase retractDBase;
 	
 	private Term query;
 	private int nAskedResults;
@@ -22,14 +20,6 @@ public class SerializableEngineState {
 	
 	public void setDynamicDBase(String dynamicDBase) {
 		this.dynamicDBase = dynamicDBase;
-	}
-
-	public ClauseDatabase getRetractDBase() {
-		return retractDBase;
-	}
-
-	public void setRetractDBase(ClauseDatabase retractDBase) {
-		this.retractDBase = retractDBase;
 	}
 
 	public void setQuery(Term query) {

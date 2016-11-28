@@ -284,9 +284,6 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
     public void setCurrentDirectory(String s) {
         this.lastPath=s;    
     }
-
-    
-    
     
 	// theory management interface
 

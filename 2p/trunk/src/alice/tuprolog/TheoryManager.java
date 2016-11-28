@@ -355,16 +355,14 @@ public class TheoryManager implements Serializable {
 	
 	//Alberto
 	public void serializeKnowledgeBase(SerializableEngineState brain){
-		brain.setDynamicDBase(this.getTheory(true));
-		brain.setLibraries(this.engine.getCurrentLibraries());
-		brain.setRetractDBase(this.retractDBase);
+		brain.setDynamicDBase(getTheory(true));
+		brain.setLibraries(engine.getCurrentLibraries());
 	}
 
 	//Alberto
 	public void reloadKnowledgeBase(SerializableEngineState brain) {
 		try {
-			this.engine.setTheory(new Theory(brain.getDynamicDBase()));
+			engine.setTheory(new Theory(brain.getDynamicDBase()));
 		} catch (InvalidTheoryException e) {}
-		this.retractDBase = brain.getRetractDBase();
 	}
 }
