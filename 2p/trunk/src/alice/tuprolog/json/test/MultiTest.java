@@ -7,8 +7,11 @@ import alice.tuprolog.NoMoreSolutionException;
 import alice.tuprolog.NoSolutionException;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.SolveInfo;
+import alice.tuprolog.Struct;
+import alice.tuprolog.Term;
 import alice.tuprolog.Theory;
 import alice.tuprolog.UnknownVarException;
+import alice.tuprolog.Var;
 
 //Muccioli - Sita
 public class MultiTest {
@@ -21,7 +24,7 @@ public class MultiTest {
 		prova4();
 	}
 	
-	private static void prova4() {
+	public static void prova4() throws InvalidTheoryException {
 		Prolog engine = new Prolog();
 		try {
 			engine.loadLibrary("alice.tuprolog.json.test.TestLibrary");
@@ -40,7 +43,9 @@ public class MultiTest {
 		} catch (MalformedGoalException e) {
 			e.printStackTrace();
 		}
-		String json = engine.toJSON();
+		String json = engine.toJSON(Prolog.INCLUDE_KB_IN_SERIALIZATION);
+		
+		System.out.println(Prolog.getEngineStateFromJSON(json));
 		
 		System.out.println("\n"+json);
 		
@@ -58,11 +63,26 @@ public class MultiTest {
 		} catch (MalformedGoalException e) {
 			e.printStackTrace();
 		}
+		
+		Struct st = new Struct();
+		String rr = st.toJSON();
+		Term tt = Term.fromJSON(rr);
+		System.out.println(tt.toString());
+		
+		Var v = new Var("CIAO");
+		rr = v.toJSON();
+		Term ttt = Term.fromJSON(rr);
+		System.out.println(ttt.toString());
+		
+		Theory y = new Theory("p(i) :- true.");
+		rr = y.toJSON();
+		Theory b = Theory.fromJSON(rr);
+		System.out.println(b.toString());
 	}
 
 	public static void prova1() {
 		Prolog engine = new Prolog();
-		String json = engine.toJSON();
+		String json = engine.toJSON(Prolog.INCLUDE_KB_IN_SERIALIZATION);
 		System.out.println(json);
 		System.out.println("");
 		Prolog engine2 = Prolog.fromJSON(json);
@@ -73,7 +93,7 @@ public class MultiTest {
 		Prolog engine = new Prolog();
 		Theory t = new Theory(getTheory());
 		engine.setTheory(t);
-		String json = engine.toJSON();
+		String json = engine.toJSON(Prolog.INCLUDE_KB_IN_SERIALIZATION);
 		System.out.println(json);
 		System.out.println("");
 		Prolog engine2 = Prolog.fromJSON(json);
@@ -87,7 +107,7 @@ public class MultiTest {
 		engine.setTheory(t);
 		SolveInfo info = engine.solve("dExpr(x^5,Der).");
 		System.out.println(info.toString());
-		String json = engine.toJSON();
+		String json = engine.toJSON(Prolog.INCLUDE_KB_IN_SERIALIZATION);
 		System.out.println("Serializzato");
 		System.out.println(json);
 		System.out.println("");
@@ -104,7 +124,7 @@ public class MultiTest {
 		System.out.println("CLIENT: ?- "+query);
 		System.out.println(prolog.solve(query).toString());
 		System.out.println(prolog.solveNext().toString());
-		String json = prolog.toJSON();
+		String json = prolog.toJSON(Prolog.INCLUDE_KB_IN_SERIALIZATION);
 		System.out.println("Serializzato");
 		Prolog prolog2 = Prolog.fromJSON(json);
 		System.out.println(prolog2.solveNext().toString());

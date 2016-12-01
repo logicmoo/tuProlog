@@ -30,6 +30,9 @@ public class Float extends Number {
 	private static final long serialVersionUID = 1L;
     private float value;
     
+    @SuppressWarnings("unused")
+	private String type = "Float";
+    
     public Float(float v) {
         value=v;
     }

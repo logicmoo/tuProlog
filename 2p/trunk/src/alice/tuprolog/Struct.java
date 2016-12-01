@@ -33,6 +33,9 @@ import alice.tuprolog.TermVisitor;
 public class Struct extends Term {
 	
 	private static final long serialVersionUID = 1L;
+	
+	@SuppressWarnings("unused")
+	private String type = "Struct";
     
     /**
 	 * name of the structure

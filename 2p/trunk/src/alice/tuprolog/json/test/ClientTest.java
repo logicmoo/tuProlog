@@ -31,7 +31,7 @@ public class ClientTest {
 			OutputStream outToServer = client.getOutputStream();
 			DataOutputStream out = new DataOutputStream(outToServer);
       
-			out.writeUTF(prolog.toJSON());
+			out.writeUTF(prolog.toJSON(Prolog.INCLUDE_KB_IN_SERIALIZATION));
 			InputStream inFromServer = client.getInputStream();
 			DataInputStream in = new DataInputStream(inFromServer);
       
