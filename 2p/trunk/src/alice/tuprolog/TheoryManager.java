@@ -28,7 +28,8 @@ import java.util.Stack;
 
 import alice.tuprolog.InvalidTermException;
 import alice.tuprolog.InvalidTheoryException;
-import alice.tuprolog.json.SerializableEngineState;
+import alice.tuprolog.json.FullEngineState;
+import alice.tuprolog.json.AbstractEngineState;
 import alice.util.Tools;
 
 /**
@@ -354,14 +355,21 @@ public class TheoryManager implements Serializable {
 	}
 	
 	//Alberto
-	public void serializeKnowledgeBase(SerializableEngineState brain){
-		brain.setDynamicDBase(getTheory(true));
-		brain.setLibraries(engine.getCurrentLibraries());
+	public void serializeKnowledgeBase(AbstractEngineState brain){
+		if(brain instanceof FullEngineState){
+			((FullEngineState) brain).setDynamicDBase(getTheory(true));
+			((FullEngineState) brain).setLibraries(engine.getCurrentLibraries());
+		}
+		serializeTimestamp(brain);
+	}
+	
+	//Alberto
+	private void serializeTimestamp(AbstractEngineState brain) {
 		brain.setSerializationTimestamp(System.currentTimeMillis());
 	}
 
 	//Alberto
-	public void reloadKnowledgeBase(SerializableEngineState brain) {
+	public void reloadKnowledgeBase(FullEngineState brain) {
 		try {
 			engine.setTheory(new Theory(brain.getDynamicDBase()));
 		} catch (InvalidTheoryException e) {}

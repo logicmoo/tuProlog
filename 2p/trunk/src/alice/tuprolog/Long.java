@@ -29,6 +29,9 @@ import java.util.List;
 public class Long extends Number {
    private static final long serialVersionUID = 1L;
    private long value;
+   
+    @SuppressWarnings("unused")
+	private String type = "Long";
     
     public Long(long v) {
         value = v;

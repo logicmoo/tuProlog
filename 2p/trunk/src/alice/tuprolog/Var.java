@@ -34,6 +34,9 @@ public class Var extends Term {
 
 	private static final long serialVersionUID = 1L;
 	
+	@SuppressWarnings("unused")
+	private String type = "Var";
+	
 	/* Identify kind of renaming */
 	final static int ORIGINAL = -1;
 	final static int PROGRESSIVE = -2;

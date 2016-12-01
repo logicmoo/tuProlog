@@ -48,7 +48,7 @@ public class MainTestJSON {
 		
 		System.out.println();
 		System.out.println("--- SERIALIZZAZIONE STATO DEL MOTORE ---");
-	    String s = p1.toJSON();
+	    String s = p1.toJSON(Prolog.INCLUDE_KB_IN_SERIALIZATION);
 	    System.out.println("--- -------------------------------- ---");
 	    System.out.println();
 	    

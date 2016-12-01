@@ -9,7 +9,7 @@ import alice.tuprolog.Term;
 public class JSONSerializerManager {
 	
 	static Gson gson = new GsonBuilder()
-			.registerTypeAdapter(Term.class, new JSONMarshaller())
+			.registerTypeAdapter(Term.class, new JSONMarshaller()) //Mandatory for serializing query!
 	        .create();
 	
 	public static String toJSON(Object o){
@@ -19,5 +19,5 @@ public class JSONSerializerManager {
 	public static <T> T fromJSON(String jsonString, Class<T> klass){
 		return gson.fromJson(jsonString, klass);
 	}
-
+	
 }
