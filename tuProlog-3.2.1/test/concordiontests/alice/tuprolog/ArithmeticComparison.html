@@ -1,0 +1,257 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+	xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+<head>
+<title>Arithmetic comparison</title>
+</head>
+
+<body>
+
+	<h1>Arithmetic comparison</h1>
+
+	<p>These predicates cause two expressions to be evaluated and their
+		values to be compared.</p>
+
+	<p>Each arithmetic comparison predicate corresponds to an operation
+		which depends on the types of the values which are obtained by
+		evaluating the argument(s) of the predicate.</p>
+
+	<h2>
+		1.
+		<code>=:=/2</code>
+		(arithmetic equal),
+		<code>=\=/2</code>
+		(arithmetic not equal),
+		<code>&lt;/2</code>
+		(arithmetic less than),
+		<code>=&lt;</code>
+		(arithmetic less than or equal),
+		<code>>/2</code>
+		(arithmetic greater than),
+		<code>>=/2</code>
+		(arithmetic greater than or equal)
+	</h2>
+
+	<p>
+		The following requirements are true for all P where P = {
+		<code>=:=</code>
+		,
+		<code>=\=</code>
+		,
+		<code>&lt;</code>
+		,
+		<code>=&lt;</code>
+		,
+		<code>></code>
+		,
+		<code>>=</code>
+		}.
+	</p>
+	<p>
+		<code>'P'(E1, E2)</code>
+		is true iff evaluating
+		<code>E1</code>
+		and
+		<code>E2</code>
+		as expressions and performing the corresponding arithmetic operation
+		on their values is
+		<code>true</code>
+		.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+'=:='(@evaluable, @evaluable)
+'=\='(@evaluable, @evaluable)
+'&lt;'(@evaluable, @evaluable)
+'=&lt;'(@evaluable, @evaluable)
+'>'(@evaluable, @evaluable)
+'>='(@evaluable, @evaluable)
+</pre>
+
+	<h3>1.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>'=\='(0, 1).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'&lt;'(0, 1).</td>
+			<td>null</td>
+
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>'=&lt;'(0, 1).</td>
+			<td>null</td>
+
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'=:='(1.0, 1).</td>
+			<td>null</td>
+
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'>='(1.0, 1).</td>
+			<td>null</td>
+
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'=&lt;'(1.0, 1).</td>
+			<td>null</td>
+
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'=:='(3 * 2, 7 - 1).</td>
+			<td>null</td>
+
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'>='(3 * 2, 7 - 1).</td>
+			<td>null</td>
+
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'=&lt;'(3 * 2, 7 - 1).</td>
+			<td>null</td>
+
+			<td>true</td>
+		</tr>
+	</table>
+
+
+
+
+	<br />
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>'=:='(0, 1).</td>
+			<td>null</td>
+
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'>'(0, 1).</td>
+			<td>null</td>
+
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'>='(0, 1).</td>
+			<td>null</td>
+
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'=\='(1.0, 1).</td>
+			<td>null</td>
+
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'&lt;'(1.0, 1).</td>
+			<td>null</td>
+
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'>'(1.0, 1).</td>
+			<td>null</td>
+
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'=\='(3 * 2, 7 - 1).</td>
+			<td>null</td>
+
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'&lt;'(3 * 2, 7 - 1).</td>
+			<td>null</td>
+
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'>'(3 * 2, 7 - 1).</td>
+			<td>null</td>
+
+			<td>false</td>
+		</tr>
+	</table>
+
+	<p>Test With Exception</p>
+
+	<table
+		concordion:execute="#result = successWithException(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal)</th>
+			<th ext:embed="successWithExceptionAndText(#goal,#theory)">Type
+				Of Error</th>
+		</tr>
+		<tr>
+			<td>'=:='(X, 5).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>'=\='(X, 5).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>'&lt;'(X, 5).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>'>'(X, 5).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>'>='(X, 5).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>'=&lt;'(X, 5).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+	</table>
+</body>
+</html>

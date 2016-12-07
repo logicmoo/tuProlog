@@ -1,0 +1,123 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+	xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+<head>
+<title>Arithmetic evaluation</title>
+</head>
+
+<body>
+
+	<h1>Arithmetic evaluation</h1>
+
+	<p>This predicate causes an expression to be evaluated and a value
+		to be unified with a term.</p>
+
+	<h2>
+		1.
+		<code>is/2</code>
+	</h2>
+
+	<p>
+		<code>'is'(Result, Expression)</code>
+		is true iff the value of evaluating
+		<code>Expression</code>
+		as an expression is
+		<code>Result</code>
+		.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+is(?term, @evaluable)
+</pre>
+
+	<p>
+		Note that
+		<code>is</code>
+		is a predefined operator.
+	</p>
+
+	<h3>1.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success or failure
+		of single goals.</p>
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>'is'(3, 3).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'is'(Result, 3 + 11.0).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>X = 1 + 2, Y is X * 3.</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+	</table>
+
+	<br />
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>'is'(3, 3.0).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'is'(foo, 77).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+
+	<p>Let's start with some simple tests verifying exception of single
+		goals.</p>
+
+	<table
+		concordion:execute="#result =successWithException(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory)[With Execption]</th>
+			<th ext:embed="successWithExceptionAndText(#goal,#theory)">Type
+				Of Error</th>
+		</tr>
+		<tr>
+			<td>is(_, foo).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>'is'(77, N).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+
+
+
+
+	</table>
+
+</body>
+</html>

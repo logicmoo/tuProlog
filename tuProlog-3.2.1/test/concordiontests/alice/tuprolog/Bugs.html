@@ -1,0 +1,316 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+	xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+
+<head>
+<title>Bugs</title>
+</head>
+
+<body>
+
+	<p>This document contains acceptance tests gained in the form of
+		bug reports.</p>
+
+	<h3>Number unification</h3>
+
+	<p>The following test exercises the unification between numbers, in
+		particular between real and interger numbers.</p>
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>0.0 = 0.</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>0.9 = 0.</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>0 = 0.9.</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+
+	</table>
+
+	<h3>Number comparison</h3>
+
+	<p>The following test exercises the comparison between numbers, in
+		particular between real and interger numbers.</p>
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>1 == 1.0.</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>1.0 == 1.</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+	<h3>Managing operators</h3>
+
+	<p>The following test exercises predicates for operator management.</p>
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>current_op(_, _, '+').</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+	</table>
+
+
+	<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>op(10, yfx, ['@', ':']), current_op(10, yfx, Op).</td>
+			<td>null</td>
+			<td>Op</td>
+			<td>':'</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>op(10, yfx, ['@', ':']), current_op(10, yfx, Op).</td>
+			<td>null</td>
+			<td>Op</td>
+			<td>'@'</td>
+			<td>true</td>
+		</tr>
+	</table>
+
+
+
+	<h3>Expanding subgoals</h3>
+
+	<p>The following test exercises the expansion of subgoals in flat
+		lists.</p>
+
+	<p>First of all, let's start an appropriate fixture containing an
+		engine.</p>
+
+	<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>p(X), X.</td>
+			<td>a. p((a,fail)). p((a)).</td>
+			<td>X</td>
+			<td>a</td>
+			<td>true</td>
+		</tr>
+
+	</table>
+
+	<h3>Functor identification</h3>
+
+	<p>The following test exercises the identification of functors (and
+		their subsequent evaluation) in subgoals.</p>
+
+	<p>First of all, let's start an appropriate fixture containing an
+		engine.</p>
+
+	<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>X is 5, Y =.. ['+', X, 2], K is Y.</td>
+			<td>null</td>
+			<td>X</td>
+			<td>5</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>X is 5, Y =.. ['+', X, 2], K is Y.</td>
+			<td>null</td>
+			<td>Y</td>
+			<td>'+'(5,2)</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>X is 5, Y =.. ['+', X, 2], K is Y.</td>
+			<td>null</td>
+			<td>K</td>
+			<td>7</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>X is 5, Y =.. ['+', X, 2], 10 > Y.</td>
+			<td>null</td>
+			<td>X</td>
+			<td>5</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>X is 5, Y =.. ['+', X, 2], 10 > Y.</td>
+			<td>null</td>
+			<td>Y</td>
+			<td>'+'(5,2)</td>
+			<td>true</td>
+		</tr>
+
+
+	</table>
+
+	<h3>Asserting/retracting clauses</h3>
+
+	<p>The following test exercises the assertion/retraction of clauses
+		in the knowledge base.</p>
+
+	<p>You cannot retract clauses belonging to a library's theory.</p>
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>retract(call(X)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+	<h3>Arithmetic Operations</h3>
+
+	<p>The following test exercises arithmetic operations on long
+		numbers and on boundaries between int and long.</p>
+
+	<p>First of all, let's start an appropriate fixture containing an
+		engine.</p>
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>ops(A), assert(ops_result(A)).</td>
+			<td>ops(s). ops(y). ops(z).</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>retractall(p(X)).</td>
+			<td>p(0) :- !. p(1).</td>
+			<td>true</td>
+		</tr>
+
+
+	</table>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>p(X).</td>
+			<td>p(0) :- !. p(1).</td>
+			<td>true</td>
+		</tr>
+	</table>
+
+
+
+
+
+
+	<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+
+		<tr>
+			<td>ops(X).</td>
+			<td>ops(s). ops(y). ops(z).</td>
+			<td>X</td>
+			<td>s</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>ops(X).</td>
+			<td>ops(s). ops(y). ops(z).</td>
+			<td>X</td>
+			<td>y</td>
+			<td>true</td>
+		</tr>
+
+
+
+		<tr>
+			<td>ops(X).</td>
+			<td>ops(s). ops(y). ops(z).</td>
+			<td>X</td>
+			<td>z</td>
+			<td>true</td>
+		</tr>
+
+	</table>
+
+
+
+
+</body>
+</html>

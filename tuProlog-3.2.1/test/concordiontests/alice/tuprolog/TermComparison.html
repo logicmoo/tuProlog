@@ -1,0 +1,192 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+	xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+<head>
+<title>Term comparison</title>
+<style type="text/css">
+code {
+	font-size: 21px;
+}
+</style>
+
+</head>
+
+<body>
+
+	<h1>Term comparison</h1>
+
+	<p>These predicates test the ordering of two terms as defined by
+		the specification.</p>
+
+	<p>A goal executing any of these built-in predicates simply
+		succeeds or fails; there is no side effect, unification, or error.</p>
+
+	<h2>
+		1.
+		<code>@=&lt;/2</code>
+		(term less than or equal),
+		<code>==/2</code>
+		(term identical),
+		<code>\==/2</code>
+		(term not identical),
+		<code>@&lt;/2</code>
+		(term less than),
+		<code>@>/2</code>
+		(term greater than),
+		<code>@>=/2</code>
+		(term greater than or equal)
+	</h2>
+
+	<p>
+		These predicates also test the identity and term-precedence of their
+		arguments. As an example,
+		<code>'@=&lt;'(X, Y)</code>
+		is true iff
+		<code>X</code>
+		preceds
+		<code>Y</code>
+		as defined by the specification, or
+		<code>X</code>
+		and
+		<code>Y</code>
+		are identical terms.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+'@=&lt;'(@term, @term)
+'=='(@term, @term)
+'\\=='(@term, @term)
+'@&lt;'(@term, @term)
+'@>'(@term, @term)
+'@>='(@term, @term)
+</pre>
+
+	<h3>1.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>'@=&lt;'(1.0, 1).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'@&lt;'(1.0, 1).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'@=&lt;'(aardvark, zebra).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'@=&lt;'(short, short).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'@=&lt;'(short, shorter).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'@>'(foo(b), foo(a)).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'@&lt;'(foo(a, X), foo(b, Y)).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'@&lt;'(foo(X, a), foo(Y, b)).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'@=&lt;'(X, X).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'=='(X, X).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'@=&lt;'(X, Y).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'\=='(_, _).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'@=&lt;'(_, _).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'@=&lt;'(foo(X, a), foo(Y, b)).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+	</table>
+
+
+
+	<br />
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>'\=='(1, 1).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'@>='(short, shorter).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'@&lt;'(foo(a, b), north(a)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'=='(X, Y).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'=='(_, _).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,726 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+	xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+<head>
+<title>Term creation and decomposition</title>
+</head>
+
+
+<body>
+
+	<h1>Term creation and decomposition</h1>
+
+	<p>These predicates enable a term to be assembled from its
+		component parts, or split into its component parts, or copied.</p>
+
+	<h2>
+		1.
+		<code>functor/3</code>
+	</h2>
+
+	<p>
+		<code>functor(Term, Name, Arity)</code>
+		is true iff:
+	</p>
+	<ul>
+		<li><code>Term</code> is a compound term with a functor whose
+			identifier is <code>Name</code> and arity <code>Arity</code>, or</li>
+		<li><code>Term</code> is an atomic term equal to <code>Name</code>
+			and <code>Arity</code> 0.</li>
+	</ul>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+functor(-nonvar, +atomic, +integer)
+functor(+nonvar, ?atomic, ?integer)
+</pre>
+
+	<h3>1.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>functor(foo(a, b, c), foo, 3).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>functor([_|_], '.', 2).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>functor([], [], 0).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>functor(foo(a,b,c),X,Y).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>functor(X,foo,3).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>functor(X,foo,0).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>functor(mats(A,B), A, B).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>functor(1, X, Y).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>functor(X, 1.1, 0).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+
+
+
+	</table>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>functor(foo(a), foo, 2).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>functor(foo(a), fo, 1).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+
+
+	</table>
+
+
+
+	<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>functor(foo(a, b, c), X, Y).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>foo</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>functor(foo(a, b, c), X, Y).</td>
+			<td>null</td>
+			<td>Y</td>
+			<td>3</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>functor(X, foo, 3).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>foo(_,_,_)</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>functor(X, foo, 0).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>foo</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>functor(mats(A, B), A, B).</td>
+			<td>null</td>
+			<td>A</td>
+			<td>mats</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>functor(mats(A, B), A, B).</td>
+			<td>null</td>
+			<td>B</td>
+			<td>2</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>functor(1, X, Y).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>1</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>functor(1, X, Y).</td>
+			<td>null</td>
+			<td>Y</td>
+			<td>0</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>functor(X, 1.1, 0).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>1.1</td>
+			<td>true</td>
+		</tr>
+
+	</table>
+
+	<p>Tests With Exception</p>
+
+	<table
+		concordion:execute="#result = successWithException(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal)</th>
+			<th ext:embed="successWithExceptionAndText(#goal,#theory)">Type
+				Of Error</th>
+		</tr>
+		<tr>
+			<td>functor(X, Y, 3).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>functor(X, foo, N).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>functor(X, foo, a).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>functor(F, 1.5, 1).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>functor(F, foo(a), 1).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>current_prolog_flag(max_arity, A), X is A + 1, functor(T,
+				foo, X).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>Minus1 is 0 - 1, functor(F, foo, Minus1).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+
+
+	</table>
+
+
+
+
+
+	<h2>
+		2.
+		<code>arg/3</code>
+	</h2>
+
+	<p>
+		<code>arg(N, Term, Arg)</code>
+		is true iff the
+		<code>N</code>
+		th argument of
+		<code>Term</code>
+		is
+		<code>Arg</code>
+		.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+arg(+integer, +compound_term, ?term)
+</pre>
+
+	<h3>2.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>arg(1, foo(a,b), a).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>arg(1, foo(a,b), X).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>arg(1, foo(a,b), X).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>arg(1, foo(X,b), a).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>arg(1, foo(X,b), Y).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+
+
+	</table>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>arg(1, foo(a, b), b).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>arg(0, foo(a, b), foo).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>arg(3, foo(3, 4), N).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>arg(1, foo(X), u(X)).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+
+	</table>
+
+
+	<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>arg(1, foo(a, b), X).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>a</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>arg(1, foo(X, b), a).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>a</td>
+			<td>true</td>
+		</tr>
+		
+		<tr>
+			<td>arg(1, foo(X, b), Y).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>X</td>
+			<td>true</td>
+		</tr>
+
+	</table>
+
+
+	<p>Tests With Exception</p>
+
+	<table
+		concordion:execute="#result = successWithException(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal)</th>
+			<th ext:embed="successWithExceptionAndText(#goal,#theory)">Type
+				Of Error</th>
+		</tr>
+		<tr>
+			<td>arg(X, foo(a,b), a).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>arg(1, X, a).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>arg(0, atom, a).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>arg(0, 3, a).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+
+
+
+	</table>
+
+	<h2>
+		3.
+		<code>=../2</code>
+		(univ)
+	</h2>
+
+	<p>
+		<code>'=..'(Term, List)</code>
+		is true iff:
+	</p>
+	<ul>
+		<li><code>Term</code> is an atomic term and <code>List</code> is
+			the list whose only element is <code>Term</code>, or</li>
+		<li><code>Term</code> is a compound term and <code>List</code> is
+			the list whose head is the functor name of <code>Term</code> and
+			whose tail is a list of the arguments of <code>Term</code></li>
+	</ul>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+'=..'(+nonvar, ?list)
+'=..'(-nonvar, +list)
+</pre>
+
+	<p>
+		Note that
+		<code>=..</code>
+		is a predefined operator.
+	</p>
+
+	<h3>3.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>'=..'(foo(a,b), [foo, a, b]).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'=..'(1, [1]).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+
+
+	</table>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>'=..'(foo(a,b), [foo, b, a]).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>'=..'(f(X), [f, u(X)]).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+
+	</table>
+
+	<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>'=..'(X, [foo,a,b]).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>foo(a,b)</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'=..'(foo(a,b), L).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>[foo,a,b]</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>'=..'(foo(X, b), [foo, a, Y]).</td>
+			<td>null</td>
+			<td>Y</td>
+			<td>b</td>
+			<td>true</td>
+		</tr>
+
+	</table>
+
+
+	<p>Tests With Exception</p>
+
+	<table
+		concordion:execute="#result = successWithException(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal)</th>
+			<th ext:embed="successWithExceptionAndText(#goal,#theory)">Type
+				Of Error</th>
+		</tr>
+		<tr>
+			<td>'=..'(X, Y).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>'=..'(X, [foo, a | Y]).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>'=..'(X, [foo | bar]).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>'=..'(X, [Foo, bar]).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>'=..'(X, [3, 1]).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>'=..'(X, [1.1, foo]).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>'=..'(X, [a(b), 1]).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>'=..'(X, 4).</td>
+			<td>null</td>
+			<td>true</td>
+			<td></td>
+		</tr>
+
+
+	</table>
+
+
+	<h2>
+		4.
+		<code>copy_term/2</code>
+	</h2>
+
+	<p>
+		<code>copy_term(Term1, Term2)</code>
+		is true iff
+		<code>Term2</code>
+		unifies with a term
+		<code>T</code>
+		which is a renamed copy of
+		<code>Term1</code>
+		.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+copy_term(?term, ?term)
+</pre>
+
+	<h3>4.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>copy_term(X, Y).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>copy_term(X, 3).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>copy_term(_, a).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>copy_term(_, _).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+
+
+	</table>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>copy_term(a,b).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>copy_term(a+X, X+b), copy_term(a+X, X+b).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>copy_term(demoen(X, X), demoen(Y, f(Y))).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+
+	</table>
+
+
+	<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>copy_term(a+X, X+b).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>a</td>
+			<td>true</td>
+		</tr>
+
+		<tr>
+			<td>copy_term(X+X+Y, A+B+B).</td>
+			<td>null</td>
+			<td>A</td>
+			<td>A</td>
+			<td>true</td>
+		</tr>
+	</table>
+
+
+
+</body>
+</html>

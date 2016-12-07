@@ -1,0 +1,379 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+	xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+<head>
+<title>Bitwise functors</title>
+</head>
+
+<body>
+
+	<h1>Bitwise functors</h1>
+
+	<p>The operands and value of these evaluable functors are integers
+		which are treated as a binary sequences of bits. The value is
+		implementation defined when an operand or value is negative because
+		the representation of a negative integer is implementation defined.</p>
+
+	<p>Templates and modes represent a specification for the type of
+		the values when the arguments of the evaluable functor are evaluated
+		as an expression, and the type of its value. A specific notation is
+		employed for the structure and type of the arguments and value:</p>
+	<ul>
+		<li><var>int-exp</var> represents an integer expression,</li>
+		<li><var>integer</var> identifies an integer value,</li>
+		<li><var>float-exp</var> represents a floating point expression,</li>
+		<li><var>float</var> identifies a floating point value.</li>
+	</ul>
+
+	<h2>
+		1.
+		<code>(>>)/2</code>
+		(bitwise right shift)
+	</h2>
+
+	<p>
+		<code>'>>'(N, S)</code>
+		evaluates the expressions
+		<var>N</var>
+		and
+		<var>S</var>
+		with values
+		<var>VN</var>
+		and
+		<var>VS</var>
+		and has the value of
+		<var>VN</var>
+		right-shifted
+		<var>VS</var>
+		bit positions.
+	</p>
+
+	<p>The value shall be implementation defined depending on whether
+		the shift is logical (fill with zeros) or arithmetic (fill with a copy
+		of the sign bit).</p>
+
+	<p>
+		The value shall be implementation defined if
+		<var>VS</var>
+		is negative, or
+		<var>VS</var>
+		is larger than the bit size of an integer.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+'>>'(int-exp, int-exp) = integer
+</pre>
+
+	<p>
+		Note that
+		<code>>></code>
+		is an infix predefined operator.
+	</p>
+
+	<h3>1.1 Example tests</h3>
+
+	<p>First of all, let's start an appropriate fixture.</p>
+
+
+	<table concordion:execute="#result = value(#evaluable)">
+		<tr>
+			<th concordion:set="#evaluable">Evaluable</th>
+			<th concordion:assertEquals="#result">value(String evaluable)</th>
+		</tr>
+		<tr>
+			<td>'>>'(16, 2).</td>
+			<td>4</td>
+		</tr>
+		<tr>
+			<td>'>>'(19, 2).</td>
+			<td>4</td>
+		</tr>
+		<tr>
+			<td>'>>'(-16, 2).</td>
+			<td>-4</td>
+		</tr>
+
+
+
+	</table>
+
+
+	<h2>
+		2.
+		<code>(&lt;&lt;)/1</code>
+		(bitwise left shift)
+	</h2>
+
+	<p>
+		<code>'&lt;&lt;'(N, S)</code>
+		evaluates the expressions
+		<var>N</var>
+		and
+		<var>S</var>
+		with values
+		<var>VN</var>
+		and
+		<var>VS</var>
+		and has the value of
+		<var>VN</var>
+		left-shifted
+		<var>VS</var>
+		bit positions, where the
+		<var>VS</var>
+		least significant bit positions of the result are zero.
+	</p>
+
+	<p>
+		The value shall be implementation defined if
+		<var>VS</var>
+		is negative, or
+		<var>VS</var>
+		is larger than the bit size of an integer.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+'&lt;&lt;'(int-exp, int-exp) = integer
+</pre>
+
+	<p>
+		Note that
+		<code>&lt;&lt;</code>
+		is an infix predefined operator.
+	</p>
+
+	<h3>2.1 Example tests</h3>
+
+	<p>First of all, let's start an appropriate fixture.</p>
+
+	<table concordion:execute="#result = value(#evaluable)">
+		<tr>
+			<th concordion:set="#evaluable">Evaluable</th>
+			<th concordion:assertEquals="#result">value(String evaluable)</th>
+		</tr>
+		<tr>
+			<td>'&lt;&lt;'(16, 2).</td>
+			<td>64</td>
+		</tr>
+		<tr>
+			<td>'&lt;&lt;'(19, 2).</td>
+			<td>76</td>
+		</tr>
+		<tr>
+			<td>'&lt;&lt;'(-16, 2).</td>
+			<td>-64</td>
+		</tr>
+
+
+
+	</table>
+
+	<h2>
+		3.
+		<code>(/\)/2</code>
+		(bitwise and)
+	</h2>
+
+	<p>
+		<code>'/\'(B1, B2)</code>
+		evaluates the expressions
+		<var>B1</var>
+		and
+		<var>B2</var>
+		with values
+		<var>VB1</var>
+		and
+		<var>VB2</var>
+		and has the value such that each bit is set iff each of the
+		corresponding bits in
+		<var>VB1</var>
+		and
+		<var>VB2</var>
+		is set.
+	</p>
+
+	<p>
+		The value shall be implementation defined if
+		<var>VB1</var>
+		or
+		<var>VB2</var>
+		is negative.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+'/\'(int-exp, int-exp) = integer
+</pre>
+
+	<p>
+		Note that
+		<code>/\</code>
+		is an infix predefined operator.
+	</p>
+
+	<h3>3.1 Example tests</h3>
+
+	<p>First of all, let's start an appropriate fixture.</p>
+
+	<table concordion:execute="#result = value(#evaluable)">
+		<tr>
+			<th concordion:set="#evaluable">Evaluable</th>
+			<th concordion:assertEquals="#result">value(String evaluable)</th>
+		</tr>
+		<tr>
+			<td>'/\'(10, 12).</td>
+			<td>8</td>
+		</tr>
+		<tr>
+			<td>'/\'(10, 12).</td>
+			<td>8</td>
+		</tr>
+		<tr>
+			<td>'/\'(17 * 256 + 125, 255).</td>
+			<td>125</td>
+		</tr>
+
+		<tr>
+			<td>'/\'(-10, 12).</td>
+			<td>4</td>
+		</tr>
+
+
+
+	</table>
+
+	<h2>
+		4.
+		<code>(\/)/2</code>
+		(bitwise or)
+	</h2>
+
+	<p>
+		<code>'\/'(B1, B2)</code>
+		evaluates the expressions
+		<var>B1</var>
+		and
+		<var>B2</var>
+		with values
+		<var>VB1</var>
+		and
+		<var>VB2</var>
+		and has the value such that each bit is set iff at least one of the
+		corresponding bits in
+		<var>VB1</var>
+		and
+		<var>VB2</var>
+		is set.
+	</p>
+
+	<p>
+		The value shall be implementation defined if
+		<var>VB1</var>
+		or
+		<var>VB2</var>
+		is negative.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+'\/'(int-exp, int-exp) = integer
+</pre>
+
+	<p>
+		Note that
+		<code>\/</code>
+		is an infix predefined operator.
+	</p>
+
+	<h3>4.1 Example tests</h3>
+
+	<p>First of all, let's start an appropriate fixture.</p>
+
+	<table concordion:execute="#result = value(#evaluable)">
+		<tr>
+			<th concordion:set="#evaluable">Evaluable</th>
+			<th concordion:assertEquals="#result">value(String evaluable)</th>
+		</tr>
+		<tr>
+			<td>'\/'(10, 12).</td>
+			<td>14</td>
+		</tr>
+		<tr>
+			<td>'\/'(10, 12).</td>
+			<td>14</td>
+		</tr>
+		<tr>
+			<td>'\/'(125, 255).</td>
+			<td>255</td>
+		</tr>
+
+		<tr>
+			<td>'\/'(-10, 12).</td>
+			<td>-2</td>
+		</tr>
+
+
+
+	</table>
+
+	<h2>
+		5.
+		<code>(\)/1</code>
+		(bitwise complement)
+	</h2>
+
+	<p>
+		<code>'\'(B1)</code>
+		evaluates the expression
+		<var>B1</var>
+		with value
+		<var>VB1</var>
+		and has the value such that each bit is set iff the corresponding bit
+		in
+		<var>VB1</var>
+		is not set.
+	</p>
+
+	<p>The value shall be implementation defined.</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+'\'(int-exp, int-exp) = integer
+</pre>
+
+	<p>
+		Note that
+		<code>\</code>
+		is an prefix predefined operator.
+	</p>
+
+	<h3>5.1 Example tests</h3>
+
+	<p>First of all, let's start an appropriate fixture.</p>
+
+	<table concordion:execute="#result = value(#evaluable)">
+		<tr>
+			<th concordion:set="#evaluable">Evaluable</th>
+			<th concordion:assertEquals="#result">value(String evaluable)</th>
+		</tr>
+		<tr>
+			<td>'\'('\'(10)).</td>
+			<td>10</td>
+		</tr>
+		<tr>
+			<td>\(\(10)).</td>
+			<td>10</td>
+		</tr>
+		<tr>
+			<td>\(10).</td>
+			<td>-11</td>
+		</tr>
+
+
+
+
+	</table>
+
+</body>
+</html>
