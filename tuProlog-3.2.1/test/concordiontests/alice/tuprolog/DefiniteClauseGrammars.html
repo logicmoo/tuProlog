@@ -1,0 +1,182 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+	xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+<head>
+<title>Definite Clause Grammars</title>
+</head>
+
+<body>
+
+	<h1>Definite Clause Grammars</h1>
+
+	<p>
+		These tests verify functionalities in the
+		<tt>DCGLibrary</tt>
+		provided with the tuProlog distribution. The typical interface
+		predicates exposed by DCG are
+		<tt>phrase/2</tt>
+		and
+		<tt>phrase/3</tt>
+		.
+	</p>
+
+	<h2>
+		1.
+		<code>phrase/2</code>
+	</h2>
+
+	<p>
+		<code>phrase(Category, List)</code>
+		is true iff the list
+		<var>List</var>
+		can be parsed as a phrase (i.e. sequence of terminals) of type
+		<var>Category</var>
+		.
+		<var>Category</var>
+		can be any term which would be accepted as a non-terminal of the
+		grammar (or, in general, can be any grammar rule body) and must be
+		instantiated to a non-variable term at the time of the call. If
+		<var>List</var>
+		is bound to a list of terminals by the time of the call, then the goal
+		corresponds to parsing
+		<var>List</var>
+		as a phrase of type
+		<var>Category</var>
+		; otherwise, if
+		<var>List</var>
+		is unbound, then the grammar is being used for generation.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+phrase(+term, ?list)
+</pre>
+
+	<h3>1.1 Example tests</h3>
+
+	<p>Let's run some tests also verifying the unification for some of
+		the variables in goals.</p>
+
+	<p>First of all, let's start an appropriate fixture containing an
+		engine.</p>
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>load_library('alice.tuprolog.lib.DCGLibrary').</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+
+	</table>
+
+
+
+
+	<p>Then, ask the engine to solve a query, and check variable
+		bindings.</p>
+
+
+
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>phrase(a, []).</td>
+			<td>a --> [].</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>phrase(a, [a]).</td>
+			<td>a --> [a], b. b --> [].</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>phrase(b, []).</td>
+			<td>a --> [a], b. b --> [].</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>phrase(a, [a, b, a, a, c, d, d, d, d]).</td>
+			<td>a --> [a], a, [d]. a --> [b], a, [d]. a --> [c].</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>phrase(x(1), [a, a, a, 1, a, a, a]).</td>
+			<td>x(V) --> [a], x(V), [a]. x(V) --> [V].</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>phrase(x, [a, a, a, 151, a, a, a]).</td>
+			<td>x --> [a], x, [a]. x --> [V], { number(V) }.</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>phrase(e, [1, '+', '(', 2, '+', 3, ')', '+', 4]).</td>
+			<td>e --> o, et. et --> []. et --> ['+'], e. o --> ['('], e,
+				[')']. o --> [X], { number(X) }.</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>phrase(e, ['0']).</td>
+			<td>e --> t, et. et --> []. et --> [and], e. t --> ['0']. t -->
+				['1'].</td>
+			<td>true</td>
+		</tr>
+
+
+
+
+
+
+	</table>
+
+
+	<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>phrase(e(V), [1, '+', '(', 2, '+', 3, ')']).</td>
+			<td>e(V) --> o(V1), et(V1, V). et(V, V) --> []. et(VI, VO) -->
+				['+'], o(V1), { VI1 is VI + V1 }, et(VI1, VO). o(V) --> ['('], e(V),
+				[')']. o(X) --> [X], { number(X) }.</td>
+			<td>V</td>
+			<td>6</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>phrase(e(V), ['1']).</td>
+			<td>e(V) --> t(W), et(W, V). et(V, V) --> []. et(W, V) -->
+				[and], t(V1), { W = 1, V1 = 1, !, W2 = 1 ; W2 = 0 }, et(W2, V). t(0)
+				--> ['0']. t(1) --> ['1'].</td>
+			<td>V</td>
+			<td>1</td>
+			<td>true</td>
+		</tr>
+
+	</table>
+
+
+
+
+</body>
+</html>

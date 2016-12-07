@@ -1,0 +1,406 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion" xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+
+<head>
+<title>Clause retrival and information</title>
+</head>
+
+<body>
+
+<h1>Clause retrival and information</h1>
+
+<p>These predicates enable the contents of the database to be inspected during execution.</p>
+
+<p>The examples provided for these predicates assume the database has been created from the following Prolog theory.</p>
+
+
+
+<h2>1. <code>clause/2</code></h2>
+
+<p><code>clause(Head, Body)</code> is true iff:</p>
+<ul>
+  <li>The predicate <code>Head</code> is public, and</li>
+  <li>There is a clause in the database which corresponds to a term <code>H :- B</code> which unifies with <code>Head :- Body</code>.</li>
+</ul>
+
+<p><code>clause(Head, Body)</code> is re-executable.</p>
+
+<p>Note that the process of converting a clause to a term produces a renamed copy of the term <code>H :- B</code> corresponding to the clause.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+clause(+head, ?callable_term)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's then ask the engine to solve a query against the database, and check variable bindings.</p>
+
+
+
+<table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal,String theory)</th></tr>
+        <tr><td>clause(cat, true).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>true</td></tr>
+        <tr><td>clause(dog, true).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>true</td></tr>
+        <tr><td>clause(legs(I, 6), Body).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>true</td></tr>
+        
+        
+</table>
+
+<br />
+ <table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertFalse="#result">success(String goal,String theory)</th></tr>
+        <tr><td>clause(x, Body).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>false</td></tr>
+        <tr><td>clause(legs(A, 6), insect(f(A))).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>false</td></tr>
+</table>
+
+
+<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		 <tr><td>clause(legs(I, 6), Body).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>Body</td><td>insect(I)</td><td>true</td></tr>
+		 		 <tr><td>clause(legs(C, 7), Body).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>Body</td><td>','(C,call(C))</td><td>true</td></tr>
+		 
+		 		 <tr><td>clause(insect(I), T).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>I</td><td>ant</td><td>true</td></tr>
+		 
+		 		 <tr><td>clause(insect(I), T).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>T</td><td>true</td><td>true</td></tr>
+		 		 <tr><td>clause(insect(I), T).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>I</td><td>bee</td><td>true</td></tr>
+		 		 
+		 		 		 		 <tr><td>clause(insect(I), T).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>T</td><td>true</td><td>true</td></tr>
+		 		 		 		
+</table>
+
+
+<table concordion:execute="#result = successWithException(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal)</th><th ext:embed="successWithExceptionAndText(#goal,#theory)">Type Of Error</th></tr>
+                <tr><td>clause(_, B).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>true</td><td></td></tr>
+                <tr><td>clause(4, X).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>true</td><td></td></tr>
+                <tr><td>clause(elk(N), Body).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>true</td><td></td></tr>
+                <tr><td>clause(atom(_), Body).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>true</td><td></td></tr>
+               
+</table>
+
+
+<h2>2. <code>current_predicate/1</code></h2>
+
+<p><code>current_predicate(PI)</code> is true iff <code>PI</code> is a predicate indicator for one of the user-defined procedures in the database.</p>
+
+<p><code>current_predicate(PI)</code> is re-executable.</p>
+
+<p>Note that all user-defined procedures are found, whether static or dynamic. A user-defined procedure is also found even when it has no clauses. A user-defined procedure is not found if it has been abolished.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+current_predicate(?predicate_indicator)
+</pre>
+
+<h3>2.1 Example tests</h3>
+
+
+<table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal,String theory)</th></tr>
+        <tr><td>current_predicate(dog/0).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>true</td></tr>
+        
+        
+</table>
+
+<br />
+
+ <table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertFalse="#result">success(String goal,String theory)</th></tr>
+        <tr><td>current_predicate(current_predicate/1).</td><td>null</td><td>false</td></tr>
+        <tr><td>current_predicate(foo/A).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>false</td></tr>
+</table>
+
+<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		 <tr><td>current_predicate(elk/Arity).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>Arity</td><td>1</td><td>true</td></tr>
+		 <tr><td>current_predicate(Name/1).</td><td>:- dynamic(cat/0).
+cat.
+
+:- dynamic(dog/0).
+dog :- true.
+
+elk(X) :- moose(X).
+
+:- dynamic(legs/2).
+legs(A, 6) :- insect(A).
+legs(A, 7) :- A, call(A).
+
+:- dynamic(insect/1).
+insect(ant).
+insect(bee).</td><td>Name</td><td>elk</td><td>true</td></tr>
+		 
+</table>
+
+
+
+</body>
+</html>

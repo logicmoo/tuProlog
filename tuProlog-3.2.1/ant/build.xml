@@ -1,0 +1,765 @@
+<?xml version="1.0"?>
+	
+<project name="tuProlog build file" basedir=".." default="08.package">
+
+	
+	  <path id="compile.classpath">
+	        <fileset dir="lib" includes="*.jar"/>
+	    </path>
+	
+	
+	<path id="path.svnant">
+ 		<pathelement location="lib/svnant.jar"/>
+ 		<pathelement location="lib/svnClientAdapter.jar"/>
+		<pathelement location="lib/svnjavahl.jar"/>
+		<pathelement location="lib/svnkit.jar"/>
+ 		<!-- ... -->
+	</path>
+	    
+	<typedef 
+	      resource="org/tigris/subversion/svnant/svnantlib.xml" 
+	      classpathref="path.svnant"	
+	/>
+	
+	<!-- Compila i sorgenti di tu prolog -->
+	<macrodef name="build">
+	    <attribute name="debug"/>
+		<attribute name="optimize"/>
+	    <sequential>
+	    	
+	    	<echo>Building...</echo>
+	    	<!-- Elimina la precendente build -->
+	    	<delete includeemptydirs="true">
+				<fileset dir="${build.classes.dir}" includes="**/*"/>
+			</delete>
+			
+	    	<!-- Compila i file .java -->
+			<javac destdir="${build.classes.dir}" debug="false"
+			deprecation="false" optimize="true" failonerror="true" includeantruntime="false" target="1.8" source="1.8">
+	            <src path="${src.dir}"/>
+	            <classpath refid="ant-classpath"/>
+	        </javac>
+			
+	    	<!-- Copia le immagini necessarie alla GUI nella cartella dei file compilati -->
+			<copy todir="${build.classes.dir}/alice/tuprologx/ide/img">
+				<fileset dir="${src.dir}/alice/tuprologx/ide/img"/>
+			</copy>
+	    	
+	    	<!-- Copia il file docs.txt nella cartella dei file compilati -->
+	    	<copy file="${src.dir}/alice/tuprologx/ide/docs.txt" todir="${build.classes.dir}/alice/tuprologx/ide"/>
+	    	
+	    </sequential>
+	</macrodef>
+	
+	<!-- Compila i sorgenti dei test (?) -->
+	<macrodef name="build-tests">
+		    <attribute name="debug"/>
+			<attribute name="optimize"/>
+		    <sequential>
+		    	
+		    	<echo>Building tests...</echo>
+		    	<!-- Elimina la precendente build -->
+		    	<delete includeemptydirs="true">
+    				<fileset dir="${build.tests.dir}" includes="**/*"/>
+    			</delete>
+    			<!-- Crea un po' di directory dove inserire i file compilati -->
+    			<mkdir dir="${build.tests.dir}"/>
+    			<mkdir dir="${build.tests.dir}/unit"/>
+		    	
+    			<!-- <mkdir dir="${build.tests.dir}/fixtures"/> -->
+		    	<mkdir dir="${build.tests.dir}/concordion"/>
+    			
+		    	<!-- Compila i file .java -->
+    			<javac destdir="${build.tests.dir}/unit" debug="false" 
+    				deprecation="false" optimize="true" failonerror="true" includeantruntime="false" target="1.8" source="1.8">
+    	            <src path="${test.dir}/unit"/>
+    	            <classpath refid="ant-classpath"/>
+    	        	<classpath location="${build.classes.dir}"/>
+    	        </javac>
+		    	
+	 		</sequential>
+	</macrodef>
+	
+	<!-- Da definire -->
+	<macrodef name="package">
+		<sequential>
+			
+			<!-- Elimina i precedenti archivi -->
+			<delete includeemptydirs="true">
+	    		<fileset dir="${build.archives.dir}" includes="**/*"/>
+	    	</delete>
+			
+	    	<!-- Crea il jar eseguibile (GUI di tuprolog) -->
+	    	<jar destfile="${build.archives.dir}/2p.jar" basedir="${build.classes.dir}">
+	    	    <manifest>
+	    	      	<!-- Who is building this jar? -->
+	    	      	<attribute name="Built-By" value="${user.name}"/>
+	    	      	<!-- Information about the program itself -->
+	    	      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
+	    	      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
+	    	      	<attribute name="Implementation-Version" value="${engine.version}.${JavaSpecific.version}"/>
+	    	      	<!-- details -->
+	    	    	
+	    	    	<attribute name="Main-Class" value="alice.tuprologx.ide.GUILauncher"/>
+	    	    	<attribute name="Class-Path" value="."/>
+	    	    </manifest>
+				
+	    		<!-- JSR223 service -->
+	    		<service type="javax.script.ScriptEngineFactory" 
+	    			provider="alice.tuprolog.scriptengine.PrologScriptEngineFactory"/>
+	    	
+	    		<!-- Copia tutte le librerie necessarie al funzionamento della GUI -->
+	    		<zipgroupfileset excludes="META-INF/*.SF" dir="${lib.dir}" includes="*.jar"/>
+	    		<zipgroupfileset excludes="META-INF/*.SF" dir="${lib.dir}/jflex" includes="*.jar"/>
+	    
+	    	  </jar>
+	    	
+			<!-- Crea il jar "libreria di tuProlog, escludendo tutte le classi non necessarie a questa
+			(ossia quelle che hanno servono per la GUI) -->
+	    	<jar destfile="${build.archives.dir}/tuprolog.jar" 	basedir="${build.classes.dir}" 
+	    														includes="alice/tuprolog/**, alice/util/**"
+	    	       												excludes="alice/tuprologx/**, alice/util/jedit/**">
+	    	    <manifest>
+	    	      	<!-- Who is building this jar? -->
+	    	      	<attribute name="Built-By" value="${user.name}"/>
+	    	      	<!-- Information about the program itself -->
+	    	      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
+	    	      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
+	    	      	<attribute name="Implementation-Version" value="${engine.version}"/>
+	    	      	<!-- details -->
+	    	    </manifest>
+	    		
+	    		<!-- JSR223 service -->
+	    		<service type="javax.script.ScriptEngineFactory" 
+	    			provider="alice.tuprolog.scriptengine.PrologScriptEngineFactory"/>
+	    			
+	    	 </jar>
+	    	
+			<!-- Crea il jar dei test -->
+	    	<jar destfile="${build.tests.dir}/unit-tests.jar" basedir="${build.tests.dir}/unit">
+		    	<manifest>
+			      	<!-- Who is building this jar? -->
+			      	<attribute name="Built-By" value="${user.name}"/>
+			      	<!-- Information about the program itself -->
+			      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
+			      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
+			      	<attribute name="Implementation-Version" value="${engine.version}.${JavaSpecific.version}"/>
+			    </manifest>
+		 	</jar>
+	    	
+<!--	    	<jar destfile="${build.tests.dir}/fixtures.jar" basedir="${build.tests.dir}/fixtures">
+		    	<manifest>
+			      	<attribute name="Built-By" value="${user.name}"/>
+			      	<attribute name="Implementation-Vendor" value="tuProlog team"/>
+			      	<attribute name="Implementation-Title" value="tuProlog Engine"/>
+			      	<attribute name="Implementation-Version" value="${engine.version}.${JavaSpecific.version}"/>
+			    </manifest>
+	    	</jar>
+-->
+	    	<echo>Look directories ${build.archives.dir} and ${build.tests.dir}</echo>
+		</sequential>
+	</macrodef>
+	
+	<!-- ================ -->
+	<!-- Properties setup -->
+	<!-- ================ -->
+	
+	<!-- idea: in the build directory delete and recreate each directory only inside a target that has to modify that directory-->
+	<!-- Inizializza tutte le proprietà necessarie allo script -->
+	<target name="00.init.properties" description="Sets up properties">
+		<echo message="Remember to set up the properties in the file ant/environment.properties !!!"/>
+		<!-- Environment properties (devo vedere cosa contiene)-->
+		<property file="ant/environment.properties"/>
+		<!-- Project properties (idem) -->
+		<property file="ant/project.properties"/>
+		
+		<!-- Project structure -->
+		
+		<!-- Cartella dei sorgenti -->
+	    <property name="src.dir" value="src"/> 
+	    
+		<!-- Cartella dei sorgenti dei test -->
+		<property name="test.dir" value="test"/>
+		
+		<!-- Cartella della documentazione -->
+		<property name="doc.dir" value="doc"/>
+		
+		<!-- Cartella destinazione della build -->
+		<property name="build.dir" value="build"/>
+		
+		<!-- Cartella destinazione dei file .class -->
+	    <property name="build.classes.dir" value="${build.dir}/classes"/>
+		
+		<!-- Cartella destinazione dei file .class dei test -->
+	    <property name="build.tests.dir" value="${build.dir}/tests"/>
+		
+		<!-- Cartella destinazione degli archivi (.jar) -->
+	    <property name="build.archives.dir" value="${build.dir}/archives"/>
+		
+		<!-- Da vedere -->
+		<property name="build.release.dir" value="release"/>
+		
+		<!-- Da vedere -->
+		<property name="build.unit.reports.dir" value="${build.dir}/reports/unit"/>
+		
+		<!-- Da vedere -->
+		<property name="build.fit.reports.dir" value="${build.dir}/reports/fit"/>
+		
+		<!-- Cartella destinazione degli archivi .NET -->
+		<property name="build.archives.net.dir" value="${build.archives.dir}/net"/>
+		
+		<!-- Cartella delle librerie da includere negli archivi -->
+		<property name="lib.dir" value="lib"/>
+		
+		<!-- Cartella temporanea -->
+		<property name="tmp.dir" value="tmp"/>
+
+		<!-- Carica la proprietà ${engine.version} dal file VersionInfo.java -->
+		<loadfile srcfile="${src.dir}/alice/util/VersionInfo.java" property="engine.version">
+			<filterchain>
+		    	<linecontains>
+		        	<contains value="String ENGINE_VERSION"/>
+		        </linecontains>
+				<deletecharacters chars="\n\r"/>	<!-- Do not get a number with a new line at the end -->
+		        <tokenfilter>
+		        	<replaceregex pattern="[^0-9]+&quot;" replace=""/>
+		        	<replaceregex pattern="&quot;.*" replace=""/>
+		        </tokenfilter>
+		    </filterchain>
+		 </loadfile>
+		
+		<!-- Carica la proprietà ${JavaSpecific.version} dal file VersionInfo.java -->
+		<loadfile srcfile="${src.dir}/alice/util/VersionInfo.java" property="JavaSpecific.version">
+			<filterchain>
+		    	<linecontains>
+		        	<contains value="String JAVA_SPECIFIC_VERSION"/>
+		        </linecontains>
+				<deletecharacters chars="\n\r"/>	<!-- Do not get a number with a new line at the end -->
+		        <tokenfilter>
+		        	<replaceregex pattern="[^0-9]+&quot;" replace=""/>
+		        	<replaceregex pattern="&quot;.*" replace=""/>
+		        </tokenfilter>
+		    </filterchain>
+		 </loadfile>
+		
+		<!-- Carica la proprietà ${NETSpecifi.version} dal file VersionInfo.java -->
+		<loadfile srcfile="${src.dir}/alice/util/VersionInfo.java" property="NETSpecific.version">
+			<filterchain>
+		    	<linecontains>
+		        	<contains value="String NET_SPECIFIC_VERSION"/>
+		        </linecontains>
+				<deletecharacters chars="\n\r"/>	<!-- Do not get a number with a new line at the end -->
+		        <tokenfilter>
+		        	<replaceregex pattern="[^0-9]+&quot;" replace=""/>
+		        	<replaceregex pattern="&quot;.*" replace=""/>
+		        </tokenfilter>
+		    </filterchain>
+		 </loadfile>
+		
+	</target>
+
+	<target name="01.set.classpath" depends="00.init.properties" description="Sets up classpath properties for other tasks">
+	    <path id="ant-classpath">
+	    	<!-- Project-specific libraries -->
+	        <fileset dir="${lib.dir}">
+	            <include name="*.jar"/>
+	        </fileset>
+	    	<!-- Project classes -->
+	        <pathelement path="${build.classes.dir}"/>
+	    </path>
+	</target>
+
+	<!-- ================= -->
+	<!-- Informative tasks -->
+	<!-- ================= -->
+
+	<target name="02.print.properties" depends="00.init.properties" description="Prints properties on screen for verification purpose" >
+        <echo message="-----------------------------------"/>
+        <echo message="Properties are:"/>
+        <echo message="-----------------------------------"/>
+		<echo message="{ant.project.name} is '${ant.project.name}'"/>
+		<echo message="{basedir} is '${basedir}'"/>
+		<echo message="{src.dir} is '${src.dir}'"/>
+		<echo message="{test.dir} is '${test.dir}'"/>
+		<echo message="{build.classes.dir} is '${build.classes.dir}'"/>
+		<echo message="{build.tests.dir} is '${build.tests.dir}'"/>
+		<echo message="{build.archives.dir} is '${build.archives.dir}'"/>
+		<echo message="{lib.dir} is '${lib.dir}'"/>
+		<echo message="{tmp.dir} is '${tmp.dir}'"/>
+		<echo message="{test.dir} is '${test.dir}'"/>
+		<echo message="{engine.version} is '${engine.version}'"/>
+		<echo message="{JavaSpecific.version} is '${JavaSpecific.version}'"/>
+		<echo message="{NETSpecific.version} is '${NETSpecific.version}'"/>
+        <echo message="..................................."/>
+		<echo message="{java.home} is '${java.home}'"/>
+        <echo message="..................................."/>
+		<echo message="{ikvm.dir} is '${ikvm.dir}'"/>
+       	<echo message="{ikvmc} is '${ikvmc}'"/>
+        <echo message=" "/>
+	</target>
+	
+	<target name="help" depends="00.init.properties">
+			<echo>The following targets are available with this build file:
+		
+			05.build     		compile classes
+								Destination: ${build.classes.dir}
+				
+			05.build.test		compile test classes
+								Destination: ${build.tests.dir}
+		
+			06.unit.test		run unit tests (junit) and save the report in xml format
+								Destination: ${build.unit.reports.dir}
+				
+			06.unit.test.report	run unit tests (junit) and save the report in html format
+								Destination: ${build.unit.reports.dir}
+		
+			07.concordion.test  run acceptance tests (Concordion) and save the report in html format
+		
+			08.package        	create the application jar files
+								Destination: ${build.archives.dir}
+				
+			08.package.debug	create the application jar files with debug informations. 
+								(-g option in javac)
+								Destination: ${build.archives.dir}
+		
+			09.build.NET		compile the application in .NET using ikvm.NET. 
+								Set the path of the ikvm binaries in "ant/environment.properties" to use this target.
+								Destination: ${build.archives.net.dir}
+				
+			10.javadoc			generate the javadoc of the application
+								Destination: ${doc.dir}
+				
+			11.release.bin		generate the package of the application ready for the distribution.
+								The package contains the binaries of 2p (2p.jar and tuprolog.jar), the javadoc, 
+								the guide and the results of tests (unit and acceptance).
+								Destination: ${build.release.dir}
+			 
+			12.tag				Tag the working copy into the googlecode repository (http://code.google.com/p/tuprolog/).
+								Set the username and project version in "ant/environment.properties" to use this target.
+								Your password will be prompted.
+				
+			help       	 		print this help
+			</echo>
+	 </target>
+
+
+	<!-- ============= -->
+	<!-- Project tasks -->
+	<!-- ============= -->
+
+	<!--
+	<target name="03.clean" depends="00.init.properties" description="Creates project structure, if needed">
+        <delete dir="${build.dir}"/>
+        <delete dir="${tmp.dir}" includes="**"/> 
+	</target>
+	-->
+	
+	<target name="04.prepare" depends="00.init.properties" description="Creates project structure, if needed">
+        <mkdir dir="${src.dir}"/>
+        <mkdir dir="${lib.dir}"/>
+        <mkdir dir="${build.classes.dir}"/>
+        <mkdir dir="${build.tests.dir}"/>
+        <mkdir dir="${build.archives.dir}"/>
+		<mkdir dir="${build.unit.reports.dir}"/>		
+		<mkdir dir="${build.archives.net.dir}"/>
+		<mkdir dir="${lib.dir}"/>
+		<delete dir="${tmp.dir}" />
+        <mkdir dir="${tmp.dir}"/>
+	</target>
+    
+	<target name="05.build" depends="01.set.classpath, 04.prepare" description="Compile main source tree java files">
+		<build debug="true" optimize="false"/>
+	</target>
+
+	<target name="05.build.tests" depends="05.build" description="Compile test java files">
+		<build-tests debug="true" optimize="false"/>
+    </target>
+
+	<target name="06.unit.test" depends="05.build.tests">
+		
+		<delete includeemptydirs="true">
+			<fileset dir="${build.unit.reports.dir}" includes="**/*"/>
+		</delete>
+		
+		<!-- We have to set the "dir" attribute in order to start the JVM from the root of the project,
+		in this way the paths used in DynamicURLClassLoaderTestCase.java and JavaLibraryTestCase.java are correct -->
+		<junit fork="yes" printsummary="yes" tempdir="${tmp.dir}" dir="">
+			<formatter type="xml" />
+			<!--<test name="${suite}" />-->
+			<test name="alice.tuprolog.TuPrologTestSuite" todir="${build.unit.reports.dir}"/>
+			<test name="alice.tuprolog.ExceptionsTestSuite" todir="${build.unit.reports.dir}"/>
+			<classpath refid="ant-classpath"/>
+			<classpath location="${build.classes.dir}"/>
+			<classpath location="${build.tests.dir}/unit"/>
+		</junit>
+	</target>
+	
+	<target name="06.unit.test.report" depends="06.unit.test">		
+		<junitreport todir="${build.unit.reports.dir}">
+			<fileset dir="${build.unit.reports.dir}">
+				<include name="TEST-*.xml"/>
+			</fileset>
+			<report styledir="ant" format="frames" todir="${build.unit.reports.dir}/html-report"/>
+		</junitreport>
+		<echo>Look directory ${build.unit.reports.dir}/html-report</echo>
+	</target>
+	
+	<target name="07.concordion.test" depends="05.build.tests">
+		<property name="dir.concordion.output" value="../build/tests/concordion"/>
+		
+		<mkdir dir="../build/tests/concordion/classes"/>
+		<javac classpathref="compile.classpath"
+			destdir="../build/tests/concordion/classes"
+		    srcdir="src:test/concordiontests"
+		    debug="yes"
+		    failonerror="yes"
+		    source="1.8"
+		    target="1.8"
+		    includeantruntime="no"
+		/>
+		
+		<copy todir="../build/tests/concordion/classes">
+			<fileset dir="test/concordiontests" />
+		</copy>
+		
+		<mkdir dir="../build/tests/concordion/test-output"/>
+		<mkdir dir="../build/tests/concordion/concordion-output"/>
+		
+		<junit fork="yes" forkmode="once" printsummary="yes" showoutput="yes">
+			<jvmarg value="-Dconcordion.output.dir=../build/tests/concordion/concordion-output"/>
+		            <classpath>
+		                <path refid="compile.classpath"/>
+		                <pathelement location="../build/tests/concordion/classes"/>
+		            </classpath>
+
+		            <formatter type="plain" usefile="false"/>
+
+		            <batchtest todir="../build/tests/concordion/test-output">
+		                <fileset dir="test/concordiontests">
+		                    <include name="**/*Test.java"/>
+		                    <include name="**/*General.java"/>
+		                    <exclude name="**/Abstract*"/>
+		                </fileset>
+		            </batchtest>
+		        </junit>
+
+		      
+			
+		
+	</target>
+    
+    <target name="08.package" depends="01.set.classpath, 04.prepare" description="Create runnable Jar" >
+    
+    	<build debug="false" optimize="true"/>
+    	<build-tests debug="false" optimize="true"/>
+    	
+    	<package/>
+    	
+    </target>
+	
+	<target name="08.package.debug" depends="01.set.classpath, 04.prepare" description="Create runnable Jar" >
+    
+		<build debug="true" optimize="false"/>
+		<build-tests debug="true" optimize="false"/>
+    	
+		<package/>
+		
+	 </target>
+	
+	 <target name="09.build.NET" depends="08.package" description="Build.NET files">
+	 	
+	 		<delete dir="${build.archives.net.dir}"/>
+ 			<mkdir dir="${build.archives.net.dir}"/>
+	 		<!-- <mkdir dir="${build.archives.net.dir}/archives"/> -->
+	 		<mkdir dir="${build.archives.net.dir}/lib"/>
+	 		<mkdir dir="${build.archives.net.dir}/test"/>
+	 	
+	 		<!-- Copy all ikvm dlls to be sure that 2p runs correctly -->
+	 		<copy todir="${build.archives.net.dir}">
+	 			<fileset dir="${ikvm.dir}/bin/">
+	 				<include name="*.dll"/>
+	 				<!-- <include name="IKVM.OpenJDK.XML.API.dll"/>
+	 				<include name="IKVM.OpenJDK.Security.dll"/>
+	 				<include name="IKVM.OpenJDK.Naming.dll"/>
+	 				<include name="IKVM.OpenJDK.Media.dll"/>
+	 				<include name="IKVM.AWT.WinForms.dll"/>
+	 				<include name="IKVM.OpenJDK.Beans.dll"/>
+	 				<include name="IKVM.OpenJDK.Corba.dll"/>
+	 				<include name="IKVM.OpenJDK.Remoting.dll"/>
+	 				<include name="IKVM.OpenJDK.Util.dll"/>
+	 				<include name="IKVM.OpenJDK.Text.dll"/>
+	 				<include name="IKVM.OpenJDK.Core.dll"/>
+	 				<include name="IKVM.OpenJDK.Misc.dll"/>
+	 				<include name="IKVM.OpenJDK.Tools.dll"/>
+	 				<include name="IKVM.OpenJDK.SwingAWT.dll"/>
+	 				<include name="IKVM.Runtime.dll"/> 
+	 				<include name="IKVM.Reflection.dll"/> --> <!-- Added by Mannino--> 
+	 			</fileset>
+	 		</copy>
+
+	        <echo>Building JUnit...</echo>
+			<exec executable="${ikvmc}">
+	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
+	            <arg value="-target:exe" />
+	            <arg value="-compressresources" />
+	            <arg value="-out:${build.archives.net.dir}/lib/junit.exe" />
+				<arg value="-main:org.junit.runner.JUnitCore" />
+	            <arg value="${lib.dir}/junit.jar" />
+	        </exec>
+	 	
+
+	 		<!--
+	 	    <echo>Building commons-lang...</echo>
+	 	 	<exec executable="${ikvmc}">
+	 	 		<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" />
+	 	 	 	<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
+	 	 		<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Tools.dll" />
+	 	 	 	<arg value="-target:library" />
+	 	 	 	<arg value="-compressresources" />
+	 	 	 	<arg value="-out:${build.archives.net.dir}/commons-lang3-3.3.2.dll" />
+	 	 	 	<arg value="${lib.dir}/commons-lang3-3.3.2.jar" />
+	 		 </exec>
+	 		 -->
+	        
+	        <echo>Building 2p...</echo>
+	 		<exec executable="${ikvmc}">
+	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
+	 			<arg value="-reference:mscorlib.dll" /><!-- Added by Mannino-->
+	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" /> <!-- Added by Mannino-->
+	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.Runtime.dll" />
+	 			<!-- <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Beans.dll" />
+	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Corba.dll" />
+	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Remoting.dll" />
+	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Misc.dll" />
+	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.SwingAWT.dll" /> -->
+	 			<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Tools.dll" />
+				<!-- <arg value="-debug"/> -->
+		 		<arg value="-classloader:ikvm.runtime.ClassPathAssemblyClassLoader"/>
+	            <arg value="-target:winexe" />
+	            <arg value="-compressresources" />
+	            <arg value="-version:${engine.version}.${NETSpecific.version}" />
+	            <arg value="-out:${build.archives.net.dir}/2p.exe" />
+	            <arg value="${build.archives.dir}/2p.jar" />
+	        </exec>
+	
+	 		<echo>Building tuprolog...</echo>
+	 		<exec executable="${ikvmc}">
+	 			  	<arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
+	 				<arg value="-reference:mscorlib.dll" />
+	 				<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" />
+	 				<arg value="-classloader:ikvm.runtime.ClassPathAssemblyClassLoader"/>
+ 		            <arg value="-target:library" />
+ 		            <arg value="-compressresources" />
+ 		            <arg value="-version:${engine.version}.${NETSpecific.version}" />
+ 		            <arg value="-out:${build.archives.net.dir}/tuprolog.dll" />
+ 		            <arg value="${build.archives.dir}/tuprolog.jar" />
+	 		</exec>
+	 	
+		 	<echo>Building Unit Tests...</echo>
+			<exec executable="${ikvmc}">
+	            <!-- <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Text.dll" /> -->
+	            <arg value="-reference:${ikvm.dir}/bin/IKVM.OpenJDK.Core.dll" />
+				<arg value="-reference:mscorlib.dll" />							<!-- Added by Mannino-->
+				<arg value="-reference:${ikvm.dir}/bin/IKVM.Reflection.dll" />	<!-- Added by Mannino-->
+	            <arg value="-target:library" />
+	            <arg value="-compressresources" />
+	            <arg value="-out:${build.archives.net.dir}/test/2pWithUnitTests.dll" />
+				<arg value="${build.archives.dir}/2p.jar"/>
+	            <arg value="${build.tests.dir}/unit-tests.jar"/>
+	        </exec>
+	 	
+	 	
+	 	 <echo>Look directory ${build.archives.net.dir}</echo>
+	    </target>
+
+	    <target name="10.javadoc" depends="01.set.classpath" description="Creates Javadocs">
+	    		
+	    	
+	    	<delete includeemptydirs="true">
+	    	    <fileset dir="${doc.dir}/javadoc" includes="**/*"/>
+	    	</delete> 	
+	    	
+	    	<mkdir dir="${doc.dir}/javadoc"/> 
+	    	
+	    	<javadoc sourcepath="${src.dir}"
+	               destdir="${doc.dir}/javadoc"
+	               author="true"
+	               version="true"
+	               use="true"
+	               windowtitle="tuProlog API"
+	               doctitle="tuProlog"
+	               verbose="no"
+	               encoding="ISO-8859-1"
+	               breakiterator="yes">
+	            <link href="http://java.sun.com/j2se/1.5.0/docs/api/"/>
+	        </javadoc> 
+	    	
+	    	<echo>Look directory ${doc.dir}/javadoc</echo>
+	    </target>
+	
+		<target name="11.release.bin" depends="01.set.classpath, 04.prepare, 06.unit.test.report, 08.package, 10.javadoc, 09.build.NET" description="Creates the structure for the release">
+			
+			<delete includeemptydirs="true">
+				<fileset dir="${build.release.dir}" includes="**/*"/>
+			</delete>
+			
+			<mkdir dir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}"/>
+			<mkdir dir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/bin"/>
+			<mkdir dir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib"/>
+			<mkdir dir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/reports"/>
+			<mkdir dir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/doc"/>
+			
+			<copy todir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/reports">
+		    	<fileset dir="${build.dir}/reports"/>
+		  	</copy>
+		
+			<copy todir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/bin">
+		   		<fileset dir="${build.archives.dir}">
+		      		<include name="*.jar"/>
+		    	</fileset>
+		  	</copy>
+		
+			<copy todir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib">
+				<fileset dir="${lib.dir}">
+					<include name="javassist.jar"/>
+				</fileset>
+			</copy>
+		
+			<copy todir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}/doc">
+				<fileset dir="${doc.dir}"/>
+			</copy>
+		
+			<copy todir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}">
+				<fileset dir=".">
+					<include name="LICENSE.txt"/>
+					<include name="JFLEXLicense.rtf"/>
+					<include name="RSyntaxTextArea_Autocomplete.rtf"/>
+				</fileset>
+			</copy>
+		
+			<zip destfile="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}.zip"
+		       	 basedir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}"
+		 	 	/>
+			
+			<delete dir="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}"/>
+			
+			<echo>Look directory ${build.release.dir}</echo>
+		</target>
+	
+	<target name="12.tag" depends="01.set.classpath, 04.prepare, 08.package, 09.build.NET, 11.release.bin" description="Tags the code">
+		
+		<property name="TagMessage" value="Tag Java ${engine.version}.${JavaSpecific.version}"/>
+		
+		<input
+			message="You are tagging the project with version ${engine.version}.${JavaSpecific.version}, if it is OK insert password for ${username}:"
+			addproperty="password"
+		/>
+		
+		<svnSetting
+			id="settings"
+			username="${username}"
+			password="${password}"
+			svnkit="true" 
+			javahl="false" />
+		
+		<!-- DOC: http://subclipse.tigris.org/svnant/svntask.html -->
+		<svn refid="settings">
+		    
+		    <export
+		    	srcUrl="https://tuprolog.googlecode.com/svn/2p/trunk/.project"
+		    	destPath="${tmp.dir}/.project" />
+		    
+		 </svn>
+		
+			<!--  I use <name> </name> because in this way I'm sure that I replace the name of the project and nothing else called 2p -->
+			<replace file="${tmp.dir}/.project" token="&lt;name&gt;2p&lt;/name&gt;" value="&lt;name&gt;tuProlog REL-${engine.version}.${JavaSpecific.version}&lt;/name&gt;"/>
+		
+		<echo>Tagging the code (be patient this will take a while)...</echo>
+		<!-- It is not possible to put echo messahes inside the svn tag -->
+		<svn refid="settings">
+		    
+			<copy
+				srcUrl="https://tuprolog.googlecode.com/svn/2p/trunk" 
+				destUrl="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}"
+				revision="HEAD"
+				message="${TagMessage}" 
+				makeParents="true" >
+			</copy> 
+			
+			<!-- Changing the project name... -->
+			<delete
+			    url = "https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/.project"
+			    message = "${TagMessage}">
+			</delete>
+			
+			<import
+				path="${tmp.dir}/.project" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/.project"
+				message="${TagMessage}" >
+			</import> 
+			
+			<!-- Importing the files that are necessary for the other projects... -->
+			<import
+				path="${build.archives.dir}" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives"
+				message="${TagMessage}" 
+				recurse="false" >
+			</import> 
+			 
+			<!-- We don't want to copy all the IKVM libraries so we select only the three file needed -->
+			<import
+				path="${build.archives.net.dir}/tuprolog.dll" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/tuprolog.dll"
+				message="${TagMessage}" 
+				recurse="false" >
+			</import>
+			
+			<import
+				path="${build.archives.net.dir}/2p.exe" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/2p.exe"
+				message="${TagMessage}" 
+				recurse="false" >
+			</import>  
+			
+			<!--
+			<import
+				path="${build.archives.net.dir}/commons-lang3-3.3.2.dll" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/commons-lang3-3.3.2.dll"
+				message="${TagMessage}" 
+				recurse="false" >
+			</import>
+			
+			
+			<import
+				path="${build.archives.net.dir}/javassist.dll" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/javassist.dll"
+				message="${TagMessage}" 
+				recurse="false" >
+			</import>  
+			-->
+			
+			<import
+				path="${build.archives.net.dir}/lib" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/lib"
+				message="${TagMessage}" 
+				recurse="false" >
+			</import> 
+			
+			<import
+				path="${build.archives.net.dir}/test" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/build/archives/net/test"
+				message="${TagMessage}" 
+				recurse="false" >
+			</import> 
+			
+			<!-- Importing the release zip... -->
+			<import
+				path="${build.release.dir}/2p-${engine.version}.${JavaSpecific.version}.zip" 
+				url="https://tuprolog.googlecode.com/svn/2p/tags/REL-${engine.version}.${JavaSpecific.version}/release/2p-${engine.version}.${JavaSpecific.version}.zip"
+				message="${TagMessage}" 
+				recurse="false" >
+			</import> 
+		
+		</svn>
+	</target>
+</project>

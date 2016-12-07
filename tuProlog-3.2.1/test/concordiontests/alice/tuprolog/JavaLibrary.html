@@ -1,0 +1,620 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+	xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+<head>
+<title>JavaLibrary</title>
+</head>
+
+<body>
+
+<h1>JavaLibrary</h1>
+
+<p>This document contains the executable specification of JavaLibrary features: its predicates and functors are tested by following the definitions contained in the official tuProlog's guide.</p>
+
+<h2>1. <code>java_object/3</code></h2>
+
+<p><code>java_object(ClassName, ArgList, ObjId)</code> is true iff
+<var>ClassName</var> is the full class name of a Java class available
+on the local file system, <var>ArgList</var> is a list of arguments
+that can be meaningfully used to instantiate an object of the class,
+and <var>ObjId</var> can be used to reference such an object; as a
+side effect, the Java object is created and the reference to it is
+unified with <var>ObjId</var>. It is worth noting that <code>ObjId</code>
+can be a Prolog variable (that will be bound to a ground term) as
+well as a ground term (not a number).</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+java_object(+full_class_name, +list, ?obj_id)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success or failure of single goals.</p>
+
+
+<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Integer', [0], zero), java_object('java.lang.Integer', [0], expected), zero &lt;- equals(expected) returns true.</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+	</table>
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>java_object('non.existant.Class', [], _).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Integer', [], _).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.String', [X], _).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Integer', [0], Z), java_object('java.lang.Integer', [1], Z).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+
+
+	
+	
+	
+	
+<h2>2. <code>&lt;-/2</code> and <code>returns/2</code></h2>
+
+<p><code>'&lt;-'(ObjId, MethodInfo)</code> is true iff <var>ObjId</var>
+is a ground term currently referencing a Java object, which provides a
+method whose name is the functor name of the term <var>MethodInfo</var>
+and possible arguments the arguments of <var>MethodInfo</var> as a
+compound. As a side effect the method is called on the Java object
+referenced by the <var>ObjId</var>.</p>
+
+<p><code>return('&lt;-'(ObjId, MethodInfo), ObjIdResult)</code> is true
+iff <var>ObjId</var> is a ground term currently referencing a Java
+object, which provides a method whose name is the functor name of the
+term <var>MethodInfo</var> and possible arguments the arguments of
+<var>MethodInfo</var> as a compound, and <var>ObjIdResult</var> can
+be used as a meaningful reference for the Java object that the method
+possibly returns. As a side effect the method is called on the Java
+object referenced by the <var>ObjId</var> and the object possibly
+returned by the method invocation is referenced by the
+<var>ObjIdResult</var> term.</p>
+
+<p>The anonymous variable used as argument in the <var>MethodInfo</var>
+structure is interpreted as the Java null value.</p>
+
+<p>It is worth noting that this predicate is equivalent to the
+java_call/3 predicate.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+'&lt;-'(@obj_id, @method_signature)
+return('&lt;-'(@obj_id, @method_signature), ?obj_id)
+</pre>
+
+<h3>2.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success or failure of single goals.</p>
+
+
+<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>java_object('java.util.ArrayList', [], L), L &lt;- clear returns X.</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>java_object('java.util.ArrayList', [], L), L &lt;- size.</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>java_object('java.util.ArrayList', [], L), L &lt;- isEmpty returns true.</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.String', ['hello'], S), S &lt;- toUpperCase returns 'HELLO'.</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>class('java.lang.System') &lt;- gc returns X.</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>class('java.lang.Integer') &lt;- parseInt('15') returns 15.</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>class('java.lang.System') &lt;- currentTimeMillis.</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+	</table>
+	
+
+<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>java_object('java.util.ArrayList', [], L), L &lt;- clear(10).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Object', [], Obj), Obj &lt;- nonExistantMethod.</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Integer', [0], Z), Z &lt;- compareTo(X).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Integer', [0], Z), Z &lt;- compareTo('ciao').</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>class('java.lang.Integer') &lt;- parseInt(10) returns N.</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>class('java.lang.Integer') &lt;- parseInt(X) returns N.</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>class('java.lang.System') &lt;- currentTimeMillis(10).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>class('non.existant.Class') &lt;- nonExistantMethod.</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>class('java.lang.Integer') &lt;- nonExistantMethod.</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+<p>Tests With Results</p>
+	<table
+		concordion:execute="#result = successAndResultsWithLimit(#goal,#theory,#variable,#solution,#limit)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:set="#limit">Limit</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Integer', [5], N), N &lt;- intValue returns V.</td>
+			<td>null</td>
+			<td>V</td>
+			<td>5</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>java_object('java.util.ArrayList', [], X), X &lt;- toArray returns A, atom_chars(A, L).</td>
+			<td>null</td>
+			<td>L</td>
+			<td>['$', 'o', 'b', 'j', '_', '2']</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		
+		
+		
+	</table>
+
+
+<h2>3. <code>as</code> and <code>'.'</code></h2>
+
+<p>The <code>as</code> infix operator is used to explicitly specify (i.e. cast)
+method argument types: <code>ObjectRef as ClassName</code>. By writing so, the
+object represented by <var>ObjectRef</var> is considered to belong to class
+<var>Classname</var>: both <var>ObjectRef</var> and <var>Classname</var> have
+the usual meaning explained above.</p>
+
+<p>The operator works also with primitive Java types, specified as
+<var>Classname</var> (for instance, <code>myNumber as int</code>). The purpose
+of this predicate is both to provide methods with the exact Java types required,
+and to solve possible overloading conflicts a-priori.</p>
+
+<p>The <code>'.'</code> infix operator is used, in conjunction with the
+<code>set</code> and <code>get</code> pseudo-method pair, to access the public
+fields of a Java object. The syntax is based on the following constructs:
+<code>ObjectRef . Field &lt;- set(GroundTerm)</code> and <code>ObjectRef . Field &lt;-
+get(Term)</code>. As usual, <var>ObjectRef</var> is the Prolog identifier for
+a Java object.</p>
+
+<p>The first construct set the public field <var>Field</var> to the specified
+<var>GroundTerm</var>, which may be either a value of a primitive data type,
+or a reference to an existing object: if <var>GroundTerm</var> is not ground,
+the infix predicate fails. The second construct retrieves the value of the
+public field <var>Field</var>, where <var>Term</var> is handled once again as
+<var>ObjectRef</var> in the case of <code>java_object/3</code>.</p>
+
+<p>As for methods, static fields of classes can be accessed using the compound
+term <code>class(ClassName)</code> in the place of <var>ObjectRef</var>.</p>
+
+<p>No templates are available, since <code>as</code> and <code>'.'</code> are
+infix operands, not predicates.</p>
+
+<h3>3.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success or failure of single goals.</p>
+
+
+
+
+
+
+
+
+
+
+<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.String', ['hello'], S1), java_object('java.lang.String', ['world'], S2), S2 &lt;- compareTo(S1 as 'java.lang.Object') returns X, X > 0.</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>class('java.lang.Integer').'MAX_VALUE' &lt;- get(V), V > 0.</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>java_object('java.awt.GridBagConstraints', [], C), java_object('java.awt.Insets', [1,1,1,1], I1), C.insets &lt;- set(I1), C.insets &lt;- get(I2), I1 == I2.</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		
+	</table>
+	
+
+<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Integer', [5], I), class('java.lang.Integer') &lt;- toString(I as int) returns '5'.</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	<tr>
+			<td>java_object('java.lang.String', ['hello'], S1), java_object('java.lang.String', ['world'], S2), S2 &lt;- compareTo(S1 as 'non.existant.Class') returns X.</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.util.ArrayList', [], L), java_object('java.lang.String', ['hello'], S), S &lt;- compareToIgnoreCase(L as 'java.util.List') returns X.</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.String', ['hello'], S), java_object('java.lang.Integer', [2], I), S &lt;- indexOf(I as 'java.util.List') returns N.</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>class('java.lang.Integer').MAX_VALUE &lt;- get(V).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>class('java.lang.Integer').'NON_EXISTANT_FIELD' &lt;- get(X).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.awt.Point', [], P), P.nonExistantField &lt;- get(X).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.awt.Point', [], P), P.nonExistantField &lt;- set(0).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.awt.Point', [], P), P.y &lt;- set(X).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	</table>
+
+<p>Tests With Results</p>
+	<table
+		concordion:execute="#result = successAndResultsWithLimit(#goal,#theory,#variable,#solution,#limit)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:set="#limit">Limit</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>java_object('java.awt.Point', [], P), P.x &lt;- get(X).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>0</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>java_object('java.awt.Point', [], P), P.y &lt;- set(5), P.y &lt;- get(Y).</td>
+			<td>null</td>
+			<td>Y</td>
+			<td>5</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		
+		
+		
+	</table>
+
+<h2>4. <code>java_array_set/3</code>, <code>java_array_get/3</code> and <code>java_array_length/2</code></h2>
+
+<p><code>java_array_set(ObjArrayId, Index, ObjId)</code> is true iff
+<var>ObjArrayId</var> is a ground term currently referencing a Java
+array object, <var>Index</var> is a valid index for the array and
+<var>ObjId</var> is a ground term currently referencing a Java object
+that could inserted as an element of the array (according to Java
+type rules). As side effect, the object referenced by \bt{ObjId} is set
+in the array referenced by <var>ObjArrayId</var> in the position (starting
+from 0, following the Java convention) specified by <var>Index</var>. This
+predicate can be used for arrays of Java objects: for arrays whose elements
+are Java primitive types (such as int, float, etc.)
+predicates can be used, with an underscore and the type following the name
+of the predicate, such as in <code>java_array_set_int/3</code>, with the
+same semantics but specifying directly the term to be set as a Prolog
+term.</p>
+
+<p><code>java_array_get(ObjArrayId, Index, ObjIdResult)</code> is true
+iff <var>ObjArrayId</var> is a ground term currently referencing a
+Java array object, <var>Index</var> is a valid index for the array, and
+<var>ObjIdResult</var> can be used as a meaningful reference for a Java
+object contained in the array. As a side effect, <var>ObjIdResult</var> is
+unified with the reference to the Java object of the array referenced by
+<var>ObjArrayId</var> in the <var>Index</var> position. This predicate can
+be used for arrays of Java objects: for arrays whose elements are Java
+primitive types (such as int, float, etc.) predicates can
+be used, with an underscore and the type following the name of the predicate,
+such as in <code>java_array_get_int/3</code>, with the same semantics but
+specifying directly the term to be set as a Prolog term.</p>
+<p><code>java_array_length(ObjArrayId, ArrayLength)</code> is true
+iff <var>ArrayLength</var> is the length of the Java array referenced by
+the term <var>ObjArrayId</var>.</p>
+
+<p>The anonymous variable used as <var>ObjId</var> is interpreted as the
+Java null value.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+java_array_set(@obj_id, @positive_integer, +obj_id)
+java_array_get(@obj_id, @positive_integer, ?obj_id)
+java_array_length(@term, ?integer)
+</pre>
+
+<h3>4.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success or failure of single goals.</p>
+
+
+
+
+
+
+
+<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Object[]', [3], A), java_object('java.lang.Object', [], Obj), java_array_set(A, 2, Obj), java_array_get(A, 2, X), X == Obj.</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		
+		
+	</table>
+	
+
+<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertFalse="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Integer[]', [3], A), java_array_get(A, 4, Obj).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.awt.Polygon', [], P), P.xpoints &lt;- get(XP), java_array_get_boolean(XP, 2, V).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.String[]', [5], A), java_array_set(A, 2, X).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Integer[]', [5], A), java_array_set(A, 2, zero).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.awt.Polygon', [], P), P.xpoints &lt;- get(XP), java_array_set_boolean(XP, 3, 2).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Object', [], Obj), java_array_length(Obj, Size).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Object', [], Obj), java_array_get(Obj, 0, X).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Object', [], Obj), java_array_get_int(Obj, 0, X).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Integer', [0], I), java_array_set(I, 0, 5).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Integer', [0], I), java_array_set_int(I, 0, 5).</td>
+			<td>null</td>
+			<td>false</td>
+		</tr>
+	
+	</table>
+
+<p>Tests With Results</p>
+	<table
+		concordion:execute="#result = successAndResultsWithLimit(#goal,#theory,#variable,#solution,#limit)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:set="#limit">Limit</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Integer[]', [3], A), java_array_length(A, Size).</td>
+			<td>null</td>
+			<td>Size</td>
+			<td>3</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Integer[]', [3], A), java_array_get(A, 0, I), I &lt;- intValue returns V.</td>
+			<td>null</td>
+			<td>V</td>
+			<td>_</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>java_object('java.awt.Polygon', [], P), P.xpoints &lt;- get(XP), java_array_get_int(XP, 3, V).</td>
+			<td>null</td>
+			<td>V</td>
+			<td>0</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>java_object('java.awt.Polygon', [], P), P.xpoints &lt;- get(XP), java_array_get_float(XP, 3, V).</td>
+			<td>null</td>
+			<td>V</td>
+			<td>0.0</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>java_object('java.lang.Integer[]', [3], A), java_object('java.lang.Integer', [2], Two), java_array_set(A, 2, Two), java_array_get(A, 2, X).</td>
+			<td>null</td>
+			<td>X</td>
+			<td>2</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>java_object('java.awt.Polygon', [], P), P.xpoints &lt;- get(XP), java_array_set_int(XP, 3, 2), java_array_get_int(XP, 3, V).</td>
+			<td>null</td>
+			<td>V</td>
+			<td>2</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		<tr>
+			<td>java_object('java.awt.Polygon', [], P), P.xpoints &lt;- get(XP), java_array_set_float(XP, 3, 2), java_array_get_int(XP, 3, V).</td>
+			<td>null</td>
+			<td>V</td>
+			<td>2.0</td>
+			<td>10</td>
+			<td>True</td>
+		</tr>
+		
+		
+		
+		
+	</table>
+
+</body>
+</html>
+

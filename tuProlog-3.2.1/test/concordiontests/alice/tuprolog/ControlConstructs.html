@@ -1,0 +1,292 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion" xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+
+
+<head>
+<title>Control constructs</title>
+</head>
+
+<body>
+<h1>Control constructs</h1>
+
+<p>These predicates have the effect of controlling the execution
+flow of a Prolog demonstration.</p>
+
+<h2>1. <code>call/1</code></h2>
+
+<p><code>call(G)</code> is true iff <code>G</code> represents a goal
+which is true. When <code>G</code> contains <code>!</code> as a
+subgoal, the effect of <code>!</code> shall not extend outside
+<code>G</code>.</p>
+
+<p>Executing a call has the effect that (a) if <tt>G</tt> should
+fail, then the call will fail, and (b) <tt>G</tt> can be re-executed,
+and (c) any cut inside <tt>G</tt> is local to <tt>G</tt>.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+call(+callable_term)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+<table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal,String theory)</th></tr>
+        <tr><td>call(!).</td><td>null</td><td>true</td></tr>
+       
+</table>
+
+<br />
+ <table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertFalse="#result">success(String goal,String theory)</th></tr>
+        <tr><td>call(fail).	false</td><td>null</td><td>false</td></tr>
+        <tr><td>call((fail, X)).	false</td><td>null</td><td>false</td></tr>
+        <tr><td>call((fail, call(1))).</td><td>null</td><td>false</td></tr>
+        
+        
+        <tr><td>b(_).</td><td>b(X) :- Y = (write(X), X), call(Y).
+a(1).
+a(2).</td><td>false</td></tr>
+        <tr><td>b(3).</td><td>b(X) :- Y = (write(X), X), call(Y).
+a(1).
+a(2).</td><td>false</td></tr>
+        
+</table>
+
+
+<p>Tests With Exception</p>
+
+<table concordion:execute="#result = successWithException(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal)</th><th ext:embed="successWithExceptionAndText(#goal,#theory)">Type Of Error</th></tr>
+        <tr><td>call((write(3), X)).</td><td>null</td><td>true</td><td></td></tr>
+        <tr><td>call((write(3), call(1))).</td><td>null</td><td>true</td><td></td></tr>
+        <tr><td>call(X).</td><td>null</td><td>true</td><td></td></tr>
+        <tr><td>call(1).</td><td>null</td><td>true</td><td></td></tr>
+       <tr><td>call((fail, 1)).</td><td>null</td><td>true</td><td></td></tr>
+        <tr><td>call((write(3), 1)).</td><td>null</td><td>true</td><td></td></tr>
+       <tr><td>call((1 ; true)).</td><td>null</td><td>true</td><td></td></tr>
+
+</table>
+
+
+
+
+<h2>2. <code>(;)/2</code> (disjunction)</h2>
+
+<p><code>';'(Either, Or)</code> is true iff <code>Either</code> is
+true or <code>Or</code> is true.</p>
+
+<p>Note that <code>(;)/2</code> is re-executable.</p>
+
+<p>Executing a disjunction has the effect that (a) if <code>Either</code>
+shoud fail, then <code>Or</code> will be executed on backtracking, and
+(b) disjunction is transparent to cut.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+';'(goal, goal)
+</pre>
+
+<p>Note that <code>';'</code> is an predefined infix operator.</p>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure
+of single goals.</p>
+
+
+
+<table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal,String theory)</th></tr>
+        <tr><td>';'(true, fail).</td><td>null</td><td>true</td></tr>
+        <tr><td>';'(!, call(3)).</td><td>null</td><td>true</td></tr>
+        
+        
+</table>
+
+
+
+<br />
+ <table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertFalse="#result">success(String goal,String theory)</th></tr>
+        <tr><td>';'((!, fail), true).</td><td>null</td><td>false</td></tr>
+      
+        
+</table>
+
+
+
+
+<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		 <tr><td>';'((X = 1, !), X = 2).</td><td>null</td><td>X</td><td>1</td><td>true</td></tr>
+     		 <tr><td>','(';'(X = 1, X = 2), ';'(true, !)).</td><td>null</td><td>X</td><td>1</td><td>true</td></tr>
+     		
+        
+        
+</table>
+
+
+<h2>3. <code>(->)/2</code> (if-then)</h2>
+
+<p><code>'->'(If, Then)</code> is true iff (1) <code>If</code> is
+true, and (2) <code>Then</code> is true for the first solution of <code>If</code>.</p>
+
+<p>Note that <code>(->)/2</code> is re-executable.</p>
+
+<p>Executing an if-then has the effect that (a) if <code>If</code>
+shoud fail, then if-then will fail, and (b) if <code>If</code> should
+succeed, then <code>Then</code> will be executed, and (c) if <code>If</code>
+should succeed and <code>Then</code> later fails, the <code>If</code>
+will not be re-executed because of the cut which has been executed, and
+(d) the <code>If</code> in an if-then is not transparent to cut, and
+(e) a cut in <code>Then</code> is transparent to if-then.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+'->'(goal, goal)
+</pre>
+
+<p>Note that <code>'->'</code> is an predefined infix operator.</p>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure
+of single goals.</p>
+
+<table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal,String theory)</th></tr>
+        <tr><td>'->'(true, true).</td><td>null</td><td>true</td></tr>
+        
+        
+</table>
+
+
+
+<br />
+ <table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertFalse="#result">success(String goal,String theory)</th></tr>
+        <tr><td>'->'(true, fail).</td><td>null</td><td>false</td></tr>
+              <tr><td>'->'(fail, true).</td><td>null</td><td>false</td></tr>
+      	
+</table>
+
+
+
+
+<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		 <tr><td>'->'(true, X = 1).</td><td>null</td><td>X</td><td>1</td><td>true</td></tr>
+     		 <tr><td>'->'(';'(X = 1, X = 2), true).</td><td>null</td><td>X</td><td>1</td><td>true</td></tr>
+         		 <tr><td>'->'(true, ';'(X = 1, X = 2)).</td><td>null</td><td>X</td><td>1</td><td>true</td></tr>
+         		 <tr><td>'->'(true, ';'(X = 1, X = 2)).</td><td>null</td><td>X</td><td>2</td><td>true</td></tr>
+         		        
+        
+</table>
+
+
+<p>No error or exception is thrown by the engine while solving a
+query with <code>(->)/2</code>.</p>
+
+<h2>4. <code>(;)/2</code> (if-then-else)</h2>
+
+<p><code>(;)/2</code> serves two different functions depending on
+whether or not the first argument is a compound term with functor <code>(->)/2</code>.</p>
+
+<p><code>';'('->'(If, Then), Else)</code> is true iff (1a) <code>If</code>
+is true, and (1b) <code>Then</code> is true for the first solution of <code>If</code>, or
+(2) <code>If</code> is false and <code>Else</code> is true.</p>
+
+<p>Note that <code>(;)/2</code> is re-executable. The cut prevents and
+if-then-else from being re-executed a second time.</p>
+
+<p>Executing an if-then-else has the effect that (a) if <code>If</code>
+shoud fail, then if-then-else will be re-executed, and (b) if <code>If</code>
+should succeed, then <code>Then</code> will be executed, and (c) if
+<code>If</code> should succeed and <code>Then</code> later fails, the
+if-the-else will not be re-executed because of the cut which has been
+executed, and (d) the <code>If</code> in an if-then-else is not
+transparent to cut, and (e) a cut in <code>Then</code> is transparent
+to <code>Then</code>.</p>
+
+<p>Re-executing an if-then-else has the effect that (a) the <code>Else</code>
+will be executed, and (b) if <code>Else</code> later fails, the
+if-then-else will not be re-executed again because of the cut which has
+been executed, and (c) a cut in <code>Else</code> is transparent to <code>Else</code>.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+';'('->'(goal, goal), goal)
+</pre>
+
+<p>Note that <code>';'</code> <code>'->'</code> are predefined infix
+operators so that <code>(If -> Then ; Else)</code> is parsed as
+<code>';'('->'(If, Then), Else)</code>.</p>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure
+of single goals.</p>
+
+<table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal,String theory)</th></tr>
+        <tr><td>';'('->'(true, true), fail).</td><td>null</td><td>true</td></tr>
+                <tr><td>';'('->'(fail, true), true).</td><td>null</td><td>true</td></tr>
+                <tr><td>';'('->'((!, fail), true), true).</td><td>null</td><td>true</td></tr>
+       
+ </table>
+
+
+
+<br />
+ <table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertFalse="#result">success(String goal,String theory)</th></tr>
+        <tr><td>';'('->'(true, fail), fail).</td><td>null</td><td>false</td></tr>
+              <tr><td>';'('->'(fail, true), fail).</td><td>null</td><td>false</td></tr>
+      	
+</table>
+
+
+
+
+<table
+		concordion:execute="#result = successAndResults(#goal,#theory,#variable,#solution)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:set="#variable">Variable</th>
+			<th concordion:set="#solution">Solution</th>
+			<th concordion:assertEquals="#result">success(String goal,String
+				theory,String variable,Strng solution)</th>
+		</tr>
+		 <tr><td>';'('->'(true, X = 1), X = 2).</td><td>null</td><td>X</td><td>1</td><td>true</td></tr>
+     		        		 <tr><td>';'('->'(fail, X = 1), X = 2).</td><td>null</td><td>X</td><td>2</td><td>true</td></tr>
+     		        		 <tr><td>';'('->'(true, ';'(X = 1, X = 2)), true).</td><td>null</td><td>X</td><td>1</td><td>true</td></tr>
+     		        		 <tr><td>';'('->'(true, ';'(X = 1, X = 2)), true).</td><td>null</td><td>X</td><td>2</td><td>true</td></tr>
+     		        		 <tr><td>';'('->'(';'(X = 1, X = 2), true), true).</td><td>null</td><td>X</td><td>1</td><td>true</td></tr>
+     		        
+        
+</table>
+
+
+
+</body>
+</html>

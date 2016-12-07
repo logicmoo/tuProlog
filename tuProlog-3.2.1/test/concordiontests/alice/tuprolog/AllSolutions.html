@@ -1,0 +1,213 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion" xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+<head>
+<title>All solutions</title>
+</head>
+
+<body>
+
+<h1>All solutions</h1>
+
+<p>These predicates create a list of all the solutions of a goal.</p>
+
+<h2>1. <code>findall/3</code></h2>
+
+<p><code>findall(Template, Goal, Instances)</code> is true iff <code>Instances</code> unifies with the list of values to which a variable <code>X</code> not occurring in <code>Template</code> or <code>Goal</code> would be instantiated by successive re-executions of <code>call(Goal), X=Template.</code> after systematic replacement of all variables in <code>X</code> by new variables.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+findall(?term, +callable_term, ?list)
+</pre>
+
+<h3>1.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+
+
+ <table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal,String theory)</th></tr>
+        <tr><td>findall(X, (X=1;Y=2), S).</td><td>null</td><td>true</td></tr>
+        <tr><td>findall(X+Y, (X=1), S).</td><td>null</td><td>true</td></tr>
+        <tr><td>findall(X, fail, L).</td><td>null</td><td>true</td></tr>
+        <tr><td>findall(X, (X=1;X=1), S).</td><td>null</td><td>true</td></tr>
+        <tr><td>findall(X, (X=1;X=2), [X,Y]).</td><td>null</td><td>true</td></tr>
+        
+        
+</table>
+
+<br />
+ <table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertFalse="#result">success(String goal,String theory)</th></tr>
+        <tr><td>findall(X, (X=2; X=1), [1, 2]).</td><td>null</td><td>false</td></tr>
+</table>
+
+<br />
+
+<p>Tests With Results</p>
+<table concordion:execute="#result = successAndResult(#goal,#theory,#variable)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:set="#variable">Variable</th><th concordion:assertEquals="#result">success(String goal,String theory,String variable)</th></tr>
+        <tr><td>findall(X, (X=1;Y=2), S).</td><td>null</td><td>S</td><td>[1,_]</td></tr>
+        <tr><td>findall(X+Y, (X=1), S).</td><td>null</td><td>S</td><td>['+'(1,_)]</td></tr>
+        <tr><td>findall(X, fail, L).</td><td>null</td><td>L</td><td>[]</td></tr>
+        <tr><td>findall(X, (X=1;X=1), S).</td><td>null</td><td>S</td><td>[1,1]</td></tr>
+        <tr><td>findall(X, (X=1;X=2), [X,Y]).</td><td>null</td><td>X</td><td>1</td></tr>
+        <tr><td>findall(X, (X=1;X=2), [X,Y]).</td><td>null</td><td>Y</td><td>2</td></tr>
+        <tr><td>findall(X, (X=1;X=2), S).</td><td>null</td><td>S</td><td>[1,2]</td></tr>
+        
+        
+        
+        
+</table>
+
+<p>Test With Exception</p>
+
+ <table concordion:execute="#result = successWithException(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal)</th><th ext:embed="successWithExceptionAndText(#goal,#theory)">Type Of Error</th></tr>
+        <tr><td>findall(X,Goal,S).</td><td>null</td><td>true</td><td></td></tr>
+        <tr><td>findall(X,4,S).</td><td>null</td><td>true</td><td></td></tr>
+</table>
+
+
+
+<h2>2. <code>bagof/3</code></h2>
+
+<p><code>bagof/3</code> assembles as a list the solutions of a goal for each different instantiation of the free variables in that goal. The elements of each list are in order of solution, but the order in which each list is found is undefined.</p>
+
+<p>Note that <code>bagof/3</code> is re-executable.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+bagof(?term, +callable_term, ?list)
+</pre>
+
+<h3>2.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+
+<table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal,String theory)</th></tr>
+        <tr><td>bagof(X,(X=1;X=2), S).</td><td>null</td><td>true</td></tr>
+        <tr><td>bagof(X,(X=1;X=2), X).</td><td>null</td><td>true</td></tr>
+        <tr><td>bagof(X,(X=Y;X=Z), S1).</td><td>null</td><td>true</td></tr>
+        <tr><td>bagof(1,(Y=1;Y=2), L).</td><td>null</td><td>true</td></tr>
+        <tr><td>bagof(f(X,Y), (X=a;Y=b), L1).</td><td>null</td><td>true</td></tr>
+        <tr><td>bagof(X, Y^((X=1,Y=1);(X=2;Y=2)), L2).</td><td>null</td><td>true</td></tr>
+        <tr><td>bagof(X, Y^((X=1;Y=1);(X=2;Y=2)), L3).</td><td>null</td><td>true</td></tr>
+        <tr><td>bagof(X, Y^((X=1;Y=2);X=3), Si1).</td><td>null</td><td>true</td></tr>
+        <tr><td>bagof(X, (X=Y;X=Z;Y=1), S3).</td><td>null</td><td>true</td></tr>
+        
+        
+        
+</table>
+
+<br />
+ <table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertFalse="#result">success(String goal,String theory)</th></tr>
+        <tr><td>bagof(X,fail,S2).</td><td>null</td><td>false</td></tr>
+</table>
+
+<p>Tests With Results</p>
+<table concordion:execute="#result = successAndResult(#goal,#theory,#variable)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:set="#variable">Variable</th><th concordion:assertEquals="#result">success(String goal,String theory,String variable)</th></tr>
+        <tr><td>bagof(X,(X=1;X=2), S).</td><td>null</td><td>S</td><td>[1,2]</td></tr>
+        <tr><td>bagof(X,(X=1;X=2), X).</td><td>null</td><td>X</td><td>[1,2]</td></tr>
+        <tr><td>bagof(X,(X=Y;X=Z), S1).</td><td>null</td><td>S1</td><td>[Y,Z]</td></tr>
+        <tr><td>bagof(1,(Y=1;Y=2), L).</td><td>null</td><td>L</td><td>[1]</td></tr>
+        <tr><td>bagof(f(X,Y), (X=a;Y=b), L1).</td><td>null</td><td>L1</td><td>[f(a,_),f(_,b)]</td></tr>
+        <tr><td>bagof(X, Y^((X=1,Y=1);(X=2;Y=2)), L2).</td><td>null</td><td>L2</td><td>[1,2,_]</td></tr>
+        <tr><td>bagof(X, Y^((X=1;Y=1);(X=2;Y=2)), L3).</td><td>null</td><td>L3</td><td>[1,_,2,_]</td></tr>
+        <tr><td>bagof(X, Y^((X=1;Y=2);X=3), Si1).</td><td>null</td><td>Si1</td><td>[1,_,3]</td></tr>
+        <tr><td>bagof(X, (X=Y;X=Z;Y=1), S3).</td><td>null</td><td>S3</td><td>[Y,Z]</td></tr>
+        
+        
+        
+</table>
+
+<p>Tests With Exception</p>
+
+<table concordion:execute="#result = successWithException(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal)</th><th ext:embed="successWithExceptionAndText(#goal,#theory)">Type Of Error</th></tr>
+        <tr><td>bagof(X,Y^Z,L).</td><td>null</td><td>true</td><td></td></tr>
+        <tr><td>bagof(X,1,L).</td><td>null</td><td>true</td><td></td></tr>
+        <tr><td>bagof(X,4,S).</td><td>null</td><td>true</td><td></td></tr>
+        
+</table>
+
+
+<h2>3. <code>setof/3</code></h2>
+
+<p><code>setof/3</code> assembles as a list the solutions of a goal for each different instantiation of the free variables in that goal. Each list is a sorted list, but the order in which each list is found is undefined.</p>
+
+<p>Note that <code>bagof/3</code> is re-executable.</p>
+
+<p>Templates and modes for the predicate are as follows:</p>
+<pre>
+setof(?term, +callable_term, ?list)
+</pre>
+
+<h3>3.1 Example tests</h3>
+
+<p>Let's start with some simple tests verifying success of failure of single goals.</p>
+
+ <table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertTrue="#result">success(String goal,String theory)</th></tr> 
+        <tr><td>setof(X,(X=1;X=2),S).</td><td>null</td><td>true</td></tr>
+        <tr><td>setof(X,(X=1;X=2),X).</td><td>null</td><td>true</td></tr>
+        <tr><td>setof(X,(X=2;X=1),S).</td><td>null</td><td>true</td></tr>
+        <tr><td>setof(X,(X=2;X=2),S).</td><td>null</td><td>true</td></tr>
+        <tr><td>setof(X,(X=Y;X=Z),S).</td><td>null</td><td>true</td></tr>
+        <tr><td>setof(1,(Y=2;Y=1),L).</td><td>null</td><td>true</td></tr>
+        <tr><td>setof(f(X,Y),(X=a;Y=b),L).</td><td>null</td><td>true</td></tr>
+        <tr><td>setof(X,Y^((X=1,Y=1);(X=2,Y=2)),S).</td><td>null</td><td>true</td></tr>
+        <tr><td>setof(X,Y^((X=1;Y=1);(X=2,Y=2)),S).</td><td>null</td><td>true</td></tr>
+        <tr><td>setof(X,Y^((X=1,Y=1);X=3),S).</td><td>null</td><td>true</td></tr>
+        <tr><td>setof(X,(X=Y;X=Z;Y=1),S).</td><td>null</td><td>true</td></tr>
+        <tr><td>setof(X,a(X,Y),L).</td><td>a(1,f(_)). a(2,f(_)).</td><td>true</td></tr>
+        <tr><td>setof(X,member(X,[f(U,b),f(V,c)]),L).</td><td>null</td><td>true</td></tr>
+        <tr><td>setof(X,member(X,[f(b,U),f(c,V)]),[f(b,a),f(c,a)]).</td><td>null</td><td>true</td></tr>
+        <tr><td>setof(X,member(X,[V,U,f(U),f(V)]),L).</td><td>null</td><td>true</td></tr>
+        <tr><td>setof(X,member(X,[V,U,f(U),f(V)]),[a,b,f(a),f(b)]).</td><td>null</td><td>true</td></tr>
+       
+       
+       
+        
+        
+</table>
+
+<br />
+ <table concordion:execute="#result = success(#goal,#theory)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:assertFalse="#result">success(String goal,String theory)</th></tr>
+         <tr><td>setof(X,fail,S).</td><td>null</td><td>false</td></tr>
+        <tr><td>setof(X,member(X,[V,U,f(U),f(V)]),[a,b,f(b),f(a)]).</td><td>null</td><td>false</td></tr>
+        
+</table>
+
+<p>Test With Results</p>
+<table concordion:execute="#result = successAndResult(#goal,#theory,#variable)">
+        <tr><th concordion:set="#goal">Goal</th><th concordion:set="#theory">Theory</th><th concordion:set="#variable">Variable</th><th concordion:assertEquals="#result">success(String goal,String theory,String variable)</th></tr>
+        <tr><td>setof(X,(X=1;X=2),S).</td><td>null</td><td>S</td><td>[1,2]</td></tr>
+        <tr><td>setof(X,(X=1;X=2),X).</td><td>null</td><td>X</td><td>[1,2]</td></tr>
+        <tr><td>setof(X,(X=2;X=1),S).</td><td>null</td><td>S</td><td>[1,2]</td></tr>
+        <tr><td>setof(X,(X=2;X=2),S).</td><td>null</td><td>S</td><td>[2]</td></tr>
+        <tr><td>setof(X,(X=Y;X=Z),S).</td><td>null</td><td>S</td><td>[Y,Z]</td></tr>
+        <tr><td>setof(1,(Y=2;Y=1),L).</td><td>null</td><td>L</td><td>[1]</td></tr>
+        <tr><td>setof(f(X,Y),(X=a;Y=b),L).</td><td>null</td><td>L</td><td>[f(_,b),f(a,_)]</td></tr>
+        <tr><td>setof(X,Y^((X=1,Y=1);(X=2,Y=2)),S).</td><td>null</td><td>S</td><td>[1,2]</td></tr>
+        <tr><td>setof(X,Y^((X=1;Y=1);(X=2,Y=2)),S).</td><td>null</td><td>S</td><td>[_,1,2]</td></tr>
+        <tr><td>setof(X,Y^((X=1,Y=1);X=3),S).</td><td>null</td><td>S</td><td>[1,3]</td></tr>
+        <tr><td>setof(X,(X=Y;X=Z;Y=1),S).</td><td>null</td><td>S</td><td>[Y,Z]</td></tr>
+        <tr><td>setof(X,a(X,Y),L).</td><td>a(1,f(_)). a(2,f(_)).</td><td>L</td><td>[1,2]</td></tr>
+        <tr><td>setof(X,member(X,[f(U,b),f(V,c)]),L).</td><td>null</td><td>L</td><td>[f(U,b),f(V,c)]</td></tr>
+        <tr><td>setof(X,member(X,[V,U,f(U),f(V)]),L).</td><td>null</td><td>L</td><td>[V,U,f(V),f(U)]</td></tr>
+         <tr><td>setof(X,member(X,[V,U,f(U),f(V)]),[a,b,f(a),f(b)]). </td><td>null</td><td>V</td><td>a</td></tr>
+       
+       
+       
+       
+        
+</table>
+
+</body>
+</html>

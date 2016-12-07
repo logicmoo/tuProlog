@@ -1,0 +1,149 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion"
+	xmlns:ext="urn:concordion-extensions:2010">
+<link href="../../concordion.css" rel="stylesheet" type="text/css" />
+
+<head>
+<title>Stream selection and control</title>
+</head>
+
+<body>
+
+	<h1>Stream selection and control</h1>
+
+	<p>These predicates link an external source/sink with a Prolog
+		stream, its stream-term and stream alias. They enable the source/sink
+		to be opened and closed, and its properties found during execution.</p>
+
+	<p>The following predicates do not have examples to automate in
+		this test:</p>
+	<ul>
+		<li><code>current_input/1</code></li>
+		<li><code>current_output/1</code></li>
+		<li><code>set_input/1</code></li>
+		<li><code>set_output/1</code></li>
+		<li><code>close/2</code></li>
+		<li><code>close/1</code></li>
+		<li><code>flush_output/1</code></li>
+		<li><code>flush_output/0</code></li>
+		<li><code>at_end_of_stream/0</code></li>
+		<li><code>at_end_of_stream/1</code></li>
+		<li><code>set_stream_position/2</code></li>
+	</ul>
+
+	<h2>
+		1.
+		<code>open/4</code>
+		,
+		<code>open/3</code>
+	</h2>
+
+	<p>
+		<code>open(Source_sink, Mode, Stream, Options)</code>
+		is true.
+	</p>
+
+	<p>
+		The predicate
+		<code>open/3</code>
+		provides a similar functionality to
+		<code>open/4</code>
+		except that a goal
+		<code>open(Source_sink, Mode, Stream)</code>
+		opens the source/sink
+		<var>Source_sink</var>
+		with an empty list of stream-options.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+open(@source_sink, @io_mode, -stream, @stream_options)
+open(@source_sink, @io_mode, -stream)
+</pre>
+
+	<h3>1.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>open('/user/roger/data', read, D, [type(binary)]).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>open('/user/scowen', write, D, [alias(editor)]).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>open('/user/dave/data', read, DD, []).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+	</table>
+
+	<h2>
+		2.
+		<code>stream_property/2</code>
+	</h2>
+
+	<p>
+		<code>stream_property(Stream, Property)</code>
+		is true iff the stream associated with the stream-term
+		<var>Stream</var>
+		has stream property
+		<var>Property</var>
+		.
+	</p>
+
+	<p>
+		<code>stream_property(Stream, Property)</code>
+		is re-executable.
+	</p>
+
+	<p>Templates and modes for the predicate are as follows:</p>
+	<pre>
+stream_property(?stream, ?stream_property)
+</pre>
+
+	<h3>2.1 Example tests</h3>
+
+	<p>Let's start with some simple tests verifying success of failure
+		of single goals.</p>
+
+
+	<table concordion:execute="#result = success(#goal,#theory)">
+		<tr>
+			<th concordion:set="#goal">Goal</th>
+			<th concordion:set="#theory">Theory</th>
+			<th concordion:assertTrue="#result">success(String goal,String
+				theory)</th>
+		</tr>
+		<tr>
+			<td>stream_property(S, file_name(F)).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+		<tr>
+			<td>stream_property(S, output).</td>
+			<td>null</td>
+			<td>true</td>
+		</tr>
+
+
+
+
+	</table>
+
+
+</body>
+</html>
