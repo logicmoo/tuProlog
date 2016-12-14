@@ -36,12 +36,13 @@ import java.util.Map;
 import java.util.Vector;
 
 import alice.tuprolog.Int;
-import alice.tuprolog.JavaException;
 import alice.tuprolog.Library;
 import alice.tuprolog.Number;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 import alice.tuprolog.Var;
+import alice.tuprolog.lib.annotations.OOLibraryEnableLambdas;
+import alice.tuprolog.JavaException;
 import alice.util.AbstractDynamicClassLoader;
 import alice.util.AndroidDynamicClassLoader;
 import alice.util.InspectionUtils;
@@ -60,7 +61,8 @@ import alice.util.JavaDynamicClassLoader;
  * 
  * Library/Theory Dependency: BasicLibrary
  */
-@SuppressWarnings("serial")
+@SuppressWarnings("serial") 
+@OOLibraryEnableLambdas(mode = "active") //Alberto
 public class OOLibrary extends Library {
 
     /**
@@ -84,6 +86,7 @@ public class OOLibrary extends Library {
      */
     private int counter = 0;
     
+    private OOLibraryEnableLambdas lambdaPlugin;
     
     /**
 	 * @author Alessio Mercurio
@@ -98,6 +101,9 @@ public class OOLibrary extends Library {
     
     public OOLibrary()
     {
+    	Class<OOLibrary> ooLibrary = OOLibrary.class;
+		lambdaPlugin = ooLibrary.getAnnotation(OOLibraryEnableLambdas.class);
+		
     	if (System.getProperty("java.vm.name").equals("Dalvik"))
 		{
 			dynamicLoader = new AndroidDynamicClassLoader(new URL[] {}, getClass().getClassLoader());
@@ -140,11 +146,12 @@ public class OOLibrary extends Library {
                 + "java_array_set(Array,Index,Object):- java_array_set_primitive(Array,Index,Object).\n"
                 + "java_array_get(Array,Index,Object):- class('java.lang.reflect.Array') <- get(Array as 'java.lang.Object',Index) returns Object,!.\n"
                 + "java_array_get(Array,Index,Object):- java_array_get_primitive(Array,Index,Object).\n"
-                
+               
                 + "java_array_length(Array,Length):- class('java.lang.reflect.Array') <- getLength(Array as 'java.lang.Object') returns Length.\n"
                 + "java_object_string(Object,String):- Object <- toString returns String.    \n"
                 +//**** end section deprecated from tuProlog 3.0  ***//
                 "java_catch(JavaGoal, List, Finally) :- call(JavaGoal), call(Finally).\n";
+        
         		
     }
 
@@ -278,44 +285,49 @@ public class OOLibrary extends Library {
      * 
      * @throws JavaException, Exception
      */
-    @SuppressWarnings("unchecked")
-	public <T> boolean new_lambda_3(Term interfaceName, Term implementation, Term id)throws JavaException,Exception { 
-    	try {
-    		counter++;
-    		String target_class=(interfaceName.toString()).substring(1, interfaceName.toString().length()-1);
-    		String lambda_expression=(implementation.toString()).substring(1, implementation.toString().length()-1);
-    		//following lines allow to delete escape char from received string
-    		target_class = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(target_class);
-    		lambda_expression = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(lambda_expression);
-    	
-    		Class<?> lambdaMetaFactory = alice.util.proxyGenerator.Generator.make(
-				ClassLoader.getSystemClassLoader(),
-		        "MyLambdaFactory"+counter,
-		        "" +           
-		            "public class MyLambdaFactory"+counter+" {\n" +
-		            "  public "+target_class+" getFunction() {\n" + 
-				    " 		return "+lambda_expression+"; \n"+ 
-		            "  }\n" +
-		            "}\n"
-    		);
-		
-    		Object myLambdaFactory = lambdaMetaFactory.newInstance(); 
-    		Class<?> myLambdaClass = myLambdaFactory.getClass(); 
-    		Method[] allMethods = myLambdaClass.getDeclaredMethods();
-    		T myLambdaInstance=null; 
-    		for (Method m : allMethods) {
-    			String mname = m.getName();
-    			if (mname.startsWith("getFunction"))
-    				myLambdaInstance=(T) m.invoke(myLambdaFactory);
-    		}
-    		id = id.getTerm();
-    		if (bindDynamicObject(id, myLambdaInstance))
-    			return true;
-    		else
-    			throw new JavaException(new Exception());
-    	} catch (Exception ex) {
-            throw new JavaException(ex);
-        }
+	@SuppressWarnings("unchecked") //Modificato da Alberto
+	public <T> boolean new_lambda_3(Term interfaceName, Term implementation, Term id)throws JavaException, Exception {
+		if(lambdaPlugin != null){
+			String mode = lambdaPlugin.mode();
+			if(mode.equalsIgnoreCase("active")){
+				try {
+		    		counter++;
+		    		String target_class=(interfaceName.toString()).substring(1, interfaceName.toString().length()-1);
+		    		String lambda_expression=(implementation.toString()).substring(1, implementation.toString().length()-1);
+		    		target_class = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(target_class);
+		    		lambda_expression = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(lambda_expression);
+		    	
+		    		Class<?> lambdaMetaFactory = alice.util.proxyGenerator.Generator.make(
+						ClassLoader.getSystemClassLoader(),
+				        "MyLambdaFactory"+counter,
+				        "" +           
+				            "public class MyLambdaFactory"+counter+" {\n" +
+				            "  public "+target_class+" getFunction() {\n" + 
+						    " 		return "+lambda_expression+"; \n"+ 
+				            "  }\n" +
+				            "}\n"
+		    		);
+				
+		    		Object myLambdaFactory = lambdaMetaFactory.newInstance(); 
+		    		Class<?> myLambdaClass = myLambdaFactory.getClass(); 
+		    		Method[] allMethods = myLambdaClass.getDeclaredMethods();
+		    		T myLambdaInstance=null; 
+		    		for (Method m : allMethods) {
+		    			String mname = m.getName();
+		    			if (mname.startsWith("getFunction"))
+		    				myLambdaInstance=(T) m.invoke(myLambdaFactory);
+		    		}
+		    		id = id.getTerm();
+		    		if (bindDynamicObject(id, myLambdaInstance))
+		    			return true;
+		    		else
+		    			throw new JavaException(new Exception());
+		    	} catch (Exception ex) {
+		            throw new JavaException(ex);
+		        }
+			}
+		}
+		return false;
     }
 
     /**
