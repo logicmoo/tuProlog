@@ -30,10 +30,12 @@ import  alice.tuprolog.event.QueryListener;
 import  alice.tuprolog.event.SpyListener;
 import  alice.tuprolog.event.TheoryListener;
 import  alice.tuprolog.event.WarningListener;
-import alice.tuprolog.json.JSONSerializerManager;
-import alice.tuprolog.json.ReducedEngineState;
 import alice.tuprolog.json.AbstractEngineState;
 import alice.tuprolog.json.FullEngineState;
+import alice.tuprolog.json.JSONSerializerManager;
+import alice.tuprolog.json.ReducedEngineState;
+
+
 
 /**
  *
@@ -191,7 +193,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 		}
 		return brain;
 	}
-	
+		
 	//Alberto
 	public static Prolog fromJSON(String jsonString) {
 		AbstractEngineState brain = null;
@@ -206,7 +208,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 			e.printStackTrace();
 		}
 		p.theoryManager.reloadKnowledgeBase((FullEngineState) brain);
-		
+			
 		int i = 0;
 		int n = brain.getNumberAskedResults();
 		if(brain.hasOpenAlternatives()){
@@ -220,7 +222,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 		}
 		return p;
 	}
-	
+		
 	//Alberto
 	public String toJSON(boolean alsoKB){
 		AbstractEngineState brain = null;
@@ -228,9 +230,9 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 			brain = new FullEngineState();
 		else
 			brain = new ReducedEngineState();
-	    this.theoryManager.serializeKnowledgeBase(brain);
-	    this.engineManager.serializeQueryState(brain);
-	    return JSONSerializerManager.toJSON(brain);
+		this.theoryManager.serializeKnowledgeBase(brain);
+		this.engineManager.serializeQueryState(brain);
+		return JSONSerializerManager.toJSON(brain);
 	}
 
 	/**

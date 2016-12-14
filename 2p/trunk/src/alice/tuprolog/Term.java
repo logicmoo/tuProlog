@@ -45,6 +45,8 @@ public abstract class Term implements Serializable {
     public static final Term TRUE  = new Struct("true");
     public static final Term FALSE = new Struct("false");   
     
+    boolean isCyclic = false; //Alberto
+    
     // checking type and properties of the Term
     
     /**
@@ -370,7 +372,7 @@ public abstract class Term implements Serializable {
 	public String toJSON(){
 		return JSONSerializerManager.toJSON(this);
 	}
-	
+		
 	//Alberto
 	public static Term fromJSON(String jsonString){
 		if(jsonString.contains("Var")) {

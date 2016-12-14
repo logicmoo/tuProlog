@@ -441,4 +441,5 @@ public class EngineRunner implements java.io.Serializable, Runnable{
         public Term getQuery(){
         	return this.query;
         }
+
 }

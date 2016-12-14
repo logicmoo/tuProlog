@@ -141,4 +141,5 @@ public class Theory implements Serializable {
   	public static Theory fromJSON(String jsonString){
   		return JSONSerializerManager.fromJSON(jsonString, Theory.class);	
   	}
+
 }
