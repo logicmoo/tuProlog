@@ -460,8 +460,10 @@ public class Var extends Term {
 			 } else if (t instanceof Struct) {
 				 boolean choice = FlagManager.isOccurCheckEnabled(); //Alberto
 				 if(choice){
-					 if(occurCheck(vl2, (Struct)t))
-							this.isCyclic = true; //Alberto
+					 if(occurCheck(vl2, (Struct)t)){
+						 //this.isCyclic = true;  //Alberto -> da usare quando si supporteranno i termini ciclici
+						 return false; // da togliere 
+					 }
 				 } else {
 					 checkVar(vl2, t); //Alberto
 				 }
