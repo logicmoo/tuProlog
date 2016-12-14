@@ -41,8 +41,8 @@ class FlagManager {
         flags = new ArrayList<Flag>();
         Sflags = flags;
         
-        //occurCheck flag
-        this.defineFlag("occurCheck", new Struct("[on, off]"), new Struct("off"), true, "BasicLibrary");
+        //occurCheck flag -> a default è on!
+        this.defineFlag("occurCheck", new Struct("[on, off]"), new Struct("on"), true, "BasicLibrary");
     }
 
     /**
