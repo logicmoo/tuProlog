@@ -26,6 +26,9 @@ import java.util.*;
  */
 class FlagManager {
 
+	/* flag list */
+	private static ArrayList<Flag> Sflags; //Alberto
+	
     /* flag list */
     private ArrayList<Flag> flags;
 
@@ -34,8 +37,12 @@ class FlagManager {
 	 */
     protected Prolog mediator;
 
-    FlagManager() {
+    FlagManager() { //Alberto
         flags = new ArrayList<Flag>();
+        Sflags = flags;
+        
+        //occurCheck flag
+        this.defineFlag("occurCheck", new Struct("[on, off]"), new Struct("off"), true, "BasicLibrary");
     }
 
     /**
@@ -118,4 +125,37 @@ class FlagManager {
         return false;
     }
 
+    //Alberto
+	public static boolean isOccurCheckEnabled() {
+		for(Flag f : Sflags){
+			if(f.getName().equals("occurCheck")){
+				if(f.getValue().toString().equals("on"))
+					return true;
+				else return false;
+			}
+		}
+		return false;
+	}
+
+	//Alberto
+	public static boolean activateOccurCheck() {
+		for(Flag f : Sflags){
+			if(f.getName().equals("occurCheck")){
+				f.value = new Struct("on");
+				return true;
+			}
+		}
+		return false;
+	}
+
+	//Alberto
+	public static boolean deactivateOccurCheck() {
+		for(Flag f : Sflags){
+			if(f.getName().equals("occurCheck")){
+				f.value = new Struct("off");
+				return true;
+			}
+		}
+		return false;
+	}
 }

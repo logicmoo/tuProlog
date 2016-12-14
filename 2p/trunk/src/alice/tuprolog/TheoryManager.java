@@ -28,8 +28,8 @@ import java.util.Stack;
 
 import alice.tuprolog.InvalidTermException;
 import alice.tuprolog.InvalidTheoryException;
-import alice.tuprolog.json.FullEngineState;
 import alice.tuprolog.json.AbstractEngineState;
+import alice.tuprolog.json.FullEngineState;
 import alice.util.Tools;
 
 /**
@@ -362,7 +362,7 @@ public class TheoryManager implements Serializable {
 		}
 		serializeTimestamp(brain);
 	}
-	
+		
 	//Alberto
 	private void serializeTimestamp(AbstractEngineState brain) {
 		brain.setSerializationTimestamp(System.currentTimeMillis());

@@ -93,6 +93,16 @@ public class BuiltIn extends Library {
 		 engineManager.cut();
 		 return true;
 	 }
+	 
+	 //Alberto
+  	 public boolean activateOccurCheck_0() {
+  		 return FlagManager.activateOccurCheck();
+  	 }
+
+  	 //Alberto
+  	 public boolean deactivateOccurCheck_0() {
+  		 return FlagManager.deactivateOccurCheck();
+  	 }
 
 	 public boolean asserta_1(Term arg0) throws PrologError {
 		 arg0 = arg0.getTerm();

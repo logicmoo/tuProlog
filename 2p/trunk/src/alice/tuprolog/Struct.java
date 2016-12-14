@@ -383,7 +383,10 @@ public class Struct extends Term {
         t.predicateIndicator   = predicateIndicator;
         t.primitive = primitive;
         for (int c = 0;c < arity;c++) {
-            t.arg[c] = arg[c].copy(vMap, idExecCtx);
+        	if(!this.arg[c].isCyclic)
+        		t.arg[c] = arg[c].copy(vMap, idExecCtx);
+        	else
+        		t.arg[c] = this.arg[c];
         }
         return t;
     }
@@ -396,8 +399,11 @@ public class Struct extends Term {
         t.predicateIndicator   = predicateIndicator;
         t.primitive = primitive;
         for (int c = 0;c < arity;c++) {
-            t.arg[c] = arg[c].getTerm().copyAndRetainFreeVar(vMap, idExecCtx); 
-            //qui una .getTerm() necessaria solo in $wt_list!
+        	if(!this.arg[c].isCyclic)
+        		t.arg[c] = arg[c].getTerm().copyAndRetainFreeVar(vMap, idExecCtx); 
+            	//qui una .getTerm() necessaria solo in $wt_list!
+        	else
+        		t.arg[c] = this.arg[c];
         }
         return t;
 	}
@@ -413,7 +419,10 @@ public class Struct extends Term {
         t.predicateIndicator   = predicateIndicator;
         t.primitive = null;
         for (int c = 0;c < arity;c++) {
-            t.arg[c] = arg[c].copy(vMap, substMap);
+        	if(!this.arg[c].isCyclic)
+        		t.arg[c] = arg[c].copy(vMap, substMap);
+        	else
+        		t.arg[c] = this.arg[c];
         }
         return t;
     }
