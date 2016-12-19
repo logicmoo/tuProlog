@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
 import alice.tuprolog.NoMoreSolutionException;
+import alice.tuprolog.json.AbstractEngineState;
 
 public class EngineManager implements java.io.Serializable {
 	
@@ -382,5 +383,17 @@ public class EngineManager implements java.io.Serializable {
 	public void identify(Term t) {
 		EngineRunner er=findRunner();
 		er.identify(t);
+	}
+
+	//Alberto
+	public void serializeQueryState(AbstractEngineState brain) {
+		brain.setQuery(findRunner().getQuery());
+		if(findRunner().env == null) {
+			brain.setNumberAskedResults(0);
+			brain.setHasOpenAlternatives(false);
+		} else {
+			brain.setNumberAskedResults(findRunner().env.getNResultAsked());
+			brain.setHasOpenAlternatives(findRunner().env.hasOpenAlternatives());
+		}
 	}	
 }

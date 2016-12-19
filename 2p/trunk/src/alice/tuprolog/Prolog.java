@@ -23,6 +23,17 @@ import java.io.*;
 import alice.tuprolog.event.*;
 import alice.tuprolog.interfaces.IProlog;
 //import alice.tuprologx.ide.ToolBar;
+import alice.tuprolog.event.ExceptionListener;
+import alice.tuprolog.event.LibraryListener;
+import alice.tuprolog.event.OutputListener;
+import  alice.tuprolog.event.QueryListener;
+import  alice.tuprolog.event.SpyListener;
+import  alice.tuprolog.event.TheoryListener;
+import  alice.tuprolog.event.WarningListener;
+import alice.tuprolog.json.AbstractEngineState;
+import alice.tuprolog.json.FullEngineState;
+import alice.tuprolog.json.JSONSerializerManager;
+import alice.tuprolog.json.ReducedEngineState;
 
 
 
@@ -34,6 +45,10 @@ import alice.tuprolog.interfaces.IProlog;
 public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	public static final boolean INCLUDE_KB_IN_SERIALIZATION = true;
+	public static final boolean EXCLUDE_KB_IN_SERIALIZATION = false;
+	
 	/*  manager of current theory */
 	private TheoryManager theoryManager;
 	/*  component managing primitive  */
@@ -76,7 +91,6 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
     /* path history for including documents */
     private ArrayList<String> absolutePathList;
     private String lastPath;
-
 
 	/**
 	 * Builds a prolog engine with default libraries loaded.
@@ -168,7 +182,58 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 		primitiveManager.initialize(this);
 		engineManager.initialize(this);
 	}
-
+	
+	//Alberto
+	public static AbstractEngineState getEngineStateFromJSON(String jsonString){
+		AbstractEngineState brain = null;
+		if(jsonString.contains("FullEngineState")){
+			brain = JSONSerializerManager.fromJSON(jsonString, FullEngineState.class);
+		} else if(jsonString.contains("ReducedEngineState")){
+			brain = JSONSerializerManager.fromJSON(jsonString, ReducedEngineState.class);
+		}
+		return brain;
+	}
+		
+	//Alberto
+	public static Prolog fromJSON(String jsonString) {
+		AbstractEngineState brain = null;
+		Prolog p = null;
+		if(jsonString.contains("FullEngineState")){
+			brain = JSONSerializerManager.fromJSON(jsonString, FullEngineState.class);
+		} else
+			return p;
+		try {
+			p = new Prolog(((FullEngineState) brain).getLibraries());
+		} catch (InvalidLibraryException e) {
+			e.printStackTrace();
+		}
+		p.theoryManager.reloadKnowledgeBase((FullEngineState) brain);
+			
+		int i = 0;
+		int n = brain.getNumberAskedResults();
+		if(brain.hasOpenAlternatives()){
+			p.solve(brain.getQuery());
+			while(i<n){
+				try {
+					p.solveNext();
+				} catch (NoMoreSolutionException e) {}
+				i++;
+			}
+		}
+		return p;
+	}
+		
+	//Alberto
+	public String toJSON(boolean alsoKB){
+		AbstractEngineState brain = null;
+		if(alsoKB)
+			brain = new FullEngineState();
+		else
+			brain = new ReducedEngineState();
+		this.theoryManager.serializeKnowledgeBase(brain);
+		this.engineManager.serializeQueryState(brain);
+		return JSONSerializerManager.toJSON(brain);
+	}
 
 	/**
 	 * Gets the component managing flags
@@ -245,9 +310,6 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
     public void setCurrentDirectory(String s) {
         this.lastPath=s;    
     }
-
-    
-    
     
 	// theory management interface
 
@@ -1046,6 +1108,5 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 			Term t = Term.createTerm(s);
 			return t;
 		}
-	}
-
+    }
 }

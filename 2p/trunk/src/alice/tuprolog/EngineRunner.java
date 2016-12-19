@@ -172,8 +172,16 @@ public class EngineRunner implements java.io.Serializable, Runnable{
                     result.getResultDemo(),
                     result.getResultVars()
             );
+            
+            //Alberto
+            env.hasOpenAlternatives = sinfo.hasOpenAlternatives();
+            
             if (!sinfo.hasOpenAlternatives()) 
                 solveEnd();
+            
+            //Alberto
+            env.nResultAsked = 0;
+           
            return sinfo;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -220,7 +228,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
         if (hasOpenAlternatives()) {
             refreeze();
             env.nextState = BACKTRACK;
-            
+       
             StateEnd result = env.run();
             defreeze();
             sinfo = new SolveInfo(
@@ -230,9 +238,16 @@ public class EngineRunner implements java.io.Serializable, Runnable{
                     result.getResultVars()
             );
             
+            //Alberto
+            env.hasOpenAlternatives = sinfo.hasOpenAlternatives();
+            
             if (!sinfo.hasOpenAlternatives()){
                 solveEnd();             
             }
+            
+            //Alberto
+            env.nResultAsked = env.nResultAsked + 1;
+            
             return sinfo;
 
         } else
@@ -421,4 +436,10 @@ public class EngineRunner implements java.io.Serializable, Runnable{
         public EngineManager getEngineMan(){
     		return this.engineManager;
     	}
+        
+        //Alberto
+        public Term getQuery(){
+        	return this.query;
+        }
+
 }

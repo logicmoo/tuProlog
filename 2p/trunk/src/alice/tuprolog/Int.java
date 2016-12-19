@@ -17,7 +17,6 @@
  */
 package alice.tuprolog;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +26,10 @@ import java.util.List;
  */
 public class Int extends Number {
    private static final long serialVersionUID = 1L; 
-   private int      value;
+   private int value;
+   
+   @SuppressWarnings("unused")
+	private String type = "Int";
     
     public Int(int v) {
         value = v;
@@ -125,7 +127,6 @@ public class Int extends Number {
         return false;
     }
     
-    
     /**
      * Returns true if this integer term is grater that the term provided.
      * For number term argument, the int value is considered.
@@ -141,32 +142,6 @@ public class Int extends Number {
         } else {
             return false;
         }
-    }
-    public boolean isGreaterRelink(Term t, ArrayList<String> vorder) {
-        t = t.getTerm();
-        if (t instanceof Number) {
-            return value>((Number)t).intValue();
-        } else if (t instanceof Struct) {
-            return false;
-        } else if (t instanceof Var) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
-    /**
-     * Returns true if this integer term is equal to the term provided.
-     */
-    public boolean isEqual(Term t) {
-        t = t.getTerm();
-        if (t instanceof Number) {
-            Number n = (Number) t;
-            if (!n.isInteger())
-                return false;
-            return (long) value == n.longValue();
-        } else
-            return false;
     }
     
     /**

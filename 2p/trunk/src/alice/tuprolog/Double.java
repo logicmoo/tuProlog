@@ -17,7 +17,6 @@
  */
 package alice.tuprolog;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +27,9 @@ import java.util.List;
 public class Double extends Number {
 	private static final long serialVersionUID = 1L;
     private double value;
+    
+    @SuppressWarnings("unused")
+	private String type = "Double";
     
     public Double(double v) {
         value = v;
@@ -134,34 +136,6 @@ public class Double extends Number {
             return false;
         } else if (t instanceof Var) {
             return true;
-        } else {
-            return false;
-        }
-    }
-    
-    public boolean isGreaterRelink(Term t, ArrayList<String> vorder) {
-        t = t.getTerm();
-        if (t instanceof Number) {
-            return value>((Number)t).doubleValue();
-        } else if (t instanceof Struct) {
-            return false;
-        } else if (t instanceof Var) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
-    /**
-     * Returns true if this Double term is equal to the term provided.
-     */
-    public boolean isEqual(Term t) {
-        t = t.getTerm();
-        if (t instanceof Number) {
-            Number n = (Number) t;
-            if (!n.isReal())
-                return false;
-            return value == n.doubleValue();
         } else {
             return false;
         }
