@@ -21,7 +21,6 @@ import java.util.IdentityHashMap;
 
 import alice.tuprolog.*;
 import alice.tuprolog.Number;
-import alice.tuprolog.InvalidTheoryException;
 
 /**
  * This class defines a set of basic built-in predicates for the tuProlog engine
@@ -980,10 +979,11 @@ public class BasicLibrary extends Library {
                 //
                 + "current_prolog_flag(Name,Value) :- catch(get_prolog_flag(Name,Value), Error, false),!.\n"
                 + "current_prolog_flag(Name,Value) :- flag_list(L), member(flag(Name,Value),L).\n"
-                +
+               
                 //
                 // espression/term comparison
                 //
+                +
                 "'=:='(X,Y):- expression_equality(X,Y). \n"
                 + "'=\\='(X,Y):- not expression_equality(X,Y). \n"
                 + "'>'(X,Y):- expression_greater_than(X,Y). \n"

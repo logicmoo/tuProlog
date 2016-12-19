@@ -28,6 +28,7 @@ import java.util.List;
 
 import alice.tuprolog.InvalidTermException;
 import alice.tuprolog.TermVisitor;
+import alice.tuprolog.json.JSONSerializerManager;
 import alice.util.OneWayList;
 
 /**
@@ -42,8 +43,10 @@ public abstract class Term implements Serializable {
 
     // true and false constants
     public static final Term TRUE  = new Struct("true");
-    public static final Term FALSE = new Struct("false");    
+    public static final Term FALSE = new Struct("false");   
     
+    boolean isCyclic = false; //Alberto -> da usare quando si supporteranno i termini ciclici
+     
     // checking type and properties of the Term
     
     /**
@@ -364,4 +367,27 @@ public abstract class Term implements Serializable {
 	 * @param tv - Visitor
 	 */
 	public abstract void accept(TermVisitor tv);
+	
+	//Alberto
+	public String toJSON(){
+		return JSONSerializerManager.toJSON(this);
+	}
+		
+	//Alberto
+	public static Term fromJSON(String jsonString){
+		if(jsonString.contains("Var")) {
+			return JSONSerializerManager.fromJSON(jsonString, Var.class);	
+		} else if(jsonString.contains("Struct")) {
+			return JSONSerializerManager.fromJSON(jsonString, Struct.class);
+		} else if(jsonString.contains("Double")) {
+			return JSONSerializerManager.fromJSON(jsonString, Double.class);
+		} else if(jsonString.contains("Int")) {
+			return JSONSerializerManager.fromJSON(jsonString, Int.class);
+		} else if(jsonString.contains("Long")) {
+			return JSONSerializerManager.fromJSON(jsonString, Long.class);
+		} else if(jsonString.contains("Float")) {
+			return JSONSerializerManager.fromJSON(jsonString, Float.class);
+		} else
+			return null;
+	}
 }

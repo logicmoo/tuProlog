@@ -19,6 +19,8 @@ package alice.tuprolog;
 import    java.io.*;
 import java.util.Iterator;
 
+import alice.tuprolog.json.JSONSerializerManager;
+
 /**
  * This class represents prolog theory which can be provided
  * to a prolog engine.
@@ -130,5 +132,14 @@ public class Theory implements Serializable {
         return theory != null ? theory : clauseList.toString();
     }
 
+    //Alberto
+  	public String toJSON(){
+  		return JSONSerializerManager.toJSON(this);
+  	}
+  	
+  	//Alberto
+  	public static Theory fromJSON(String jsonString){
+  		return JSONSerializerManager.fromJSON(jsonString, Theory.class);	
+  	}
 
 }
