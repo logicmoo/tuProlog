@@ -1,6 +1,7 @@
 package alice.tuprolog.json.test;
 
 import alice.tuprolog.Prolog;
+import alice.tuprolog.SolveInfo;
 import alice.tuprolog.Theory;
 import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.MalformedGoalException;
@@ -28,6 +29,8 @@ public class MainTestJSON {
 		
 		try {
 			System.out.println("?- "+test);
+			SolveInfo i  = SolveInfo.fromJSON(p1.solve(test).toJSON());
+			System.out.println(i.toString());
 			System.out.println(p1.solve(test).toString());
 			System.out.println();
 			System.out.println("?- "+test2);
