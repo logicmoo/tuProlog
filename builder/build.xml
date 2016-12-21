@@ -164,8 +164,8 @@
 
 				<!-- JSR223 service -->
 				<service type="javax.script.ScriptEngineFactory" 
-	    			provider="alice.tuprolog.scriptengine.PrologScriptEngineFactory"/>
-
+	    			provider="alice.tuprolog.scriptengine.PrologScriptEngineFactory"/>			
+				<zipgroupfileset excludes="META-INF/*.SF" dir="${java.lib.dir}" includes="gson-2.6.2.jar"/>
 			</jar>
 
 			<!-- Crea il jar dei test -->
