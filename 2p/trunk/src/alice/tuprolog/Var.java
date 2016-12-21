@@ -110,11 +110,11 @@ public class Var extends Term {
 	 * @param isCyclic 
 	 * @param time is timestamp
 	 */
-	private Var(String n, int id, int alias, long count, boolean isCyclic) {
+	private Var(String n, int id, int alias, long count/*, boolean isCyclic*/) {
 		name = n;
 		completeName = new StringBuilder();
 		internalTimestamp = count;
-		this.isCyclic = isCyclic;
+		//this.isCyclic = isCyclic;
 		fingerPrint = getFingerprint();
 		link  = null;
 		if(id < 0) id = Var.ORIGINAL;
@@ -161,7 +161,7 @@ public class Var extends Term {
 			Var v = (Var)(vMap.get(this));
 			if (v == null) {
 				//No occurence of v before
-				v = new Var(name,idExecCtx,0,internalTimestamp, this.isCyclic);
+				v = new Var(name,idExecCtx,0,internalTimestamp/*, this.isCyclic*/);
 				vMap.put(this,v);
 			}
 			return v;
@@ -194,14 +194,14 @@ public class Var extends Term {
 		Var v;
 		Object temp = vMap.get(this);
 		if (temp == null) {
-			v = new Var(null,Var.PROGRESSIVE,vMap.size(),internalTimestamp, this.isCyclic);
+			v = new Var(null,Var.PROGRESSIVE,vMap.size(),internalTimestamp/*, this.isCyclic*/);
 			vMap.put(this,v);
 		} else {
 			v = (Var) temp;
 		}
 		
-		if(v.isCyclic) //Alberto
-			return v;
+		//if(v.isCyclic) //Alberto
+		//	return v;
 		
 		Term t = getTerm();
 		if (t instanceof Var) {
@@ -522,15 +522,15 @@ public class Var extends Term {
 	 public String toString() {
 		 Term tt = getTerm();
 		 if (name != null) {
-			 if (tt == this || this.isCyclic){
-				 if(this.isCyclic)
-					 return name;
+			 if (tt == this/* || this.isCyclic*/){
+				 //if(this.isCyclic) //Alberto
+					// return name;
 				 return completeName.toString();
 			 } else {
 				 return (completeName.toString() + " / " + tt.toString());
 			 }
 		 } else {
-			 if (tt == this || this.isCyclic) {
+			 if (tt == this /*|| this.isCyclic*/) {
 				 return ANY + ""+this.fingerPrint; //Alberto
 			 } else {
 				 return tt.toString();
@@ -548,15 +548,15 @@ public class Var extends Term {
 	 public String toStringFlattened() {
 		 Term tt = getTerm();
 		 if (name != null) {
-			 if (tt == this || this.isCyclic) {
-				 if(this.isCyclic)
-					 return name;
+			 if (tt == this /*|| this.isCyclic*/) {
+				 //if(this.isCyclic)
+					// return name;
 				 return completeName.toString();
 			 } else {
 				 return tt.toString();
 			 }
 		 } else {
-			 if (tt == this || this.isCyclic) {
+			 if (tt == this /*|| this.isCyclic*/) {
 				 return ANY + ""+this.fingerPrint; //Alberto
 			 } else {
 				 return tt.toString();
