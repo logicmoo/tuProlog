@@ -45,7 +45,7 @@ public abstract class Term implements Serializable {
     public static final Term TRUE  = new Struct("true");
     public static final Term FALSE = new Struct("false");   
     
-    boolean isCyclic = false; //Alberto -> da usare quando si supporteranno i termini ciclici
+    //boolean isCyclic = false; //Alberto -> da usare quando si supporteranno i termini ciclici
      
     // checking type and properties of the Term
     
