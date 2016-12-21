@@ -46,7 +46,7 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
     
     private Term query;
     private Struct goal;
-    private List<Var>   bindings;
+    private List<Var> bindings;
     
     /**
      * 
