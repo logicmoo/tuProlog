@@ -35,7 +35,10 @@
       <HintPath>..\..\lib\2p.exe</HintPath>
     </Reference>
     <Reference Include="fit">
-      <HintPath>..\..\lib\fit.dll</HintPath>
+      <HintPath>..\..\fit\fit.dll</HintPath>
+    </Reference>
+    <Reference Include="fitSharp">
+      <HintPath>..\..\fit\fitSharp.dll</HintPath>
     </Reference>
     <Reference Include="IKVM.OpenJDK.Core">
       <HintPath>..\..\lib\IKVM.OpenJDK.Core.dll</HintPath>

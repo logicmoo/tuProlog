@@ -211,6 +211,11 @@ namespace Fixtures
         return this;
     }
 
+    public override Term copyAndRetainFreeVar(AbstractMap vMap, int idExecCtx)
+    {
+        return this;
+    }
+
     Term copy(AbstractMap vMap, AbstractMap substMap){
         return this;
     }
