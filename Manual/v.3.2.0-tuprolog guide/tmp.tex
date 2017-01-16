@@ -1,0 +1,11 @@
+
+In \tuprolog{} 2.6, instead, the new \texttt{java\_object/4} and \texttt{java\_call/4} are available which accept a path list as an extra argument, enabling the dynamic class loading from virtually any path. Coherently with the lifetime of Prolog bindings, such paths only affect the specific \texttt{java\_object}/\texttt{java\_call} call where they appear, being discarded immediately after.
+For the user convenience, the following syntactic conventions apply:
+\begin{itemize}
+  \item any path entry ending with \texttt{'/'} or \texttt{$\backslash$} is supposed to be a \textit{prefix} of the class name;
+  \item any path entry ending with \texttt{'.jar'} is supposed to be a JAR archive.
+\end{itemize}
+\noindent So, an entry like \texttt{'foo/bar/'} causes the \tuprolog{} class loader to look for \texttt{foo/bar/\textit{classname}.class}, while an entry like \texttt{'mylib.jar'} causes the \tuprolog{} class loader to look for \texttt{\textit{classname}.class} in the specified JAR.
+
+In order to prevent a lot of boilerplate code to be unnecessarily repeated when the same paths are used often, the \texttt{set\_classpath/1} and \texttt{get\_classpath/1} predicates are also available, which set the given path list into a \tuprolog{} engine permanently; accordingly, after a path has been set via \texttt{set\_classpath/1}, the standard \texttt{java\_object/3} and \texttt{java\_call/3} predicates can be used transparently, with no need of any further path specification.
+This permanent setting also affects the other JavaLibrary predicates, such as \texttt{as/2} (cast), array predicates, etc.
