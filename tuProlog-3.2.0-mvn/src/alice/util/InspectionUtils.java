@@ -3,21 +3,10 @@ package alice.util;
 import java.lang.reflect.Method;
 
 
-/**
- *  Utility methods for reflective operations.
- *
- *  @author    Michele Mannino
- */
 public class InspectionUtils
 {
 	
-	/**
-	 * @author Michele Mannino
-	 * 
-	 * @param type: class to be inspected
-	 * @param methodName: name of method
-	 * @param parms: array of params
-	 */
+	
 	public static Method searchForMethod(Class<?> type, String methodName, Class<?>[] parms) {
 	    Method[] methods = type.getMethods();
 	    for(int i = 0; i < methods.length; i++) {
@@ -38,13 +27,7 @@ public class InspectionUtils
 	    return null;
 	}
 	
-    /**
-     *  Returns true if all classes in the sources list are assignment compatible
-     *  with the targets list.  In other words, if all targets[n].isAssignableFrom( sources[n] )
-     *  then this method returns true.
-     *  Any null values in sources are considered wild-cards and will skip the
-     *  isAssignableFrom check as if it passed.
-     */
+   
     public static boolean areTypesCompatible(Class<?>[] targets, Class<?>[] sources)
     {
         if(targets.length != sources.length)
@@ -70,11 +53,7 @@ public class InspectionUtils
         return true;
     }
 
-    /**
-     *  If this specified class represents a primitive type (int, float, etc.) then
-     *  it is translated into its wrapper type (Integer, Float, etc.).  If the
-     *  passed class is not a primitive then it is just returned.
-     */
+    
     public static Class<?> translateFromPrimitive(Class<?> primitive)
     {
         if(!primitive.isPrimitive())
