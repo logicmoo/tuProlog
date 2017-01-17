@@ -17,15 +17,6 @@ public class OneWayList<E> {
         return new OneWayList<T>(list.remove(0),transform(list));
     }
     
-    /**
-     * Transforms given list into a OneWayList without any modification
-     * to it
-     * 
-     * Method introduced during revision by Paolo Contessi
-     *
-     * @param list  Input list to be transformed
-     * @return      An equivalent OneWayList
-     */
     public static <T> OneWayList<T> transform2(List<T> list){
         OneWayList<T> result = null;
         OneWayList<T> p = null;

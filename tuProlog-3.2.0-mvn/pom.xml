@@ -21,9 +21,9 @@
   </licenses>
   
   <scm>
-  	<connection>scm:git:ssh://git@bitbucket.org/[USERNAME]/tuprolog.git</connection>
-    <developerConnection>scm:git:ssh://git@bitbucket.org/[USERNAME]/tuprolog.git</developerConnection>
-    <url>https://bitbucket.org/[USERNAME]/tuprolog.git</url>
+  	<connection>scm:git:ssh://git@bitbucket.org/[username]/tuprolog.git</connection>
+    <developerConnection>scm:git:ssh://git@bitbucket.org/[username]/tuprolog.git</developerConnection>
+    <url>https://bitbucket.org/AlbertoSita_93/tuprolog.git</url>
   </scm>  
 
   <distributionManagement>
@@ -141,17 +141,6 @@
     	<artifactId>gson</artifactId>
     	<version>2.6.2</version>
 	</dependency>
-    
-    <dependency>
-        <groupId>com.ikvm</groupId>
-        <artifactId>ikvm</artifactId>
-        <version>1.0</version>
-    </dependency>
-    <dependency>
-        <groupId>com.ikvm</groupId>
-        <artifactId>ikvmapi</artifactId>
-        <version>1.0</version>
-    </dependency>
  
   </dependencies>
   
