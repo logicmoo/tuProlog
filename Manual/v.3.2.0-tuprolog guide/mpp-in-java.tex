@@ -2676,4 +2676,154 @@ public abstract class PJParser {
 \end{tabular}
 }\caption{A parser for arithmetic expressions encoded in Prolog inside an annotated Java program. The output prints \texttt{true}, \texttt{false}, \texttt{true}, \texttt{true} in this order, since 12+(3*4) is an expression but not a factor, while (12+(3*4)) is both an expression and a factor.}
 \label{tab:pj-example4}
-\end{table}
+\end{table} 
+
+\clearpage
+
+%-----------------------------------------------------------------------
+\section{Migrating the engine: \textit{the JSON API}}
+%-----------------------------------------------------------------------
+Version 3.2.0 of \tuprolog{} brings the support for the serialization and deserialization of the engine's state. With this new feature the user is able to serialize the engine and re-create it on another node. This is a quite heavy action because it needs to serialize the engine's state, to send it to another node, with possible network overhead, and to re-compute the solution on the destination node.\\ \\
+The \tuprolog{} engine's state can be of two different types: \textit{FullState} or \textit{ReducedState}. The first is composed by the knowledge base of the engine, the last query asked, the number of result given to the user and the timestamp of the serialization. The latter is equal to the first, except for the knowledge base, which is not serialized. 
+
+\subsection{Requirements}
+The \textit{JSON API} are built on top of Gson, a tool developed by Google, which automates serialization and de-serialization of POJO. So in order to use the \tuprolog{} \textit{JSON API}, the Java users have to add the Gson jar to the dependency of their project. Users can find the gson-2.6.2.jar file into the Java distribution of \tuprolog{}. For .NET users, the tuprolog.dll already contains the Gson core, so no further dependency are required.
+
+\subsection{API description and an example}
+Here we provide a short description of the new API of the class \texttt{alice.tuprolog.Prolog}:\\ \\
+{\small\tt
+public String toJSON(boolean alsoKB);
+}\\ \\
+This method creates the JSON representation of the \tuprolog{} engine. If \textit{alsoKB} is true, the JSON string contains also the engine's knowledge base, otherwise it doesn't.
+\\ \\
+{\small\tt
+public static Prolog fromJSON(String jsonString);
+}\\ \\
+This method creates a new \textit{Prolog} object from its JSON representation.\\
+Warning: the method works fine if the jsonString contains the JSON representation of the knowledge base of the engine. \textit{ReducedState} are not already supported.
+\\ \\
+{\small\tt
+public static AbstractEngineState getEngineStateFromJSON(String jsonString);
+}\\ \\
+This method gives the Java representation of the \tuprolog{} engine's state. \textit{AbstractEngineState} is the abstract superclass of concrete classes \textit{FullState} and \textit{ReducedState}. It models the common aspect of the engine's state.
+\\ \\
+For future flexybility of the engine, classes like \texttt{alice.tuprolog.Theory}, \texttt{alice.tuprolog.Term} and \texttt{alice.tuprolog.SolveInfo} offers two methods for the JSON serialization/de-serialization:
+\\ \\
+{\small\tt
+	public String toJSON();
+}\\ \\
+This method create the JSON representation of the object.\\ \\
+{\small\tt
+	public static <Object type> fromJSON(String jsonString);
+}\\ \\
+This method creates an istance of \textit{Object type} from a JSON string. \textit{Object type} can be \textit{Theory}, \textit{Term} or \textit{SolveInfo}.
+\\ \\
+For completeness, Table 7.33 and Table 7.34 shows an example of migration of the \tuprolog{} engine via JSON serialization. In the example a client program executes a member query on a \tuprolog{} engine and then sends its JSON representation to a server program. The server creates
+a \tuprolog{} engine using the JSON received via network communication and then gives another solution to the client. Note that the \texttt{Prolog.fromJSON(state)} instruction in the server program creates another instance of the prolog engine and automatically re-computes the query that was asked on the client. More complex scenarios can be treated with the same approach.
+
+\begin{table}
+{\footnotesize
+	\begin{tabular}[-1cm]{p{12cm}}
+	\begin{verbatim}
+import java.net.*;
+import alice.tuprolog.*;
+import java.io.*;
+	
+public class Client {
+public static void main(String[] args){
+  String serverName = "192.168.0.2";
+  int port = 40000;
+  Prolog prolog = new Prolog();
+  String query = "member(A, [1,2,3,4,5,6,7,8,9]).";
+  try {
+   System.out.println(prolog.solve(query).toString());
+   System.out.println(prolog.solveNext().toString());
+  } 
+  catch (MalformedGoalException | NoMoreSolutionException e1)
+  {e1.printStackTrace();}
+  try {
+   Socket client = new Socket(serverName, port);
+   OutputStream outToServer = client.getOutputStream();
+   DataOutputStream out = new DataOutputStream(outToServer);
+   
+   // serialization of prolog engine sent to the server
+   out.writeUTF(prolog.toJSON(true)); 
+   
+   InputStream inFromServer = client.getInputStream();
+   DataInputStream in = new DataInputStream(inFromServer);
+   System.out.println("\nServer says next solution is:\n \n" + in.readUTF());
+   client.close();
+  } 
+  catch(IOException e) 
+  {e.printStackTrace();}
+  }
+}
+
+Program output:
+yes.
+A / 1
+yes.
+A / 2
+
+Server says next solution is:
+
+yes.
+A / 3
+\end{verbatim}
+\end{tabular}
+\caption{A client program which migrates the \tuprolog{} engine via JSON serialization.}
+}
+\end{table} 
+
+\begin{table}
+{\footnotesize
+	\begin{tabular}[-1cm]{p{12cm}}
+	\begin{verbatim}
+import java.net.*;
+import alice.tuprolog.*;
+import java.io.*;
+
+public class Server extends Thread {
+private ServerSocket serverSocket;
+	
+public Server(int port) throws IOException {
+  serverSocket = new ServerSocket(port);
+  serverSocket.setSoTimeout(60000);
+}
+	
+public void run() {
+  while(true) {
+  try {
+   Socket server = serverSocket.accept();
+   DataInputStream in = new DataInputStream(server.getInputStream());
+   String state = in.readUTF();
+
+   //creating an engine from JSON state
+   Prolog prolog = Prolog.fromJSON(state);
+				
+   DataOutputStream out = new DataOutputStream(server.getOutputStream());
+   try {
+   	//Answering the client with the next solution
+    out.writeUTF(prolog.solveNext().toString());
+   } 
+   catch (Exception e) 
+   {e.printStackTrace();}
+   server.close();
+  }catch(Exception s) {
+  e.printStackTrace();
+  break;}}
+}
+
+public static void main(String[] args) {
+  int port = 40000;
+  try {
+   Thread t = new ServerTest(port);
+   t.start();
+   }catch(IOException e)
+    {e.printStackTrace();}}
+}
+\end{verbatim}
+\end{tabular}
+\caption{A server program which creates a \tuprolog{} engine using JSON serialization and answers to the client program.}
+}
+\end{table} 
