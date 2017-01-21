@@ -131,49 +131,53 @@
 \contentsline {section}{\numberline {7.4}Augmenting Java via Prolog:\\the P@J framework}{192}{section.7.4}
 \contentsline {subsection}{\numberline {7.4.1}Term taxonomy}{194}{subsection.7.4.1}
 \contentsline {subsection}{\numberline {7.4.2}Examples}{195}{subsection.7.4.2}
-\contentsline {chapter}{\numberline {8}Multi-paradigm programming in Prolog and .NET}{201}{chapter.8}
-\contentsline {section}{\numberline {8.1}A bit of history}{201}{section.8.1}
-\contentsline {subsection}{\numberline {8.1.1}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.1 and CSharpLibrary}{201}{subsection.8.1.1}
-\contentsline {subsection}{\numberline {8.1.2}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.1.3: CSharpLibrary + exceptions}{202}{subsection.8.1.2}
-\contentsline {subsection}{\numberline {8.1.3}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.2 and CLILibrary}{202}{subsection.8.1.3}
-\contentsline {section}{\numberline {8.2}IKVM Basics}{204}{section.8.2}
-\contentsline {subsection}{\numberline {8.2.1}Dynamic vs. Static modality}{204}{subsection.8.2.1}
-\contentsline {subsection}{\numberline {8.2.2}Class loading issues}{205}{subsection.8.2.2}
-\contentsline {subsection}{\numberline {8.2.3}The other way: writing .NET applications in Java}{206}{subsection.8.2.3}
-\contentsline {section}{\numberline {8.3}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}.NET now}{208}{section.8.3}
-\contentsline {subsection}{\numberline {8.3.1}Highlights}{208}{subsection.8.3.1}
-\contentsline {section}{\numberline {8.4}Using .NET from Prolog: OOLibrary}{210}{section.8.4}
-\contentsline {subsection}{\numberline {8.4.1}Motivation}{210}{subsection.8.4.1}
-\contentsline {subsection}{\numberline {8.4.2}Language Conventions}{211}{subsection.8.4.2}
-\contentsline {subsection}{\numberline {8.4.3}.NET-specific OOLibrary Predicates}{213}{subsection.8.4.3}
-\contentsline {subsubsection}{\numberline {8.4.3.1}Convention Examples}{214}{subsubsection.8.4.3.1}
-\contentsline {subsection}{\numberline {8.4.4}Lambda expressions in .NET}{218}{subsection.8.4.4}
-\contentsline {subsection}{\numberline {8.4.5}Handling .NET Exceptions}{218}{subsection.8.4.5}
-\contentsline {section}{\numberline {8.5}Using Prolog from .NET: the API}{220}{section.8.5}
-\contentsline {section}{\numberline {8.6}Augmenting Prolog via .NET:\\developing new libraries}{220}{section.8.6}
-\contentsline {subsection}{\numberline {8.6.1}Capturing exceptions raised in .NET libraries}{224}{subsection.8.6.1}
-\contentsline {subsection}{\numberline {8.6.2}Capturing the .NET output in Prolog}{224}{subsection.8.6.2}
-\contentsline {section}{\numberline {8.7}Augmenting .NET via Prolog:\\the P@J framework revised}{226}{section.8.7}
-\contentsline {subsection}{\numberline {8.7.1}P@.NET via code generators}{227}{subsection.8.7.1}
-\contentsline {section}{\numberline {8.8}Putting everything together}{228}{section.8.8}
-\contentsline {subsection}{\numberline {8.8.1}Example: Multi-language TicTacToe}{231}{subsection.8.8.1}
-\contentsline {chapter}{\numberline {9}Multi-paradigm programming in Prolog and Android}{235}{chapter.9}
-\contentsline {section}{\numberline {9.1}Class path issues}{235}{section.9.1}
-\contentsline {chapter}{\numberline {10}Version history}{237}{chapter.10}
-\contentsline {section}{\numberline {10.1}Version 2.0}{237}{section.10.1}
-\contentsline {section}{\numberline {10.2}From Version 2.0 to Version 2.0.1}{238}{section.10.2}
-\contentsline {section}{\numberline {10.3}From Version 2.0.1 to Version 2.1}{240}{section.10.3}
-\contentsline {section}{\numberline {10.4}From Version 2.1 to Version 2.2}{243}{section.10.4}
-\contentsline {section}{\numberline {10.5}From Version 2.2 to Version 2.3.0}{243}{section.10.5}
-\contentsline {section}{\numberline {10.6}From Version 2.3.0 to Version 2.3.1}{245}{section.10.6}
-\contentsline {section}{\numberline {10.7}From Version 2.3.1 to Version 2.4}{245}{section.10.7}
-\contentsline {section}{\numberline {10.8}From Version 2.4 to Version 2.5}{245}{section.10.8}
-\contentsline {section}{\numberline {10.9}From Version 2.5 to Version 2.6}{245}{section.10.9}
-\contentsline {section}{\numberline {10.10}From Version 2.6 to Version 2.7}{246}{section.10.10}
-\contentsline {section}{\numberline {10.11}From Version 2.7 to Version 2.7.2}{246}{section.10.11}
-\contentsline {section}{\numberline {10.12}From Version 2.7.2 to Version 2.8}{247}{section.10.12}
-\contentsline {section}{\numberline {10.13}From Version 2.8 to Version 2.9}{247}{section.10.13}
-\contentsline {section}{\numberline {10.14}From Version 2.9 to Version 2.9.2}{248}{section.10.14}
-\contentsline {section}{\numberline {10.15}Version 3.0}{249}{section.10.15}
-\contentsline {section}{\numberline {10.16}Version 3.1}{249}{section.10.16}
-\contentsline {section}{\numberline {10.17}Acknowledgments}{249}{section.10.17}
+\contentsline {section}{\numberline {7.5}Migrating the engine: \textit {the JSON API}}{201}{section.7.5}
+\contentsline {subsection}{\numberline {7.5.1}Requirements}{201}{subsection.7.5.1}
+\contentsline {subsection}{\numberline {7.5.2}API description and an example}{201}{subsection.7.5.2}
+\contentsline {chapter}{\numberline {8}Multi-paradigm programming in Prolog and .NET}{205}{chapter.8}
+\contentsline {section}{\numberline {8.1}A bit of history}{205}{section.8.1}
+\contentsline {subsection}{\numberline {8.1.1}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.1 and CSharpLibrary}{205}{subsection.8.1.1}
+\contentsline {subsection}{\numberline {8.1.2}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.1.3: CSharpLibrary + exceptions}{206}{subsection.8.1.2}
+\contentsline {subsection}{\numberline {8.1.3}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} 2.2 and CLILibrary}{206}{subsection.8.1.3}
+\contentsline {section}{\numberline {8.2}IKVM Basics}{208}{section.8.2}
+\contentsline {subsection}{\numberline {8.2.1}Dynamic vs. Static modality}{208}{subsection.8.2.1}
+\contentsline {subsection}{\numberline {8.2.2}Class loading issues}{209}{subsection.8.2.2}
+\contentsline {subsection}{\numberline {8.2.3}The other way: writing .NET applications in Java}{210}{subsection.8.2.3}
+\contentsline {section}{\numberline {8.3}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}.NET now}{212}{section.8.3}
+\contentsline {subsection}{\numberline {8.3.1}Highlights}{212}{subsection.8.3.1}
+\contentsline {section}{\numberline {8.4}Using .NET from Prolog: OOLibrary}{214}{section.8.4}
+\contentsline {subsection}{\numberline {8.4.1}Motivation}{214}{subsection.8.4.1}
+\contentsline {subsection}{\numberline {8.4.2}Language Conventions}{215}{subsection.8.4.2}
+\contentsline {subsection}{\numberline {8.4.3}.NET-specific OOLibrary Predicates}{217}{subsection.8.4.3}
+\contentsline {subsubsection}{\numberline {8.4.3.1}Convention Examples}{218}{subsubsection.8.4.3.1}
+\contentsline {subsection}{\numberline {8.4.4}Lambda expressions in .NET}{222}{subsection.8.4.4}
+\contentsline {subsection}{\numberline {8.4.5}Handling .NET Exceptions}{222}{subsection.8.4.5}
+\contentsline {section}{\numberline {8.5}Using Prolog from .NET: the API}{224}{section.8.5}
+\contentsline {section}{\numberline {8.6}Augmenting Prolog via .NET:\\developing new libraries}{224}{section.8.6}
+\contentsline {subsection}{\numberline {8.6.1}Capturing exceptions raised in .NET libraries}{228}{subsection.8.6.1}
+\contentsline {subsection}{\numberline {8.6.2}Capturing the .NET output in Prolog}{228}{subsection.8.6.2}
+\contentsline {section}{\numberline {8.7}Augmenting .NET via Prolog:\\the P@J framework revised}{230}{section.8.7}
+\contentsline {subsection}{\numberline {8.7.1}P@.NET via code generators}{231}{subsection.8.7.1}
+\contentsline {section}{\numberline {8.8}Putting everything together}{232}{section.8.8}
+\contentsline {subsection}{\numberline {8.8.1}Example: Multi-language TicTacToe}{235}{subsection.8.8.1}
+\contentsline {chapter}{\numberline {9}Multi-paradigm programming in Prolog and Android}{239}{chapter.9}
+\contentsline {section}{\numberline {9.1}Class path issues}{239}{section.9.1}
+\contentsline {chapter}{\numberline {10}Version history}{241}{chapter.10}
+\contentsline {section}{\numberline {10.1}Version 2.0}{241}{section.10.1}
+\contentsline {section}{\numberline {10.2}From Version 2.0 to Version 2.0.1}{242}{section.10.2}
+\contentsline {section}{\numberline {10.3}From Version 2.0.1 to Version 2.1}{244}{section.10.3}
+\contentsline {section}{\numberline {10.4}From Version 2.1 to Version 2.2}{247}{section.10.4}
+\contentsline {section}{\numberline {10.5}From Version 2.2 to Version 2.3.0}{247}{section.10.5}
+\contentsline {section}{\numberline {10.6}From Version 2.3.0 to Version 2.3.1}{249}{section.10.6}
+\contentsline {section}{\numberline {10.7}From Version 2.3.1 to Version 2.4}{249}{section.10.7}
+\contentsline {section}{\numberline {10.8}From Version 2.4 to Version 2.5}{249}{section.10.8}
+\contentsline {section}{\numberline {10.9}From Version 2.5 to Version 2.6}{249}{section.10.9}
+\contentsline {section}{\numberline {10.10}From Version 2.6 to Version 2.7}{250}{section.10.10}
+\contentsline {section}{\numberline {10.11}From Version 2.7 to Version 2.7.2}{250}{section.10.11}
+\contentsline {section}{\numberline {10.12}From Version 2.7.2 to Version 2.8}{251}{section.10.12}
+\contentsline {section}{\numberline {10.13}From Version 2.8 to Version 2.9}{251}{section.10.13}
+\contentsline {section}{\numberline {10.14}From Version 2.9 to Version 2.9.2}{252}{section.10.14}
+\contentsline {section}{\numberline {10.15}Version 3.0}{253}{section.10.15}
+\contentsline {section}{\numberline {10.16}Version 3.1}{253}{section.10.16}
+\contentsline {section}{\numberline {10.17}Version 3.2}{253}{section.10.17}
+\contentsline {section}{\numberline {10.18}Acknowledgments}{253}{section.10.18}

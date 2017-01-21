@@ -131,49 +131,53 @@
 \BOOKMARK [1][]{section.7.4}{7.4 Augmenting Java via Prolog:the P@J framework}{chapter.7}% 131
 \BOOKMARK [2][]{subsection.7.4.1}{7.4.1 Term taxonomy}{section.7.4}% 132
 \BOOKMARK [2][]{subsection.7.4.2}{7.4.2 Examples}{section.7.4}% 133
-\BOOKMARK [0][]{chapter.8}{8 Multi-paradigm programming in Prolog and .NET}{}% 134
-\BOOKMARK [1][]{section.8.1}{8.1 A bit of history}{chapter.8}% 135
-\BOOKMARK [2][]{subsection.8.1.1}{8.1.1 tuProlog 2.1 and CSharpLibrary}{section.8.1}% 136
-\BOOKMARK [2][]{subsection.8.1.2}{8.1.2 tuProlog 2.1.3: CSharpLibrary + exceptions}{section.8.1}% 137
-\BOOKMARK [2][]{subsection.8.1.3}{8.1.3 tuProlog 2.2 and CLILibrary}{section.8.1}% 138
-\BOOKMARK [1][]{section.8.2}{8.2 IKVM Basics}{chapter.8}% 139
-\BOOKMARK [2][]{subsection.8.2.1}{8.2.1 Dynamic vs. Static modality}{section.8.2}% 140
-\BOOKMARK [2][]{subsection.8.2.2}{8.2.2 Class loading issues}{section.8.2}% 141
-\BOOKMARK [2][]{subsection.8.2.3}{8.2.3 The other way: writing .NET applications in Java}{section.8.2}% 142
-\BOOKMARK [1][]{section.8.3}{8.3 tuProlog.NET now}{chapter.8}% 143
-\BOOKMARK [2][]{subsection.8.3.1}{8.3.1 Highlights}{section.8.3}% 144
-\BOOKMARK [1][]{section.8.4}{8.4 Using .NET from Prolog: OOLibrary}{chapter.8}% 145
-\BOOKMARK [2][]{subsection.8.4.1}{8.4.1 Motivation}{section.8.4}% 146
-\BOOKMARK [2][]{subsection.8.4.2}{8.4.2 Language Conventions}{section.8.4}% 147
-\BOOKMARK [2][]{subsection.8.4.3}{8.4.3 .NET-specific OOLibrary Predicates}{section.8.4}% 148
-\BOOKMARK [3][]{subsubsection.8.4.3.1}{8.4.3.1 Convention Examples}{subsection.8.4.3}% 149
-\BOOKMARK [2][]{subsection.8.4.4}{8.4.4 Lambda expressions in .NET}{section.8.4}% 150
-\BOOKMARK [2][]{subsection.8.4.5}{8.4.5 Handling .NET Exceptions}{section.8.4}% 151
-\BOOKMARK [1][]{section.8.5}{8.5 Using Prolog from .NET: the API}{chapter.8}% 152
-\BOOKMARK [1][]{section.8.6}{8.6 Augmenting Prolog via .NET:developing new libraries}{chapter.8}% 153
-\BOOKMARK [2][]{subsection.8.6.1}{8.6.1 Capturing exceptions raised in .NET libraries}{section.8.6}% 154
-\BOOKMARK [2][]{subsection.8.6.2}{8.6.2 Capturing the .NET output in Prolog}{section.8.6}% 155
-\BOOKMARK [1][]{section.8.7}{8.7 Augmenting .NET via Prolog:the P@J framework revised}{chapter.8}% 156
-\BOOKMARK [2][]{subsection.8.7.1}{8.7.1 P@.NET via code generators}{section.8.7}% 157
-\BOOKMARK [1][]{section.8.8}{8.8 Putting everything together}{chapter.8}% 158
-\BOOKMARK [2][]{subsection.8.8.1}{8.8.1 Example: Multi-language TicTacToe}{section.8.8}% 159
-\BOOKMARK [0][]{chapter.9}{9 Multi-paradigm programming in Prolog and Android}{}% 160
-\BOOKMARK [1][]{section.9.1}{9.1 Class path issues}{chapter.9}% 161
-\BOOKMARK [0][]{chapter.10}{10 Version history}{}% 162
-\BOOKMARK [1][]{section.10.1}{10.1 Version 2.0}{chapter.10}% 163
-\BOOKMARK [1][]{section.10.2}{10.2 From Version 2.0 to Version 2.0.1}{chapter.10}% 164
-\BOOKMARK [1][]{section.10.3}{10.3 From Version 2.0.1 to Version 2.1}{chapter.10}% 165
-\BOOKMARK [1][]{section.10.4}{10.4 From Version 2.1 to Version 2.2}{chapter.10}% 166
-\BOOKMARK [1][]{section.10.5}{10.5 From Version 2.2 to Version 2.3.0}{chapter.10}% 167
-\BOOKMARK [1][]{section.10.6}{10.6 From Version 2.3.0 to Version 2.3.1}{chapter.10}% 168
-\BOOKMARK [1][]{section.10.7}{10.7 From Version 2.3.1 to Version 2.4}{chapter.10}% 169
-\BOOKMARK [1][]{section.10.8}{10.8 From Version 2.4 to Version 2.5}{chapter.10}% 170
-\BOOKMARK [1][]{section.10.9}{10.9 From Version 2.5 to Version 2.6}{chapter.10}% 171
-\BOOKMARK [1][]{section.10.10}{10.10 From Version 2.6 to Version 2.7}{chapter.10}% 172
-\BOOKMARK [1][]{section.10.11}{10.11 From Version 2.7 to Version 2.7.2}{chapter.10}% 173
-\BOOKMARK [1][]{section.10.12}{10.12 From Version 2.7.2 to Version 2.8}{chapter.10}% 174
-\BOOKMARK [1][]{section.10.13}{10.13 From Version 2.8 to Version 2.9}{chapter.10}% 175
-\BOOKMARK [1][]{section.10.14}{10.14 From Version 2.9 to Version 2.9.2}{chapter.10}% 176
-\BOOKMARK [1][]{section.10.15}{10.15 Version 3.0}{chapter.10}% 177
-\BOOKMARK [1][]{section.10.16}{10.16 Version 3.1}{chapter.10}% 178
-\BOOKMARK [1][]{section.10.17}{10.17 Acknowledgments}{chapter.10}% 179
+\BOOKMARK [1][]{section.7.5}{7.5 Migrating the engine: the JSON API}{chapter.7}% 134
+\BOOKMARK [2][]{subsection.7.5.1}{7.5.1 Requirements}{section.7.5}% 135
+\BOOKMARK [2][]{subsection.7.5.2}{7.5.2 API description and an example}{section.7.5}% 136
+\BOOKMARK [0][]{chapter.8}{8 Multi-paradigm programming in Prolog and .NET}{}% 137
+\BOOKMARK [1][]{section.8.1}{8.1 A bit of history}{chapter.8}% 138
+\BOOKMARK [2][]{subsection.8.1.1}{8.1.1 tuProlog 2.1 and CSharpLibrary}{section.8.1}% 139
+\BOOKMARK [2][]{subsection.8.1.2}{8.1.2 tuProlog 2.1.3: CSharpLibrary + exceptions}{section.8.1}% 140
+\BOOKMARK [2][]{subsection.8.1.3}{8.1.3 tuProlog 2.2 and CLILibrary}{section.8.1}% 141
+\BOOKMARK [1][]{section.8.2}{8.2 IKVM Basics}{chapter.8}% 142
+\BOOKMARK [2][]{subsection.8.2.1}{8.2.1 Dynamic vs. Static modality}{section.8.2}% 143
+\BOOKMARK [2][]{subsection.8.2.2}{8.2.2 Class loading issues}{section.8.2}% 144
+\BOOKMARK [2][]{subsection.8.2.3}{8.2.3 The other way: writing .NET applications in Java}{section.8.2}% 145
+\BOOKMARK [1][]{section.8.3}{8.3 tuProlog.NET now}{chapter.8}% 146
+\BOOKMARK [2][]{subsection.8.3.1}{8.3.1 Highlights}{section.8.3}% 147
+\BOOKMARK [1][]{section.8.4}{8.4 Using .NET from Prolog: OOLibrary}{chapter.8}% 148
+\BOOKMARK [2][]{subsection.8.4.1}{8.4.1 Motivation}{section.8.4}% 149
+\BOOKMARK [2][]{subsection.8.4.2}{8.4.2 Language Conventions}{section.8.4}% 150
+\BOOKMARK [2][]{subsection.8.4.3}{8.4.3 .NET-specific OOLibrary Predicates}{section.8.4}% 151
+\BOOKMARK [3][]{subsubsection.8.4.3.1}{8.4.3.1 Convention Examples}{subsection.8.4.3}% 152
+\BOOKMARK [2][]{subsection.8.4.4}{8.4.4 Lambda expressions in .NET}{section.8.4}% 153
+\BOOKMARK [2][]{subsection.8.4.5}{8.4.5 Handling .NET Exceptions}{section.8.4}% 154
+\BOOKMARK [1][]{section.8.5}{8.5 Using Prolog from .NET: the API}{chapter.8}% 155
+\BOOKMARK [1][]{section.8.6}{8.6 Augmenting Prolog via .NET:developing new libraries}{chapter.8}% 156
+\BOOKMARK [2][]{subsection.8.6.1}{8.6.1 Capturing exceptions raised in .NET libraries}{section.8.6}% 157
+\BOOKMARK [2][]{subsection.8.6.2}{8.6.2 Capturing the .NET output in Prolog}{section.8.6}% 158
+\BOOKMARK [1][]{section.8.7}{8.7 Augmenting .NET via Prolog:the P@J framework revised}{chapter.8}% 159
+\BOOKMARK [2][]{subsection.8.7.1}{8.7.1 P@.NET via code generators}{section.8.7}% 160
+\BOOKMARK [1][]{section.8.8}{8.8 Putting everything together}{chapter.8}% 161
+\BOOKMARK [2][]{subsection.8.8.1}{8.8.1 Example: Multi-language TicTacToe}{section.8.8}% 162
+\BOOKMARK [0][]{chapter.9}{9 Multi-paradigm programming in Prolog and Android}{}% 163
+\BOOKMARK [1][]{section.9.1}{9.1 Class path issues}{chapter.9}% 164
+\BOOKMARK [0][]{chapter.10}{10 Version history}{}% 165
+\BOOKMARK [1][]{section.10.1}{10.1 Version 2.0}{chapter.10}% 166
+\BOOKMARK [1][]{section.10.2}{10.2 From Version 2.0 to Version 2.0.1}{chapter.10}% 167
+\BOOKMARK [1][]{section.10.3}{10.3 From Version 2.0.1 to Version 2.1}{chapter.10}% 168
+\BOOKMARK [1][]{section.10.4}{10.4 From Version 2.1 to Version 2.2}{chapter.10}% 169
+\BOOKMARK [1][]{section.10.5}{10.5 From Version 2.2 to Version 2.3.0}{chapter.10}% 170
+\BOOKMARK [1][]{section.10.6}{10.6 From Version 2.3.0 to Version 2.3.1}{chapter.10}% 171
+\BOOKMARK [1][]{section.10.7}{10.7 From Version 2.3.1 to Version 2.4}{chapter.10}% 172
+\BOOKMARK [1][]{section.10.8}{10.8 From Version 2.4 to Version 2.5}{chapter.10}% 173
+\BOOKMARK [1][]{section.10.9}{10.9 From Version 2.5 to Version 2.6}{chapter.10}% 174
+\BOOKMARK [1][]{section.10.10}{10.10 From Version 2.6 to Version 2.7}{chapter.10}% 175
+\BOOKMARK [1][]{section.10.11}{10.11 From Version 2.7 to Version 2.7.2}{chapter.10}% 176
+\BOOKMARK [1][]{section.10.12}{10.12 From Version 2.7.2 to Version 2.8}{chapter.10}% 177
+\BOOKMARK [1][]{section.10.13}{10.13 From Version 2.8 to Version 2.9}{chapter.10}% 178
+\BOOKMARK [1][]{section.10.14}{10.14 From Version 2.9 to Version 2.9.2}{chapter.10}% 179
+\BOOKMARK [1][]{section.10.15}{10.15 Version 3.0}{chapter.10}% 180
+\BOOKMARK [1][]{section.10.16}{10.16 Version 3.1}{chapter.10}% 181
+\BOOKMARK [1][]{section.10.17}{10.17 Version 3.2}{chapter.10}% 182
+\BOOKMARK [1][]{section.10.18}{10.18 Acknowledgments}{chapter.10}% 183
