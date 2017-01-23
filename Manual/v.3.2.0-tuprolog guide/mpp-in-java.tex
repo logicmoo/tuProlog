@@ -2683,31 +2683,31 @@ public abstract class PJParser {
 %-----------------------------------------------------------------------
 \section{Migrating the engine: \textit{the JSON API}}
 %-----------------------------------------------------------------------
-Version 3.2.0 of \tuprolog{} brings the support for the serialization and deserialization of the engine's state. With this new feature the user is able to serialize the engine and re-create it on another node. This is a quite heavy action because it needs to serialize the engine's state, to send it to another node, with possible network overhead, and to re-compute the solution on the destination node.\\ \\
+Version 3.2.0 of \tuprolog{} brings the support for the serialization and deserialization of the engine's state via JSON representation \cite{JSON}. This new feature enables the user to serialize the engine and re-create it on another node This is a quite heavy action because it needs to serialize the engine's state, to send it to another node, with possible network overhead, and to re-compute the solution on the destination node.\\ \\
 The \tuprolog{} engine's state can be of two different types: \textit{FullState} or \textit{ReducedState}. The first is composed by the knowledge base of the engine, the last query asked, the number of result given to the user and the timestamp of the serialization. The latter is equal to the first, except for the knowledge base, which is not serialized. 
 
 \subsection{Requirements}
-The \textit{JSON API} are built on top of Gson, a tool developed by Google, which automates serialization and de-serialization of POJO. So in order to use the \tuprolog{} \textit{JSON API}, the Java users have to add the Gson jar to the dependency of their project. Users can find the gson-2.6.2.jar file into the Java distribution of \tuprolog{}. For .NET users, the tuprolog.dll already contains the Gson core, so no further dependency are required.
+The \textit{JSON API} are built on top of Gson, a tool developed by Google \cite{GSON}, which automates serialization and deserialization of POJO. So in order to use the \tuprolog{} \textit{JSON API}, the Java users have to add the Gson jar to the dependency of their project. Users can find the \texttt{gson-2.6.2.jar} file into the Java distribution of \tuprolog{}. For .NET users, the \texttt{tuprolog.dll} already contains the Gson core, so no further dependency are required.
 
 \subsection{API description and an example}
-Here we provide a short description of the new API of the class \texttt{alice.tuprolog.Prolog}:\\ \\
+Here we provide a short description of the new API of the class \texttt{Prolog} in package \texttt{alice.tuprolog}: \\ \\
 {\small\tt
 public String toJSON(boolean alsoKB);
 }\\ \\
 This method creates the JSON representation of the \tuprolog{} engine. If \textit{alsoKB} is true, the JSON string contains also the engine's knowledge base, otherwise it doesn't.
 \\ \\
 {\small\tt
-public static Prolog fromJSON(String jsonString);
+public static Prolog fromJSON(String str);
 }\\ \\
 This method creates a new \textit{Prolog} object from its JSON representation.\\
 Warning: the method works fine if the jsonString contains the JSON representation of the knowledge base of the engine. \textit{ReducedState} are not already supported.
 \\ \\
 {\small\tt
-public static AbstractEngineState getEngineStateFromJSON(String jsonString);
+public static AbstractEngineState getEngineStateFromJSON(String str);
 }\\ \\
 This method gives the Java representation of the \tuprolog{} engine's state. \textit{AbstractEngineState} is the abstract superclass of concrete classes \textit{FullState} and \textit{ReducedState}. It models the common aspect of the engine's state.
 \\ \\
-For future flexybility of the engine, classes like \texttt{alice.tuprolog.Theory}, \texttt{alice.tuprolog.Term} and \texttt{alice.tuprolog.SolveInfo} offers two methods for the JSON serialization/de-serialization:
+For future flexybility of the engine, classes like \texttt{alice.tuprolog.Theory}, \texttt{alice.tuprolog.Term} and \texttt{alice.tuprolog.SolveInfo} offers two methods for the JSON serialization/deserialization:
 \\ \\
 {\small\tt
 	public String toJSON();
