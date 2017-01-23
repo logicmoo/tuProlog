@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2016.2.24)  21 JAN 2017 16:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2016.2.24)  23 JAN 2017 16:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -292,22 +292,22 @@ LaTeX Warning: Label `tab:pj-example2' multiply defined.
 ) (./mpp-in-dotnet.aux) (./mpp-in-android.aux) (./version-history.aux))
 \openout1 = `tuprolog-guide.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 129.
+LaTeX Font Info:    ... okay on input line 129.
 \AtBeginShipoutBox=\box29
-Package hyperref Info: Link coloring OFF on input line 128.
+Package hyperref Info: Link coloring OFF on input line 129.
 
 (/usr/local/texlive/2015basic/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -318,9 +318,9 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count112
 )
-LaTeX Info: Redefining \ref on input line 128.
-LaTeX Info: Redefining \pageref on input line 128.
-LaTeX Info: Redefining \nameref on input line 128.
+LaTeX Info: Redefining \ref on input line 129.
+LaTeX Info: Redefining \pageref on input line 129.
+LaTeX Info: Redefining \nameref on input line 129.
  (./tuprolog-guide.out) (./tuprolog-guide.out)
 \@outlinefile=\write4
 \openout4 = `tuprolog-guide.out'.
@@ -360,14 +360,14 @@ Package caption Info: End \AtBeginDocument code.
  <images/logo.png, id=739, 182.6825pt x 199.74625pt>
 File: images/logo.png Graphic file (type png)
  <use images/logo.png>
-Package pdftex.def Info: images/logo.png used on input line 130.
+Package pdftex.def Info: images/logo.png used on input line 131.
 (pdftex.def)             Requested size: 142.26378pt x 155.56065pt.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 133.
+(Font)              <12> on input line 134.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 133.
+(Font)              <8> on input line 134.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 133.
+(Font)              <6> on input line 134.
 
 [1
 
@@ -447,7 +447,7 @@ look into the \OT1/cmtt/m/n/10.95 build/archives
 LaTeX Warning: Reference `fig:tuPrologPluginInstall-4' on page 13 undefined on 
 input line 125.
 
-[13] <images/tuPrologPluginInstall-1.png, id=1045, 303.39764pt x 132.94952pt>
+[13] <images/tuPrologPluginInstall-1.png, id=1047, 303.39764pt x 132.94952pt>
 File: images/tuPrologPluginInstall-1.png Graphic file (type png)
 
 <use images/tuPrologPluginInstall-1.png>
@@ -455,7 +455,7 @@ Package pdftex.def Info: images/tuPrologPluginInstall-1.png used on input line
 137.
 (pdftex.def)             Requested size: 301.1261pt x 131.96326pt.
 
-<images/tuPrologPluginInstall-2.png, id=1046, 652.47537pt x 320.44246pt>
+<images/tuPrologPluginInstall-2.png, id=1048, 652.47537pt x 320.44246pt>
 File: images/tuPrologPluginInstall-2.png Graphic file (type png)
 
 <use images/tuPrologPluginInstall-2.png>
@@ -463,7 +463,7 @@ Package pdftex.def Info: images/tuPrologPluginInstall-2.png used on input line
 138.
 (pdftex.def)             Requested size: 301.1261pt x 147.88937pt.
 
-<images/tuPrologPluginInstall-3.png, id=1047, 537.25246pt x 239.99094pt>
+<images/tuPrologPluginInstall-3.png, id=1049, 537.25246pt x 239.99094pt>
 File: images/tuPrologPluginInstall-3.png Graphic file (type png)
 
 <use images/tuPrologPluginInstall-3.png>
@@ -471,7 +471,7 @@ Package pdftex.def Info: images/tuPrologPluginInstall-3.png used on input line
 144.
 (pdftex.def)             Requested size: 301.1261pt x 134.51118pt.
 
-<images/tuPrologPluginInstall-4.png, id=1048, 600.65915pt x 522.25302pt>
+<images/tuPrologPluginInstall-4.png, id=1050, 600.65915pt x 522.25302pt>
 File: images/tuPrologPluginInstall-4.png Graphic file (type png)
 
 <use images/tuPrologPluginInstall-4.png>
@@ -489,14 +489,14 @@ Chapter 3.
 
 
 
-] <images/tuprologIDE.png, id=1068, 351.11176pt x 374.5995pt>
+] <images/tuprologIDE.png, id=1070, 351.11176pt x 374.5995pt>
 File: images/tuprologIDE.png Graphic file (type png)
 
 <use images/tuprologIDE.png>
 Package pdftex.def Info: images/tuprologIDE.png used on input line 58.
 (pdftex.def)             Requested size: 301.1261pt x 321.28047pt.
 
-<images/tuprologCUI.png, id=1069, 507.69675pt x 198.14024pt>
+<images/tuprologCUI.png, id=1071, 507.69675pt x 198.14024pt>
 File: images/tuprologCUI.png Graphic file (type png)
 
 <use images/tuprologCUI.png>
@@ -512,21 +512,21 @@ LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
 (Font)              for symbol `textbraceleft' on input line 68.
 
 [17] [18 <./images/tuprologIDE.png> <./images/tuprologCUI.png>]
-<images/tuprologAgent.png, id=1084, 555.87675pt x 83.71275pt>
+<images/tuprologAgent.png, id=1086, 555.87675pt x 83.71275pt>
 File: images/tuprologAgent.png Graphic file (type png)
 
 <use images/tuprologAgent.png>
 Package pdftex.def Info: images/tuprologAgent.png used on input line 89.
 (pdftex.def)             Requested size: 301.1261pt x 45.34726pt.
 
-<images/syntaxErrorFound.png, id=1085, 352.31625pt x 406.51875pt>
+<images/syntaxErrorFound.png, id=1087, 352.31625pt x 406.51875pt>
 File: images/syntaxErrorFound.png Graphic file (type png)
 
 <use images/syntaxErrorFound.png>
 Package pdftex.def Info: images/syntaxErrorFound.png used on input line 106.
 (pdftex.def)             Requested size: 199.16928pt x 229.80757pt.
 
-<images/setTheorySucceeded.png, id=1086, 352.31625pt x 406.51875pt>
+<images/setTheorySucceeded.png, id=1088, 352.31625pt x 406.51875pt>
 File: images/setTheorySucceeded.png Graphic file (type png)
 
 <use images/setTheorySucceeded.png>
@@ -534,49 +534,49 @@ Package pdftex.def Info: images/setTheorySucceeded.png used on input line 113.
 (pdftex.def)             Requested size: 199.16928pt x 229.80757pt.
  [19 <./images/tuprologAgent.png> <./images/syntaxErrorFound.png>] [20 <./image
 s/setTheorySucceeded.png>]
-<images/gui-solutions.png, id=1102, 351.714pt x 384.83775pt>
+<images/gui-solutions.png, id=1104, 351.714pt x 384.83775pt>
 File: images/gui-solutions.png Graphic file (type png)
 
 <use images/gui-solutions.png>
 Package pdftex.def Info: images/gui-solutions.png used on input line 154.
 (pdftex.def)             Requested size: 199.16928pt x 217.92699pt.
 
-<images/gui-bindings.png, id=1103, 351.714pt x 384.83775pt>
+<images/gui-bindings.png, id=1105, 351.714pt x 384.83775pt>
 File: images/gui-bindings.png Graphic file (type png)
 
 <use images/gui-bindings.png>
 Package pdftex.def Info: images/gui-bindings.png used on input line 163.
 (pdftex.def)             Requested size: 199.16928pt x 217.92699pt.
  [21] [22 <./images/gui-solutions.png> <./images/gui-bindings.png>] <images/gui
--output.png, id=1123, 351.714pt x 384.83775pt>
+-output.png, id=1125, 351.714pt x 384.83775pt>
 File: images/gui-output.png Graphic file (type png)
 
 <use images/gui-output.png>
 Package pdftex.def Info: images/gui-output.png used on input line 199.
 (pdftex.def)             Requested size: 199.16928pt x 217.92699pt.
 
-<images/gui-exceptions.png, id=1124, 351.714pt x 384.83775pt>
+<images/gui-exceptions.png, id=1126, 351.714pt x 384.83775pt>
 File: images/gui-exceptions.png Graphic file (type png)
 
 <use images/gui-exceptions.png>
 Package pdftex.def Info: images/gui-exceptions.png used on input line 208.
 (pdftex.def)             Requested size: 199.16928pt x 217.92699pt.
  [23 <./images/gui-output.png>]
-<images/gui-debug.png, id=1133, 398.1668pt x 434.30179pt>
+<images/gui-debug.png, id=1135, 398.1668pt x 434.30179pt>
 File: images/gui-debug.png Graphic file (type png)
 
 <use images/gui-debug.png>
 Package pdftex.def Info: images/gui-debug.png used on input line 236.
 (pdftex.def)             Requested size: 199.16928pt x 217.24976pt.
 
-<images/gui-spyframe1.png, id=1137, 572.70566pt x 438.39255pt>
+<images/gui-spyframe1.png, id=1139, 572.70566pt x 438.39255pt>
 File: images/gui-spyframe1.png Graphic file (type png)
 
 <use images/gui-spyframe1.png>
 Package pdftex.def Info: images/gui-spyframe1.png used on input line 250.
 (pdftex.def)             Requested size: 199.16928pt x 152.45634pt.
 
-<images/gui-spyframe2.png, id=1138, 1120.86679pt x 552.25189pt>
+<images/gui-spyframe2.png, id=1140, 1120.86679pt x 552.25189pt>
 File: images/gui-spyframe2.png Graphic file (type png)
 
 <use images/gui-spyframe2.png>
@@ -584,7 +584,7 @@ Package pdftex.def Info: images/gui-spyframe2.png used on input line 251.
 (pdftex.def)             Requested size: 199.16928pt x 98.12862pt.
  [24 <./images/gui-exceptions.png>] [25 <./images/gui-debug.png> <./images/gui-
 spyframe1.png> <./images/gui-spyframe2.png>]
-<images/gui-library-manager.png, id=1157, 269.30801pt x 265.89906pt>
+<images/gui-library-manager.png, id=1159, 269.30801pt x 265.89906pt>
 File: images/gui-library-manager.png Graphic file (type png)
 
 <use images/gui-library-manager.png>
@@ -592,14 +592,14 @@ Package pdftex.def Info: images/gui-library-manager.png used on input line 269.
 
 (pdftex.def)             Requested size: 199.16928pt x 196.65266pt.
  [26 <./images/gui-library-manager.png>]
-<images/gui-config.png, id=1166, 337.26pt x 251.7405pt>
+<images/gui-config.png, id=1168, 337.26pt x 251.7405pt>
 File: images/gui-config.png Graphic file (type png)
 
 <use images/gui-config.png>
 Package pdftex.def Info: images/gui-config.png used on input line 292.
 (pdftex.def)             Requested size: 199.16928pt x 148.66772pt.
 
-<images/gui-InputFromConsole.png, id=1169, 1212.22697pt x 462.25528pt>
+<images/gui-InputFromConsole.png, id=1171, 1212.22697pt x 462.25528pt>
 File: images/gui-InputFromConsole.png Graphic file (type png)
 
 <use images/gui-InputFromConsole.png>
@@ -607,7 +607,7 @@ Package pdftex.def Info: images/gui-InputFromConsole.png used on input line 309
 .
 (pdftex.def)             Requested size: 298.75394pt x 113.92007pt.
  [27 <./images/gui-config.png>]
-<images/tuprologPluginGUI.png, id=1177, 745.5855pt x 434.8245pt>
+<images/tuprologPluginGUI.png, id=1179, 745.5855pt x 434.8245pt>
 File: images/tuprologPluginGUI.png Graphic file (type png)
 
 <use images/tuprologPluginGUI.png>
@@ -621,38 +621,38 @@ Overfull \hbox (6.3988pt too wide) in paragraph at lines 337--338
  []
 
 [28 <./images/gui-InputFromConsole.png>]
-<images/plugin1.png, id=1188, 277.035pt x 179.4705pt>
+<images/plugin1.png, id=1190, 277.035pt x 179.4705pt>
 File: images/plugin1.png Graphic file (type png)
  <use images/plugin1.png>
 Package pdftex.def Info: images/plugin1.png used on input line 346.
 (pdftex.def)             Requested size: 200.75073pt x 130.05115pt.
 
-<images/plugin2.png, id=1189, 369.17924pt x 314.3745pt>
+<images/plugin2.png, id=1191, 369.17924pt x 314.3745pt>
 File: images/plugin2.png Graphic file (type png)
 
 <use images/plugin2.png>
 Package pdftex.def Info: images/plugin2.png used on input line 352.
 (pdftex.def)             Requested size: 200.75073pt x 170.94934pt.
 
-<images/plugin3.png, id=1190, 369.17924pt x 268.00125pt>
+<images/plugin3.png, id=1192, 369.17924pt x 268.00125pt>
 File: images/plugin3.png Graphic file (type png)
 
 <use images/plugin3.png>
 Package pdftex.def Info: images/plugin3.png used on input line 358.
 (pdftex.def)             Requested size: 200.75073pt x 145.73267pt.
- <images/plugin4.png, id=1191, 219.219pt x 317.988pt>
+ <images/plugin4.png, id=1193, 219.219pt x 317.988pt>
 File: images/plugin4.png Graphic file (type png)
 
 <use images/plugin4.png>
 Package pdftex.def Info: images/plugin4.png used on input line 364.
 (pdftex.def)             Requested size: 200.75073pt x 291.21817pt.
- <images/plugin5.png, id=1192, 674.52pt x 507.0945pt>
+ <images/plugin5.png, id=1194, 674.52pt x 507.0945pt>
 File: images/plugin5.png Graphic file (type png)
 
 <use images/plugin5.png>
 Package pdftex.def Info: images/plugin5.png used on input line 370.
 (pdftex.def)             Requested size: 200.75073pt x 150.9147pt.
- <images/plugin6.png, id=1193, 687.7695pt x 289.08pt>
+ <images/plugin6.png, id=1195, 687.7695pt x 289.08pt>
 File: images/plugin6.png Graphic file (type png)
 
 <use images/plugin6.png>
@@ -661,26 +661,26 @@ Package pdftex.def Info: images/plugin6.png used on input line 376.
  [29 <./images/tuprologPluginGUI.png> <./images/plugin1.png>] [30 <./images/plu
 gin2.png> <./images/plugin3.png>] [31 <./images/plugin4.png> <./images/plugin5.
 png>]
-<images/plugin7.png, id=1216, 674.52pt x 507.0945pt>
+<images/plugin7.png, id=1218, 674.52pt x 507.0945pt>
 File: images/plugin7.png Graphic file (type png)
  <use images/plugin7.png>
 Package pdftex.def Info: images/plugin7.png used on input line 388.
 (pdftex.def)             Requested size: 113.81102pt x 85.55496pt.
 
-<images/plugin8.png, id=1217, 186.6975pt x 96.36pt>
+<images/plugin8.png, id=1219, 186.6975pt x 96.36pt>
 File: images/plugin8.png Graphic file (type png)
  <use images/plugin8.png>
 Package pdftex.def Info: images/plugin8.png used on input line 394.
 (pdftex.def)             Requested size: 200.75073pt x 103.6173pt.
 
-<images/plugin9.png, id=1218, 99.37125pt x 167.4255pt>
+<images/plugin9.png, id=1220, 99.37125pt x 167.4255pt>
 File: images/plugin9.png Graphic file (type png)
 
 <use images/plugin9.png>
 Package pdftex.def Info: images/plugin9.png used on input line 400.
 (pdftex.def)             Requested size: 200.75073pt x 338.27345pt.
 
-<images/plugin10.png, id=1219, 231.264pt x 271.0125pt>
+<images/plugin10.png, id=1221, 231.264pt x 271.0125pt>
 File: images/plugin10.png Graphic file (type png)
 
 <use images/plugin10.png>
@@ -688,60 +688,60 @@ Package pdftex.def Info: images/plugin10.png used on input line 406.
 (pdftex.def)             Requested size: 200.75073pt x 235.26617pt.
  [32 <./images/plugin6.png> <./images/plugin7.png>]
 [33 <./images/plugin8.png> <./images/plugin9.png>]
-<images/plugin11.png, id=1237, 274.02374pt x 87.32625pt>
+<images/plugin11.png, id=1239, 274.02374pt x 87.32625pt>
 File: images/plugin11.png Graphic file (type png)
 
 <use images/plugin11.png>
 Package pdftex.def Info: images/plugin11.png used on input line 424.
 (pdftex.def)             Requested size: 200.75073pt x 63.9768pt.
  [34 <./images/plugin10.png> <./images/plugin11.png>]
-<images/android1.png, id=1250, 289.08pt x 284.86424pt>
+<images/android1.png, id=1251, 289.08pt x 284.86424pt>
 File: images/android1.png Graphic file (type png)
 
 <use images/android1.png>
 Package pdftex.def Info: images/android1.png used on input line 463.
 (pdftex.def)             Requested size: 200.75073pt x 197.82141pt.
 
-<images/android2.png, id=1251, 289.08pt x 164.41425pt>
+<images/android2.png, id=1252, 289.08pt x 164.41425pt>
 File: images/android2.png Graphic file (type png)
 
 <use images/android2.png>
 Package pdftex.def Info: images/android2.png used on input line 464.
 (pdftex.def)             Requested size: 200.75073pt x 114.17598pt.
  [35] [36 <./images/android1.png> <./images/android2.png>] <images/android3.png
-, id=1265, 289.08pt x 271.0125pt>
+, id=1266, 289.08pt x 271.0125pt>
 File: images/android3.png Graphic file (type png)
 
 <use images/android3.png>
 Package pdftex.def Info: images/android3.png used on input line 476.
 (pdftex.def)             Requested size: 150.56305pt x 141.1506pt.
- <images/android4.png, id=1266, 289.08pt x 216.81pt>
+ <images/android4.png, id=1267, 289.08pt x 216.81pt>
 File: images/android4.png Graphic file (type png)
 
 <use images/android4.png>
 Package pdftex.def Info: images/android4.png used on input line 477.
 (pdftex.def)             Requested size: 150.56305pt x 112.92049pt.
- <images/android6.png, id=1267, 289.08pt x 187.902pt>
+ <images/android6.png, id=1268, 289.08pt x 187.902pt>
 File: images/android6.png Graphic file (type png)
 
 <use images/android6.png>
 Package pdftex.def Info: images/android6.png used on input line 483.
 (pdftex.def)             Requested size: 150.56305pt x 97.86443pt.
 
-<images/android5.png, id=1268, 289.08pt x 202.95825pt>
+<images/android5.png, id=1269, 289.08pt x 202.95825pt>
 File: images/android5.png Graphic file (type png)
 
 <use images/android5.png>
 Package pdftex.def Info: images/android5.png used on input line 484.
 (pdftex.def)             Requested size: 150.56305pt x 105.70612pt.
- <images/android7.png, id=1269, 289.08pt x 481.8pt>
+ <images/android7.png, id=1270, 289.08pt x 481.8pt>
 File: images/android7.png Graphic file (type png)
 
 <use images/android7.png>
 Package pdftex.def Info: images/android7.png used on input line 490.
 (pdftex.def)             Requested size: 150.56305pt x 250.93442pt.
 
-<images/android8.png, id=1270, 289.08pt x 357.13425pt>
+<images/android8.png, id=1271, 289.08pt x 357.13425pt>
 File: images/android8.png Graphic file (type png)
 
 <use images/android8.png>
@@ -753,7 +753,7 @@ Package pdftex.def Info: images/android8.png used on input line 491.
 LaTeX Warning: Reference `fig:android78' on page 39 undefined on input line 501
 .
 
-<images/android9.png, id=1288, 170.44812pt x 267.26263pt>
+<images/android9.png, id=1289, 170.44812pt x 267.26263pt>
 File: images/android9.png Graphic file (type png)
 
 <use images/android9.png>
@@ -765,28 +765,28 @@ Overfull \hbox (1.97903pt too wide) in paragraph at lines 520--522
 an-dard'' (i.e., JavaSE)
  []
 
-<images/android9a.png, id=1297, 257.03575pt x 209.99208pt>
+<images/android9a.png, id=1298, 257.03575pt x 209.99208pt>
 File: images/android9a.png Graphic file (type png)
 
 <use images/android9a.png>
 Package pdftex.def Info: images/android9a.png used on input line 546.
 (pdftex.def)             Requested size: 250.93842pt x 205.01219pt.
  [40]
-<images/android9b.png, id=1306, 209.31029pt x 349.75952pt>
+<images/android9b.png, id=1307, 209.31029pt x 349.75952pt>
 File: images/android9b.png Graphic file (type png)
 
 <use images/android9b.png>
 Package pdftex.def Info: images/android9b.png used on input line 554.
 (pdftex.def)             Requested size: 138.16116pt x 230.86334pt.
 
-<images/android10.png, id=1307, 295.89792pt x 242.71811pt>
+<images/android10.png, id=1308, 295.89792pt x 242.71811pt>
 File: images/android10.png Graphic file (type png)
 
 <use images/android10.png>
 Package pdftex.def Info: images/android10.png used on input line 554.
 (pdftex.def)             Requested size: 281.45811pt x 230.86334pt.
 
-<images/android11.png, id=1308, 295.89792pt x 242.71811pt>
+<images/android11.png, id=1309, 295.89792pt x 242.71811pt>
 File: images/android11.png Graphic file (type png)
 
 <use images/android11.png>
@@ -1533,14 +1533,14 @@ Overfull \hbox (0.68082pt too wide) in paragraph at lines 1327--1328
 e, Culprit), type[]error( 
  []
 
-[97] [98] <images/thread-example.png, id=1609, 342.9416pt x 263.17189pt>
+[97] [98] <images/thread-example.png, id=1610, 342.9416pt x 263.17189pt>
 File: images/thread-example.png Graphic file (type png)
 
 <use images/thread-example.png>
 Package pdftex.def Info: images/thread-example.png used on input line 1414.
 (pdftex.def)             Requested size: 341.43306pt x 262.01471pt.
  [99] [100 <./images/thread-example.png>]
-<images/thread-exampleMutex.png, id=1622, 358.62283pt x 202.49236pt>
+<images/thread-exampleMutex.png, id=1623, 358.62283pt x 202.49236pt>
 File: images/thread-exampleMutex.png Graphic file (type png)
 
 <use images/thread-exampleMutex.png>
@@ -1581,14 +1581,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 1644--1645
 
  []
 
-<images/dcg-example.png, id=1656, 355.3275pt x 274.02374pt>
+<images/dcg-example.png, id=1657, 355.3275pt x 274.02374pt>
 File: images/dcg-example.png Graphic file (type png)
 
 <use images/dcg-example.png>
 Package pdftex.def Info: images/dcg-example.png used on input line 1648.
 (pdftex.def)             Requested size: 199.16928pt x 153.59859pt.
  [106] [107 <./images/dcg-example.png>]
-<images/isoiolibrary-table.png, id=1668, 234.27525pt x 335.45325pt>
+<images/isoiolibrary-table.png, id=1669, 234.27525pt x 335.45325pt>
 File: images/isoiolibrary-table.png Graphic file (type png)
 
 <use images/isoiolibrary-table.png>
@@ -2233,14 +2233,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 1351--1352
 
  []
 
-<images/exceptions1a.png, id=2085, 378.213pt x 283.65974pt>
+<images/exceptions1a.png, id=2086, 378.213pt x 283.65974pt>
 File: images/exceptions1a.png Graphic file (type png)
 
 <use images/exceptions1a.png>
 Package pdftex.def Info: images/exceptions1a.png used on input line 1357.
 (pdftex.def)             Requested size: 199.16928pt x 149.37805pt.
 
-<images/exceptions1b.png, id=2086, 364.9635pt x 265.59225pt>
+<images/exceptions1b.png, id=2087, 364.9635pt x 265.59225pt>
 File: images/exceptions1b.png Graphic file (type png)
 
 <use images/exceptions1b.png>
@@ -2253,7 +2253,7 @@ Overfull \hbox (13.6647pt too wide) in paragraph at lines 1370--1370
  []
 
 [165 <./images/exceptions1a.png> <./images/exceptions1b.png>]
-<images/exceptions2.png, id=2093, 380.01974pt x 271.0125pt>
+<images/exceptions2.png, id=2094, 380.01974pt x 271.0125pt>
 File: images/exceptions2.png Graphic file (type png)
 
 <use images/exceptions2.png>
@@ -2371,7 +2371,7 @@ Overfull \hbox (50.33858pt too wide) in paragraph at lines 1778--1827
 
 LaTeX Warning: Float too large for page by 47.99974pt on input line 1830.
 
-<images/console-interpreter.png, id=2160, 555.87675pt x 213.79875pt>
+<images/console-interpreter.png, id=2161, 555.87675pt x 213.79875pt>
 File: images/console-interpreter.png Graphic file (type png)
 
 <use images/console-interpreter.png>
@@ -2407,7 +2407,7 @@ Overfull \hbox (0.95204pt too wide) in paragraph at lines 1969--1971
 anks to []'s
  []
 
-<images/onOutput.png, id=2196, 416.757pt x 118.041pt>
+<images/onOutput.png, id=2197, 416.757pt x 118.041pt>
 File: images/onOutput.png Graphic file (type png)
 
 <use images/onOutput.png>
@@ -2451,35 +2451,35 @@ Underfull \hbox (badness 10000) in paragraph at lines 2061--2064
 
  []
 
-[183] [184] <images/TestLibrary3.png, id=2233, 359.54324pt x 320.99925pt>
+[183] [184] <images/TestLibrary3.png, id=2234, 359.54324pt x 320.99925pt>
 File: images/TestLibrary3.png Graphic file (type png)
 
 <use images/TestLibrary3.png>
 Package pdftex.def Info: images/TestLibrary3.png used on input line 2187.
 (pdftex.def)             Requested size: 284.52756pt x 254.03235pt.
 
-<images/TestLibrary4.png, id=2234, 555.87675pt x 202.95825pt>
+<images/TestLibrary4.png, id=2235, 555.87675pt x 202.95825pt>
 File: images/TestLibrary4.png Graphic file (type png)
 
 <use images/TestLibrary4.png>
 Package pdftex.def Info: images/TestLibrary4.png used on input line 2188.
 (pdftex.def)             Requested size: 341.43306pt x 124.65909pt.
 
-<images/TestLibrary1.png, id=2237, 237.88875pt x 181.27725pt>
+<images/TestLibrary1.png, id=2238, 237.88875pt x 181.27725pt>
 File: images/TestLibrary1.png Graphic file (type png)
 
 <use images/TestLibrary1.png>
 Package pdftex.def Info: images/TestLibrary1.png used on input line 2195.
 (pdftex.def)             Requested size: 256.0748pt x 195.14584pt.
 
-<images/TestLibrary2.png, id=2238, 237.88875pt x 196.93575pt>
+<images/TestLibrary2.png, id=2239, 237.88875pt x 196.93575pt>
 File: images/TestLibrary2.png Graphic file (type png)
 
 <use images/TestLibrary2.png>
 Package pdftex.def Info: images/TestLibrary2.png used on input line 2196.
 (pdftex.def)             Requested size: 256.0748pt x 212.00227pt.
 
-<images/TestLibrary5.png, id=2241, 555.87675pt x 202.95825pt>
+<images/TestLibrary5.png, id=2242, 555.87675pt x 202.95825pt>
 File: images/TestLibrary5.png Graphic file (type png)
 
 <use images/TestLibrary5.png>
@@ -2572,12 +2572,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 2686--2688
  []
 
 
-Overfull \hbox (56.2803pt too wide) in paragraph at lines 2693--2723
-\OT1/cmr/m/n/10.95 Here we pro-vide a short de-scrip-tion of the new API of the
- class \OT1/cmtt/m/n/10.95 alice.tuprolog.Prolog\OT1/cmr/m/n/10.95 : 
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 2693--2723
 
  []
@@ -2603,9 +2597,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 2693--2723
  []
 
 
-Overfull \hbox (38.99652pt too wide) in paragraph at lines 2693--2723
+Overfull \hbox (2.24684pt too wide) in paragraph at lines 2693--2723
 \OT1/cmtt/m/n/10 public static AbstractEngineState getEngineStateFromJSON(Strin
-g jsonString); 
+g str); 
  []
 
 
@@ -2721,7 +2715,7 @@ Overfull \hbox (4.50836pt too wide) in paragraph at lines 273--276
 means of its \OT1/cmtt/m/it/10.95 AssemblyQualifiedName\OT1/cmr/m/n/10.95 ---
  []
 
-[214] <images/dotnet-oolibrary.png, id=2435, 269.30801pt x 265.89906pt>
+[214] <images/dotnet-oolibrary.png, id=2440, 269.30801pt x 265.89906pt>
 File: images/dotnet-oolibrary.png Graphic file (type png)
 
 <use images/dotnet-oolibrary.png>
@@ -2777,7 +2771,7 @@ t(Value),[]
  []
 
 [218] [219]
-<images/dotnet-oolibrary-using-StringTokenizer.png, id=2477, 352.31625pt x 263.
+<images/dotnet-oolibrary-using-StringTokenizer.png, id=2482, 352.31625pt x 263.
 18324pt>
 File: images/dotnet-oolibrary-using-StringTokenizer.png Graphic file (type png)
 
@@ -2786,7 +2780,7 @@ Package pdftex.def Info: images/dotnet-oolibrary-using-StringTokenizer.png used
  on input line 458.
 (pdftex.def)             Requested size: 312.9803pt x 233.79863pt.
 
-<images/dotnet-oolibrary-dynamiccompilation.png, id=2478, 352.31625pt x 317.385
+<images/dotnet-oolibrary-dynamiccompilation.png, id=2483, 352.31625pt x 317.385
 76pt>
 File: images/dotnet-oolibrary-dynamiccompilation.png Graphic file (type png)
  <use images/dotnet-oolibrary-dynamiccompilation.png>
@@ -2817,14 +2811,14 @@ ean',''], StudVB),[]
 
 [220] [221 <./images/dotnet-oolibrary-using-StringTokenizer.png> <./images/dotn
 et-oolibrary-dynamiccompilation.png>] [222]
-<images/dotnet-exceptions.png, id=2500, 1208.81802pt x 463.61887pt>
+<images/dotnet-exceptions.png, id=2505, 1208.81802pt x 463.61887pt>
 File: images/dotnet-exceptions.png Graphic file (type png)
 
 <use images/dotnet-exceptions.png>
 Package pdftex.def Info: images/dotnet-exceptions.png used on input line 538.
 (pdftex.def)             Requested size: 341.43306pt x 130.94427pt.
  [223 <./images/dotnet-exceptions.png>]
-<images/dotnet-visualstudio1.png, id=2515, 350.5095pt x 235.47975pt>
+<images/dotnet-visualstudio1.png, id=2521, 350.5095pt x 235.47975pt>
 File: images/dotnet-visualstudio1.png Graphic file (type png)
 
 <use images/dotnet-visualstudio1.png>
@@ -2832,7 +2826,7 @@ Package pdftex.def Info: images/dotnet-visualstudio1.png used on input line 567
 .
 (pdftex.def)             Requested size: 341.43306pt x 229.38522pt.
 
-<images/dotnet-visualstudio2.png, id=2516, 326.4195pt x 246.9225pt>
+<images/dotnet-visualstudio2.png, id=2522, 326.4195pt x 246.9225pt>
 File: images/dotnet-visualstudio2.png Graphic file (type png)
 
 <use images/dotnet-visualstudio2.png>
@@ -2840,7 +2834,7 @@ Package pdftex.def Info: images/dotnet-visualstudio2.png used on input line 568
 .
 (pdftex.def)             Requested size: 341.43306pt x 258.28911pt.
 
-<images/dotnet-visualstudio3.png, id=2517, 331.83975pt x 114.4275pt>
+<images/dotnet-visualstudio3.png, id=2523, 331.83975pt x 114.4275pt>
 File: images/dotnet-visualstudio3.png Graphic file (type png)
 
 <use images/dotnet-visualstudio3.png>
@@ -2848,7 +2842,7 @@ Package pdftex.def Info: images/dotnet-visualstudio3.png used on input line 574
 .
 (pdftex.def)             Requested size: 341.43306pt x 117.74464pt.
 
-<images/dotnet-visualstudio5.png, id=2518, 336.65775pt x 113.82526pt>
+<images/dotnet-visualstudio5.png, id=2524, 336.65775pt x 113.82526pt>
 File: images/dotnet-visualstudio5.png Graphic file (type png)
 
 <use images/dotnet-visualstudio5.png>
@@ -2856,7 +2850,7 @@ Package pdftex.def Info: images/dotnet-visualstudio5.png used on input line 575
 .
 (pdftex.def)             Requested size: 341.43306pt x 115.43848pt.
 
-<images/dotnet-visualstudio4.png, id=2519, 365.56575pt x 456.5055pt>
+<images/dotnet-visualstudio4.png, id=2525, 365.56575pt x 456.5055pt>
 File: images/dotnet-visualstudio4.png Graphic file (type png)
 
 <use images/dotnet-visualstudio4.png>
@@ -2877,7 +2871,7 @@ on []7.3[] (same method
 [224] [225 <./images/dotnet-visualstudio1.png> <./images/dotnet-visualstudio2.p
 ng>] [226 <./images/dotnet-visualstudio3.png> <./images/dotnet-visualstudio5.pn
 g>] [227 <./images/dotnet-visualstudio4.png>]
-<images/dotnet-testlibrary1.png, id=2552, 350.5095pt x 251.13824pt>
+<images/dotnet-testlibrary1.png, id=2557, 350.5095pt x 251.13824pt>
 File: images/dotnet-testlibrary1.png Graphic file (type png)
 
 <use images/dotnet-testlibrary1.png>
@@ -2885,7 +2879,7 @@ Package pdftex.def Info: images/dotnet-testlibrary1.png used on input line 603.
 
 (pdftex.def)             Requested size: 227.62204pt x 163.0923pt.
 
-<images/dotnet-testlibrary2.png, id=2553, 237.88875pt x 191.5155pt>
+<images/dotnet-testlibrary2.png, id=2558, 237.88875pt x 191.5155pt>
 File: images/dotnet-testlibrary2.png Graphic file (type png)
 
 <use images/dotnet-testlibrary2.png>
@@ -2899,21 +2893,21 @@ Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 
 [228] [229 <./images/dotnet-testlibrary1.png> <./images/dotnet-testlibrary2.png
 >] [230] [231]
-<images/dotnet-codegen1.png, id=2585, 404.30292pt x 357.25925pt>
+<images/dotnet-codegen1.png, id=2590, 404.30292pt x 357.25925pt>
 File: images/dotnet-codegen1.png Graphic file (type png)
 
 <use images/dotnet-codegen1.png>
 Package pdftex.def Info: images/dotnet-codegen1.png used on input line 667.
 (pdftex.def)             Requested size: 284.52756pt x 251.43169pt.
 
-<images/dotnet-codegen2.png, id=2586, 402.93935pt x 277.48953pt>
+<images/dotnet-codegen2.png, id=2591, 402.93935pt x 277.48953pt>
 File: images/dotnet-codegen2.png Graphic file (type png)
 
 <use images/dotnet-codegen2.png>
 Package pdftex.def Info: images/dotnet-codegen2.png used on input line 668.
 (pdftex.def)             Requested size: 284.52756pt x 195.94347pt.
  [232] [233 <./images/dotnet-codegen1.png> <./images/dotnet-codegen2.png>]
-<images/dotnet-pipolo1.png, id=2598, 253.54726pt x 152.36925pt>
+<images/dotnet-pipolo1.png, id=2603, 253.54726pt x 152.36925pt>
 File: images/dotnet-pipolo1.png Graphic file (type png)
 
 <use images/dotnet-pipolo1.png>
@@ -2927,7 +2921,7 @@ st\OT1/cmr/m/n/10.95 , while class \OT1/cmtt/m/n/10.95 B \OT1/cmr/m/n/10.95 pro
  []
 
 [234 <./images/dotnet-pipolo1.png>]
-<images/dotnet-pipolo5.png, id=2609, 289.68225pt x 83.1105pt>
+<images/dotnet-pipolo5.png, id=2614, 289.68225pt x 83.1105pt>
 File: images/dotnet-pipolo5.png Graphic file (type png)
 
 <use images/dotnet-pipolo5.png>
@@ -2941,21 +2935,21 @@ Overfull \hbox (38.33858pt too wide) in paragraph at lines 760--761
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/dotnet-pipolo2.png, id=2612, 189.1065pt x 116.8365pt>
+<images/dotnet-pipolo2.png, id=2617, 189.1065pt x 116.8365pt>
 File: images/dotnet-pipolo2.png Graphic file (type png)
 
 <use images/dotnet-pipolo2.png>
 Package pdftex.def Info: images/dotnet-pipolo2.png used on input line 767.
 (pdftex.def)             Requested size: 256.0748pt x 158.22163pt.
 
-<images/dotnet-pipolo3.png, id=2613, 289.08pt x 238.491pt>
+<images/dotnet-pipolo3.png, id=2618, 289.08pt x 238.491pt>
 File: images/dotnet-pipolo3.png Graphic file (type png)
 
 <use images/dotnet-pipolo3.png>
 Package pdftex.def Info: images/dotnet-pipolo3.png used on input line 773.
 (pdftex.def)             Requested size: 369.88582pt x 305.1728pt.
 
-<images/dotnet-pipolo4.png, id=2614, 289.08pt x 183.68625pt>
+<images/dotnet-pipolo4.png, id=2619, 289.08pt x 183.68625pt>
 File: images/dotnet-pipolo4.png Graphic file (type png)
 
 <use images/dotnet-pipolo4.png>
@@ -2991,14 +2985,14 @@ ths, too, al-low-ing ``dexed''
 
 
 
-] <images/android12.png, id=2647, 145.22179pt x 242.03632pt>
+] <images/android12.png, id=2652, 145.22179pt x 242.03632pt>
 File: images/android12.png Graphic file (type png)
 
 <use images/android12.png>
 Package pdftex.def Info: images/android12.png used on input line 36.
 (pdftex.def)             Requested size: 120.45204pt x 200.75073pt.
 
-<images/android13.png, id=2648, 298.62509pt x 242.71811pt>
+<images/android13.png, id=2653, 298.62509pt x 242.71811pt>
 File: images/android13.png Graphic file (type png)
 
 <use images/android13.png>
@@ -3120,29 +3114,30 @@ e in 2.6.x: Michele
  []
 
 [254]) [255] [256] (./tuprolog-guide.bbl
-Underfull \hbox (badness 10000) in paragraph at lines 8--11
+Missing character: There is no Ð in font cmr10!
+ [257
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 68--71
 []\OT1/cmr/m/n/10.95 Tests of con-for-mance to the pro-log iso stan-dard.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 8--11
+Underfull \hbox (badness 10000) in paragraph at lines 68--71
 \OT1/cmtt/m/n/10.95 http://www.univ-orleans.fr/lifo/software/stdprolog/
  []
 
-Missing character: There is no Ð in font cmr10!
-[257
-
-
-])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 160.
+)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 161.
  [258]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 160.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 161.
  (./tuprolog-guide.aux (./what-is-tuprolog.aux)
 (./installing-tuprolog.aux) (./getting-started.aux) (./tuprolog-basics.aux)
 (./tuprolog-libraries.aux) (./exceptions.aux) (./mpp-in-java.aux)
 (./mpp-in-dotnet.aux) (./mpp-in-android.aux) (./version-history.aux))
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 160.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 160.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 161.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 161.
 Package rerunfilecheck Info: File `tuprolog-guide.out' has not changed.
 (rerunfilecheck)             Checksum: 55AD43C6C06B0EBDD6A3E095014146FE;15132.
 
@@ -3155,13 +3150,13 @@ LaTeX Warning: There were undefined references.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 160.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 161.
  ) 
 Here is how much of TeX's memory you used:
- 10419 strings out of 494501
- 161833 string characters out of 6167030
+ 10423 strings out of 494501
+ 161863 string characters out of 6167030
  301726 words of memory out of 5000000
- 12730 multiletter control sequences out of 15000+600000
+ 12732 multiletter control sequences out of 15000+600000
  18160 words of font info for 64 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
  41i,12n,48p,897b,1313s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -3192,10 +3187,10 @@ b></usr/local/texlive/2015basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt1
 0.pfb></usr/local/texlive/2015basic/texmf-dist/fonts/type1/public/amsfonts/cm/c
 mtt8.pfb></usr/local/texlive/2015basic/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmtt9.pfb>
-Output written on tuprolog-guide.pdf (259 pages, 4935339 bytes).
+Output written on tuprolog-guide.pdf (259 pages, 4935530 bytes).
 PDF statistics:
- 2985 PDF objects out of 3580 (max. 8388607)
- 2570 compressed objects within 26 object streams
- 732 named destinations out of 1000 (max. 500000)
+ 2991 PDF objects out of 3580 (max. 8388607)
+ 2576 compressed objects within 26 object streams
+ 734 named destinations out of 1000 (max. 500000)
  1860 words of extra memory for PDF output out of 10000 (max. 10000000)
 
