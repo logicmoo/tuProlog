@@ -11,48 +11,56 @@ A level-1 auxiliary file: mpp-in-java.aux
 A level-1 auxiliary file: mpp-in-dotnet.aux
 A level-1 auxiliary file: mpp-in-android.aux
 A level-1 auxiliary file: version-history.aux
-The style file: unsrt.bst
+The style file: plain.bst
 Database file #1: bibliography.bib
+Warning--to sort, need author or key in ikvm
+Warning--to sort, need author or key in iso95
+Warning--to sort, need author or key in JSON
+Warning--to sort, need author or key in GSON
+Warning--to sort, need author or key in bug16
+Warning--to sort, need author or key in bug20
+Warning--to sort, need author or key in bug14
+Warning--to sort, need author or key in test-suite-bagof
 Warning--empty author in iso95
 You've used 14 entries,
-            1791 wiz_defined-function locations,
-            522 strings with 5373 characters,
-and the built_in function-call counts, 2207 in all, are:
-= -- 192
-> -- 52
+            2118 wiz_defined-function locations,
+            573 strings with 5847 characters,
+and the built_in function-call counts, 3207 in all, are:
+= -- 308
+> -- 80
 < -- 2
-+ -- 25
-- -- 11
-* -- 95
-:= -- 285
++ -- 38
+- -- 22
+* -- 175
+:= -- 454
 add.period$ -- 34
 call.type$ -- 14
-change.case$ -- 12
+change.case$ -- 51
 chr.to.int$ -- 0
-cite$ -- 15
-duplicate$ -- 110
-empty$ -- 287
-format.name$ -- 11
-if$ -- 527
+cite$ -- 23
+duplicate$ -- 138
+empty$ -- 344
+format.name$ -- 22
+if$ -- 718
 int.to.chr$ -- 0
 int.to.str$ -- 14
 missing$ -- 8
 newline$ -- 65
-num.names$ -- 6
-pop$ -- 89
+num.names$ -- 12
+pop$ -- 114
 preamble$ -- 1
-purify$ -- 0
+purify$ -- 39
 quote$ -- 0
-skip$ -- 63
+skip$ -- 104
 stack$ -- 0
-substring$ -- 107
+substring$ -- 179
 swap$ -- 24
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 0
-warning$ -- 1
-while$ -- 15
+type$ -- 52
+warning$ -- 9
+while$ -- 21
 width$ -- 16
 write$ -- 124
-(There was 1 warning)
+(There were 9 warnings)
