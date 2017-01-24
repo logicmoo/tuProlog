@@ -21,11 +21,12 @@ import java.util.*;
 
 import alice.tuprolog.Engine;
 
+
 public class SpyEvent extends EventObject {
 	private static final long serialVersionUID = 1L;
     
     private String msg;
-   
+    
     private Engine env;
 
     public SpyEvent(Object source, String msg_) {

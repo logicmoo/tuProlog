@@ -178,7 +178,7 @@ public class PrologError extends Throwable {
 		//return new PrologError(new Struct("error", errorTerm, tuPrologTerm));
 		String descriptionError = "System error";
 		return new PrologError(new Struct("error", errorTerm, tuPrologTerm), descriptionError);
-		/**/		
+			
 	}
 
 }

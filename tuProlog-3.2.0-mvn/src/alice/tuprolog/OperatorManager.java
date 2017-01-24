@@ -30,7 +30,7 @@ import alice.tuprolog.interfaces.IOperatorManager;
 @SuppressWarnings("serial")
 /*Castagna 06/2911*/public/**/ class OperatorManager implements /*Castagna 06/2011*/IOperatorManager,/**/Serializable {
 	private static final long serialVersionUID = 1L;
-    
+   
     private OperatorRegister operatorList = new OperatorRegister();
     
     
@@ -39,7 +39,7 @@ import alice.tuprolog.interfaces.IOperatorManager;
     
     public static final int OP_HIGH = 1200;
     
-   
+    
     public synchronized void opNew(String name,String type,int prio) {
         final Operator op = new Operator(name, type, prio);
         if (prio >= OP_LOW && prio <= OP_HIGH)
@@ -52,6 +52,7 @@ import alice.tuprolog.interfaces.IOperatorManager;
         return (o == null) ? 0 : o.prio;
     }
     
+   
     public synchronized int opNext(int prio) {
         int n = 0;
         for (Operator opFromList:operatorList){
@@ -61,10 +62,12 @@ import alice.tuprolog.interfaces.IOperatorManager;
         return n;
     }
     
+    
     public synchronized List<Operator> getOperators() {
         return new LinkedList<Operator>(operatorList);
     }
-     
+    
+	 
     public IOperatorManager clone() {		 
     	OperatorManager om = new OperatorManager();		 
     	om.operatorList = (OperatorRegister)this.operatorList.clone();		 
@@ -90,7 +93,7 @@ import alice.tuprolog.interfaces.IOperatorManager;
             return nameTypeToKey.get(name + type);
         }
 
-                
+        /*Castagna 06/2011*/        
         @Override		 
         public Object clone() {		 
         	OperatorRegister or = (OperatorRegister)super.clone();		 
@@ -102,7 +105,6 @@ import alice.tuprolog.interfaces.IOperatorManager;
         	}		 
         	return or;
         }
-     
     }
     
 }

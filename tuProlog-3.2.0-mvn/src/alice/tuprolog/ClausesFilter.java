@@ -8,38 +8,11 @@ package alice.tuprolog;
 import alice.util.OneWayList;
 import java.util.List;
 
-/**
- * ClausesFilter has the aim to reduce the number of clauses
- * that must be verified for goal unification.
- * <p><em>
- * "Since Prolog programmers have a natural tendency to write code in a
- * data structure-directed manner using discriminating patterns as
- * first argument, it is quite accceptable to limit indexing to key on
- * the first argument only"
- * (Warren's Abstract Machine - A tutorial reconstruction, Hassan Aït-Kaci)
- * </em></p>
- * <p>
- * According to the citation above, the actual implementation checks goal's
- * first argument type and uses it to choose clauses.
- * </p>
- *
- * @author Paolo Contessi
- * @since 2.2
- */
+
 class ClausesFilter {
     public static boolean OPTIMIZATION_ENABLED = true;
 
-    /**
-     * Iterates familyClauses and select those claues which, in all probability,
-     * could match with given goal.
-     *
-     * @param familyClauses The list of clauses whose head predicate
-     *                      as same name and same arity
-     * @param goal          The goal to be resolved
-     * @return              The list of clauses (subset of
-     *                      <code>familyClauses</code>) which more probably
-     *                      match with <code>goal</code>
-     */
+    
     public static OneWayList<ClauseInfo> filterClauses(List<ClauseInfo> familyClauses, Term goal){
         if(OPTIMIZATION_ENABLED && goal instanceof Struct){
             Struct g = (Struct) goal.getTerm();

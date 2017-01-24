@@ -34,7 +34,7 @@ public class Theory implements Serializable {
         theory = new String(info);
     }
 
-
+   
     public Theory(String theory) throws InvalidTheoryException {
         if (theory == null) {
             throw new InvalidTheoryException();
@@ -61,7 +61,7 @@ public class Theory implements Serializable {
             return clauseList.listIterator();
     }
 
-    
+   
     public void append(Theory th) throws InvalidTheoryException {
         if (th.isTextual() && isTextual()) {
             theory += th.theory;
@@ -86,7 +86,7 @@ public class Theory implements Serializable {
         }
     }
 
-    
+   
     boolean isTextual() {
         return theory != null;
     }

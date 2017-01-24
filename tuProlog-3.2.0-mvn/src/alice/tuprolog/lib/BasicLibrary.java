@@ -29,6 +29,7 @@ public class BasicLibrary extends Library {
 	
     public BasicLibrary() {}
 
+   
     public boolean set_theory_1(Term th) throws PrologError {
         th = th.getTerm();
         if (th instanceof Var)
@@ -46,6 +47,7 @@ public class BasicLibrary extends Library {
         }
     }
 
+    
     public boolean add_theory_1(Term th) throws PrologError {
         th = th.getTerm();
         if (th instanceof Var)
@@ -63,6 +65,7 @@ public class BasicLibrary extends Library {
         }
     }
 
+   
     public boolean get_theory_1(Term arg) {
         arg = arg.getTerm();
         try {
@@ -73,6 +76,7 @@ public class BasicLibrary extends Library {
         }
     }
 
+    
     public boolean load_library_from_theory_2(Term th, Term libName) {
         Struct theory = (Struct) th.getTerm();
         Struct libN = (Struct) libName.getTerm();
@@ -104,6 +108,7 @@ public class BasicLibrary extends Library {
         return unify(arg, list);
     }
 
+   
     public boolean agent_1(Term th) throws PrologError {
         th = th.getTerm();
         if (th instanceof Var)
@@ -121,6 +126,7 @@ public class BasicLibrary extends Library {
         }
     }
 
+  
     public boolean agent_2(Term th, Term g) throws PrologError {
         th = th.getTerm();
         g = g.getTerm();
@@ -157,6 +163,7 @@ public class BasicLibrary extends Library {
         return true;
     }
     
+    /*Castagna 16/09*/
     public boolean trace_0() {
         return this.spy_0();
     }
@@ -174,6 +181,10 @@ public class BasicLibrary extends Library {
         getEngine().setWarning(false);
         return true;
     }
+
+    //
+    // term type inspection
+    //
 
     public boolean constant_1(Term t) {
         t = t.getTerm();
@@ -1318,6 +1329,9 @@ public class BasicLibrary extends Library {
         return unify(igt, goal);
     }
     
+    /**
+     * Defines some synonyms
+     */
     public String[][] getSynonymMap() {
         return new String[][] { { "+", "expression_plus", "functor" },
                 { "-", "expression_minus", "functor" },

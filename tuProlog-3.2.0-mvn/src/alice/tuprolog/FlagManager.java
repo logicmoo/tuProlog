@@ -42,7 +42,10 @@ class FlagManager {
         Sflags = flags;
         
         //occurCheck flag -> a default è on!
-        this.defineFlag("occurCheck", new Struct("[on, off]"), new Struct("on"), true, "BasicLibrary");
+        Struct s = new Struct();
+        s.append(new Struct("on"));
+        s.append(new Struct("off"));
+        this.defineFlag("occurCheck", s, new Struct("on"), true, "BasicLibrary");
     }
 
     /**
@@ -132,28 +135,6 @@ class FlagManager {
 				if(f.getValue().toString().equals("on"))
 					return true;
 				else return false;
-			}
-		}
-		return false;
-	}
-
-	//Alberto
-	public static boolean activateOccurCheck() {
-		for(Flag f : Sflags){
-			if(f.getName().equals("occurCheck")){
-				f.value = new Struct("on");
-				return true;
-			}
-		}
-		return false;
-	}
-
-	//Alberto
-	public static boolean deactivateOccurCheck() {
-		for(Flag f : Sflags){
-			if(f.getName().equals("occurCheck")){
-				f.value = new Struct("off");
-				return true;
 			}
 		}
 		return false;

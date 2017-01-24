@@ -22,16 +22,14 @@ public class InvalidTermException extends IllegalArgumentException {
 
 	private static final long serialVersionUID = 1L;
     
-    
-	public int line = -1;
-	public int pos = -1;
 
+	public int line = -1;
+	public int pos = -1;	
 
     public InvalidTermException(String message) {
         super(message);
     }
-    
-    
+
 	public InvalidTermException(String message, int line, int pos) {
 		super(message);
 		this.line = line;

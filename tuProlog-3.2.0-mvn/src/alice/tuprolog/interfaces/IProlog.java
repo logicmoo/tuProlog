@@ -43,35 +43,45 @@ public interface IProlog {
 	
 	SolveInfo solveNext() throws Exception;
 	
+	
 	void solveHalt();
 	
 	void solveEnd();
 	
+	
 	boolean hasOpenAlternatives();
 	
-	
+
 	String toString(Term term);
-		
 	
 	void addOutputListener(OutputListener l);
+	
 	
 	void removeOutputListener(OutputListener l);
 	
 	
 	void removeAllOutputListeners();
 	
+	
 	void setSpy(boolean state);
+	
 	
 	void addSpyListener(SpyListener l);
 	
 	
 	void removeSpyListener(SpyListener l);
 	
+	
 	void removeAllSpyListeners();
 
+	
+	
 	void addExceptionListener(ExceptionListener l);
 
+	
 	void removeExceptionListener(ExceptionListener l);
 
+	
 	void removeAllExceptionListeners();
+
 }

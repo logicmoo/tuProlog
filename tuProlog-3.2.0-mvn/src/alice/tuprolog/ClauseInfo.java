@@ -18,15 +18,16 @@
 package alice.tuprolog;
 import java.util.*;
 
+
 public class ClauseInfo {
     
     
     private Struct clause;
     
-    
+   
     private Struct head;
     
-   
+    
     private SubGoalTree body;
     
     private Struct headCopy;
@@ -36,12 +37,15 @@ public class ClauseInfo {
     
     String libName;
     
+    
+    
     ClauseInfo(Struct clause_, String lib) {
         clause = clause_;
         head = extractHead(clause);
         body = extractBody(clause.getArg(1));
         libName = lib;
     }
+    
     
     
     private Struct extractHead(Struct clause) {
@@ -67,6 +71,7 @@ public class ClauseInfo {
         }
         parent.addChild(body);
     }
+    
     
     public String toString(OperatorManager op) {
         int p;
@@ -120,7 +125,7 @@ public class ClauseInfo {
     String getLibraryName() {
         return libName;
     }
-    
+   
     void performCopy() {
         AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
         clause = (Struct) clause.copy(v, Var.ORIGINAL);
@@ -130,6 +135,7 @@ public class ClauseInfo {
         bodyCopy(body,bodyCopy,v,Var.ORIGINAL);
     }
     
+  
     void performCopy(int idExecCtx) {
         IdentityHashMap<Var,Var> v = new IdentityHashMap<Var,Var>();
         headCopy = (Struct)head.copy(v,idExecCtx);

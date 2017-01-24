@@ -26,8 +26,9 @@
 \contentsline {subsection}{\numberline {4.5.2}Term unification and management}{51}{subsection.4.5.2}
 \contentsline {subsection}{\numberline {4.5.3}Knowledge base management}{53}{subsection.4.5.3}
 \contentsline {subsection}{\numberline {4.5.4}Operator and flag management}{55}{subsection.4.5.4}
-\contentsline {subsection}{\numberline {4.5.5}Library management}{57}{subsection.4.5.5}
-\contentsline {subsection}{\numberline {4.5.6}Directives}{58}{subsection.4.5.6}
+\contentsline {subsection}{\numberline {4.5.5}Default Flag}{57}{subsection.4.5.5}
+\contentsline {subsection}{\numberline {4.5.6}Library management}{57}{subsection.4.5.6}
+\contentsline {subsection}{\numberline {4.5.7}Directives}{59}{subsection.4.5.7}
 \contentsline {chapter}{\numberline {5}\unhbox \voidb@x \hbox {{\sf {tu}}Prolog}{} Libraries}{61}{chapter.5}
 \contentsline {section}{\numberline {5.1}BasicLibrary}{63}{section.5.1}
 \contentsline {subsection}{\numberline {5.1.1}Predicates}{63}{subsection.5.1.1}
@@ -162,22 +163,23 @@
 \contentsline {subsection}{\numberline {8.8.1}Example: Multi-language TicTacToe}{235}{subsection.8.8.1}
 \contentsline {chapter}{\numberline {9}Multi-paradigm programming in Prolog and Android}{239}{chapter.9}
 \contentsline {section}{\numberline {9.1}Class path issues}{239}{section.9.1}
-\contentsline {chapter}{\numberline {10}Version history}{241}{chapter.10}
-\contentsline {section}{\numberline {10.1}Version 2.0}{241}{section.10.1}
-\contentsline {section}{\numberline {10.2}From Version 2.0 to Version 2.0.1}{242}{section.10.2}
-\contentsline {section}{\numberline {10.3}From Version 2.0.1 to Version 2.1}{244}{section.10.3}
-\contentsline {section}{\numberline {10.4}From Version 2.1 to Version 2.2}{247}{section.10.4}
-\contentsline {section}{\numberline {10.5}From Version 2.2 to Version 2.3.0}{247}{section.10.5}
-\contentsline {section}{\numberline {10.6}From Version 2.3.0 to Version 2.3.1}{249}{section.10.6}
-\contentsline {section}{\numberline {10.7}From Version 2.3.1 to Version 2.4}{249}{section.10.7}
-\contentsline {section}{\numberline {10.8}From Version 2.4 to Version 2.5}{249}{section.10.8}
-\contentsline {section}{\numberline {10.9}From Version 2.5 to Version 2.6}{249}{section.10.9}
-\contentsline {section}{\numberline {10.10}From Version 2.6 to Version 2.7}{250}{section.10.10}
-\contentsline {section}{\numberline {10.11}From Version 2.7 to Version 2.7.2}{250}{section.10.11}
-\contentsline {section}{\numberline {10.12}From Version 2.7.2 to Version 2.8}{251}{section.10.12}
-\contentsline {section}{\numberline {10.13}From Version 2.8 to Version 2.9}{251}{section.10.13}
-\contentsline {section}{\numberline {10.14}From Version 2.9 to Version 2.9.2}{252}{section.10.14}
-\contentsline {section}{\numberline {10.15}Version 3.0}{253}{section.10.15}
-\contentsline {section}{\numberline {10.16}Version 3.1}{253}{section.10.16}
-\contentsline {section}{\numberline {10.17}Version 3.2}{253}{section.10.17}
-\contentsline {section}{\numberline {10.18}Acknowledgments}{253}{section.10.18}
+\contentsline {chapter}{\numberline {10}Appendix - Available flags}{241}{chapter.10}
+\contentsline {chapter}{\numberline {11}Version history}{243}{chapter.11}
+\contentsline {section}{\numberline {11.1}Version 2.0}{243}{section.11.1}
+\contentsline {section}{\numberline {11.2}From Version 2.0 to Version 2.0.1}{244}{section.11.2}
+\contentsline {section}{\numberline {11.3}From Version 2.0.1 to Version 2.1}{246}{section.11.3}
+\contentsline {section}{\numberline {11.4}From Version 2.1 to Version 2.2}{249}{section.11.4}
+\contentsline {section}{\numberline {11.5}From Version 2.2 to Version 2.3.0}{249}{section.11.5}
+\contentsline {section}{\numberline {11.6}From Version 2.3.0 to Version 2.3.1}{251}{section.11.6}
+\contentsline {section}{\numberline {11.7}From Version 2.3.1 to Version 2.4}{251}{section.11.7}
+\contentsline {section}{\numberline {11.8}From Version 2.4 to Version 2.5}{251}{section.11.8}
+\contentsline {section}{\numberline {11.9}From Version 2.5 to Version 2.6}{251}{section.11.9}
+\contentsline {section}{\numberline {11.10}From Version 2.6 to Version 2.7}{252}{section.11.10}
+\contentsline {section}{\numberline {11.11}From Version 2.7 to Version 2.7.2}{252}{section.11.11}
+\contentsline {section}{\numberline {11.12}From Version 2.7.2 to Version 2.8}{253}{section.11.12}
+\contentsline {section}{\numberline {11.13}From Version 2.8 to Version 2.9}{253}{section.11.13}
+\contentsline {section}{\numberline {11.14}From Version 2.9 to Version 2.9.2}{254}{section.11.14}
+\contentsline {section}{\numberline {11.15}Version 3.0}{255}{section.11.15}
+\contentsline {section}{\numberline {11.16}Version 3.1}{255}{section.11.16}
+\contentsline {section}{\numberline {11.17}Version 3.2}{255}{section.11.17}
+\contentsline {section}{\numberline {11.18}Acknowledgments}{255}{section.11.18}

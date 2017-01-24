@@ -483,7 +483,7 @@ Following an established convention, the symbol \bt{+} in front of an argument m
      \noindent\bt{flag\_list(FlagList)} is true and \bt{FlagList} is the list of the flags currently defined in the engine.
 
      \template{flag\_list(-list)}
-
+ 
 \item \bti{set\_prolog\_flag/2}\\
     \noindent\bt{set\_prolog\_flag(Flag, Value)} is true, and as a side effect associates \bt{Value} with the flag \bt{Flag}, where \bt{Value} is a value that is within the implementation defined range of values for \bt{Flag}.
 
@@ -513,6 +513,22 @@ Following an established convention, the symbol \bt{+} in front of an argument m
     \exception{error(domain\_error(ValidDomain, Culprit), domain\_\\error(Goal, ArgNo, ValidDomain, Culprit))} if \texttt{Flag} is undefined in the engine. \texttt{Goal} is the goal where the problem occurred, \texttt{ArgNo} indicates the argument that caused the problem (clearly, \texttt{1}), \texttt{ValidDomain} is the domain expected for \texttt{G} (here, \texttt{prolog\_flag}), while \texttt{Culprit} is the actual wrong term found.
 
 \end{itemize}
+
+\subsection{Default Flag}
+
+When the engine is created, the \texttt{occurCheck} prolog flag is created and activated. The user can set its value at \texttt{off} in order to deactivate
+the occur check during the unification process. For the complete list of available flags see Table \ref{tab:all-flags}.
+
+\begin{table}[h]
+	%
+	\begin{center}{\small\tt
+			\begin{tabular}{p{4.8cm}|p{2.2cm}|p{2.2cm}|p{1.8cm}}\hline\hline
+				Flag Name   & Possible Values & Default Value & Modifiable\\ \hline\hline
+				occurCheck          & {on, off}          &  on       & yes\\\hline\hline
+			\end{tabular}
+		}\end{center}
+		\caption{Default flag.}
+\end{table}
 
 %---------------------------------------------------------------------
 \subsection{Library management}

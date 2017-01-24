@@ -22,9 +22,7 @@ import java.util.*;
 import alice.util.OneWayList;
 
 
-/**
- * @author Alex Benini
- */
+
 public class ChoicePointContext {
     
     ClauseStore compatibleGoals;
@@ -40,9 +38,7 @@ public class ChoicePointContext {
                "     compGoals:     "+compatibleGoals+"\n";
     }
     
-    /*
-     * Methods for spyListeners
-     */
+    
     
    
     public ClauseStore getCompatibleGoals() {

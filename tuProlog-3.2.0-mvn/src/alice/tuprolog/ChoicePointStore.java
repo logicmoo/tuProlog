@@ -55,9 +55,11 @@ public class ChoicePointStore {
         existChoicePoint();
     }
     
+    
     public String toString(){
         return pointer + "\n";
     }
+   
     
     public List<ChoicePointContext> getChoicePoints() {
         ArrayList<ChoicePointContext> l = new ArrayList<ChoicePointContext>();

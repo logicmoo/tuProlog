@@ -54,7 +54,8 @@ public class Tokenizer extends StreamTokenizer implements Serializable {
     private int tokenStart;
     private int tokenLength;
     private String text = null;
-   
+    
+    //used to enable pushback from the parser. Not in any way connected with pushBack2 and super.pushBack().
     private LinkedList<Token> tokenList = new LinkedList<Token>();
 
     //used in the double lookahead check that . following ints is a fraction marker or end marker (pushback() only works on one level)
@@ -67,7 +68,7 @@ public class Tokenizer extends StreamTokenizer implements Serializable {
         this.tokenOffset = -1;
         /**/
     }
-    
+   
     public Tokenizer(Reader text) {
         super(text);
 
@@ -113,7 +114,7 @@ public class Tokenizer extends StreamTokenizer implements Serializable {
         // and it is also not possible to use StreamTokenizer#whitespaceChars for ' '
     }
 
-   
+    
     /*Castagna 06/2011*/public/**/ Token readToken() throws InvalidTermException, IOException {
         return !tokenList.isEmpty() ? tokenList.removeFirst() : readNextToken();
     }
@@ -494,7 +495,11 @@ public class Tokenizer extends StreamTokenizer implements Serializable {
         throw new InvalidTermException("Unknown Unicode character: " + typea + "  (" + svala + ")");
     }
 
-   
+    /*Castagna 06/2011*/
+    /* Francesco Fabbri
+     * 15/04/2011
+     * Fix line number issue (always -1)
+     */
     
     @Override
     public int lineno() {
@@ -526,6 +531,7 @@ public class Tokenizer extends StreamTokenizer implements Serializable {
     	return new int[] { lno+1, offset-lastNewline };
     }
     
+   
     String removeTrailing(String input,int tokenOffset){
     	int i = tokenOffset;
     	String out=input;
@@ -551,12 +557,12 @@ public class Tokenizer extends StreamTokenizer implements Serializable {
     	return t;
     }
     
-    
+   
     private void tokenPushBack() {
         super.pushBack();
         tokenOffset -= tokenLength;
     }
-   
+    
     private static int isCharacterCodeConstantToken(int typec, String svalc) {
         if (svalc != null) {
             if (svalc.length() == 1)

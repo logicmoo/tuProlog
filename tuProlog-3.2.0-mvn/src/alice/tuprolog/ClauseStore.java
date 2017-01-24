@@ -30,7 +30,7 @@ public class ClauseStore {
     }
     
     
-    
+   
     public ClauseInfo fetch() {
         if (clauses == null) return null;
         deunify(vars);
@@ -48,12 +48,14 @@ public class ClauseStore {
     }
     
     
+   
     protected boolean existCompatibleClause() {
         List<Term> saveUnifications = deunify(vars);
         boolean found = checkCompatibility(goal);
         reunify(vars, saveUnifications);
         return found;
     }
+    
     
     
     private List<Term> deunify(List<Var> varsToDeunify) {
@@ -69,6 +71,7 @@ public class ClauseStore {
         return saveUnifications;
     }
     
+   
     private void reunify(List<Var> varsToReunify, List<Term> saveUnifications) {
         int size = varsToReunify.size();
         ListIterator<Var> it1 = varsToReunify.listIterator(size);
@@ -82,6 +85,7 @@ public class ClauseStore {
         }
     }
     
+   
     private boolean checkCompatibility(Term goal) {
         if (clauses == null) return false;
         ClauseInfo clause = null;

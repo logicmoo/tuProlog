@@ -13,6 +13,10 @@ The {IKVM} project.
 {JSON}, the javascript object notation.
 \newblock \texttt{http://www.json.org}.
 
+\bibitem{POJO}
+{POJO}, a definition of plain old java object by {Martin Fowler}.
+\newblock \texttt{https://www.martinfowler.com/bliki/POJO.html}.
+
 \bibitem{test-suite-bagof}
 Tests of conformance to the prolog iso standard.
 \newblock \texttt{http://www.univ-orleans.fr/lifo/software/stdprolog/

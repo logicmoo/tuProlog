@@ -2683,24 +2683,24 @@ public abstract class PJParser {
 %-----------------------------------------------------------------------
 \section{Migrating the engine: \textit{the JSON API}}
 %-----------------------------------------------------------------------
-Version 3.2.0 of \tuprolog{} brings the support for the serialization and deserialization of the engine's state via JSON representation \cite{JSON}. This new feature enables the user to serialize the engine and re-create it on another node This is a quite heavy action because it needs to serialize the engine's state, to send it to another node, with possible network overhead, and to re-compute the solution on the destination node.\\ \\
+Version 3.2.0 of \tuprolog{} brings the support for the serialization and deserialization of the engine's state via JSON representation \cite{JSON}. This new feature enables the user to serialize the engine and re-create it on another node. This is a quite heavy action because it needs to serialize the engine's state, to send it to another node, with possible network overhead, and to re-compute the solution on the destination node.\\ \\
 The \tuprolog{} engine's state can be of two different types: \textit{FullState} or \textit{ReducedState}. The first is composed by the knowledge base of the engine, the last query asked, the number of result given to the user and the timestamp of the serialization. The latter is equal to the first, except for the knowledge base, which is not serialized. 
 
 \subsection{Requirements}
-The \textit{JSON API} are built on top of Gson, a tool developed by Google \cite{GSON}, which automates serialization and deserialization of POJO. So in order to use the \tuprolog{} \textit{JSON API}, the Java users have to add the Gson jar to the dependency of their project. Users can find the \texttt{gson-2.6.2.jar} file into the Java distribution of \tuprolog{}. For .NET users, the \texttt{tuprolog.dll} already contains the Gson core, so no further dependency are required.
+The \textit{JSON API} is built on top of Gson, a tool developed by Google \cite{GSON}, which automates serialization and deserialization of POJO \footnote{In software engineering, a plain old Java object (POJO) is an ordinary Java object, not bound by any special restriction and not requiring any class path.} \cite{POJO}. So, in order to use the \tuprolog{} \textit{JSON API}, Java users have to add the Gson jar \cite{GSON} to the dependency of their project. Users can find the \texttt{gson-2.6.2.jar} file into the Java distribution of \tuprolog{}. For .NET users, the \texttt{tuprolog.dll} already contains the Gson core, so no other libraries are required.
 
 \subsection{API description and an example}
 Here we provide a short description of the new API of the class \texttt{Prolog} in package \texttt{alice.tuprolog}: \\ \\
 {\small\tt
-public String toJSON(boolean alsoKB);
+public String toJSON(boolean includeKB);
 }\\ \\
-This method creates the JSON representation of the \tuprolog{} engine. If \textit{alsoKB} is true, the JSON string contains also the engine's knowledge base, otherwise it doesn't.
+This method creates the JSON representation of the \tuprolog{} engine. If \texttt{includeKB} is true, the JSON string contains also the engine's knowledge base, otherwise it does not.
 \\ \\
 {\small\tt
 public static Prolog fromJSON(String str);
 }\\ \\
-This method creates a new \textit{Prolog} object from its JSON representation.\\
-Warning: the method works fine if the jsonString contains the JSON representation of the knowledge base of the engine. \textit{ReducedState} are not already supported.
+This method creates a new \texttt{Prolog} object from its JSON representation.\\
+Warning: the method works only for \textit{FullState}. \textit{ReducedState} is not already supported.
 \\ \\
 {\small\tt
 public static AbstractEngineState getEngineStateFromJSON(String str);
@@ -2716,9 +2716,9 @@ This method create the JSON representation of the object.\\ \\
 {\small\tt
 	public static <Object type> fromJSON(String jsonString);
 }\\ \\
-This method creates an istance of \textit{Object type} from a JSON string. \textit{Object type} can be \textit{Theory}, \textit{Term} or \textit{SolveInfo}.
+This method creates an istance of \texttt{Object type} from a JSON string. \texttt{Object type} can be \texttt{Theory}, \texttt{Term} or \texttt{SolveInfo}.
 \\ \\
-For completeness, Table 7.33 and Table 7.34 shows an example of migration of the \tuprolog{} engine via JSON serialization. In the example a client program executes a member query on a \tuprolog{} engine and then sends its JSON representation to a server program. The server creates
+Table 7.33 and Table 7.34 shows an example of migration of the \tuprolog{} engine via JSON serialization. In the example a client program executes a member query on a \tuprolog{} engine and then sends its JSON representation to a server program. The server creates
 a \tuprolog{} engine using the JSON received via network communication and then gives another solution to the client. Note that the \texttt{Prolog.fromJSON(state)} instruction in the server program creates another instance of the prolog engine and automatically re-computes the query that was asked on the client. More complex scenarios can be treated with the same approach.
 
 \begin{table}
