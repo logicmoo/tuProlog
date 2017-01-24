@@ -22,6 +22,7 @@ import java.util.*;
 import alice.tuprolog.json.JSONSerializerManager;
 
 
+
 public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
 	private static final long serialVersionUID = 1L;
     /*
@@ -46,6 +47,7 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
         isSuccess = false;
     }
     
+    
     SolveInfo(Term initGoal, Struct resultGoal, int resultDemo, List<Var> resultVars) {
         query = initGoal;
         goal = resultGoal;
@@ -54,21 +56,30 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
         isSuccess = (endState > FALSE);
     }
     
+    
+    
+   
     public boolean isSuccess() {
         return isSuccess;
     }
+    
     
     public boolean isHalted() {
         return (endState == HALT);
     }
     
+    
+   
     public boolean hasOpenAlternatives() {
         return (endState == TRUE_CP);
     }
     
+    
+    
     public Term getQuery() {
         return query;
     }
+    
     
     public Term  getSolution() throws NoSolutionException {
         if (isSuccess){
@@ -78,6 +89,7 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
         }
     }
     
+  
     public List<Var> getBindingVars() throws NoSolutionException {
         if (isSuccess){
             return bindings;
@@ -86,13 +98,14 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
         }
     }
     
+    
     public Term getTerm(String varName) throws NoSolutionException, UnknownVarException {
         Term t = getVarValue(varName);
         if (t == null)
             throw new UnknownVarException();
         return t;
     }
-   
+    
     public Term getVarValue(String varName) throws NoSolutionException {
         if (isSuccess) {
             Iterator<Var> it = bindings.iterator();
@@ -106,7 +119,8 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
         } else
             throw new NoSolutionException();
     }
-      
+    
+        
     public String toString() {
         if (isSuccess) {
             StringBuffer st = new StringBuffer("yes");
@@ -130,6 +144,7 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
         	if(endState == EngineRunner.HALT)
         		return ("halt.");
         	else
+        	/**/
             return "no.";
         }
     }

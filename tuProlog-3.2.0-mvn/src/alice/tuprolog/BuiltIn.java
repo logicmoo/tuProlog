@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
+
  
 public class BuiltIn extends Library {
 	private static final long serialVersionUID = 1L;
@@ -55,6 +56,10 @@ public class BuiltIn extends Library {
 				 { "load_library", "$load_library", "directive" } };
 	 }
 
+	 /*
+	  * PREDICATES
+	  */
+
 	 public boolean fail_0() {
 		 return false;
 	 }
@@ -72,16 +77,6 @@ public class BuiltIn extends Library {
 		 engineManager.cut();
 		 return true;
 	 }
-	 
-	 //Alberto
-  	 public boolean activateOccurCheck_0() {
-  		 return FlagManager.activateOccurCheck();
-  	 }
-
-  	 //Alberto
-  	 public boolean deactivateOccurCheck_0() {
-  		 return FlagManager.deactivateOccurCheck();
-  	 }
 
 	 public boolean asserta_1(Term arg0) throws PrologError {
 		 arg0 = arg0.getTerm();
@@ -173,6 +168,8 @@ public class BuiltIn extends Library {
 		 return theoryManager.abolish((Struct) arg0);
 	 }
 
+	 
+
 	 public boolean halt_1(Term arg0) throws PrologError {
 		 if (arg0 instanceof Int)
 			 System.exit(((Int) arg0).intValue());
@@ -182,7 +179,7 @@ public class BuiltIn extends Library {
 			 throw PrologError.type_error(engineManager, 1, "integer", arg0);
 		 }
 	 }
-	
+	 
 	 public boolean load_library_1(Term arg0) throws PrologError {
 		 arg0 = arg0.getTerm();
 		 if (!arg0.isAtom()) {
@@ -255,7 +252,7 @@ public class BuiltIn extends Library {
 		 }
 	 }
 
-	
+	 
 	 public boolean flag_list_1(Term arg0) {
 		 arg0 = arg0.getTerm();
 		 Struct flist = flagManager.getPrologFlagList();
@@ -270,6 +267,7 @@ public class BuiltIn extends Library {
 		 return true;
 	 }
 
+	
 	 public boolean $call_1(Term goal) throws PrologError {
 		 goal = goal.getTerm();
 		 if (goal instanceof Var)
@@ -284,6 +282,7 @@ public class BuiltIn extends Library {
 		 return true;
 	 }
 
+	 
 	 static Term convertTermToGoal(Term term) {
 		 if (term instanceof Number)
 			 return null;
@@ -308,6 +307,7 @@ public class BuiltIn extends Library {
 		 return term;
 	 }
 
+	 
 	 private boolean isCallable(Term goal) {
 		 return (goal.isAtom() || goal.isCompound());
 	 }
@@ -341,12 +341,12 @@ public class BuiltIn extends Library {
 		 return unify(arg0, arg1);
 	 }
 
-	 
+	 // \=
 	 public boolean deunify_2(Term arg0, Term arg1) {
 		 return !unify(arg0, arg1);
 	 }
 
-	
+	 // $tolist
 	 public boolean $tolist_2(Term arg0, Term arg1) throws PrologError {
 		 // transform arg0 to a list, unify it with arg1
 		 arg0 = arg0.getTerm();
@@ -441,11 +441,9 @@ public class BuiltIn extends Library {
 			 throw PrologError.type_error(engineManager, 2, "ground", arg1);
 		 String name = arg0.toString();
 		 if (flagManager.getFlag(name) == null)
-			 throw PrologError.domain_error(engineManager, 1, "prolog_flag",
-					 arg0);
+			 throw PrologError.domain_error(engineManager, 1, "prolog_flag",arg0);
 		 if (!flagManager.isValidValue(name, arg1))
-			 throw PrologError
-			 .domain_error(engineManager, 2, "flag_value", arg1);
+			 throw PrologError.domain_error(engineManager, 2, "flag_value", arg1);
 		 if (!flagManager.isModifiable(name))
 			 throw PrologError.permission_error(engineManager, "modify", "flag",
 					 arg0, new Int(0));
@@ -506,6 +504,8 @@ public class BuiltIn extends Library {
 			 operatorManager.opNew(((Struct) arg2).getName(), specifier, priority);
 		 return true;
 	 }
+
+	 
 
 	 public void op_3(Term arg0, Term arg1, Term arg2) throws PrologError {
 		 $op_3(arg0, arg1, arg2);

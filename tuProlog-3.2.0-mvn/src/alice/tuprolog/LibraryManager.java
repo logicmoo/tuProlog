@@ -22,7 +22,6 @@ public class LibraryManager
 	
 	private ArrayList<Library> currentLibraries;
 
-	
 	private Prolog prolog;
 	private TheoryManager theoryManager;
 	private PrimitiveManager primitiveManager;
@@ -44,6 +43,7 @@ public class LibraryManager
 		primitiveManager = vm.getPrimitiveManager();
 	}
 
+	
 	public synchronized Library loadLibrary(String className)
 			throws InvalidLibraryException
 	{
@@ -74,6 +74,7 @@ public class LibraryManager
 
 	}
 
+	
 	public synchronized Library loadLibrary(String className, String[] paths)
 			throws InvalidLibraryException
 	{
@@ -87,7 +88,10 @@ public class LibraryManager
 			
 			if (System.getProperty("java.vm.name").equals("Dalvik"))
 			{
-				
+				/*
+				 * Only the first path is used. Dex file doesn't contain .class files 
+				 * and therefore getResource() method can't be used to locate the files at runtime.
+				 */
 				
 				dexPath = paths[0];
 
@@ -168,7 +172,9 @@ public class LibraryManager
 		{
 			try
 			{
-				
+				/* 
+				 * getResource() can't be used with dex files.  
+				 */
 				
 				File file = new File(paths[0]);
 				URL url = (file.toURI().toURL());
@@ -190,6 +196,7 @@ public class LibraryManager
 		return lib;
 	}
 
+	
 	public synchronized void loadLibrary(Library lib)
 			throws InvalidLibraryException
 	{
@@ -285,6 +292,7 @@ public class LibraryManager
 
 	}
 
+	
 	public synchronized Library getLibrary(String name)
 	{
 		for (Library alib : currentLibraries)
@@ -338,6 +346,8 @@ public class LibraryManager
 		return klass.getClassLoader().getResource(
 				klass.getName().replace('.', '/') + ".class");
 	}
+
+	
 	
 	public void setOptimizedDirectory(String optimizedDirectory)
 	{

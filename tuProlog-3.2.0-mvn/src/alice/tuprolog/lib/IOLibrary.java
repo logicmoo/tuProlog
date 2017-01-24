@@ -42,7 +42,7 @@ public class IOLibrary extends Library {
     protected InputStream inputStream = stdIn;
     protected String outputStreamName = STDOUT_NAME;
     protected OutputStream outputStream = stdOut;
-    
+  
     
 	protected UserContextInputStream input;
     private Random gen = new Random();
@@ -50,6 +50,7 @@ public class IOLibrary extends Library {
     public IOLibrary() {
         gen.setSeed(System.currentTimeMillis());
     }
+    
     
     public UserContextInputStream getUserContextInputStream()
     {
@@ -70,6 +71,7 @@ public class IOLibrary extends Library {
     	inputStream = stdIn;
     	inputStreamName = STDIN_NAME;
     }
+   
    
     public void setStandardInput(InputStream is)  {
     	if(inputStream == null)
@@ -96,6 +98,8 @@ public class IOLibrary extends Library {
     public OutputStream getOutputStream() {
     	return outputStream;
     }
+    
+   
     
     public boolean see_1(Term arg) throws PrologError {
         arg = arg.getTerm();
@@ -399,7 +403,7 @@ public class IOLibrary extends Library {
         return true;
     }
 
-
+   
     public boolean text_from_file_2(Term file_name, Term text)
             throws PrologError {
         file_name = file_name.getTerm();
@@ -454,7 +458,7 @@ public class IOLibrary extends Library {
                 + "agent_file(X)  :- text_from_file(X,Y),agent(Y).\n";
     }
 
-    
+    // Java guards for Prolog predicates
 
     public boolean solve_file_goal_guard_2(Term arg0, Term arg1)
             throws PrologError {

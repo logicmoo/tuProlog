@@ -30,7 +30,7 @@ public class AboutFrame extends GenericFrame
         //platformMessage += " platform version ";
         //platformMessage += alice.util.VersionInfo.getCompleteVersion();
         JLabel versionIDE=new JLabel(" tuProlog for " + alice.util.VersionInfo.getPlatform() + " version " + alice.util.VersionInfo.getCompleteVersion() + "   ");
-        JLabel copyright=new JLabel(" \u00a9 2001-2015 @ Apice Research Group");
+        JLabel copyright=new JLabel(" \u00a9 2001-2017 @ Apice Research Group");
         JLabel unibo=new JLabel(" Alma Mater Studiorum-Universita' di Bologna");
         JLabel country=new JLabel(" Italy");
         JLabel url=new JLabel("http://tuprolog.unibo.it");

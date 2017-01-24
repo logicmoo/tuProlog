@@ -23,38 +23,43 @@ import java.util.*;
 public abstract class Number extends Term implements Comparable<Number> {
 	private static final long serialVersionUID = 1L;
     
-    
+   
     public abstract int intValue();
     
     
     public abstract float floatValue();
-    
+   
     public abstract long longValue();
     
+   
     public abstract double doubleValue();
     
     public abstract boolean isInteger();
-   
+    
+    
     public abstract boolean isReal();
- 
+    
+    
     public abstract boolean isTypeInt();
 
     public abstract boolean isInt();
     
-    
+   
     public abstract boolean isTypeFloat();
 
-  
+   
     public abstract boolean isFloat();
     
-    
+   
     public abstract boolean isTypeDouble();
 
+    
     public abstract boolean isDouble();
     
-    
+   
     public abstract boolean isTypeLong();
 
+  
     public abstract boolean isLong();
     
     public static Number createNumber(String s) {
@@ -64,16 +69,17 @@ public abstract class Number extends Term implements Comparable<Number> {
         throw new InvalidTermException("Term " + t + " is not a number.");
     }
     
-   
     public Term getTerm() {
         return this;
     }
+    
+    
    
     final public boolean isNumber() {
         return true;
     }
     
-   
+    
     final public boolean isStruct() {
         return false;
     }
@@ -86,37 +92,42 @@ public abstract class Number extends Term implements Comparable<Number> {
     final public boolean isEmptyList() {
         return false;
     }
-
+    
+    
     final public boolean isAtomic() {
         return true;
     }
-    
     
     final public boolean isCompound() {
         return false;
     }
     
-   
+
     final public boolean isAtom() {
         return false;
     }
     
-    
+   
     final public boolean isList() {
         return false;
     }
-   
+    
+    
     final public boolean isGround() {
         return true;
     }
     
+    
+    
     public Term copy(int idExecCtx) {
         return this;
     }
-   
+    
+    
     Term copy(AbstractMap<Var,Var> vMap, int idExecCtx) {
         return this;
     }
+    
     
     Term copy(AbstractMap<Var,Var> vMap, AbstractMap<Term,Var> substMap) {
         return this;

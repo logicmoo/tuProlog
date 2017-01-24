@@ -18,12 +18,7 @@
 package alice.tuprolog;
 import java.io.Serializable;
 
-/**
- * This class represents a token read by the prolog term tokenizer
- *
- *
- *
- */
+
 class Token implements Serializable {
 	private static final long serialVersionUID = 1L;
     // token textual representation
@@ -40,9 +35,7 @@ class Token implements Serializable {
         return(type & Tokenizer.TYPEMASK);
     }
 
-    /**
-     * attribute could be EOF or ERROR
-     */
+    
     public int getAttribute() {
         return type & Tokenizer.ATTRMASK;
     }

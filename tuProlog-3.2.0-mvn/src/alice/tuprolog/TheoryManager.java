@@ -161,6 +161,7 @@ public class TheoryManager implements Serializable {
 		return new LinkedList<ClauseInfo>();
 	}
 
+	
 	public synchronized void consult(Theory theory, boolean dynamicTheory, String libName) throws InvalidTheoryException {
 		startGoalStack = new Stack<Term>();
 		int clause = 1;
@@ -225,6 +226,7 @@ public class TheoryManager implements Serializable {
 		return false;
 	}
 
+	
 	private Struct toClause(Struct t) {		//PRIMITIVE
 		// TODO bad, slow way of cloning. requires approx twice the time necessary
 		t = (Struct) Term.createTerm(t.toString(), this.engine.getOperatorManager());
@@ -250,7 +252,6 @@ public class TheoryManager implements Serializable {
 		}
 	}
 
-	
 	public synchronized void addStartGoal(Struct g) {
 		startGoalStack.push(g);
 	}
@@ -279,6 +280,7 @@ public class TheoryManager implements Serializable {
 			}
 		return buffer.toString();
 	}
+
 
 	public synchronized Theory getLastConsultedTheory() {
 		return lastConsultedTheory;

@@ -52,15 +52,14 @@ import alice.util.JavaDynamicClassLoader;
 @OOLibraryEnableLambdas(mode = "active") //Alberto
 public class OOLibrary extends Library {
 
-    
     private HashMap<String,Object> currentObjects = new HashMap<String, Object>();
-    
+   
     private IdentityHashMap<Object,Struct> currentObjects_inverse = new IdentityHashMap<Object, Struct>();
 
     private HashMap<String,Object> staticObjects = new HashMap<String, Object>();
     private IdentityHashMap<Object,Struct> staticObjects_inverse = new IdentityHashMap<Object, Struct>();
 
-   
+    
     private int id = 0;
     
     private int counter = 0;
@@ -167,9 +166,11 @@ public class OOLibrary extends Library {
         }
     }
 
+     
     public boolean java_object_3(Term className, Term argl, Term id) throws JavaException {
     	return new_object_3(className, argl,id);
     }
+    
     
     public boolean new_object_3(Term className, Term argl, Term id) throws JavaException {
         className = className.getTerm();
@@ -234,7 +235,7 @@ public class OOLibrary extends Library {
         }
     }
     
-    
+   
 	@SuppressWarnings("unchecked") //Modificato da Alberto
 	public <T> boolean new_lambda_3(Term interfaceName, Term implementation, Term id)throws JavaException, Exception {
 		if(lambdaPlugin != null){
@@ -280,7 +281,7 @@ public class OOLibrary extends Library {
 		return false;
     }
 
-  
+    
     public boolean destroy_object_1(Term id) throws JavaException {
         id = id.getTerm();
         try {
@@ -352,6 +353,11 @@ public class OOLibrary extends Library {
             {
             	Class<?> the_class;
             	
+            	/**
+            	 * @author Alessio Mercurio
+            	 * 
+            	 * On Dalvik VM we can only use the DexClassLoader.
+            	 */
             	
             	if (System.getProperty("java.vm.name").equals("Dalvik"))
         		{
@@ -378,6 +384,7 @@ public class OOLibrary extends Library {
         }
     }
 
+    
 	public boolean java_call_3(Term objId, Term method_name, Term idResult)
 			throws JavaException {
 		objId = objId.getTerm();
@@ -494,6 +501,7 @@ public class OOLibrary extends Library {
 		}
 	}
 	
+   
     public boolean set_classpath_1(Term paths) throws JavaException
     {
     	try {
@@ -632,7 +640,7 @@ public class OOLibrary extends Library {
         }
     }
 
-    
+   
     private boolean java_get(Term objId, Term fieldTerm, Term what) {
         if (!fieldTerm.isAtom()) {
             return false;
@@ -929,7 +937,7 @@ public class OOLibrary extends Library {
         }
     }
 
-    
+   
     private URL[] getURLsFromStringArray(String[] paths) throws MalformedURLException  
     {
     	URL[] urls = null;
@@ -952,7 +960,7 @@ public class OOLibrary extends Library {
 		return urls;
     }
     
-    
+   
     
     private String[] getStringArrayFromStruct(Struct list) {
         String args[] = new String[list.listSize()];
@@ -964,6 +972,7 @@ public class OOLibrary extends Library {
         }
         return args;
     }
+    
     
     
     private Signature parseArg(Struct method) {
@@ -1052,6 +1061,7 @@ public class OOLibrary extends Library {
         return true;
     }
 
+    
     private boolean parse_as(Object[] values, Class<?>[] types, int i,
             Term castWhat, Term castTo) {
         try {
@@ -1181,7 +1191,7 @@ public class OOLibrary extends Library {
         return true;
     }
 
-   
+    
     private boolean parseResult(Term id, Object obj) {
         if (obj == null) {
             // return unify(id,Term.TRUE);
@@ -1232,10 +1242,13 @@ public class OOLibrary extends Library {
         return args;
     }
 
-   
+    
     public boolean register(Struct id, Object obj)
             throws InvalidObjectIdException {
-       
+        /*
+         * note that this method act on the staticObject and
+         * staticObject_inverse hashmaps
+         */
         if (!id.isGround()) {
             throw new InvalidObjectIdException();
         }
@@ -1256,7 +1269,7 @@ public class OOLibrary extends Library {
         }
     }
     
-    
+   
     public boolean register_1(Term id) throws JavaException
     {
     	id = id.getTerm();
@@ -1286,6 +1299,7 @@ public class OOLibrary extends Library {
         }
     }
     
+   
     public Struct register(Object obj) {
     	// already registered object?
         synchronized (staticObjects) {
@@ -1304,6 +1318,7 @@ public class OOLibrary extends Library {
         }
     }
 
+    
     public Object getRegisteredObject(Struct id)
             throws InvalidObjectIdException {
         if (!id.isGround()) {
@@ -1315,6 +1330,7 @@ public class OOLibrary extends Library {
         }
     }
 
+   
     public boolean unregister(Struct id) throws InvalidObjectIdException {
         if (!id.isGround()) {
             throw new InvalidObjectIdException();
@@ -1331,7 +1347,7 @@ public class OOLibrary extends Library {
         }
     }
 
-     
+  
     public void registerDynamic(Struct id, Object obj) {
         synchronized (currentObjects) {
             String raw_name = alice.util.Tools.removeApices(id.toString());
@@ -1340,7 +1356,7 @@ public class OOLibrary extends Library {
         }
     }
 
-    
+   
     public Struct registerDynamic(Object obj) {
         // System.out.println("lib: "+this+" current id: "+this.id);
 
@@ -1361,7 +1377,7 @@ public class OOLibrary extends Library {
         }
     }
 
-    
+   
     public Object getRegisteredDynamicObject(Struct id)
             throws InvalidObjectIdException {
         if (!id.isGround()) {
@@ -1373,7 +1389,7 @@ public class OOLibrary extends Library {
         }
     }
 
-   
+    
     public boolean unregisterDynamic(Struct id) {
         synchronized (currentObjects) {
             String raw_name = alice.util.Tools.removeApices(id.toString());
@@ -1387,7 +1403,7 @@ public class OOLibrary extends Library {
         }
     }
 
-  
+    
     protected boolean bindDynamicObject(Term id, Object obj) {
         // null object are considered to _ variable
         if (obj == null) {
@@ -1451,7 +1467,7 @@ public class OOLibrary extends Library {
         currentObjects_inverse = bak01;
     }
 
-    
+   
     private void readObject(java.io.ObjectInputStream in) throws IOException,
             ClassNotFoundException {
         in.defaultReadObject();
@@ -1459,6 +1475,8 @@ public class OOLibrary extends Library {
         currentObjects_inverse = new IdentityHashMap<Object, Struct>();
         preregisterObjects();
     }
+
+    // --------------------------------------------------
 
     private static Method lookupMethod(Class<?> target, String name,
             Class<?>[] argClasses, Object[] argValues)
@@ -1660,7 +1678,24 @@ public class OOLibrary extends Library {
         return true;
     }
 
-    
+    // Checks compatibility also considering explicit type conversion.
+    // The method returns the argument values, since they could be changed
+    // after a type conversion.
+    //
+    // In particular the check must be done for the DEFAULT type of tuProlog,
+    // that are int and double; so
+    // (required X, provided a DEFAULT -
+    // with DEFAULT to X conversion 'conceivable':
+    // for instance *double* to *int* is NOT considered good
+    //
+    // required a float, provided an int OK
+    // required a double, provided a int OK
+    // required a long, provided a int ==> already considered by
+    // previous match test
+    // required a float, provided a double OK
+    // required a int, provided a double => NOT CONSIDERED
+    // required a long, provided a double => NOT CONSIDERED
+    //
     private static Object[] matchClasses(Class<?>[] mclasses, Class<?>[] pclasses,
             Object[] values) {
         if (mclasses.length == pclasses.length) {
@@ -1704,7 +1739,10 @@ public class OOLibrary extends Library {
 
 }
 
-
+/**
+ * Signature class mantains information about type and value of a method
+ * arguments
+ */
 @SuppressWarnings("serial")
 class Signature implements Serializable {
    Class<?>[] types;

@@ -20,13 +20,7 @@ package alice.tuprolog;
 import alice.util.ReadOnlyLinkedList;
 import java.util.*;
 
-/**
- * Customized HashMap for storing clauses in the TheoryManager
- *
- * @author ivar.orstavik@hist.no
- *
- * Reviewed by Paolo Contessi
- */
+
 
 public class ClauseDatabase extends HashMap<String,FamilyClausesList> implements Iterable<ClauseInfo> {
 	private static final long serialVersionUID = 1L;
@@ -49,13 +43,7 @@ public class ClauseDatabase extends HashMap<String,FamilyClausesList> implements
 		return (FamilyClausesList) remove(key);
 	}
 
-	/**
-	 * Retrieves a list of the predicates which has the same name and arity
-	 * as the goal and which has a compatible first-arg for matching.
-	 *
-	 * @param headt The goal
-	 * @return  The list of matching-compatible predicates
-	 */
+	
 	List<ClauseInfo> getPredicates(Term headt) {
 		FamilyClausesList family = (FamilyClausesList) get(((Struct) headt).getPredicateIndicator());
 		if (family == null){
@@ -64,12 +52,7 @@ public class ClauseDatabase extends HashMap<String,FamilyClausesList> implements
 		return family.get(headt);
 	}
 
-	/**
-	 * Retrieves the list of clauses of the requested family
-	 *
-	 * @param key   Goal's Predicate Indicator
-	 * @return      The family clauses
-	 */
+	
 	List<ClauseInfo> getPredicates(String key){
 		FamilyClausesList family = (FamilyClausesList) get(key);
 		if(family == null){

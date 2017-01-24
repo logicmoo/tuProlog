@@ -41,7 +41,8 @@ class Flag implements java.io.Serializable {
      * @param library is the library defining the flag
      */
     public Flag(String name, Struct valueSet, Term defValue, boolean modifiable, String library) {
-        this.name = name;
+
+    	this.name = name;
         this.valueList = valueSet;
         defaultValue = defValue;
         this.modifiable = modifiable;

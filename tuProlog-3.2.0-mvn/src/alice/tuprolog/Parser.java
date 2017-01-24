@@ -45,6 +45,7 @@ public class Parser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 	/*Castagna 06/2011*/
 	private HashMap<Term, Integer> offsetsMap;		 
 	private int tokenStart;
+
 	
 	public Parser(OperatorManager op, InputStream theoryText) {
 		this(theoryText);
@@ -65,7 +66,7 @@ public class Parser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 			opManager = op;
 	}
 	
-	
+		
 	public Parser(String theoryText, HashMap<Term, Integer> mapping) {		 
 		tokenizer = new Tokenizer(theoryText);		 
 		offsetsMap = mapping;		 
@@ -75,7 +76,7 @@ public class Parser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 		tokenizer = new Tokenizer(theoryText);
 		/*Castagna 06/2011*/
 		offsetsMap = null;
-		 
+		/**/        
 	}
 
 	
@@ -112,7 +113,7 @@ public class Parser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 				throw new InvalidTermException("The term '" + term + "' is not ended with a period.",
 						tokenizer.offsetToRowColumn(getCurrentOffset())[0],
 	            		tokenizer.offsetToRowColumn(getCurrentOffset())[1] - 1);
-				
+				/**/
 
 			term.resolveTerm();
 			return term;
@@ -122,6 +123,7 @@ public class Parser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 			throw new InvalidTermException("An I/O error occured.",
 					tokenizer.offsetToRowColumn(getCurrentOffset())[0],
 		            tokenizer.offsetToRowColumn(getCurrentOffset())[1] - 1);					
+			/**/
 		}
 	}
 
@@ -130,7 +132,6 @@ public class Parser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 		return parseSingleTerm(st, null);
 	}
 
-	
 	public static Term parseSingleTerm(String st, OperatorManager op) throws InvalidTermException {
 		try {
 			Parser p = new Parser(op, st);
@@ -151,7 +152,7 @@ public class Parser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 		}
 	}
 
-	
+	// internal parsing procedures
 
 	private Term expr(boolean commaIsEndMarker) throws InvalidTermException, IOException {
 		return exprA(OperatorManager.OP_HIGH, commaIsEndMarker).result;
@@ -329,7 +330,6 @@ public class Parser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 		return new IdentifiedTerm(0, expr0());
 	}
 
-	
 	private Term expr0() throws InvalidTermException, IOException {
 		Token t1 = tokenizer.readToken();
 
@@ -535,7 +535,12 @@ public class Parser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 		}
 	}
 
-	
+	/*Castagna 06/2011*/
+	/*
+     * Francesco Fabbri
+     * 18/04/2011
+     * Mapping terms on text
+     */
     
     private IdentifiedTerm identifyTerm(int priority, Term term, int offset) {
     	map(term, offset);
@@ -552,13 +557,13 @@ public class Parser implements /*Castagna 06/2011*/IParser,/**/ Serializable
     }
     
     
+
     @Override
-	/**/
 	public int getCurrentLine() {
 		return tokenizer.lineno();
 	}
     
-    /*Castagna 06/2011*/
+    
     @Override
 	public int getCurrentOffset() {
 		return tokenizer.tokenOffset();

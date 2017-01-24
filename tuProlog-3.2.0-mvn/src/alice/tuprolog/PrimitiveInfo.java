@@ -19,6 +19,8 @@ package alice.tuprolog;
 
 import java.lang.reflect.*;
 
+
+
 public class PrimitiveInfo {
     
     public final static int DIRECTIVE  = 0;
@@ -26,7 +28,7 @@ public class PrimitiveInfo {
     public final static int FUNCTOR    = 2;
     
     private int type;
-   
+    
     private Method method;
     
     private IPrimitives source;
@@ -47,7 +49,7 @@ public class PrimitiveInfo {
     }
     
     
-   
+    
     public synchronized String invalidate() {
         String key = primitive_key;
         primitive_key = null;
@@ -80,12 +82,16 @@ public class PrimitiveInfo {
         return source;
     }
     
+    
+    
     public synchronized void evalAsDirective(Struct g) throws IllegalAccessException, InvocationTargetException {
         for (int i=0; i<primitive_args.length; i++) {
             primitive_args[i] = g.getTerm(i);
         }
         method.invoke(source,primitive_args);
     }
+    
+    
     
     public synchronized boolean evalAsPredicate(Struct g) throws Throwable {
         for (int i=0; i<primitive_args.length; i++) {
@@ -100,6 +106,7 @@ public class PrimitiveInfo {
         }
     }
     
+   
     public synchronized Term evalAsFunctor(Struct g) throws Throwable {
         try {
             for (int i=0; i<primitive_args.length; i++) {
@@ -110,6 +117,8 @@ public class PrimitiveInfo {
             throw ex.getCause();
         }
     }
+    
+    
     
     public String toString() {
         return "[ primitive: method "+method.getName()+" - "+primitive_args+" - N args: "+primitive_args.length+" - "+source.getClass().getName()+" ]\n";

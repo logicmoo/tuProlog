@@ -38,7 +38,7 @@ public class Struct extends Term {
     private String name;
     
     private Term[] arg;
-   
+    
     private int arity;
     
     private String predicateIndicator;
@@ -47,25 +47,31 @@ public class Struct extends Term {
     
     private boolean resolved=false;
     
+    
     public Struct(String f) {
         this(f,0);
     }
-   
+    
+    
     public Struct(String f, Term at0) {
         this(f, new Term[] {at0});
     }
     
+   
     public Struct(String f, Term at0, Term at1) {
         this(f, new Term[] {at0, at1});
     }
     
+    
     public Struct(String f, Term at0, Term at1, Term at2) {
         this(f, new Term[] {at0, at1, at2});
     }
+    
    
     public Struct(String f, Term at0, Term at1, Term at2, Term at3) {
         this(f, new Term[] {at0, at1, at2, at3});
     }
+    
     
     public Struct(String f, Term at0, Term at1, Term at2, Term at3, Term at4) {
         this(f, new Term[] {at0, at1, at2, at3, at4});
@@ -75,10 +81,12 @@ public class Struct extends Term {
         this(f, new Term[] {at0, at1, at2, at3, at4, at5});
     }
     
+   
     public Struct(String f, Term at0, Term at1, Term at2, Term at3, Term at4, Term at5, Term at6) {
         this(f, new Term[] {at0, at1, at2, at3, at4, at5, at6});
     }
     
+   
     public Struct(String f, Term[] argList) {
         this(f, argList.length);
         for (int i = 0; i < argList.length; i++)
@@ -88,17 +96,20 @@ public class Struct extends Term {
                 arg[i] = argList[i];
     }
     
+  
     public Struct() {
         this("[]", 0);
         resolved = true;
     }
     
+  
     public Struct(Term h,Term t) {
         this(".",2);
         arg[0] = h;
         arg[1] = t;
     }
     
+ 
     public Struct(Term[] argList) {
         this(argList,0);
     }
@@ -116,6 +127,7 @@ public class Struct extends Term {
         }
     }
     
+  
     Struct(String f, LinkedList<Term> al) {
         name = f;
         arity = al.size();
@@ -147,35 +159,43 @@ public class Struct extends Term {
         resolved = false;
     }
     
+    
     String getHashKey() {
         return getPredicateIndicator();
     }
     
+    
     String getPredicateIndicator() {
         return predicateIndicator;
     }
-   
+    
+    
     public int getArity() {
         return arity;
     }
     
+   
     public String getName() {
         return name;
     }
     
+   
     public Term getArg(int index) {
         return arg[index];
     }
     
+   
     public void setArg(int index, Term argument) {
         arg[index] = argument;
     }
+    
     
     public Term getTerm(int index) {
             if (!(arg[index] instanceof Var))
                 return arg[index];
             return arg[index].getTerm();
     }
+    
     
     public boolean isNumber() {
         return false;
@@ -186,12 +206,12 @@ public class Struct extends Term {
         return true;
     }
     
-    
+   
     public boolean isVar() {
         return false;
     }
     
-    // check type services
+   
     
     public boolean isAtomic() {
         return  arity == 0;
@@ -218,7 +238,7 @@ public class Struct extends Term {
         return true;
     }
     
-   
+    
     public boolean isClause() {
         return(name.equals(":-") && arity > 1 && arg[0].getTerm() instanceof Struct);
     }    
@@ -226,7 +246,6 @@ public class Struct extends Term {
     public Term getTerm() {
         return this;
     }
-    
     
     public Struct getArg(String name) {
         if (arity == 0) {
@@ -252,7 +271,7 @@ public class Struct extends Term {
         return null;
     }
     
-   
+  
     public boolean isGreater(Term t) {
         t = t.getTerm();
         if (!(t instanceof Struct)) {
@@ -278,6 +297,7 @@ public class Struct extends Term {
         }
         return false;
     }
+    
     
     Term copy(AbstractMap<Var,Var> vMap, int idExecCtx) {
         Struct t = new Struct(arity);
@@ -311,6 +331,7 @@ public class Struct extends Term {
         return t;
 	}
     
+   
     Term copy(AbstractMap<Var,Var> vMap, AbstractMap<Term,Var> substMap) {
         Struct t = new Struct(arity);
         t.resolved  = false;
@@ -326,7 +347,7 @@ public class Struct extends Term {
         return t;
     }
     
-   
+    
     long resolveTerm(long count) {
         if (resolved) {
             return count;
@@ -335,6 +356,7 @@ public class Struct extends Term {
             return resolveTerm(vars,count);
         }
     }
+    
     
     long resolveTerm(LinkedList<Var> vl,long count) {
         long newcount=count;
@@ -376,23 +398,25 @@ public class Struct extends Term {
         return newcount;
     }
     
-    
+   
     public boolean isEmptyList() {
         return name.equals("[]") && arity == 0;
     }
     
-   
+    
     public Term listHead() {
         if (!isList())
             throw new UnsupportedOperationException("The structure " + this + " is not a list.");
         return arg[0].getTerm();
     }
-  
+    
+   
     public Struct listTail() {
         if (!isList())
             throw new UnsupportedOperationException("The structure " + this + " is not a list.");
         return (Struct) arg[1].getTerm();
     }
+    
    
     public int listSize() {
         if (!isList())
@@ -413,7 +437,7 @@ public class Struct extends Term {
         return new StructIterator(this);
     }
     
-   
+    
     Struct toList() {
         Struct t = new Struct();
         for(int c = arity - 1;c >= 0;c--) {
@@ -422,6 +446,7 @@ public class Struct extends Term {
         return new Struct(new Struct(name),t);
     }
     
+   
     Struct fromList() {
         Term ft = arg[0].getTerm();
         if (!ft.isAtom()) {
@@ -439,7 +464,7 @@ public class Struct extends Term {
         return new Struct(((Struct) ft).name, al);
     }
     
-   
+    
     public void append(Term t) {
         if (isEmptyList()) {
             name = ".";
@@ -454,7 +479,7 @@ public class Struct extends Term {
         }
     }
     
-  
+    
     void insert(Term t) {
         Struct co=new Struct();
         co.arg[0]=arg[0];
@@ -462,6 +487,7 @@ public class Struct extends Term {
         arg[0] = t;
         arg[1] = co;
     }
+    
     
     boolean unify(List<Var> vl1,List<Var> vl2,Term t) {
         // In fase di unificazione bisogna annotare tutte le variabili della struct completa.
@@ -484,19 +510,22 @@ public class Struct extends Term {
     
     
     public void free() {}
-   
+    
+    
     void setPrimitive(PrimitiveInfo b) {
         primitive = b;
     }
     
-        public PrimitiveInfo getPrimitive() {
+   
+    public PrimitiveInfo getPrimitive() {
         return primitive;
     }
     
-   
+    
     public boolean isPrimitive() {
         return primitive != null;
     }
+    
     
     public String toString() {
         // empty list case

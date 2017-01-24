@@ -30,6 +30,7 @@ import alice.tuprolog.TermVisitor;
 import alice.tuprolog.json.JSONSerializerManager;
 import alice.util.OneWayList;
 
+
 public abstract class Term implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -42,35 +43,48 @@ public abstract class Term implements Serializable {
      
     // checking type and properties of the Term
     
+    
     public abstract boolean isNumber();
+    
     
     public abstract boolean isStruct();
     
-    public abstract boolean isVar();
    
+    public abstract boolean isVar();
+    
+    
     public abstract boolean isEmptyList();
+    
     
     public abstract boolean isAtomic();
     
+  
     public abstract boolean isCompound();
+    
     
     public abstract boolean isAtom();
     
+   
     public abstract boolean isList();
+    
     
     public abstract boolean isGround();
     
+  
     public boolean equals(Object t) {
         if (!(t instanceof Term))
             return false;
         return isEqual((Term) t);
     }
     
+    
     public abstract boolean isGreater(Term t);
+    
     
     public boolean isEqual(Term t){ //Alberto
     	return this.toString().equals(t.toString());
     }
+    
     
     public boolean isEqualObject(Term t){ //Alberto
     	if (!(t instanceof Term))
@@ -79,19 +93,30 @@ public abstract class Term implements Serializable {
     		return this == t;
     }
     
+    
     public abstract Term getTerm();
+    
+    
     
     public abstract void free();
     
+    
+    
     abstract long resolveTerm(long count);
+    
+    
     
     public void resolveTerm() {
         resolveTerm(System.currentTimeMillis());
     }
     
+    
+   
     public Term copyGoal(AbstractMap<Var,Var> vars, int idExecCtx) {
         return copy(vars,idExecCtx);
     }
+    
+    
     
     public Term copyResult(Collection<Var> goalVars, List<Var> resultVars) {
         IdentityHashMap<Var,Var> originals = new IdentityHashMap<Var,Var>();
@@ -108,12 +133,16 @@ public abstract class Term implements Serializable {
         return copy(originals,new IdentityHashMap<Term,Var>());
     }
     
+    
+    
     abstract Term copy(AbstractMap<Var,Var> vMap, int idExecCtx);
     
     //Alberto
     public abstract Term copyAndRetainFreeVar(AbstractMap<Var,Var> vMap, int idExecCtx);
     
+    
     abstract Term copy(AbstractMap<Var,Var> vMap, AbstractMap<Term,Var> substMap);
+    
     
     public boolean unify(Prolog mediator, Term t1) {
         EngineManager engine = mediator.getEngineManager();
@@ -154,6 +183,7 @@ public abstract class Term implements Serializable {
     	return false;
     }
     
+   
     public boolean match(Term t) {
         resolveTerm();
         t.resolveTerm();
@@ -187,6 +217,7 @@ public abstract class Term implements Serializable {
         return new Parser(text).iterator();
     }
     
+    
     String toStringAsArgX(OperatorManager op,int prio) {
         return toStringAsArg(op,prio,true);
     }
@@ -198,6 +229,7 @@ public abstract class Term implements Serializable {
     String toStringAsArg(OperatorManager op,int prio,boolean x) {
         return toString();
     }
+    
     
     public Term iteratedGoalTerm() {
         return this;

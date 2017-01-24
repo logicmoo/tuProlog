@@ -93,6 +93,7 @@ public class Var extends Term {
 		if(id < 0) id = Var.ORIGINAL;
 		rename(id,alias);
 	}
+
 	
 	void rename(int idExecCtx, int count) { /* Reviewed by Paolo Contessi */
 		ctxid = idExecCtx;
@@ -116,6 +117,7 @@ public class Var extends Term {
 		}
 	}
 
+	
 	@Override
 	Term copy(AbstractMap<Var,Var> vMap, int idExecCtx) {
 		Term tt = getTerm();
@@ -148,7 +150,7 @@ public class Var extends Term {
 		}
 	}
 
-
+	
 	@Override
 	Term copy(AbstractMap<Var,Var> vMap, AbstractMap<Term,Var> substMap) {
 		Var v;
@@ -185,13 +187,13 @@ public class Var extends Term {
 		link = null;
 	}
 
+	
 	public static void free(List<Var> varsUnified) {
 		for(Var v:varsUnified){
 			v.free();                
 		}
 	}
 
-	
 	public String getName() {
 		if (name!=null) {
 			return completeName.toString();
@@ -209,6 +211,7 @@ public class Var extends Term {
 		}
 	}
 
+	
 	public Term getTerm() {
 		Term tt = this;
 		Term t  = link;
@@ -413,6 +416,7 @@ public class Var extends Term {
 		 this.name=s;
 	 }
 
+	
 	 @Override
 	 public String toString() {
 		 Term tt = getTerm();
@@ -433,6 +437,7 @@ public class Var extends Term {
 		 }
 	 }
 
+
 	 public String toStringFlattened() {
 		 Term tt = getTerm();
 		 if (name != null) {
@@ -452,7 +457,7 @@ public class Var extends Term {
 		 }
 	 }
 
-	 /*Castagna 06/2011*/
+	 
 	 @Override
 	 public void accept(TermVisitor tv) {
 		 tv.visit(this);

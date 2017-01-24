@@ -23,12 +23,14 @@ import alice.util.Tools;
 import alice.tuprolog.event.OutputEvent;
 import alice.tuprolog.event.OutputListener;
 
+
 public class Agent {
     
     private Prolog core;
     private String theoryText;
     private InputStream theoryInputStream;
     private String goalText;
+    
   
     private OutputListener defaultOutputListener = new OutputListener() {
         public void onOutput(OutputEvent ev) {
@@ -36,12 +38,15 @@ public class Agent {
         }
     };
     
+    
+   
     public Agent(String theory){
         theoryText=theory;
         core=new Prolog();
         core.addOutputListener(defaultOutputListener);
     }
     
+   
     public Agent(String theory,String goal){
         theoryText=theory;
         goalText=goal;
@@ -49,11 +54,13 @@ public class Agent {
         core.addOutputListener(defaultOutputListener);
     }
     
+   
     public Agent(InputStream is){
         theoryInputStream=is;
         core=new Prolog();
         core.addOutputListener(defaultOutputListener);
     }
+    
     
     public Agent(InputStream is,String goal){
         theoryInputStream=is;
@@ -62,21 +69,26 @@ public class Agent {
         core.addOutputListener(defaultOutputListener);
     }
     
+    
     final  public void spawn(){
         new Agent.AgentThread(this).start();
     }
+    
     
     public synchronized void addOutputListener(OutputListener l) {
         core.addOutputListener(l);
     }
     
+    
     public synchronized void removeOutputListener(OutputListener l) {
         core.removeOutputListener(l);
     }
     
+    
     public void removeAllOutputListener(){
         core.removeAllOutputListeners();
     }
+    
     
     private void body(){
         try {

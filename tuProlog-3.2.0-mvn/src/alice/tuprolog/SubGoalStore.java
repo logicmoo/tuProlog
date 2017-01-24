@@ -23,7 +23,7 @@ public class SubGoalStore {
 
     }
 
-   
+    
     public Term backTo(SubGoalId identifier) {
         popSubGoal((DefaultSubGoalId) identifier);
         index--;
@@ -68,6 +68,7 @@ public class SubGoalStore {
         }
     }
 
+    
     public SubGoalId getCurrentGoalId() {
         return new DefaultSubGoalId(curSGId, commaStruct, index);
     }
@@ -81,6 +82,7 @@ public class SubGoalStore {
                 + "index: " + index;
     }
 
+    
     public SubGoalTree getSubGoals() {
         return goals;
     }

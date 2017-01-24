@@ -34,10 +34,10 @@ public abstract class Library implements Serializable, IPrimitives {
         opMappingCached = getSynonymMap();
     }
     
-    
     public String getName() {
         return getClass().getName();
     }
+    
     
     public String getTheory() {
         return "";
@@ -47,26 +47,33 @@ public abstract class Library implements Serializable, IPrimitives {
     	return "";
     }
     
+    
     public String[][] getSynonymMap() {
         return null;
     }
+    
     
     public Prolog getEngine() {
         return engine;
     }
     
+   
     public void setEngine(Prolog en) {	
         engine = en;
     }
     
+   
     protected boolean unify(Term a0,Term a1) {
         return engine.unify(a0,a1);
     }
+    
     
     protected boolean match(Term a0,Term a1) {
         return engine.match(a0,a1);
     }
     
+    
+   
     protected Term evalExpression(Term term) throws Throwable {
         if (term == null)
             return null;
@@ -88,13 +95,18 @@ public abstract class Library implements Serializable, IPrimitives {
         return null;
     }
     
+   
     public void dismiss() {}
     
+    
     public void onSolveBegin(Term goal) {}
+    
+    
     
     public void onSolveHalt(){}
     
     public void onSolveEnd() {}
+    
     
     public Map<Integer,List<PrimitiveInfo>> getPrimitives() {
         try {
@@ -161,4 +173,7 @@ public abstract class Library implements Serializable, IPrimitives {
             return null;
         }
     }
+    
+    
+    
 }
