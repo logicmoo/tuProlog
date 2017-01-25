@@ -156,7 +156,7 @@ class FlagManager {
 		}
 
 		//Alberto
-		public void reloadKnowledgeBase(FullEngineState brain) {
+		public void reloadFlags(FullEngineState brain) {
 			ArrayList<String> a = brain.getFlags();
 			ArrayList<Flag> f = new ArrayList<Flag>();
 			for(String s : a){

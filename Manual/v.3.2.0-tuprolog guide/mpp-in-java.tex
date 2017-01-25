@@ -2700,7 +2700,7 @@ This method creates the JSON representation of the \tuprolog{} engine. If \textt
 public static Prolog fromJSON(String str);
 }\\ \\
 This method creates a new \texttt{Prolog} object from its JSON representation.\\
-Warning: the method works only for \textit{FullState}. \textit{ReducedState} is not already supported.
+Warning: the method works only for \textit{FullState}. \textit{ReducedState} is not supported. Directives are not re-evaluated. No local resources are moved: all resources have to be managed by the user.
 \\ \\
 {\small\tt
 public static AbstractEngineState getEngineStateFromJSON(String str);

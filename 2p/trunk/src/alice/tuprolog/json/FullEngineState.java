@@ -1,7 +1,9 @@
 package alice.tuprolog.json;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
+import alice.tuprolog.Operator;
 import alice.tuprolog.Term;
 
 //Alberto
@@ -10,18 +12,13 @@ public class FullEngineState extends AbstractEngineState {
 	@SuppressWarnings("unused")
 	private String type = "FullEngineState";
 	
-	private String dynamicDBase;
 	private String[] libraries;
 	private ArrayList<String> flags;
 	
-	public String getDynamicDBase() {
-		return dynamicDBase;
-	}
+	private String dynTheory;
 	
-	public void setDynamicDBase(String dynamicDBase) {
-		this.dynamicDBase = dynamicDBase;
-	}
-
+	private LinkedList<Operator> op;
+	
 	@Override
 	public void setQuery(Term query) {
 		this.query = query;
@@ -70,7 +67,6 @@ public class FullEngineState extends AbstractEngineState {
 		this.serializationTimestamp = serializationTimestamp;
 	}
 
-
 	public ArrayList<String> getFlags() {
 		return flags;
 	}
@@ -78,5 +74,21 @@ public class FullEngineState extends AbstractEngineState {
 	public void setFlags(ArrayList<String> flags) {
 		this.flags = flags;
 	}
+
+	public void setDynTheory(String theory) {
+		this.dynTheory = theory;
+	}
 	
+	public String getDynTheory(){
+		return this.dynTheory;
+	}
+
+	public LinkedList<Operator> getOp() {
+		return op;
+	}
+
+	public void setOp(LinkedList<Operator> list) {
+		this.op = list;
+	}
+
 }
