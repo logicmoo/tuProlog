@@ -76,33 +76,15 @@ public class BuiltIn extends Library {
 		 return true;
 	 }
 
-	 /*Castagna 06/2011*/
-	 /*
-	public boolean halt_0() throws HaltException {
-		throw new HaltException();
-	}
-	  */
-
 	 public boolean halt_0() {
 		 System.exit(0);
 		 return true;
 	 }
-	 /**/
 
 	 public boolean cut_0() {
 		 engineManager.cut();
 		 return true;
 	 }
-	 
-	 //Alberto
-  	 public boolean activateOccurCheck_0() {
-  		 return FlagManager.activateOccurCheck();
-  	 }
-
-  	 //Alberto
-  	 public boolean deactivateOccurCheck_0() {
-  		 return FlagManager.deactivateOccurCheck();
-  	 }
 
 	 public boolean asserta_1(Term arg0) throws PrologError {
 		 arg0 = arg0.getTerm();
@@ -511,11 +493,9 @@ public class BuiltIn extends Library {
 			 throw PrologError.type_error(engineManager, 2, "ground", arg1);
 		 String name = arg0.toString();
 		 if (flagManager.getFlag(name) == null)
-			 throw PrologError.domain_error(engineManager, 1, "prolog_flag",
-					 arg0);
+			 throw PrologError.domain_error(engineManager, 1, "prolog_flag",arg0);
 		 if (!flagManager.isValidValue(name, arg1))
-			 throw PrologError
-			 .domain_error(engineManager, 2, "flag_value", arg1);
+			 throw PrologError.domain_error(engineManager, 2, "flag_value", arg1);
 		 if (!flagManager.isModifiable(name))
 			 throw PrologError.permission_error(engineManager, "modify", "flag",
 					 arg0, new Int(0));

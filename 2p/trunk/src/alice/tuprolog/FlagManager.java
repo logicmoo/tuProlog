@@ -19,6 +19,10 @@ package alice.tuprolog;
 
 import java.util.*;
 
+import alice.tuprolog.json.AbstractEngineState;
+import alice.tuprolog.json.FullEngineState;
+import alice.tuprolog.json.JSONSerializerManager;
+
 /**
  * Administrator of flags declared
  * 
@@ -41,8 +45,11 @@ class FlagManager {
         flags = new ArrayList<Flag>();
         Sflags = flags;
         
-        //occurCheck flag -> a default è on!
-        this.defineFlag("occurCheck", new Struct("[on, off]"), new Struct("on"), true, "BasicLibrary");
+        //occursCheck flag -> a default è on!
+        Struct s = new Struct();
+        s.append(new Struct("on"));
+        s.append(new Struct("off"));
+        this.defineFlag("occursCheck", s, new Struct("on"), true, "BuiltIn");
     }
 
     /**
@@ -64,7 +71,7 @@ class FlagManager {
     public synchronized boolean setFlag(String name, Term value) {
         java.util.Iterator<Flag> it = flags.iterator();
         while (it.hasNext()) {
-            Flag flag = (Flag) it.next();
+            Flag flag = it.next();
             if (flag.getName().equals(name)) {
                 if (flag.isModifiable() && flag.isValidValue(value)) {
                     flag.setValue(value);
@@ -81,7 +88,7 @@ class FlagManager {
         Struct flist = new Struct();
         java.util.Iterator<Flag> it = flags.iterator();
         while (it.hasNext()) {
-            Flag fl = (Flag) it.next();
+            Flag fl = it.next();
             flist = new Struct(new Struct("flag", new Struct(fl.getName()), fl
                     .getValue()), flist);
         }
@@ -91,7 +98,7 @@ class FlagManager {
     public synchronized Term getFlag(String name) {
         java.util.Iterator<Flag> it = flags.iterator();
         while (it.hasNext()) {
-            Flag fl = (Flag) it.next();
+            Flag fl = it.next();
             if (fl.getName().equals(name)) {
                 return fl.getValue();
             }
@@ -104,7 +111,7 @@ class FlagManager {
     public boolean isModifiable(String name) {
         java.util.Iterator<Flag> it = flags.iterator();
         while (it.hasNext()) {
-            Flag flag = (Flag) it.next();
+            Flag flag = it.next();
             if (flag.getName().equals(name)) {
                 return flag.isModifiable();
             }
@@ -117,7 +124,7 @@ class FlagManager {
     public boolean isValidValue(String name, Term value) {
         java.util.Iterator<Flag> it = flags.iterator();
         while (it.hasNext()) {
-            Flag flag = (Flag) it.next();
+            Flag flag = it.next();
             if (flag.getName().equals(name)) {
                 return flag.isValidValue(value);
             }
@@ -126,9 +133,9 @@ class FlagManager {
     }
 
     //Alberto
-	public static boolean isOccurCheckEnabled() {
+	public static boolean isOccursCheckEnabled() {
 		for(Flag f : Sflags){
-			if(f.getName().equals("occurCheck")){
+			if(f.getName().equals("occursCheck")){
 				if(f.getValue().toString().equals("on"))
 					return true;
 				else return false;
@@ -138,24 +145,25 @@ class FlagManager {
 	}
 
 	//Alberto
-	public static boolean activateOccurCheck() {
-		for(Flag f : Sflags){
-			if(f.getName().equals("occurCheck")){
-				f.value = new Struct("on");
-				return true;
+	public void serializeFlags(AbstractEngineState brain) {
+		if(brain instanceof FullEngineState){
+			ArrayList<String> a = new ArrayList<String>();
+			for(Flag f : flags){
+				a.add(JSONSerializerManager.toJSON(f));
 			}
+			((FullEngineState) brain).setFlags(a);
 		}
-		return false;
 	}
 
 	//Alberto
-	public static boolean deactivateOccurCheck() {
-		for(Flag f : Sflags){
-			if(f.getName().equals("occurCheck")){
-				f.value = new Struct("off");
-				return true;
-			}
+	public void reloadFlags(FullEngineState brain) {
+		ArrayList<String> a = brain.getFlags();
+		ArrayList<Flag> f = new ArrayList<Flag>();
+		for(String s : a){
+			Flag fl = JSONSerializerManager.fromJSON(s, Flag.class);
+			f.add(fl);
 		}
-		return false;
+		Sflags = f;
+		flags = f;
 	}
 }
