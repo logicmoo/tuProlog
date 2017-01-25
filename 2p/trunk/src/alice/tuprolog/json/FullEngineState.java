@@ -1,5 +1,7 @@
 package alice.tuprolog.json;
 
+import java.util.ArrayList;
+
 import alice.tuprolog.Term;
 
 //Alberto
@@ -10,6 +12,7 @@ public class FullEngineState extends AbstractEngineState {
 	
 	private String dynamicDBase;
 	private String[] libraries;
+	private ArrayList<String> flags;
 	
 	public String getDynamicDBase() {
 		return dynamicDBase;
@@ -65,6 +68,15 @@ public class FullEngineState extends AbstractEngineState {
 	@Override
 	public void setSerializationTimestamp(long serializationTimestamp) {
 		this.serializationTimestamp = serializationTimestamp;
+	}
+
+
+	public ArrayList<String> getFlags() {
+		return flags;
+	}
+
+	public void setFlags(ArrayList<String> flags) {
+		this.flags = flags;
 	}
 	
 }

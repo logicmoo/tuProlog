@@ -19,6 +19,10 @@ package alice.tuprolog;
 
 import java.util.*;
 
+import alice.tuprolog.json.AbstractEngineState;
+import alice.tuprolog.json.FullEngineState;
+import alice.tuprolog.json.JSONSerializerManager;
+
 /**
  * Administrator of flags declared
  * 
@@ -41,11 +45,11 @@ class FlagManager {
         flags = new ArrayList<Flag>();
         Sflags = flags;
         
-        //occurCheck flag -> a default è on!
+        //occursCheck flag -> a default è on!
         Struct s = new Struct();
         s.append(new Struct("on"));
         s.append(new Struct("off"));
-        this.defineFlag("occurCheck", s, new Struct("on"), true, "BasicLibrary");
+        this.defineFlag("occursCheck", s, new Struct("on"), true, "BuiltIn");
     }
 
     /**
@@ -129,9 +133,9 @@ class FlagManager {
     }
 
     //Alberto
-	public static boolean isOccurCheckEnabled() {
+	public static boolean isOccursCheckEnabled() {
 		for(Flag f : Sflags){
-			if(f.getName().equals("occurCheck")){
+			if(f.getName().equals("occursCheck")){
 				if(f.getValue().toString().equals("on"))
 					return true;
 				else return false;
@@ -139,4 +143,27 @@ class FlagManager {
 		}
 		return false;
 	}
+
+	//Alberto
+		public void serializeFlags(AbstractEngineState brain) {
+			if(brain instanceof FullEngineState){
+				ArrayList<String> a = new ArrayList<String>();
+				for(Flag f : flags){
+					a.add(JSONSerializerManager.toJSON(f));
+				}
+				((FullEngineState) brain).setFlags(a);
+			}
+		}
+
+		//Alberto
+		public void reloadKnowledgeBase(FullEngineState brain) {
+			ArrayList<String> a = brain.getFlags();
+			ArrayList<Flag> f = new ArrayList<Flag>();
+			for(String s : a){
+				Flag fl = JSONSerializerManager.fromJSON(s, Flag.class);
+				f.add(fl);
+			}
+			Sflags = f;
+			flags = f;
+		}
 }

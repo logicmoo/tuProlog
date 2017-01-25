@@ -9,7 +9,7 @@ The full list of prolog flags, with their admissible and default values, is repo
 			\begin{tabular}{lllll}
 			%\begin{tabular}{p{4.8cm}|p{2.2cm}|p{2.2cm}|p{1.8cm} | p{4.8cm}}\hline\hline
 				Flag Name   & Possible Values & Default Value & Modifiable & Library\\ \hline\hline
-				occurCheck & {on, off}          &  on        & yes  & Built-in\\
+				occursCheck & {on, off}          &  on        & yes  & Built-in\\
 				bounded          & {true}          &  true        & no & ISOLibrary \\
 				max\_integer     & {2147483647}    &  2147483647  & no & ISOLibrary\\
 				min\_integer     & {-2147483648}   &  -2147483648 & no & ISOLibrary\\
@@ -51,7 +51,7 @@ The full list of prolog flags, with their admissible and default values, is repo
    2.9.2       & Swing & 194K & 6.5M & further bug fixes, new editor in Java/.NET GUI, code generators for P@.NET now compatible with Visual Studio 2012/13, new acceptance test suite based on the Concordion framework\\
    3.0         & Swing & 199K & 7M & support for Java 8's lambda expressions, new OOLibrary\\
    3.1         & Swing & 199K & 7M & several bug fixes (including setof/bagof and GUI improvements)\\
-   3.2         & Swing & 213K & 7,1M & JSON support for engine's state serialization and occur check management via prolog flag\\
+   3.2         & Swing & 213K & 7,1M & JSON support for engine's state serialization and occurs check management via prolog flag\\
    \hline
  \end{tabular}
  \caption{Version comparison (the \texttt{2p.jar} size does not include the Javassist library (600K) required by the P@J framework from version 2.3. }\label{tab:version-history-comparison}
@@ -391,7 +391,7 @@ Accordingly, the minimum execution platform for \tuprolog{}~3 is now \textit{Jav
 Released on November 2016, this version aims to provide a stable environment, \textit{a)} completing the pending bugfixes, with special regards to the old annoying bugs regarding the behaviour of \texttt{setof}, \texttt{bagof}; \textit{b)} improving the editor in the Java/.NET GUI.
 
 \section{Version 3.2}
-Released on January 2017, this version aims to provide JSON API for the serialization/deserialization of the prolog engine state. This version also introduces the possibility to manage occur check functionality via prolog flag.
+Released on January 2017, this version aims to provide JSON API for the serialization/deserialization of the prolog engine state. This version also introduces the possibility to manage occurs check functionality via prolog flag.
 
 \section{Acknowledgments}
 
@@ -430,6 +430,6 @@ The following people deserve a big thanks for their help and support in \tuprolo
   \item new Java IDE, exploiting the \texttt{RSyntaxTextArea} open source component from Fifesoft http://fifesoft.com/rsyntaxtextarea/: Andrzej Olszak (2015)
   \item lambda expressions support in 3.0: Roberta Calegari and Enrico Denti (2015)
   \item Extensive bug fix in the engine state machine, including \texttt{setof} and \texttt{bagof} in 3.1: Alberto Sita (2016)
-  \item \texttt{JSON} support for engine's state serialization and occur check management via prolog flag in 3.2: Alberto Sita (2016 - early 2017)
+  \item \texttt{JSON} support for engine's state serialization and occurs check management via prolog flag in 3.2: Alberto Sita (2016 - early 2017)
 \end{itemize}
 
