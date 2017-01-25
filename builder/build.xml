@@ -146,7 +146,6 @@
 				<!-- Copia tutte le librerie necessarie al funzionamento della GUI -->
 				<zipgroupfileset excludes="META-INF/*.SF" dir="${java.lib.dir}" includes="*.jar"/>
 				<zipgroupfileset excludes="META-INF/*.SF" dir="${java.lib.dir}/jflex" includes="*.jar"/>
-
 			</jar>
 
 			<!-- Crea il jar "libreria di tuProlog, escludendo tutte le classi non necessarie a questa
@@ -165,8 +164,24 @@
 				<!-- JSR223 service -->
 				<service type="javax.script.ScriptEngineFactory" 
 	    			provider="alice.tuprolog.scriptengine.PrologScriptEngineFactory"/>			
-				<zipgroupfileset excludes="META-INF/*.SF" dir="${java.lib.dir}" includes="gson-2.6.2.jar"/>
 			</jar>
+			
+			<jar destfile="@{archives-dir}/tuprolog-JSON.jar" 	basedir="@{classes-dir}" 
+				    																includes="alice/tuprolog/**, alice/util/**"
+				    	       														excludes="alice/tuprologx/**, alice/util/jedit/**">
+							<manifest>
+								<!-- Information about the program itself -->
+								<attribute name="Implementation-Vendor" value="tuProlog team"/>
+								<attribute name="Implementation-Title" value="tuProlog Engine"/>
+								<attribute name="Implementation-Version" value="${engine.version}"/>
+								<!-- details -->
+							</manifest>
+
+							<!-- JSR223 service -->
+							<service type="javax.script.ScriptEngineFactory" 
+				    			provider="alice.tuprolog.scriptengine.PrologScriptEngineFactory"/>		
+				<zipgroupfileset excludes="META-INF/*.SF" dir="${java.lib.dir}/gson" includes="gson-*.jar"/>
+						</jar>
 
 			<!-- Crea il jar dei test -->
 			<!--
@@ -642,7 +657,7 @@
 			<arg value="-compressresources" />
 			<arg value="-version:${engine.version}.${NETSpecific.version}" />
 			<arg value="-out:${net.lib.dir}/tuprolog.dll" />
-			<arg value="${net.javaarchives.dir}/tuprolog.jar" />
+			<arg value="${net.javaarchives.dir}/tuprolog-JSON.jar" />
 		</exec>
 		<!--
 		<echo>Building Unit Tests...</echo>
@@ -727,6 +742,8 @@
 		<mkdir dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/reports"/>
 		<mkdir dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/doc"/>
 		
+		<mkdir dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/licenses"/>
+		
 		<!--
 		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/reports">
 			<fileset dir="${java.build.dir}/reports"/>
@@ -735,8 +752,16 @@
 		
 		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/bin">
 			<fileset dir="${java.build.archives.dir}">
-				<include name="*.jar"/>
+				<include name="2p.jar"/>
+				<include name="tuprolog.jar"/>
 			</fileset>
+		</copy>
+		
+		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/licenses">
+		<fileset dir="${java.dir}/">
+			<include name="*.txt"/>
+			<include name="*.rtf"/>
+		</fileset>
 		</copy>
 
 		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib">
@@ -744,18 +769,24 @@
 				<include name="javassist.jar"/>
 			</fileset>
 		</copy>
+		
+		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib">
+			<fileset dir="${java.lib.dir}/gson">
+					<include name="gson-2.6.2.jar"/>
+			</fileset>
+		</copy>
 
 		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/doc">
 			<fileset dir="${java.doc.dir}"/>
 		</copy>
 
-		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}">
+		<!--<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}">
 			<fileset dir=".">
 				<include name="LICENSE.txt"/>
 				<include name="JFLEXLicense.rtf"/>
 				<include name="RSyntaxTextArea_Autocomplete.rtf"/>
 			</fileset>
-		</copy>
+		</copy>-->
 
 		<zip destfile="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}.zip"
 	       	 basedir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}"
@@ -862,7 +893,7 @@
 			<fileset dir="${net.licenses.dir}"/>
 		</copy>
 
-		<!-- Copy OOLib, conventions, javassist, 2p.exe and tuprolog.dll -->
+		<!-- Copy OOLib, conventions, javassist, 2p.exe and tuprolog.dll-->
 		<!-- Ho commentato javaassist perchè non presente nella cartella -->
 		<copy todir="${net.release.out.lib.dir}">
 			<fileset dir="${net.oolib.bin.dir}">
