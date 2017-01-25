@@ -175,45 +175,50 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	}
 		
 	//Alberto
-	public static Prolog fromJSON(String jsonString) {
-		AbstractEngineState brain = null;
-		Prolog p = null;
-		if(jsonString.contains("FullEngineState")){
-			brain = JSONSerializerManager.fromJSON(jsonString, FullEngineState.class);
-		} else
-			return p;
-		try {
-			p = new Prolog(((FullEngineState) brain).getLibraries());
-		} catch (InvalidLibraryException e) {
-			e.printStackTrace();
-		}
-		p.theoryManager.reloadKnowledgeBase((FullEngineState) brain);
-			
-		int i = 0;
-		int n = brain.getNumberAskedResults();
-		if(brain.hasOpenAlternatives()){
-			p.solve(brain.getQuery());
-			while(i<n){
-				try {
-					p.solveNext();
-				} catch (NoMoreSolutionException e) {}
-				i++;
+		public static Prolog fromJSON(String jsonString) {
+			AbstractEngineState brain = null;
+			Prolog p = null;
+			if(jsonString.contains("FullEngineState")){
+				brain = JSONSerializerManager.fromJSON(jsonString, FullEngineState.class);
+			} else
+				return p;
+			try {
+				p = new Prolog(((FullEngineState) brain).getLibraries());
+			} catch (InvalidLibraryException e) {
+				e.printStackTrace();
 			}
+			p.theoryManager.reloadKnowledgeBase((FullEngineState) brain);
+			p.flagManager.reloadKnowledgeBase((FullEngineState) brain);
+				
+			int i = 0;
+			int n = brain.getNumberAskedResults();
+			if(brain.hasOpenAlternatives()){
+				p.solve(brain.getQuery());
+				while(i<n){
+					try {
+						p.solveNext();
+					} catch (NoMoreSolutionException e) {}
+					i++;
+				}
+			}
+			return p;
 		}
-		return p;
-	}
-		
-	//Alberto
-	public String toJSON(boolean alsoKB){
-		AbstractEngineState brain = null;
-		if(alsoKB)
-			brain = new FullEngineState();
-		else
-			brain = new ReducedEngineState();
-		this.theoryManager.serializeKnowledgeBase(brain);
-		this.engineManager.serializeQueryState(brain);
-		return JSONSerializerManager.toJSON(brain);
-	}
+			
+		//Alberto
+		public String toJSON(boolean alsoKB){
+			AbstractEngineState brain = null;
+			if(alsoKB)
+				brain = new FullEngineState();
+			else
+				brain = new ReducedEngineState();
+			
+			this.theoryManager.serializeKnowledgeBase(brain);
+			this.engineManager.serializeQueryState(brain);
+			this.flagManager.serializeFlags(brain);
+			
+			return JSONSerializerManager.toJSON(brain);
+		}
+
 
 	
 	public FlagManager getFlagManager() {

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2016.2.24)  24 JAN 2017 18:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2016.2.24)  24 JAN 2017 19:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -3181,7 +3181,7 @@ Package atveryend Info: Empty hook `AfterLastShipout' on input line 162.
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 162.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 162.
 Package rerunfilecheck Info: File `tuprolog-guide.out' has not changed.
-(rerunfilecheck)             Checksum: 0BA888D387152FDF098085B4261608C5;15270.
+(rerunfilecheck)             Checksum: 873B4107E055519053D294028761DE01;15275.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
@@ -3197,7 +3197,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 162.
 Here is how much of TeX's memory you used:
  10541 strings out of 494501
  163448 string characters out of 6167030
- 302509 words of memory out of 5000000
+ 303509 words of memory out of 5000000
  12835 multiletter control sequences out of 15000+600000
  18160 words of font info for 64 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191

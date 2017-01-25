@@ -208,6 +208,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 			e.printStackTrace();
 		}
 		p.theoryManager.reloadKnowledgeBase((FullEngineState) brain);
+		p.flagManager.reloadKnowledgeBase((FullEngineState) brain);
 			
 		int i = 0;
 		int n = brain.getNumberAskedResults();
@@ -230,8 +231,11 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 			brain = new FullEngineState();
 		else
 			brain = new ReducedEngineState();
+		
 		this.theoryManager.serializeKnowledgeBase(brain);
 		this.engineManager.serializeQueryState(brain);
+		this.flagManager.serializeFlags(brain);
+		
 		return JSONSerializerManager.toJSON(brain);
 	}
 

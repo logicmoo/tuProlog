@@ -138,5 +138,4 @@ import alice.tuprolog.interfaces.IOperatorManager;
         }
         /**/
     }
-    
 }

@@ -106,5 +106,4 @@ import alice.tuprolog.interfaces.IOperatorManager;
         	return or;
         }
     }
-    
 }
