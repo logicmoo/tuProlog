@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2016.2.24)  24 JAN 2017 19:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2016.2.24)  25 JAN 2017 15:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1915,14 +1915,14 @@ Overfull \hbox (1.41974pt too wide) in paragraph at lines 86--90
 e[]sink\OT1/cmr/m/n/10.95 ,
  []
 
-[132]
+
 Overfull \hbox (1.45009pt too wide) in paragraph at lines 95--97
 \OT1/cmtt/m/n/10.95 binary[]stream\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 past
 []end[]of[]stream\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 operator\OT1/cmr/m/n/
 10.95 , \OT1/cmtt/m/n/10.95 private[]procedure\OT1/cmr/m/n/10.95 ,
  []
 
-
+[132]
 Overfull \hbox (6.0201pt too wide) in paragraph at lines 98--100
 []\OT1/cmtt/m/n/10.95 representation[]error(\OT1/cmtt/m/it/10.95 Flag\OT1/cmtt/
 m/n/10.95 )\OT1/cmr/m/n/10.95 : when an implementation-defined limit,
@@ -3229,7 +3229,7 @@ b></usr/local/texlive/2015basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt1
 0.pfb></usr/local/texlive/2015basic/texmf-dist/fonts/type1/public/amsfonts/cm/c
 mtt8.pfb></usr/local/texlive/2015basic/texmf-dist/fonts/type1/public/amsfonts/c
 m/cmtt9.pfb>
-Output written on tuprolog-guide.pdf (261 pages, 4938814 bytes).
+Output written on tuprolog-guide.pdf (261 pages, 4938833 bytes).
 PDF statistics:
  3021 PDF objects out of 3580 (max. 8388607)
  2603 compressed objects within 27 object streams

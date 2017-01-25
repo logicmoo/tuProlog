@@ -87,6 +87,8 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
     /* path history for including documents */
     private ArrayList<String> absolutePathList;
     private String lastPath;
+    
+    FullEngineState state = new FullEngineState(); //used in serialization
 
 	
 	public Prolog() {
@@ -164,32 +166,41 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	}
 	
 	//Alberto
-	public static AbstractEngineState getEngineStateFromJSON(String jsonString){
-		AbstractEngineState brain = null;
-		if(jsonString.contains("FullEngineState")){
-			brain = JSONSerializerManager.fromJSON(jsonString, FullEngineState.class);
-		} else if(jsonString.contains("ReducedEngineState")){
-			brain = JSONSerializerManager.fromJSON(jsonString, ReducedEngineState.class);
+		public static AbstractEngineState getEngineStateFromJSON(String jsonString){
+			AbstractEngineState brain = null;
+			if(jsonString.contains("FullEngineState")){
+				brain = JSONSerializerManager.fromJSON(jsonString, FullEngineState.class);
+			} else if(jsonString.contains("ReducedEngineState")){
+				brain = JSONSerializerManager.fromJSON(jsonString, ReducedEngineState.class);
+			}
+			return brain;
 		}
-		return brain;
-	}
-		
-	//Alberto
+			
+		//Alberto
 		public static Prolog fromJSON(String jsonString) {
 			AbstractEngineState brain = null;
 			Prolog p = null;
 			if(jsonString.contains("FullEngineState")){
 				brain = JSONSerializerManager.fromJSON(jsonString, FullEngineState.class);
-			} else
+			}
+			else
 				return p;
 			try {
 				p = new Prolog(((FullEngineState) brain).getLibraries());
+				p.setTheory(new Theory(((FullEngineState) brain).getDynTheory()));
+				p.opManager = new OperatorManager();
+				LinkedList<Operator> l = ((FullEngineState) brain).getOp();
+				for(Operator o : l)
+					p.opManager.opNew(o.name, o.type, o.prio);
+				
 			} catch (InvalidLibraryException e) {
 				e.printStackTrace();
+				return null;
+			} catch (InvalidTheoryException e) {
+				e.printStackTrace();
+				return null;
 			}
-			p.theoryManager.reloadKnowledgeBase((FullEngineState) brain);
-			p.flagManager.reloadKnowledgeBase((FullEngineState) brain);
-				
+			p.flagManager.reloadFlags((FullEngineState) brain);
 			int i = 0;
 			int n = brain.getNumberAskedResults();
 			if(brain.hasOpenAlternatives()){
@@ -208,17 +219,21 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 		public String toJSON(boolean alsoKB){
 			AbstractEngineState brain = null;
 			if(alsoKB)
-				brain = new FullEngineState();
+			{
+				brain = this.state;
+				this.theoryManager.serializeLibraries((FullEngineState)brain);
+				this.theoryManager.serializeDynDataBase((FullEngineState)brain);
+				((FullEngineState)brain).setOp((LinkedList<Operator>)this.opManager.getOperators());
+			}
 			else
 				brain = new ReducedEngineState();
 			
-			this.theoryManager.serializeKnowledgeBase(brain);
+			this.theoryManager.serializeTimestamp(brain);
 			this.engineManager.serializeQueryState(brain);
 			this.flagManager.serializeFlags(brain);
 			
 			return JSONSerializerManager.toJSON(brain);
 		}
-
 
 	
 	public FlagManager getFlagManager() {

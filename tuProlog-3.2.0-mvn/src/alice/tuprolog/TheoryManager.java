@@ -296,23 +296,17 @@ public class TheoryManager implements Serializable {
 	}
 	
 	//Alberto
-	public void serializeKnowledgeBase(AbstractEngineState brain){
-		if(brain instanceof FullEngineState){
-			((FullEngineState) brain).setDynamicDBase(getTheory(true));
-			((FullEngineState) brain).setLibraries(engine.getCurrentLibraries());
+		public void serializeLibraries(FullEngineState brain){
+			brain.setLibraries(engine.getCurrentLibraries());
 		}
-		serializeTimestamp(brain);
-	}
 		
-	//Alberto
-	private void serializeTimestamp(AbstractEngineState brain) {
-		brain.setSerializationTimestamp(System.currentTimeMillis());
-	}
+		//Alberto
+		public void serializeTimestamp(AbstractEngineState brain){
+			brain.setSerializationTimestamp(System.currentTimeMillis());
+		}
 
-	//Alberto
-	public void reloadKnowledgeBase(FullEngineState brain) {
-		try {
-			engine.setTheory(new Theory(brain.getDynamicDBase()));
-		} catch (InvalidTheoryException e) {}
-	}
+		//Alberto
+		public void serializeDynDataBase(FullEngineState brain) {
+			brain.setDynTheory(getTheory(true));
+		}
 }
