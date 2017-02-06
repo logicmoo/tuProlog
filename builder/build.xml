@@ -395,6 +395,9 @@
 			<fileset dir="${java.lib.dir}">
 				<include name="*.jar"/>
 			</fileset>
+			<fileset dir="${java.lib.dir}/gson">
+			<include name="*.jar"/>
+			</fileset>
 			<!-- Project classes -->
 			<pathelement path="${java.build.classes.dir}"/>
 		</path>
