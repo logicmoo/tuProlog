@@ -1,4 +1,5 @@
 /*
+
  * tuProlog - Copyright (C) 2001-2004  aliCE team at deis.unibo.it
  *
  * This library is free software; you can redistribute it and/or
