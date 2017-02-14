@@ -25,14 +25,16 @@ All tuProlog versions are now available from this site
 except for the Eclipse plugin which must be downloaded and installed directly from the Eclipse Update Manager - see detailed instructions.
 
 Java: tuProlog 3.2.1 (zip) (requires Java 8)
-Java: tuProlog 3.2.0 (zip) (requires Java 8)
-Java: tuProlog 3.1.0 (zip) (requires Java 8)
-Java: tuProlog 3.0.1 (zip) (requires Java 8)
+
 Java: tuProlog 2.9.2 (zip) (requires Java 7)
-.NET:tuProlog 3.0.0-NET (zip) (requires .NET framework 4)
+
+.NET:tuProlog 3.2.1-NET (zip) (requires .NET framework 4)
+
 Android:tuProlog 2.9.1 Android (apk) (requires Android 2.3.3)
+
 Eclipse:  install from Eclipse Update Manager -- see below for details.
-MANUAL: tuProlog 3.2.0 User Guide (pdf)
+
+MANUAL: tuProlog 3.2.1 User Guide (pdf)
 
 ### **Installation** ###
 
