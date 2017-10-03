@@ -97,8 +97,10 @@ public class BuiltIn extends Library {
 					 Term argi=((Struct) arg0).getArg(i);
 					 if (!(argi instanceof Struct) )
 					 {
-						 if (argi instanceof Var)
-							 throw PrologError.instantiation_error(engineManager, 1);
+						 if (argi instanceof Var){
+							 if (!((Var)argi).isBound())
+								 throw PrologError.instantiation_error(engineManager, 1);
+						 }
 						 else
 							 throw PrologError.type_error(engineManager, 1, "clause", arg0); 
 					 }
@@ -123,8 +125,10 @@ public class BuiltIn extends Library {
 					 Term argi=((Struct) arg0).getArg(i);
 					 if (!(argi instanceof Struct) )
 					 {
-						 if (argi instanceof Var)
-							 throw PrologError.instantiation_error(engineManager, 1);
+						 if (argi instanceof Var){
+							 if (!((Var)argi).isBound())
+								 throw PrologError.instantiation_error(engineManager, 1);
+						 }
 						 else
 							 throw PrologError.type_error(engineManager, 1, "clause", arg0); 
 					 }
