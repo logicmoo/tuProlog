@@ -33,6 +33,38 @@
 
 		</sequential>
 	</macrodef>
+	
+	<macrodef name="m-compile-java-no-middleware">
+			<attribute name="jdk-home"/>
+			<attribute name="classes-dir"/>
+			<sequential>
+
+				<echo>Compiling classes...</echo>
+				<!-- Elimina la precendente build -->
+				<!--<delete dir="@{classes-dir}"/> -->
+				<mkdir dir="@{classes-dir}"/>
+
+				<!-- Compila i file .java -->
+				<javac
+				fork="yes" executable="@{jdk-home}"
+				destdir="@{classes-dir}" debug="${javac.debug}"
+				deprecation="false" optimize="${javac.optimize}" 
+				failonerror="true" includeantruntime="false">
+					<src path="${java.src.dir}"/>
+					<exclude name="alice/tuprologx/middleware/**"/>
+					<classpath refid="ant-classpath"/>
+				</javac>
+
+				<!-- Copia le immagini necessarie alla GUI nella cartella dei file compilati -->
+				<copy todir="@{classes-dir}/alice/tuprologx/ide/img">
+					<fileset dir="${java.src.dir}/alice/tuprologx/ide/img"/>
+				</copy>
+
+				<!-- Copia il file docs.txt nella cartella dei file compilati -->
+				<copy file="${java.src.dir}/alice/tuprologx/ide/docs.txt" todir="@{classes-dir}/alice/tuprologx/ide"/>
+
+			</sequential>
+		</macrodef>
 
 	<!-- Compila i sorgenti dei test (?) -->
 	<macrodef name="m-compile-java-tests">
@@ -164,6 +196,18 @@
 				<!-- JSR223 service -->
 				<service type="javax.script.ScriptEngineFactory" 
 	    			provider="alice.tuprolog.scriptengine.PrologScriptEngineFactory"/>			
+			</jar>
+			
+			<jar destfile="@{archives-dir}/tuprolog-middleware.jar" 	basedir="@{classes-dir}" 
+				    																includes="alice/tuprologx/middleware/"
+				    	       														excludes="alice/tuprolog/**, alice/util/jedit/**, alice/util/**" >
+							<manifest>
+								<!-- Information about the program itself -->
+								<attribute name="Implementation-Vendor" value="tuProlog team"/>
+								<attribute name="Implementation-Title" value="tuProlog Engine"/>
+								<attribute name="Implementation-Version" value="${engine.version}"/>
+								<!-- details -->
+							</manifest>	
 			</jar>
 			
 			<jar destfile="@{archives-dir}/tuprolog-JSON.jar" 	basedir="@{classes-dir}" 
@@ -398,6 +442,21 @@
 			<fileset dir="${java.lib.dir}/gson">
 			<include name="*.jar"/>
 			</fileset>
+			<fileset dir="${java.lib.dir}/jade/lib">
+			<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${java.lib.dir}/jade/security">
+			<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${java.lib.dir}/jade/security/bc">
+			<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${java.lib.dir}/mx4j-3.0.2/lib">
+			<include name="*.jar"/>
+			</fileset>
+			<fileset dir="${java.lib.dir}/commons-codec-1.10">
+			<include name="*.jar"/>
+			</fileset>
 			<!-- Project classes -->
 			<pathelement path="${java.build.classes.dir}"/>
 		</path>
@@ -563,7 +622,7 @@
 		<mkdir dir="${java.tmp.dir}"/>
 		<mkdir dir="${net.javaarchives.dir}"/>
 		
-		<m-compile-java jdk-home="${net.jdk.home}" classes-dir="${java.tmp.dir}/classes"/>
+		<m-compile-java-no-middleware jdk-home="${net.jdk.home}" classes-dir="${java.tmp.dir}/classes"/>
 		<m-package-java classes-dir="${java.tmp.dir}/classes" archives-dir="${net.javaarchives.dir}"/>
 		
 		<delete dir="${java.tmp.dir}"/>
@@ -742,6 +801,10 @@
 		<mkdir dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}"/>
 		<mkdir dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/bin"/>
 		<mkdir dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib"/>
+		<mkdir dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib/gson"/>
+		<mkdir dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib/jade"/>
+		<mkdir dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib/commons-codec-1.10"/>
+		<mkdir dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib/mx4j-3.0.2"/>
 		<mkdir dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/reports"/>
 		<mkdir dir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/doc"/>
 		
@@ -757,6 +820,7 @@
 			<fileset dir="${java.build.archives.dir}">
 				<include name="2p.jar"/>
 				<include name="tuprolog.jar"/>
+				<include name="tuprolog-middleware.jar"/>
 			</fileset>
 		</copy>
 		
@@ -773,10 +837,20 @@
 			</fileset>
 		</copy>
 		
-		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib">
-			<fileset dir="${java.lib.dir}/gson">
-					<include name="gson-2.6.2.jar"/>
-			</fileset>
+		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib/gson">
+			<fileset dir="${java.lib.dir}/gson"/>
+		</copy>
+		
+		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib/jade">
+			<fileset dir="${java.lib.dir}/jade"/>
+		</copy>
+		
+		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib/mx4j-3.0.2">
+		<fileset dir="${java.lib.dir}/mx4j-3.0.2"/>
+		</copy>
+		
+		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/lib/commons-codec-1.10">
+		<fileset dir="${java.lib.dir}/commons-codec-1.10"/>
 		</copy>
 
 		<copy todir="${java.release.dir}/2p-${engine.version}.${JavaSpecific.version}/doc">
