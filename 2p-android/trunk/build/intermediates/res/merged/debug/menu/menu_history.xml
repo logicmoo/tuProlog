@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/find"
+        android:title="@string/find"
+        android:icon="@drawable/ic_menu_search2"
+        app:showAsAction="ifRoom|collapseActionView"
+        android:actionViewClass="android.widget.SearchView">
+    </item>
+
+</menu><!-- From: file:/C:/Users/Lucrezia/Desktop/ProgettoTesi/tuPrologMobile2/app/src/main/res/menu/menu_history.xml -->

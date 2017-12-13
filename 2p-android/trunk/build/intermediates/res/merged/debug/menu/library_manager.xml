@@ -1,0 +1,6 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:id="@+id/import_library" android:title="@string/import_library" android:icon="@drawable/ic_menu_import" android:alphabeticShortcut="i"></item>
+
+</menu>
+<!-- From: file:/C:/Users/Lucrezia/Desktop/ProgettoTesi/tuPrologMobile2/app/src/main/res/menu/library_manager.xml -->

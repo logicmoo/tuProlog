@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <item
+        android:id="@+id/share_theory"
+        android:title="@string/share_theory"
+        android:icon="@drawable/ic_menu_share2"
+        android:showAsAction="ifRoom"
+        tools:ignore="AppCompatResource"
+        android:actionProviderClass="android.widget.ShareActionProvider"></item>
+    <item
+        android:id="@+id/edit_theory"
+        android:title="@string/edit_theory"
+        android:icon="@drawable/ic_menu_edit2"
+        android:showAsAction="ifRoom"
+        tools:ignore="AppCompatResource">
+    </item>
+    <item
+        android:id="@+id/export_theory"
+        android:title="@string/export_theory"
+        android:icon="@drawable/ic_menu_set_as2"
+        android:showAsAction="ifRoom"
+        tools:ignore="AppCompatResource"></item>
+    <item
+        android:id="@+id/delete_theory"
+        android:title="@string/menu_delete"
+        android:icon="@drawable/ic_menu_delete2"
+        android:showAsAction="ifRoom"
+        tools:ignore="AppCompatResource"></item>
+
+
+</menu><!-- From: file:/C:/Users/Lucrezia/Desktop/ProgettoTesi/tuPrologMobile2/app/src/main/res/menu/menu_desc_theory.xml -->

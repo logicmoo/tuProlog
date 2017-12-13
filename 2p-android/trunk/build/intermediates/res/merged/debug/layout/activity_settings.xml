@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="alice.tuprologx.android.SettingsActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="#b7e2f3"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:text="@string/history_label"
+            android:id="@+id/historyLabel"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:background="#ffffff"
+            android:shrinkColumns="*"
+            android:id="@+id/tableHistory">
+
+            <TableRow android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Save Theories"
+                    android:id="@+id/tvSvTheories"
+                    android:layout_gravity="left"
+                    android:layout_weight="1" />
+
+                <Switch
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/switchTheories"
+                    android:checked="false"
+                    android:textSize="16dp"
+                    android:textOn=" "
+                    android:textOff=" "
+                    android:thumb="@drawable/switchstyle"
+                    android:track="@drawable/shape_switch"
+                    android:layout_weight="1"
+                    android:layout_gravity="top"
+                    android:switchMinWidth="20dp" />
+
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Save Queries"
+                    android:id="@+id/tvSvQueries"
+                    android:layout_gravity="left"
+                    android:layout_weight="1" />
+
+                <Switch
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/switchQueries"
+                    android:checked="false"
+                    android:textSize="16dp"
+                    android:textOn=" "
+                    android:textOff=" "
+                    android:thumb="@drawable/switchstyle"
+                    android:track="@drawable/shape_switch"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:switchMinWidth="20dp"
+                    />
+            </TableRow>
+
+        </TableLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_weight="0.1"
+            android:background="#b7e2f3"
+            android:layout_span="2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:layout_marginLeft="10dp"
+                android:text="Delete Theories"
+                android:id="@+id/btnDeleteT"
+                android:background="@drawable/btn_settings"
+                android:gravity="left|center_vertical"
+                android:layout_marginRight="10dp"
+                android:drawableLeft="@android:drawable/ic_menu_delete"
+                android:drawablePadding="10dp"
+                android:drawableTint="#e70707"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:layout_marginLeft="10dp"
+                android:text="Delete Queries"
+                android:id="@+id/btnDeleteQ"
+                android:background="@drawable/btn_settings"
+                android:gravity="left|center_vertical"
+                android:layout_marginRight="10dp"
+                android:drawableLeft="@android:drawable/ic_menu_delete"
+                android:drawablePadding="10dp"
+                android:drawableTint="#e70707"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_weight="0.1"
+            android:background="#b7e2f3"
+            android:layout_span="2" />
+
+
+        <TextView
+            android:id="@+id/settingsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:text="@string/settings_label"
+            android:layout_marginLeft="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnEditPath"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:layout_marginLeft="10dp"
+                android:text="Edit Path"
+                android:background="@drawable/btn_settings"
+                android:gravity="left|center_vertical"
+                android:layout_marginRight="10dp"
+                android:drawableLeft="@drawable/ic_menu_edit"
+                android:drawablePadding="10dp"
+               />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ffffff"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Enable Sharing"
+                    android:id="@+id/tvSvShare"
+                    android:layout_gravity="left"
+                    android:layout_weight="2"
+                    android:drawableLeft="@drawable/ic_menu_share"
+                    android:drawablePadding="25dp"/>
+
+                <Switch
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/switchShare"
+                    android:checked="false"
+                    android:textOn=" "
+                    android:textOff=" "
+                    android:thumb="@drawable/switchstyle"
+                    android:track="@drawable/shape_switch"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:switchMinWidth="20dp"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+</RelativeLayout>
+<!-- From: file:/C:/Users/Lucrezia/Desktop/ProgettoTesi/tuPrologMobile2/app/src/main/res/layout/activity_settings.xml -->

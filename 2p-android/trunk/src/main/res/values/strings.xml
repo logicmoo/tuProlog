@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, TesiActivity!</string>
+    <string name="app_name">tuProlog Mobile</string>
+    <string name="menu_select">Select Theory</string>
+    <string name="no_theories">There are no Theories yet.\nCreate or import one to start working.</string>
+    <string name="menu_insert">Add Theory</string>
+    <string name="menu_delete">Delete Theory</string>
+    <string name="title">TITLE</string>
+    <string name="body">BODY</string>
+    <string name="confirm">Confirm</string>
+    <string name="edit_theory">Edit Theory</string>
+    <string name="theories_list">List Theories</string>
+    <string name="library_manager">Library Manager</string>
+    <string name="new_theory">New Theory</string>
+    <string name="export_theory">Export Theory</string>
+    <string name="import_theory">Import Theory to Database</string>
+    <string name="share_theory">Share Theory</string>
+    <string name="find">Find</string>
+    <string name="import_library">Import Library</string>
+    <string name="up_one_level">..</string>
+    <string name="current_dir">.</string>
+    <string name="edit_path">Edit Export Path</string>
+    <string name="about">About</string>
+    <string name="action_settings">Settings</string>
+   
+    <string name="textLibraryFullName">Library fullname</string>
+    <string name="textLibraryFile">Library file</string>
+    <string name="textButtonBrowse">Browse</string>
+    <string name="textButtonAdd">Add</string>
+    <string name="textButtonRemove">Remove</string>
+    <string name="textLoadedLibraries">Currently loaded libraries:</string>
+    <string name="textStatus">Ready:</string>
+
+    <string name="library">Library</string>
+    <string name="settings">Settings</string>
+    <string name="history">History</string>
+    <string name="home">Home</string>
+    <string name="web">Web</string>
+    <string name="theoryT">Theories</string>
+    <string name="theory">Set a Theory</string>
+    <string name="query">Solve a Query</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="history_label">HISTORY</string>
+    <string name="settings_label">OTHER SETTINGS</string>
+    <string name="title_activity_theory_description">Description</string>
+    <string name="title_activity_history">History</string>
+    <string name="title_activity_theory_list">TheoryListActivity</string>
+    
+    <string name="delete_questionT">Are you sure you want to delete all the theories from the history?</string>
+    <string name="delete_questionQ">Are you sure you want to delete all the queries from the history?</string>
+    <string name="search_hint">Find query/theory</string>
+    <string name="title_activity_search">Search</string>
+    <string name="title_activity_description">Description</string>
+    <string name="title_new_edit_activity">New/Edit Theory</string>
+    <string name="title_import_theory">Import Theory</string>
+    <string name="title_import_library">Import Library</string>
+    <string name="title_libraries">Libraries</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="title_activity_base2">BaseActivity2</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+    <string name="open_drawer">Action</string>
+    <string name="close_drawer">tuPrologMobile</string>
+    <string name="dummy_string">prova icone</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

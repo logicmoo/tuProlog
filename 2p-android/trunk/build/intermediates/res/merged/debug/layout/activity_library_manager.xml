@@ -1,0 +1,158 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".LibraryManagerActivity"
+    android:background="#b7e2f3">
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/labelLibraryFullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/textLibraryFullName"
+                    android:textSize="14dp"
+                    android:layout_margin="5dp"/>
+
+                <EditText
+                    android:id="@+id/libraryNameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/textLibraryFullName"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:background="@drawable/edtstyleb"
+                    android:padding="5dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/labelLibraryFile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/textLibraryFile"
+                    android:textSize="14dp"
+                    android:layout_margin="5dp"/>
+
+                <Button
+                    android:id="@+id/buttonBrowse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:onClick="browseOnClickListener"
+                    android:text="Browse..."
+                    android:textSize="12sp"
+                    android:background="@drawable/btn_browse"
+                    android:layout_gravity="center_horizontal" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp" >
+
+
+            <Button
+                android:id="@+id/buttonRemove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:onClick="removeOnClickListener"
+                android:background="@drawable/btn"
+                android:text="@string/textButtonRemove"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="15dp"
+                android:textColor="#ffffff"/>
+            <Button
+                android:id="@+id/buttonAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:onClick="addOnClickListener"
+                android:background="@drawable/btn"
+                android:text="@string/textButtonAdd"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="15dp"
+                android:textColor="#ffffff"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/loadedLibraries"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/textLoadedLibraries"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_margin="5dp"/>
+
+            <ListView
+                android:id="@+id/librariesList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:background="#ffffff"
+                android:divider="#b7e2f3"
+                android:dividerHeight="0.5dp"
+                >
+
+            </ListView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/statusView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/textStatus"
+        android:layout_margin="3dp"
+        android:layout_alignBottom="@id/linearLayout1"
+        />
+
+</RelativeLayout><!-- From: file:/C:/Users/Lucrezia/Desktop/ProgettoTesi/tuPrologMobile2/app/src/main/res/layout/activity_library_manager.xml -->

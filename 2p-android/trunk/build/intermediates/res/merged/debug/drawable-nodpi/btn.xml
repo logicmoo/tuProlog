@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true">
+        <shape android:layout_width="wrap_content" android:layout_height="wrap_content"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape= "rectangle"  >
+            <solid android:color="#027fae"/>
+            <stroke android:width="2dp" android:color="#ffffff"/>
+            <corners android:radius="5dp"/>
+        </shape>
+    </item>
+    <item android:state_enabled="false">
+        <shape android:layout_width="wrap_content" android:layout_height="wrap_content"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape= "rectangle"  >
+            <solid android:color="#b6c6cc"/>
+            <stroke android:width="2dp" android:color="#ffffff"/>
+            <corners android:radius="5dp"/>
+        </shape></item>
+    <item>
+        <shape android:layout_width="wrap_content" android:layout_height="wrap_content"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape= "rectangle"  >
+            <solid android:color="#33b5e5"/>
+            <stroke android:width="2dp" android:color="#ffffff"/>
+            <corners android:radius="5dp"/>
+        </shape>
+    </item>
+
+</selector><!-- From: file:/C:/Users/Lucrezia/Desktop/ProgettoTesi/tuPrologMobile2/app/src/main/res/drawable-nodpi/btn.xml -->
