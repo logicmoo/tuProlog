@@ -75,7 +75,7 @@ public class PrologProjectWizardPage extends WizardPage {
 		libraryList.add("alice.tuprolog.lib.BasicLibrary");
 		libraryList.add("alice.tuprolog.lib.IOLibrary");
 		libraryList.add("alice.tuprolog.lib.ISOLibrary");
-		libraryList.add("alice.tuprolog.lib.JavaLibrary");
+		libraryList.add("alice.tuprolog.lib.OOLibrary");
 		libraries = libraryList.getItems();
 
 		final Composite composite = new Composite(librerieGroup, SWT.NONE);

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android" android:layout_height="wrap_content" android:layout_width="wrap_content">
-    <item android:state_pressed="true"
-        android:drawable="@drawable/logo_settingsp" /> <!-- pressed -->
-    <item android:drawable="@drawable/logo_settings" /> <!-- default -->
-</selector><!-- From: file:/C:/Users/Lucrezia/Desktop/ProgettoTesi/tuPrologMobile2/app/src/main/res/drawable-nodpi/settingsbtn.xml -->

@@ -4,6 +4,8 @@ import java.net.URL;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
@@ -21,6 +23,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
+import alice.tuprologx.eclipse.core.MyRenameProjectChangeReporter;
 import alice.tuprologx.eclipse.core.OpenProjectListener;
 import alice.tuprologx.eclipse.perspective.PrologPerspective;
 import alice.tuprologx.eclipse.util.TokenManager;
@@ -56,7 +59,15 @@ public class TuProlog extends AbstractUIPlugin {
 		alice.tuprologx.eclipse.properties.PropertyManager.initializeWorkspace();
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(
 				new OpenProjectListener());
-
+		
+		/*
+		 * listener necessario ad aggiornare PrologEngineFactory
+		 * quando si rinomina un progetto
+		 */
+		IResourceChangeListener listener = new MyRenameProjectChangeReporter();
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(listener,
+			      IResourceChangeEvent.PRE_DELETE
+			      | IResourceChangeEvent.POST_CHANGE);
 	}
 
 	/**

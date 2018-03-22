@@ -29,7 +29,7 @@ public class PrologQueryFactory extends Observable {
 	Vector<PrologQuery> queries;
 	private int queryId;
 	private static boolean init;
-	private static Theory lastTheory;
+	//private static Theory lastTheory;
 	public static PrologQueryFactory getInstance(){
 		if (instance == null){
 			instance = new PrologQueryFactory();
@@ -41,12 +41,12 @@ public class PrologQueryFactory extends Observable {
 	{
 		queryId = 0;
 		queries = new Vector<PrologQuery>();
-		try {
+		/*try {
 			lastTheory = new Theory("");
 		} catch (InvalidTheoryException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		init = true;
 	}
 	
@@ -79,9 +79,11 @@ public class PrologQueryFactory extends Observable {
 			currentProject.build(IncrementalProjectBuilder.FULL_BUILD,
 					PrologParser.BUILDER_ID, null, null);
 		} catch (CoreException e1) {
+			// aggiunta DD ai fini di debug
+			e1.printStackTrace();
 		}
 		
-		PrologEngine engine = PrologEngineFactory.getInstance().getEngine(currentProject.getName(),0);
+		PrologEngine engine = PrologEngineFactory.getInstance().getEngine(currentProject,0);
 		PrologQueryScope scope = new PrologQueryScope(engine);
 		scope.setProject(currentProject);
 		/*Add the file open in the PrologEditor to the query scope*/
@@ -100,10 +102,10 @@ public class PrologQueryFactory extends Observable {
 		 *  The new theory, written into the file .pl is added to the
 		 *  engine only if ins't the same that the last theory parsed.
 		 */
-		if(!scopeTheory.toString().equals(lastTheory.toString())){
+		//if(!scopeTheory.toString().equals(lastTheory.toString())){
 			engine.setTheory(scopeTheory);
-			lastTheory = scopeTheory;
-		}
+			//lastTheory = scopeTheory;
+		//}
 		EventListener listener = new EventListener();
 		engine.addOutputListener(listener);
 		/*Castagna 06/2011*/

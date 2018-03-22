@@ -2,7 +2,7 @@
 <feature
       id="tuPrologFeature"
       label="tuProlog Plug-in Feature"
-      version="2.9.0"
+      version="3.2.1"
       provider-name="tuprolog team @ Alma Mater Studiorum - Università di Bologna"
       plugin="tuPrologPlugin">
 
@@ -185,14 +185,14 @@ Library.
    </license>
 
    <url>
-      <update label="tuProlog Plug-in Update Site" url="http://tuprolog.googlecode.com/svn/2p-plugin/trunk/tuPrologUpdateSite/"/>
-      <discovery label="tuProlog in Google code" url="http://tuprolog.googlecode.com/svn/2p-plugin/trunk/"/>
+      <update label="tuProlog Plug-in Update Site" url="https://bitbucket.org/tuprologteam/tuprolog/raw/TH-DEMIAN/2p-plugin/trunk/tuPrologUpdateSite/"/>
+      <discovery label="tuProlog in Google code" url="https://bitbucket.org/tuprologteam/tuprolog/raw/TH-DEMIAN/2p-plugin/trunk/"/>
    </url>
 
    <plugin
          id="tuPrologPlugin"
          download-size="0"
          install-size="0"
-         version="2.9.0"/>
+         version="0.0.0"/>
 
 </feature>

@@ -2,13 +2,15 @@ package alice.tuprologx.eclipse.core;
 
 import java.util.*;
 
+import org.eclipse.core.resources.IProject;
+
 public class PrologEngineFactory {
 	
-	private Hashtable<String, Vector<PrologEngine>> registry = null;
+	private Hashtable<IProject, Vector<PrologEngine>> registry = null;
 	private static PrologEngineFactory instance;
 
 	protected PrologEngineFactory() {
-		registry = new Hashtable<String, Vector<PrologEngine>>();
+		registry = new Hashtable<IProject, Vector<PrologEngine>>();
 	}
 
 	public static PrologEngineFactory getInstance() {
@@ -17,9 +19,9 @@ public class PrologEngineFactory {
 		return instance;
 	}
 
-	public Vector<PrologEngine> getProjectEngines(String projectName) {
-		if (projectName != null)
-			return registry.get(projectName);
+	public Vector<PrologEngine> getProjectEngines(IProject project) {
+		if (project != null)
+			return registry.get(project);
 		else
 			return null;
 	}
@@ -28,49 +30,49 @@ public class PrologEngineFactory {
 		return (Vector<Vector<PrologEngine>>) registry.values();
 	}
 
-	public PrologEngine getEngine(String projectName, int index) {
-		Vector<PrologEngine> engines = getProjectEngines(projectName);
+	public PrologEngine getEngine(IProject project, int index) {
+		Vector<PrologEngine> engines = getProjectEngines(project);
 		if (engines != null)
 			return engines.elementAt(index);
 		else
 			return null;
 	}
 
-	public PrologEngine insertEntry(String projectName, String name) {
-		if (projectName != null) {
-			PrologEngine engine = new PrologEngine(projectName, name);
+	public PrologEngine insertEntry(IProject project, String name) {
+		if (project != null) {
+			PrologEngine engine = new PrologEngine(project.getName(), name);
 			Vector<PrologEngine> engines = new Vector<PrologEngine>();
 			engines.add(engine);
-			registry.put(projectName, engines);
+			registry.put(project, engines);
 			return engine;
 		}
 		return null;
 	}
 
-	public PrologEngine addEngine(String projectName, String name) {
-		if (projectName != null) {
-			PrologEngine engine = new PrologEngine(projectName, name);
-			Vector<PrologEngine> engines = getProjectEngines(projectName);
+	public PrologEngine addEngine(IProject project, String name) {
+		if (project != null) {
+			PrologEngine engine = new PrologEngine(project.getName(), name);
+			Vector<PrologEngine> engines = getProjectEngines(project);
 			if (engines != null) {
 				engines.add(engine);
-				registry.put(projectName, engines);
+				registry.put(project, engines);
 			}
 			return engine;
 		}
 		return null;
 	}
 
-	public void deleteEngine(String projectName, String name) {
-		if (projectName != null) {
-			Vector<PrologEngine> engines = getProjectEngines(projectName);
+	public void deleteEngine(IProject project, String name) {
+		if (project != null) {
+			Vector<PrologEngine> engines = getProjectEngines(project);
 			for (int i = 0; i < engines.size(); i++) {
 				if (name.equals(PrologEngineFactory.getInstance()
-						.getEngine(projectName, i).getName())) {
+						.getEngine(project, i).getName())) {
 					engines.removeElementAt(i);
 				}
 			}
-			registry.remove(projectName);
-			registry.put(projectName, engines);
+			registry.remove(project);
+			registry.put(project, engines);
 		}
 	}
 

@@ -110,7 +110,7 @@ public class PrologProjectWizard extends Wizard implements INewWizard {
 
 		// creazione e configurazione del motore
 		PrologEngine engine = PrologEngineFactory.getInstance().insertEntry(
-				projectName, "Engine1");
+				project, "Engine1");
 		String[] libs = engine.getLibrary();
 		for (int i = 0; i < libs.length; i++)
 			engine.removeLibrary(libs[i]);

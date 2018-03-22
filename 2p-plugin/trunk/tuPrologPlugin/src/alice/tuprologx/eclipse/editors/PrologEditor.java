@@ -168,7 +168,7 @@ public class PrologEditor extends TextEditor implements OperatorListener,
 
 	public PrologEngine getProjectEngine(int index) {
 		return PrologEngineFactory.getInstance().getEngine(
-				getProject().getName(), index);
+				getProject(), index);
 	}
 
 	public IProject getProject() {
