@@ -34,7 +34,8 @@ class FamilyClausesIndex<K extends Comparable<? super K>>
     /**
      * @deprecated 
      */
-    @Override
+    @Deprecated
+	@Override
     public void insert(K key, LinkedList<ClauseInfo> value){
         super.insert(key, value);
     }

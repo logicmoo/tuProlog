@@ -29,25 +29,29 @@ public abstract class PrologEventAdapter implements TheoryListener, QueryListene
     /* (non-Javadoc)
      * @see alice.tuprolog.PrologEventListener#theoryChanged(alice.tuprolog.TheoryEvent)
      */
-    public void theoryChanged(TheoryEvent e) {
+    @Override
+	public void theoryChanged(TheoryEvent e) {
     }
 
     /* (non-Javadoc)
      * @see alice.tuprolog.PrologEventListener#libraryLoaded(alice.tuprolog.LibraryEvent)
      */
-    public void libraryLoaded(LibraryEvent e) {
+    @Override
+	public void libraryLoaded(LibraryEvent e) {
     }
 
     /* (non-Javadoc)
      * @see alice.tuprolog.PrologEventListener#libraryUnloaded(alice.tuprolog.LibraryEvent)
      */
-    public void libraryUnloaded(LibraryEvent e) {
+    @Override
+	public void libraryUnloaded(LibraryEvent e) {
     }
 
     /* (non-Javadoc)
      * @see alice.tuprolog.PrologEventListener#newQueryResultAvailable(alice.tuprolog.QueryEvent)
      */
-    public void newQueryResultAvailable(QueryEvent e) {
+    @Override
+	public void newQueryResultAvailable(QueryEvent e) {
     }
 
 }

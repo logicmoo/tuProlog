@@ -623,7 +623,7 @@ public class Tokenizer extends StreamTokenizer implements Serializable {
     private static int isCharacterCodeConstantToken(int typec, String svalc) {
         if (svalc != null) {
             if (svalc.length() == 1)
-                return (int) svalc.charAt(0);
+                return svalc.charAt(0);
             if (svalc.length() > 1) {
 // TODO the following charachters is not implemented:
 //                * 1 meta escape sequence (* 6.4.2.1 *) todo

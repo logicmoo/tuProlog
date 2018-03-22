@@ -26,7 +26,7 @@ public class PropertyManager {
 
 	public static void configureProject(IProject project) {
 		// configurazione = creazione del motore e set delle librerie
-		// il metodo configura un progetto se è aperto e se ha la PrologNature
+		// il metodo configura un progetto se ï¿½ aperto e se ha la PrologNature
 		boolean hasPrologNature = false;
 		try {
 			hasPrologNature = project.hasNature(PrologNature.NATURE_ID);
@@ -40,7 +40,7 @@ public class PropertyManager {
 				Vector<String> libraries = getLibrariesFromProperties(project,
 						engines[j]);
 				setLibrariesOnEngine(libraries, PrologEngineFactory
-						.getInstance().getEngine(project.getName(), j));
+						.getInstance().getEngine(project, j));
 			}
 		}
 	}
@@ -49,7 +49,7 @@ public class PropertyManager {
 		String eng = "";
 		try {
 			eng = project.getPersistentProperty(new QualifiedName(qualifier,
-					project.getName()));
+					"enginesList"));
 		} catch (CoreException e) {
 		}
 		StringTokenizer st = new StringTokenizer(eng, ";");
@@ -64,17 +64,18 @@ public class PropertyManager {
 		PrologEngine engine = null;
 		// crea il motore di un progetto (SENZA LIBRARIES!)
 		if (PrologEngineFactory.getInstance().getProjectEngines(
-				project.getName()) == null) {
+				project) == null) {
 			engine = PrologEngineFactory.getInstance().insertEntry(
-					project.getName(), engineName);
+					project, engineName);
 		} else {
 			engine = PrologEngineFactory.getInstance().addEngine(
-					project.getName(), engineName);
-		}// svuoto le librerie, perchè le lib di default potrebbero non servire
+					project, engineName);
+		}// svuoto le librerie, perche' le lib di default potrebbero non servire
 		engine.removeLibrary("alice.tuprolog.lib.BasicLibrary");
 		engine.removeLibrary("alice.tuprolog.lib.IOLibrary");
 		engine.removeLibrary("alice.tuprolog.lib.ISOLibrary");
 		engine.removeLibrary("alice.tuprolog.lib.JavaLibrary");
+		engine.removeLibrary("alice.tuprolog.lib.OOLibrary");
 
 	}
 
@@ -82,13 +83,13 @@ public class PropertyManager {
 		String engines = "";
 		try {
 			engines = project.getPersistentProperty(new QualifiedName(
-					qualifier, project.getName()));
+					qualifier, "enginesList"));
 		} catch (CoreException e) {
 		}
 		if (engines == null)
 			engines = "";
 		engines = engines + engineName + ";";
-		QualifiedName qn = new QualifiedName(qualifier, project.getName());
+		QualifiedName qn = new QualifiedName(qualifier, "enginesList");
 		try {
 			project.setPersistentProperty(qn, engines);
 		} catch (CoreException e1) {
@@ -102,7 +103,7 @@ public class PropertyManager {
 			tmp = tmp + engines[i] + ";";
 		}
 
-		QualifiedName qn = new QualifiedName(qualifier, project.getName());
+		QualifiedName qn = new QualifiedName(qualifier, "enginesList");
 		try {
 			project.setPersistentProperty(qn, tmp);
 		} catch (CoreException e1) {
@@ -110,10 +111,10 @@ public class PropertyManager {
 
 		try {
 			project.setPersistentProperty(
-					new QualifiedName(qualifier, project.getName() + "."
+					new QualifiedName(qualifier, "enginesList" + "."
 							+ engineName + ".theories"), null);
 			project.setPersistentProperty(
-					new QualifiedName(qualifier, project.getName() + "."
+					new QualifiedName(qualifier, "enginesList" + "."
 							+ engineName + ".libraries"), null);
 		} catch (CoreException e) {
 			e.printStackTrace();
@@ -126,7 +127,7 @@ public class PropertyManager {
 		Vector<String> libraries = new Vector<String>();
 		try {
 			property = project.getPersistentProperty(new QualifiedName(
-					qualifier, project.getName() + "." + engineName
+					qualifier, "enginesList" + "." + engineName
 							+ ".libraries"));
 		} catch (CoreException e) {
 		}
@@ -143,7 +144,7 @@ public class PropertyManager {
 			librariesString = librariesString + libraries[i] + ";";
 		try {
 			project.setPersistentProperty(
-					new QualifiedName(qualifier, project.getName() + "."
+					new QualifiedName(qualifier, "enginesList" + "."
 							+ engineName + ".libraries"), librariesString);
 		} catch (CoreException e) {
 		}
@@ -163,7 +164,7 @@ public class PropertyManager {
 		String property = ""; // l'elenco di teorie
 		try {
 			property = project.getPersistentProperty(new QualifiedName(
-					qualifier, project.getName() + "." + engineName
+					qualifier, "enginesList" + "." + engineName
 							+ ".theories"));
 		} catch (CoreException e) {
 		}
@@ -178,7 +179,7 @@ public class PropertyManager {
 		Vector<String> theories = new Vector<String>();
 		try {
 			property = project.getPersistentProperty(new QualifiedName(
-					qualifier, project.getName() + "." + engineName
+					qualifier, "enginesList" + "." + engineName
 							+ ".theories"));
 		} catch (CoreException e) {
 		}
@@ -193,17 +194,17 @@ public class PropertyManager {
 	public static void setTheoriesInProperty(IProject project,
 			String engineName, String[] theories, boolean allTheories) {
 		String theoriesString = "";
-		if (theories == null) { // l'invocazione è partita dal wizard
+		if (theories == null) { // l'invocazione ï¿½ partita dal wizard
 			if (allTheories)
 				theoriesString = "*.pl";
 
-		} else { // l'invocazione è partita dalla pagina di properties
+		} else { // l'invocazione ï¿½ partita dalla pagina di properties
 			for (int i = 0; i < theories.length; i++)
 				theoriesString = theoriesString + theories[i] + ";";
 		}
 
 		try {
-			QualifiedName qn3 = new QualifiedName(qualifier, project.getName()
+			QualifiedName qn3 = new QualifiedName(qualifier, "enginesList"
 					+ "." + engineName + ".theories");
 			project.setPersistentProperty(qn3, theoriesString);
 		} catch (CoreException e) {

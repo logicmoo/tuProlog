@@ -25,7 +25,9 @@ public class ViewSet implements Observer {
 	}
 
 	public void refresh(final String theoryToShow) {
-		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() { 
+		// si ha syncExec() dato che esito operazione query dipende da run()
+		// che assegna i valori di console e queryList
+		PlatformUI.getWorkbench().getDisplay().syncExec(new Runnable() { 
 			@Override
 			public void run() { 
 				IWorkbenchWindow dwindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow(); 
@@ -61,6 +63,8 @@ public class ViewSet implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1){
+		// si esegue un refresh() per avere il valore aggiornato di queryList
+		refresh("theoryToShow");
 		if(queryList!=null){
 			queryList.update();
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().activate(console);

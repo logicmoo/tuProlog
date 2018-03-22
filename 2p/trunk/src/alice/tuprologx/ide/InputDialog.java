@@ -46,6 +46,7 @@ public class InputDialog extends JPanel{
 		
 		inputText.addKeyListener(new KeyListener()
 		{
+			@Override
 			public void keyPressed(KeyEvent arg0) {
 				if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 				{ 

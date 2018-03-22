@@ -177,7 +177,8 @@ public abstract class Library implements Serializable, IPrimitives {
     /**
      * gets the list of predicates defined in the library
      */
-    public Map<Integer,List<PrimitiveInfo>> getPrimitives() {
+    @Override
+	public Map<Integer,List<PrimitiveInfo>> getPrimitives() {
         try {
             java.lang.reflect.Method[] mlist = this.getClass().getMethods();
             Map<Integer,List<PrimitiveInfo>> mapPrimitives = new HashMap<Integer, List<PrimitiveInfo>>();

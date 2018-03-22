@@ -16,6 +16,7 @@ package alice.tuprologx.pj.model;
 public class Double extends Term<Double> {
 	java.lang.Double _theDouble;
 
+	@Override
 	public <Z> Z/*java.lang.Double*/ toJava() {
 		//return (Z)_theDouble;
 		return uncheckedCast(_theDouble);
@@ -23,7 +24,8 @@ public class Double extends Term<Double> {
 	
 	public Double (java.lang.Double d) {_theDouble = d;}
            
-        public alice.tuprolog.Double marshal() {
+        @Override
+		public alice.tuprolog.Double marshal() {
             return new alice.tuprolog.Double(_theDouble);
         }
         
@@ -37,6 +39,7 @@ public class Double extends Term<Double> {
             return (t instanceof alice.tuprolog.Double);
         }
         
+	@Override
 	public String toString() {
 		return "Double("+_theDouble+")";
 	}

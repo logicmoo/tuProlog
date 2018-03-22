@@ -111,7 +111,8 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
         bOpen.setPreferredSize(new Dimension(32,32));
         bOpen.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 loadPreferences();
             }
@@ -123,7 +124,8 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
         bSave.setPreferredSize(new Dimension(32,32));
         bSave.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 savePreferences();
             }
@@ -143,7 +145,8 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
         JButton ok = new JButton("OK");
         ok.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 setLibraryManagerStatus();
             }
@@ -151,7 +154,8 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
         JButton cancel = new JButton("Cancel");
         cancel.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 closeLibraryDialog();
             }
@@ -179,7 +183,8 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
         
         add.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                    addLibrary(libraryClassnameField.getText());
             }
@@ -187,7 +192,8 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
         
         browseButton.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
             	JFileChooser fc = new JFileChooser();
             	fc.showOpenDialog(LibraryDialogFrame.this);
@@ -313,7 +319,8 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
        JButton remove = new JButton("remove");
        remove.addActionListener(new ActionListener()
        {
-           public void actionPerformed(ActionEvent event)
+           @Override
+		public void actionPerformed(ActionEvent event)
            {
                removeLibrary(libraryClassname);
                pack();
@@ -507,7 +514,8 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
     }
 
     /** @see alice.tuprolog.interfaces.event.LibraryListener#libraryLoaded(alice.tuprolog.event.LibraryEvent) */
-    public void libraryLoaded(LibraryEvent event)
+    @Override
+	public void libraryLoaded(LibraryEvent event)
     {
         String libraryName = event.getLibraryName();
         if (!libraryManager.contains(libraryName))
@@ -548,7 +556,8 @@ public class LibraryDialogFrame extends GenericFrame implements LibraryListener
     }
 
     /** @see alice.tuprolog.interfaces.event.LibraryListener#libraryUnloaded(alice.tuprolog.event.LibraryEvent) */
-    public void libraryUnloaded(LibraryEvent event)
+    @Override
+	public void libraryUnloaded(LibraryEvent event)
     {
         librariesDisplayPanel.removeAll();
         displayLibraryManagerStatus();

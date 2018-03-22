@@ -465,11 +465,11 @@ public class ConsoleView extends ViewPart implements ReadListener{
 			this.project.setText(projStr);
 			this.engines.setText(engStr);
 			this.files.setText(fileStr);
-			/*	bind.setEnabled(false);
+			bind.setEnabled(false);
 			PrologQueryFactory.getInstance().executeQueryWS(query);
 			queryResultIndex=0;
 			tree.setSelection(tree.getItem(0));
-			refreshResultViewer();*/
+			refreshResultViewer();
 		}
 	}
 

@@ -155,7 +155,7 @@ public class QueryDialog extends Dialog
 		if ( choosenProject != null)
 		{
 			fProjText.setText(choosenProject.getName());
-			Vector<PrologEngine> engines = PrologEngineFactory.getInstance().getProjectEngines(choosenProject.getName());
+			Vector<PrologEngine> engines = PrologEngineFactory.getInstance().getProjectEngines(choosenProject);
 			for (int j = 0 ; j < engines.size(); j ++)
 			{
 				PrologEngine currEngine = (PrologEngine) engines.get(j);

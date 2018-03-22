@@ -11,7 +11,8 @@ class GeneratedClassFile extends SimpleJavaFileObject {
     super(URI.create("generated.class"), Kind.CLASS);
   }
 
-  public OutputStream openOutputStream() {
+  @Override
+public OutputStream openOutputStream() {
     return outputStream;
   }
 

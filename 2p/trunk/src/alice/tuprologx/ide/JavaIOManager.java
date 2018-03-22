@@ -47,7 +47,8 @@ public class JavaIOManager extends IOFileOperations {
         fileFilter = new PrologFileFilter();
     }
 
-    public void setTypeFileFilter(String type)
+    @Override
+	public void setTypeFileFilter(String type)
     {
         fileFilter = new PrologFileFilter();
         if (type.equals("csv"))
@@ -58,7 +59,8 @@ public class JavaIOManager extends IOFileOperations {
             fileFilter.setAsPreferencesFileFilter();
     }
 
-    public FileIDE loadFile() throws Exception {
+    @Override
+	public FileIDE loadFile() throws Exception {
         JFileChooser chooser = new PrologFileChooser(currentLoadDirectory,"load");
         chooser.setFileFilter(fileFilter);
         int returnVal = chooser.showOpenDialog(parent);
@@ -71,7 +73,8 @@ public class JavaIOManager extends IOFileOperations {
             return new FileIDE("",null);
     }
 
-    public FileIDE saveFileAs(FileIDE fileIDE) throws Exception {
+    @Override
+	public FileIDE saveFileAs(FileIDE fileIDE) throws Exception {
         JFileChooser chooser = new PrologFileChooser(currentSaveDirectory,"save");
         chooser.setDialogType(JFileChooser.SAVE_DIALOG);
         chooser.setFileFilter(fileFilter);
@@ -132,7 +135,8 @@ public class JavaIOManager extends IOFileOperations {
          *
          * @see FileFilter#accept
          */
-        public boolean accept(File f) {
+        @Override
+		public boolean accept(File f) {
             if (f != null) {
                 if (f.isDirectory())
                     return true;
@@ -174,7 +178,8 @@ public class JavaIOManager extends IOFileOperations {
 		 * Returns the human readable description of this filter.
 		 * @return  A human readable description of this filter.
 		 */
-        public String getDescription() {
+        @Override
+		public String getDescription() {
             return description;
         }
 

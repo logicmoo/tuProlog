@@ -128,7 +128,8 @@ public class Theory implements Serializable {
         return clauseList;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return theory != null ? theory : clauseList.toString();
     }
 

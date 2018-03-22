@@ -19,53 +19,65 @@ public class PrologImpl extends UnicastRemoteObject
         }
     }
 
-    public void clearTheory() throws RemoteException {
+    @Override
+	public void clearTheory() throws RemoteException {
         imp.clearTheory();
     }
 
-    public Theory getTheory() throws RemoteException{
+    @Override
+	public Theory getTheory() throws RemoteException{
         return imp.getTheory();
     }
 
-    public void setTheory(Theory theory) throws InvalidTheoryException, RemoteException {
+    @Override
+	public void setTheory(Theory theory) throws InvalidTheoryException, RemoteException {
         imp.setTheory(theory);
     }
 
-    public void addTheory(Theory theory) throws InvalidTheoryException, RemoteException {
+    @Override
+	public void addTheory(Theory theory) throws InvalidTheoryException, RemoteException {
         imp.addTheory(theory);
     }
 
 
-    public SolveInfo   solve(Term g) throws RemoteException {
+    @Override
+	public SolveInfo   solve(Term g) throws RemoteException {
         return imp.solve(g);
     }
 
-    public SolveInfo   solve(String g) throws MalformedGoalException, RemoteException{
+    @Override
+	public SolveInfo   solve(String g) throws MalformedGoalException, RemoteException{
         return imp.solve(g);
     }
 
-    public boolean hasOpenAlternatives() throws java.rmi.RemoteException {
+    @Override
+	public boolean hasOpenAlternatives() throws java.rmi.RemoteException {
         return imp.hasOpenAlternatives();
     }
 
-    public SolveInfo   solveNext() throws NoMoreSolutionException, RemoteException {
+    @Override
+	public SolveInfo   solveNext() throws NoMoreSolutionException, RemoteException {
         return imp.solveNext();
     }
 
-    public void solveHalt() throws RemoteException {
+    @Override
+	public void solveHalt() throws RemoteException {
         imp.solveHalt();
     }
 
-    public void solveEnd() throws RemoteException{
+    @Override
+	public void solveEnd() throws RemoteException{
         imp.solveEnd();
     }
 
 
-    public void loadLibrary(String className) throws InvalidLibraryException, RemoteException {
+    @Override
+	public void loadLibrary(String className) throws InvalidLibraryException, RemoteException {
         imp.loadLibrary(className);
     }
 
-    public void unloadLibrary(String className) throws InvalidLibraryException, RemoteException {
+    @Override
+	public void unloadLibrary(String className) throws InvalidLibraryException, RemoteException {
         imp.unloadLibrary(className);
     }
 

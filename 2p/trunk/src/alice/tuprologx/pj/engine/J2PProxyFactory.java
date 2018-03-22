@@ -176,9 +176,11 @@ public class J2PProxyFactory extends ProxyFactory {
             proxyClass = null;
         }
 
-        public int hashCode() { return hash; }
+        @Override
+		public int hashCode() { return hash; }
 
-        public boolean equals(Object obj) {
+        @Override
+		public boolean equals(Object obj) {
             if (obj instanceof CacheKey) {
                 CacheKey target = (CacheKey)obj;
                 return target.filter == filter && target.handler == handler
@@ -218,7 +220,8 @@ public class J2PProxyFactory extends ProxyFactory {
     /**
      * Sets the super class of a proxy class.
      */
-    @SuppressWarnings("rawtypes")
+    @Override
+	@SuppressWarnings("rawtypes")
 	public void setSuperclass(Class clazz) {
         superClass = clazz;
     }
@@ -228,12 +231,14 @@ public class J2PProxyFactory extends ProxyFactory {
      *
      * @since 3.4
      */
-    public Class<?> getSuperclass() { return superClass; }
+    @Override
+	public Class<?> getSuperclass() { return superClass; }
 
     /**
 	 * Sets the interfaces of a proxy class.
 	 */
-    @SuppressWarnings("rawtypes")
+    @Override
+	@SuppressWarnings("rawtypes")
 	public void setInterfaces(Class[] ifs) {
         interfaces = ifs;
     }
@@ -243,19 +248,22 @@ public class J2PProxyFactory extends ProxyFactory {
      *
      * @since 3.4
      */
-    public Class<?>[] getInterfaces() { return interfaces; }
+    @Override
+	public Class<?>[] getInterfaces() { return interfaces; }
 
     /**
      * Sets a filter that selects the methods that will be controlled by a handler.
      */
-    public void setFilter(MethodFilter mf) {
+    @Override
+	public void setFilter(MethodFilter mf) {
         methodFilter = mf;
     }
 
     /**
      * Generates a proxy class.
      */
-    public Class<?> createClass() {
+    @Override
+	public Class<?> createClass() {
         if (thisClass == null) {
             ClassLoader cl = getClassLoader();
             synchronized (proxyCache) {
@@ -391,16 +399,19 @@ public class J2PProxyFactory extends ProxyFactory {
 	 */
     public ClassLoaderProvider classLoaderProvider
         = new ClassLoaderProvider() {
-              public ClassLoader get(ProxyFactory pf) {
+              @Override
+			public ClassLoader get(ProxyFactory pf) {
                   return ((J2PProxyFactory)pf).getClassLoader0();
               }
           };
 
-    protected ClassLoader getClassLoader() {
+    @Override
+	protected ClassLoader getClassLoader() {
         return classLoaderProvider.get(this);
     }
 
-    protected ClassLoader getClassLoader0() {
+    @Override
+	protected ClassLoader getClassLoader0() {
         ClassLoader loader = null;
         if (superClass != null && !superClass.getName().equals("java.lang.Object"))
             loader = superClass.getClassLoader();
@@ -420,7 +431,8 @@ public class J2PProxyFactory extends ProxyFactory {
         return loader;
     }
 
-    protected ProtectionDomain getDomain() {
+    @Override
+	protected ProtectionDomain getDomain() {
         Class<?> clazz;
         if (superClass != null && !superClass.getName().equals("java.lang.Object"))
             clazz = superClass;
@@ -440,7 +452,8 @@ public class J2PProxyFactory extends ProxyFactory {
      * @param mh            the method handler for the proxy class.
      * @since 3.4
      */
-    @SuppressWarnings("rawtypes")
+    @Override
+	@SuppressWarnings("rawtypes")
 	public Object create(Class[] paramTypes, Object[] args, MethodHandler mh)
         throws NoSuchMethodException, IllegalArgumentException,
                InstantiationException, IllegalAccessException, InvocationTargetException
@@ -456,7 +469,8 @@ public class J2PProxyFactory extends ProxyFactory {
      * @param paramTypes    parameter types for a constructor.
      * @param args          arguments passed to a constructor.
      */
-    @SuppressWarnings("rawtypes")
+    @Override
+	@SuppressWarnings("rawtypes")
 	public Object create(Class[] paramTypes, Object[] args)
         throws NoSuchMethodException, IllegalArgumentException,
                InstantiationException, IllegalAccessException, InvocationTargetException
@@ -469,7 +483,8 @@ public class J2PProxyFactory extends ProxyFactory {
     /**
 	 * Sets the default invocation handler.  This invocation handler is shared among all the instances of a proxy class unless another is explicitly specified.
 	 */
-    public void setHandler(MethodHandler mi) {
+    @Override
+	public void setHandler(MethodHandler mi) {
         handler = mi;
         setField(DEFAULT_INTERCEPTOR, handler);
     }
@@ -582,7 +597,7 @@ public class J2PProxyFactory extends ProxyFactory {
         code.addIconst(size * 2);
         code.addAnewarray("java.lang.reflect.Method");
         code.addPutstatic(classname, HOLDER, HOLDER_TYPE);
-        code.addOpcode(Bytecode.RETURN);
+        code.addOpcode(Opcode.RETURN);
         minfo.setCodeAttribute(code.toCodeAttribute());
         cf.addMethod(minfo);
     }
@@ -597,7 +612,7 @@ public class J2PProxyFactory extends ProxyFactory {
         code.addAload(0);
         code.addAload(1);
         code.addPutfield(classname, HANDLER, HANDLER_TYPE);
-        code.addOpcode(Bytecode.RETURN);
+        code.addOpcode(Opcode.RETURN);
         minfo.setCodeAttribute(code.toCodeAttribute());
         cf.addMethod(minfo);
     }

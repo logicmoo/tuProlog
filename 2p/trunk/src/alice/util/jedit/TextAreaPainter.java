@@ -68,7 +68,8 @@ public class TextAreaPainter extends JComponent implements TabExpander
      * Returns if this component can be traversed by pressing the
      * Tab key. This returns false.
      */
-    public final boolean isManagingFocus()
+    @Override
+	public final boolean isManagingFocus()
     {
         return false;
     }
@@ -325,7 +326,8 @@ public class TextAreaPainter extends JComponent implements TabExpander
      * Returns the tool tip to display at the specified location.
      * @param evt The mouse event
      */
-    public String getToolTipText(MouseEvent evt)
+    @Override
+	public String getToolTipText(MouseEvent evt)
     {
         if(highlights != null)
             return highlights.getToolTipText(evt);
@@ -346,7 +348,8 @@ public class TextAreaPainter extends JComponent implements TabExpander
      * cached font metrics and to recalculate which lines are visible.
      * @param font The font
      */
-    @SuppressWarnings("deprecation")
+    @Override
+	@SuppressWarnings("deprecation")
     public void setFont(Font font)
     {
         super.setFont(font);
@@ -358,7 +361,8 @@ public class TextAreaPainter extends JComponent implements TabExpander
      * Repaints the text.
      * @param g The graphics context
      */
-    public void paint(Graphics gfx)
+    @Override
+	public void paint(Graphics gfx)
     {
         tabSize = fm.charWidth(' ') * ((Integer)textArea
             .getDocument().getProperty(
@@ -442,7 +446,8 @@ public class TextAreaPainter extends JComponent implements TabExpander
      * @param tabOffset Ignored
      * @return The next tab stop after <i>x</i>
      */
-    public float nextTabStop(float x, int tabOffset)
+    @Override
+	public float nextTabStop(float x, int tabOffset)
     {
         int offset = textArea.getHorizontalOffset();
         int ntabs = ((int)x - offset) / tabSize;
@@ -452,7 +457,8 @@ public class TextAreaPainter extends JComponent implements TabExpander
     /**
      * Returns the painter's preferred size.
      */
-    public Dimension getPreferredSize()
+    @Override
+	public Dimension getPreferredSize()
     {
         Dimension dim = new Dimension();
         dim.width = fm.charWidth('w') * cols;
@@ -464,7 +470,8 @@ public class TextAreaPainter extends JComponent implements TabExpander
     /**
      * Returns the painter's minimum size.
      */
-    public Dimension getMinimumSize()
+    @Override
+	public Dimension getMinimumSize()
     {
         return getPreferredSize();
     }

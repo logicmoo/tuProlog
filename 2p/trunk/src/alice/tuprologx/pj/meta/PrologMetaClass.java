@@ -62,7 +62,7 @@ public class PrologMetaClass {
         String theory = "";
         Class<?> cl = _theClass;
         while (!cl.getName().equals("java.lang.Object")) {
-            PrologClass pa = (PrologClass)cl.getAnnotation(PrologClass.class);
+            PrologClass pa = cl.getAnnotation(PrologClass.class);
             if (pa != null) {
                 String[] clauses = pa.clauses();
                 for (int i = 0; i < clauses.length;i++) {

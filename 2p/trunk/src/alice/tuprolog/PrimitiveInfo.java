@@ -145,7 +145,8 @@ public class PrimitiveInfo {
     
     
     
-    public String toString() {
+    @Override
+	public String toString() {
         return "[ primitive: method "+method.getName()+" - "+primitive_args+" - N args: "+primitive_args.length+" - "+source.getClass().getName()+" ]\n";
     }
     

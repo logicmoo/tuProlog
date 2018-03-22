@@ -26,7 +26,7 @@ public class PrologInvocationContext {
     
     /** Creates a new instance of InvocationObject */
     public PrologInvocationContext(Method m, Object[] args) {        
-        PrologMethod pann = (PrologMethod)m.getAnnotation(PrologMethod.class);
+        PrologMethod pann = m.getAnnotation(PrologMethod.class);
         assert (pann != null);         
         keepSubstitutions = pann.keepSubstitutions();// || pann.signature().equals("");
         initPredicateName(m,pann);
@@ -114,7 +114,7 @@ public class PrologInvocationContext {
             }
             if (returnType instanceof ParameterizedType) {
                 ParameterizedType pt = (ParameterizedType)returnType;
-                if (Cons.class.equals((Class<?>)pt.getRawType())) {//Cons<Cons<Cons ...
+                if (Cons.class.equals(pt.getRawType())) {//Cons<Cons<Cons ...
                     Type t = pt;
                     while (Nil.class.isAssignableFrom((Class<?>)pt.getRawType())) {
                         pt = (ParameterizedType)t;
@@ -265,8 +265,10 @@ public class PrologInvocationContext {
                 }
                 class SolutionIterator implements Iterator<Object> {
                     
-                    public void remove() {throw new UnsupportedOperationException();}
-                    public Object next() {
+                    @Override
+					public void remove() {throw new UnsupportedOperationException();}
+                    @Override
+					public Object next() {
                         PrologSolution<?,Cons<?,?>> si = _result.next(); 
                         Cons<?,?> res = null;
                         try {
@@ -297,12 +299,14 @@ public class PrologInvocationContext {
                             }
                         }
                     }
-                    public boolean hasNext() {
+                    @Override
+					public boolean hasNext() {
                         return _result.hasNext();
                     }
                 }
                 return new Iterable<Object>() {
-                    public Iterator<Object> iterator() {return new SolutionIterator();}
+                    @Override
+					public Iterator<Object> iterator() {return new SolutionIterator();}
                 };                
             }        
             else { //single solution

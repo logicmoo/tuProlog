@@ -34,7 +34,8 @@ public class P2d implements java.io.Serializable {
         return new V2d(x-v.x,y-v.y);
     }
 
-    public String toString(){
+    @Override
+	public String toString(){
         return "P2d("+x+","+y+")";
     }
 

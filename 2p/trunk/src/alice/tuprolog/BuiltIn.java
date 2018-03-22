@@ -54,7 +54,8 @@ public class BuiltIn extends Library {
 	/**
 	 * Defines some synonyms
 	 */
-	 public String[][] getSynonymMap() {
+	 @Override
+	public String[][] getSynonymMap() {
 		 return new String[][] { { "!", "cut", "predicate" },
 				 { "=", "unify", "predicate" },
 				 { "\\=", "deunify", "predicate" },
@@ -474,7 +475,7 @@ public class BuiltIn extends Library {
 		 }
 		 java.util.Iterator<ClauseInfo> it = l.iterator();
 		 while (it.hasNext()) {
-			 ClauseInfo b = (ClauseInfo) it.next();
+			 ClauseInfo b = it.next();
 			 if (match(arg0, b.getHead())) {
 				 b.getClause().resolveTerm();
 				 ((Struct) arg1).append(b.getClause());

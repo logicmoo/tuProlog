@@ -53,7 +53,8 @@ public class StateEnd extends State {
         return vars;
     }
     
-    public String toString() {
+    @Override
+	public String toString() {
         switch(endState){
         	case EngineRunner.FALSE   : return "FALSE";
         	case EngineRunner.TRUE    : return "TRUE";
@@ -62,7 +63,8 @@ public class StateEnd extends State {
         }  
     }
     
-    void doJob(Engine e) {	
+    @Override
+	void doJob(Engine e) {	
         vars = new ArrayList<Var>();
         goal = (Struct)e.startGoal.copyResult(e.goalVars,vars);  
     }

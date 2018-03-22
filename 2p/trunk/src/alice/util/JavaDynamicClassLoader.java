@@ -23,12 +23,13 @@ public class JavaDynamicClassLoader extends AbstractDynamicClassLoader
 		super(urls, parent);
 	}
 	
+	@Override
 	public Class<?> findClass(String className) throws ClassNotFoundException 
 	{  
 	    Class<?> result = null;  
 	    String classNameReplaced = className.replace(".", File.separator);
 	    
-	    result = (Class<?>) classCache.get(className);  
+	    result = classCache.get(className);  
 	    if (result != null)  
 	        return result;  
 	    try {

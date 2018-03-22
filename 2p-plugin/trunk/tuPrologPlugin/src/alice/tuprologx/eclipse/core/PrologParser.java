@@ -52,7 +52,7 @@ public class PrologParser extends IncrementalProjectBuilder {
 	private static boolean allTheories = false;
 	@SuppressWarnings({ "rawtypes" })
 	private static Vector[] alternativeScope;
-	private static String projectName;
+	private static IProject project;
 	private Vector<Term> terms;
 	private IMarker mark;
 	private static Theory theory; // la teoria da passare al builder in caso di
@@ -72,7 +72,7 @@ public class PrologParser extends IncrementalProjectBuilder {
 			go = false;
 			t = new Vector<Theory>();
 			alternativeScope = new Vector[PrologEngineFactory.getInstance()
-					.getProjectEngines(projectName).size()];
+					.getProjectEngines(project).size()];
 			for (int i = 0; i < alternativeScope.length; i++) {
 				alternativeScope[i] = new Vector<String>();
 				String tmp = "";
@@ -99,12 +99,11 @@ public class PrologParser extends IncrementalProjectBuilder {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void fullBuild(final IProgressMonitor monitor,Map args) {
 		t = new Vector<Theory>();
-		IProject project = getProject();
-		projectName = project.getName();
-		Vector<PrologEngine> engines =PrologEngineFactory.getInstance().getProjectEngines(project.getName());
+		project = getProject();
+		Vector<PrologEngine> engines =PrologEngineFactory.getInstance().getProjectEngines(project);
 		for (int j = 0; j < (engines!=null?engines.size():0); j++) {
 			PrologEngine engine = PrologEngineFactory.getInstance().getEngine(
-					project.getName(), j);
+					project, j);
 			setListeners(args);
 			if (alternativeScope == null) {
 				try {
@@ -301,7 +300,7 @@ public class PrologParser extends IncrementalProjectBuilder {
 	}
 
 	public static String getProjectName() {
-		return projectName;
+		return project.getName();
 	}
 	/**
 	 * Update the theory in its String representation removing

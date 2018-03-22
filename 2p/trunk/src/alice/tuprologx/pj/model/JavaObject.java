@@ -24,11 +24,13 @@ public class JavaObject<O> extends Term<JavaObject<O>> {
         _theObject = o;
     }
 
-    public alice.tuprolog.Term marshal() {
+    @Override
+	public alice.tuprolog.Term marshal() {
         return PJ.registerJavaObject(_theObject);
     }
 
-    public <Z> Z toJava() {
+    @Override
+	public <Z> Z toJava() {
         //return (Z)_theObject;
         return uncheckedCast(_theObject);
     }
@@ -47,7 +49,8 @@ public class JavaObject<O> extends Term<JavaObject<O>> {
             throw new UnsupportedOperationException();
     }
 
-    public String toString() {        
+    @Override
+	public String toString() {        
         return "JavaObject{"+_theObject+"}";
     }
     

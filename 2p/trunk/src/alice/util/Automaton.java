@@ -63,7 +63,8 @@ public abstract class Automaton implements Runnable, java.io.Serializable {
     /** boot state of automaton */
     public abstract void boot();
 
-    public void run(){
+    @Override
+	public void run(){
         while (true){
             try {
                 if (!state.equals("end")){

@@ -288,7 +288,7 @@ public class TheoryManager implements Serializable {
 		while (!startGoalStack.empty()) {
 			s = (s == null) ?
 					(Struct) startGoalStack.pop() :
-						new Struct(",", (Struct) startGoalStack.pop(), s);
+						new Struct(",", startGoalStack.pop(), s);
 		}
 		if (s != null) {
 			try {

@@ -23,7 +23,8 @@ public class StatusBar extends JLabel implements PropertyChangeListener
         setPreferredSize(new Dimension(x, y));
     }*/
 
-    public void propertyChange(PropertyChangeEvent event)
+    @Override
+	public void propertyChange(PropertyChangeEvent event)
     {
         String propertyName = event.getPropertyName();
         if (propertyName.equals("StatusMessage"))

@@ -34,7 +34,8 @@ public class StateGoalSelection extends State {
     /* (non-Javadoc)
      * @see alice.tuprolog.AbstractRunState#doJob()
      */
-    void doJob(Engine e) {
+    @Override
+	void doJob(Engine e) {
         Term curGoal = null;
         while (curGoal == null) {
             curGoal = e.currentContext.goalsToEval.fetch();

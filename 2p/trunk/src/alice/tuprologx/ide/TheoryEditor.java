@@ -61,7 +61,8 @@ public class TheoryEditor
         bGetTheory.setPreferredSize(new Dimension(32,32));
         bGetTheory.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 getEngineTheory();
             }
@@ -73,7 +74,8 @@ public class TheoryEditor
         bSetTheory.setPreferredSize(new Dimension(32,32));
         bSetTheory.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 setEngineTheory();
             }
@@ -85,7 +87,8 @@ public class TheoryEditor
         bUndo.setPreferredSize(new Dimension(32,32));
         bUndo.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 undo();
             }
@@ -97,7 +100,8 @@ public class TheoryEditor
         bRedo.setPreferredSize(new Dimension(32,32));
         bRedo.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 redo();
             }
@@ -133,11 +137,13 @@ public class TheoryEditor
         propertyChangeSupport.firePropertyChange("StatusMessage", "", message);
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
+    @Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
+    @Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
 

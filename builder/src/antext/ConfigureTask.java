@@ -1,12 +1,8 @@
 package antext;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.UIManager;
 
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.CallTarget;

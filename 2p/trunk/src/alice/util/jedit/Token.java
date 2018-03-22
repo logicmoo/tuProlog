@@ -141,7 +141,8 @@ public class Token
     /**
      * Returns a string representation of this token.
      */
-    public String toString()
+    @Override
+	public String toString()
     {
         return "[id=" + id + ",length=" + length + "]";
     }

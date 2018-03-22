@@ -47,7 +47,8 @@ public class EngineThread extends Thread {
         actionToDo = 2;
     }
     
-    public void run() {
+    @Override
+	public void run() {
         if (actionToDo==1){
             try {
                 engine.solve(goal);

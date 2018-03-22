@@ -1,7 +1,5 @@
 package antext.ui.propertyfield;
 
-import java.io.File;
-
 import antext.PropertyFile;
 
 @SuppressWarnings("serial")

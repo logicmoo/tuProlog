@@ -58,7 +58,8 @@ class Flag implements java.io.Serializable {
      *
      * @return a copy of the flag
      */
-    public Object clone() {
+    @Override
+	public Object clone() {
         Flag f = new Flag();
         f.name=name;
         f.valueList=(Struct)valueList.copy(new HashMap<Var,Var>(),Var.ORIGINAL);
@@ -78,7 +79,7 @@ class Flag implements java.io.Serializable {
     public boolean isValidValue(Term value) {
         java.util.Iterator<? extends Term> it=valueList.listIterator();
         while (it.hasNext()) {
-            Term t=(Term)it.next();
+            Term t=it.next();
             if (value.match(t)) {
                 return true;
             }

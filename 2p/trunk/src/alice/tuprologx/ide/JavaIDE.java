@@ -214,7 +214,7 @@ public class JavaIDE
 
     public void onClose()
     {
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         boolean isWindowClosable = true;
         for (int i=0;i<tabbedPane.getTabCount()&& isWindowClosable;i++)
         {
@@ -229,7 +229,8 @@ public class JavaIDE
 
 	class WindowListener extends WindowAdapter
     {
-        public void windowClosing(WindowEvent w)
+        @Override
+		public void windowClosing(WindowEvent w)
         {
             onClose();
         }

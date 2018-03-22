@@ -211,7 +211,8 @@ public final class LibraryManager
         this.libraries=new ArrayList<String>();
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
         String result = "";
         Object[] array = getLibraries();

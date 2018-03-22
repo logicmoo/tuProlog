@@ -39,7 +39,8 @@ public class Int extends Number {
      *  Returns the value of the Integer as int
      *
      */
-    final public int intValue() {
+    @Override
+	final public int intValue() {
         return value;
     }
     
@@ -47,83 +48,104 @@ public class Int extends Number {
      *  Returns the value of the Integer as float
      *
      */
-    final public float floatValue() {
-        return (float) value;
+    @Override
+	final public float floatValue() {
+        return value;
     }
     
     /**
      *  Returns the value of the Integer as double
      *
      */
-    final public double doubleValue() {
-        return (double) value;
+    @Override
+	final public double doubleValue() {
+        return value;
     }
     
     /**
      *  Returns the value of the Integer as long
      *
      */
-    final public long longValue() {
+    @Override
+	final public long longValue() {
         return value;
     }
     
     
     /** is this term a prolog integer term? */
-    final public boolean isInteger() {
+    @Override
+	final public boolean isInteger() {
         return true;
     }
     
     /** is this term a prolog real term? */
-    final public boolean isReal() {
+    @Override
+	final public boolean isReal() {
         return false;
     }
     
     
     /** is an int Integer number? 
      * @deprecated Use <tt>instanceof Int</tt> instead. */
-    final public boolean isTypeInt() {
+    @Deprecated
+	@Override
+	final public boolean isTypeInt() {
         return true;
     }
 
     /** is an int Integer number?
      * @deprecated Use <tt>instanceof Int</tt> instead. */
-    final public boolean isInt() {
+    @Deprecated
+	@Override
+	final public boolean isInt() {
         return true;
     }
     
     /** is a float Real number? 
      * @deprecated Use <tt>instanceof alice.tuprolog.Float</tt> instead. */
-    final public boolean isTypeFloat() {
+    @Deprecated
+	@Override
+	final public boolean isTypeFloat() {
         return false;
     }
 
     /** is a float Real number?
      * @deprecated Use <tt>instanceof alice.tuprolog.Float</tt> instead. */
-    final public boolean isFloat() {
+    @Deprecated
+	@Override
+	final public boolean isFloat() {
         return false;
     }
     
     /** is a double Real number? 
      * @deprecated Use <tt>instanceof alice.tuprolog.Double</tt> instead. */
-    final public boolean isTypeDouble() {
+    @Deprecated
+	@Override
+	final public boolean isTypeDouble() {
         return false;
     }
 
     /** is a double Real number?
      * @deprecated Use <tt>instanceof alice.tuprolog.Double</tt> instead. */
-    final public boolean isDouble() {
+    @Deprecated
+	@Override
+	final public boolean isDouble() {
         return false;
     }
     
     /** is a long Integer number? 
      * @deprecated Use <tt>instanceof alice.tuprolog.Long</tt> instead. */
-    final public boolean isTypeLong() {
+    @Deprecated
+	@Override
+	final public boolean isTypeLong() {
         return false;
     }
 
     /** is a long Integer number?
      * @deprecated Use <tt>instanceof alice.tuprolog.Long</tt> instead. */
-    final public boolean isLong() {
+    @Deprecated
+	@Override
+	final public boolean isLong() {
         return false;
     }
     
@@ -131,7 +153,8 @@ public class Int extends Number {
      * Returns true if this integer term is grater that the term provided.
      * For number term argument, the int value is considered.
      */
-    public boolean isGreater(Term t) {
+    @Override
+	public boolean isGreater(Term t) {
         t = t.getTerm();
         if (t instanceof Number) {
             return value>((Number)t).intValue();
@@ -148,7 +171,8 @@ public class Int extends Number {
      * Tries to unify a term with the provided term argument.
      * This service is to be used in demonstration context.
      */
-    boolean unify(List<Var> vl1, List<Var> vl2, Term t, boolean isOccursCheckEnabled) {
+    @Override
+	boolean unify(List<Var> vl1, List<Var> vl2, Term t, boolean isOccursCheckEnabled) {
         t = t.getTerm();
         if (t instanceof Var) {
             return t.unify(vl2, vl1, this, isOccursCheckEnabled);
@@ -159,14 +183,16 @@ public class Int extends Number {
         }
     }
     
-    public String toString() {
+    @Override
+	public String toString() {
         return Integer.toString(value);
     }
 
     /**
      * @author Paolo Contessi
      */
-    public int compareTo(Number o) {
+    @Override
+	public int compareTo(Number o) {
         return (new java.lang.Integer(value)).compareTo(o.intValue());
     }
 

@@ -56,7 +56,8 @@ public class PrologConfigFrame
         bDec.setToolTipText("Reduce Font Dimension");
         bDec.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 decFontDimension();
             }
@@ -66,7 +67,8 @@ public class PrologConfigFrame
         bInc.setToolTipText("Enlarge Font Dimension");
         bInc.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 incFontDimension();
             }
@@ -76,7 +78,8 @@ public class PrologConfigFrame
         fontDimensionTextField.setText(""+fontDimensionHandler.getFontDimension());
         fontDimensionTextField.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 setFontDimension();
             }
@@ -160,7 +163,8 @@ public class PrologConfigFrame
         /**/
         ok.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 ok();
             }
@@ -172,7 +176,8 @@ public class PrologConfigFrame
         /**/
         cancel.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 cancel();
             }
@@ -250,7 +255,7 @@ public class PrologConfigFrame
 					JLabel stopLabel = new JLabel("tuProlog will stop solving after");
 					millsStopEnginePanel.add(stopLabel);
 					millsStopEngineTextField.setPreferredSize(new Dimension(50,20));
-					millsStopEngineTextField.setHorizontalAlignment(JTextField.RIGHT);
+					millsStopEngineTextField.setHorizontalAlignment(SwingConstants.RIGHT);
 					millsStopEnginePanel.add(millsStopEngineTextField);
 					JLabel msLabel = new JLabel("ms");
 					millsStopEnginePanel.add(msLabel);
@@ -335,10 +340,12 @@ public class PrologConfigFrame
         onClose();
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
+    @Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
+    @Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
 

@@ -2,7 +2,7 @@ package alice.util;
 
 public class VersionInfo
 {
-	private static final String ENGINE_VERSION = "3.2.2";
+	private static final String ENGINE_VERSION = "3.3";
 	private static final String JAVA_SPECIFIC_VERSION = "0";
 	private static final String NET_SPECIFIC_VERSION = "0";
 	

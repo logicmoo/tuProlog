@@ -32,7 +32,8 @@ public class EDCGLibrary extends Library {
     public EDCGLibrary() {
     }
 
-    public String getTheory() {
+    @Override
+	public String getTheory() {
         return ":- op(1200, xfx, '==>').\n" 
             +":- op(200, xfx, '\\'). \n" 
             +":- op(200, xfx, ';'). \n"

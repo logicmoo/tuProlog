@@ -75,7 +75,7 @@ public class PrimitiveManager /*Castagna 06/2011*/implements IPrimitiveManager/*
     void deletePrimitiveInfo(IPrimitives src) {
         Iterator<PrimitiveInfo> it = libHashMap.remove(src).iterator();
         while(it.hasNext()) {
-            String k = ((PrimitiveInfo)it.next()).invalidate();
+            String k = it.next().invalidate();
             directiveHashMap.remove(k);
             predicateHashMap.remove(k);
             functorHashMap.remove(k);
@@ -147,15 +147,15 @@ public class PrimitiveManager /*Castagna 06/2011*/implements IPrimitiveManager/*
         
         switch (typeOfPrimitive) {
         case PrimitiveInfo.DIRECTIVE :
-            prim = (PrimitiveInfo)directiveHashMap.get(key);                
+            prim = directiveHashMap.get(key);                
             //log.debug("Assign predicate "+prim+" to "+t);
             break;
         case PrimitiveInfo.PREDICATE :
-            prim = (PrimitiveInfo)predicateHashMap.get(key);                
+            prim = predicateHashMap.get(key);                
             //log.debug("Assign predicate "+prim+" to "+t);
             break;
         case PrimitiveInfo.FUNCTOR :
-            prim = (PrimitiveInfo)functorHashMap.get(key);
+            prim = functorHashMap.get(key);
             //log.debug("Assign functor "+prim+" to "+t);
             break;
         }
@@ -165,7 +165,7 @@ public class PrimitiveManager /*Castagna 06/2011*/implements IPrimitiveManager/*
     
     Library getLibraryDirective(String name, int nArgs) {
         try {
-            return (Library)( (PrimitiveInfo)directiveHashMap.get(name + "/" + nArgs)).getSource();            
+            return (Library)directiveHashMap.get(name + "/" + nArgs).getSource();            
         } catch(NullPointerException e) {
             return null;
         }
@@ -173,7 +173,7 @@ public class PrimitiveManager /*Castagna 06/2011*/implements IPrimitiveManager/*
     
     Library getLibraryPredicate(String name, int nArgs) {
         try {
-            return (Library)( (PrimitiveInfo)predicateHashMap.get(name + "/" + nArgs)).getSource();            
+            return (Library)predicateHashMap.get(name + "/" + nArgs).getSource();            
         } catch(NullPointerException e) {
             return null;
         }
@@ -181,14 +181,15 @@ public class PrimitiveManager /*Castagna 06/2011*/implements IPrimitiveManager/*
     
     Library getLibraryFunctor(String name, int nArgs) {
         try {
-            return (Library)( (PrimitiveInfo)functorHashMap.get(name + "/" + nArgs)).getSource();
+            return (Library)functorHashMap.get(name + "/" + nArgs).getSource();
         } catch(NullPointerException e) {
             return null;
         }
     }
     
     /*Castagna 06/2011*/
-    public boolean containsTerm(String name, int nArgs) {
+    @Override
+	public boolean containsTerm(String name, int nArgs) {
 		return (functorHashMap.containsKey(name + "/" + nArgs) || predicateHashMap.containsKey(name + "/" + nArgs));
 	}
     /**/

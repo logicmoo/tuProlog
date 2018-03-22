@@ -16,7 +16,8 @@ public class PrologTokenMarker extends TokenMarker
         this.keywords = keywords;
     }
 
-    public byte markTokensImpl(byte token, Segment line, int lineIndex)
+    @Override
+	public byte markTokensImpl(byte token, Segment line, int lineIndex)
     {
         char[] array = line.array;
         int offset = line.offset;

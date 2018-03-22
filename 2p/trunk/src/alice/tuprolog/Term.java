@@ -53,19 +53,22 @@ public abstract class Term implements Serializable {
      * is this term a prolog numeric term?
      * @deprecated Use <tt>instanceof Number</tt> instead.
      */
-    public abstract boolean isNumber();
+    @Deprecated
+	public abstract boolean isNumber();
     
     /**
      * is this term a struct?
      * @deprecated Use <tt>instanceof Struct</tt> instead. 
      */
-    public abstract boolean isStruct();
+    @Deprecated
+	public abstract boolean isStruct();
     
     /**
      * is this term a variable?
      * @deprecated Use <tt>instanceof Var</tt> instead. 
      */
-    public abstract boolean isVar();
+    @Deprecated
+	public abstract boolean isVar();
     
     /** is this term a null term?*/
     public abstract boolean isEmptyList();
@@ -92,7 +95,8 @@ public abstract class Term implements Serializable {
      * the isEqual method.
      *
      */
-    public boolean equals(Object t) {
+    @Override
+	public boolean equals(Object t) {
         if (!(t instanceof Term))
             return false;
         return isEqual((Term) t);
@@ -310,7 +314,8 @@ public abstract class Term implements Serializable {
     /**
      * @deprecated Use {@link Term#createTerm(String)} instead.
      */
-    public static Term parse(String st) {
+    @Deprecated
+	public static Term parse(String st) {
         return Term.createTerm(st);
     }
     
@@ -329,7 +334,8 @@ public abstract class Term implements Serializable {
     /**
      * @deprecated Use {@link Term#createTerm(String, OperatorManager)} instead.
      */
-    public static Term parse(String st, OperatorManager op) {
+    @Deprecated
+	public static Term parse(String st, OperatorManager op) {
         return Term.createTerm(st, op);
     }
     

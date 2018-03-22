@@ -35,6 +35,7 @@ public class StateGoalEvaluation extends State {
 	 * 
 	 * @see alice.tuprolog.AbstractRunState#doJob()
 	 */
+	@Override
 	void doJob(Engine e) {
 		if (e.currentContext.currentGoal.isPrimitive()) {
 			// Recupero primitiva

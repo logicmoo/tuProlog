@@ -31,7 +31,8 @@ public abstract class PrologTree {
             this.variables = vars;
         }
         
-        public String toString() {
+        @Override
+		public String toString() {
             return name+" ( "+variables+" ) ";
         }
     }
@@ -46,7 +47,8 @@ public abstract class PrologTree {
             this.annotations = ann;
         }
         
-        public boolean equals(Object t) {
+        @Override
+		public boolean equals(Object t) {
             if (!(t instanceof VariableExpr)) {
                 return false;
             }                
@@ -54,7 +56,8 @@ public abstract class PrologTree {
             return (that.name.equals(name));
         }
         
-        public String toString() {
+        @Override
+		public String toString() {
             return annotations+" "+name;
         }
     }
@@ -71,7 +74,8 @@ public abstract class PrologTree {
             this.multipleResult = multiple;
         }
         
-        public String toString() {
+        @Override
+		public String toString() {
             return inputTree + "->" + (multipleResult ? " { "+outputTree+" } " : " ( "+outputTree+" ) ");
         }
     }

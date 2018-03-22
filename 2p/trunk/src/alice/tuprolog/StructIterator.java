@@ -32,11 +32,13 @@ class StructIterator implements java.util.Iterator<Term>, java.io.Serializable {
         this.list = t;
     }
     
-    public boolean hasNext() {
+    @Override
+	public boolean hasNext() {
         return !list.isEmptyList();
     }
     
-    public Term next() {
+    @Override
+	public Term next() {
         if (list.isEmptyList())
             throw new NoSuchElementException();
         // Using Struct#getTerm(int) instead of Struct#listHead and Struct#listTail
@@ -47,7 +49,8 @@ class StructIterator implements java.util.Iterator<Term>, java.io.Serializable {
         return head;
     }
     
-    public void remove() {
+    @Override
+	public void remove() {
         throw new UnsupportedOperationException();
     }
     

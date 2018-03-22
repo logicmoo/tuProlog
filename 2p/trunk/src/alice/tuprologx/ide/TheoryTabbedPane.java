@@ -43,10 +43,11 @@ public class TheoryTabbedPane
 
     public FileIDE getTheoryTitleNamesAt(int index)
     {
-        return (FileIDE)theoryFileNames.get(index);
+        return theoryFileNames.get(index);
     }
 
-    public void addTab(String FileName, Component component)
+    @Override
+	public void addTab(String FileName, Component component)
     {
         this.addTab(FileName, component, null);
     }
@@ -81,7 +82,8 @@ public class TheoryTabbedPane
     }
 
     //ProperyChangeListener interface method
-    public void propertyChange(PropertyChangeEvent event)
+    @Override
+	public void propertyChange(PropertyChangeEvent event)
     {
         String propertyName = event.getPropertyName();
         if (propertyName.equals("saved"))
@@ -127,7 +129,8 @@ public class TheoryTabbedPane
     }
 
     //MouseListener interface methods
-    public void mouseClicked(MouseEvent e)
+    @Override
+	public void mouseClicked(MouseEvent e)
     {
 
         int tabNumber=getUI().tabForCoordinate(this, e.getX(), e.getY());
@@ -147,13 +150,18 @@ public class TheoryTabbedPane
         }
         stateChanged();
     }
-    public void mouseEntered(MouseEvent e) {}
-    public void mouseExited(MouseEvent e) {}
-    public void mousePressed(MouseEvent e) {}
-    public void mouseReleased(MouseEvent e) {}
+    @Override
+	public void mouseEntered(MouseEvent e) {}
+    @Override
+	public void mouseExited(MouseEvent e) {}
+    @Override
+	public void mousePressed(MouseEvent e) {}
+    @Override
+	public void mouseReleased(MouseEvent e) {}
 
     //ChangeListener interface method
-    public void stateChanged(ChangeEvent event)
+    @Override
+	public void stateChanged(ChangeEvent event)
     {
         stateChanged();
     }
@@ -162,7 +170,7 @@ public class TheoryTabbedPane
     {
         if (getSelectedIndex()>=0 && theoryFileNames.size()>0)
         {
-            toolBar.setFileIDE((FileIDE)theoryFileNames.get(getSelectedIndex()));
+            toolBar.setFileIDE(theoryFileNames.get(getSelectedIndex()));
             editor.setEditArea(getSelectedTheoryEditArea());
             if (getSelectedTheoryEditArea().getCaretLine()==0)
                 editor.setCaretLine(1);
@@ -172,45 +180,52 @@ public class TheoryTabbedPane
     }
 
     //IDE intarface methods
-    public void enableTheoryCommands(boolean flag) {
+    @Override
+	public void enableTheoryCommands(boolean flag) {
         editor.enableTheoryCommands(flag);
         toolBar.enableTheoryCommands(flag);
     }
-    public boolean isFeededTheory() {
+    @Override
+	public boolean isFeededTheory() {
         return !getSelectedTheoryEditArea().isDirty();
     }
-    public void setFeededTheory(boolean flag) {
+    @Override
+	public void setFeededTheory(boolean flag) {
         getSelectedTheoryEditArea().setDirty(!flag);
     }
-    public String getEditorContent() {
+    @Override
+	public String getEditorContent() {
         return getSelectedTheoryEditArea().getTheory();
     }
-    public void setEditorContent(String text) {
+    @Override
+	public void setEditorContent(String text) {
         getSelectedTheoryEditArea().setTheory(text);
     }
     public String getEditorContentTabName()
     {
-        return ((FileIDE)theoryFileNames.get(getSelectedIndex())).getFileName();
+        return theoryFileNames.get(getSelectedIndex()).getFileName();
     }
-    public void newTheory() {
+    @Override
+	public void newTheory() {
         JavaEditArea editArea = new JavaEditArea(completionProvider);
         addTab("untitled", editArea);
         theoryFileNames.add(new FileIDE("",null));
         setSelectedIndex(getTabCount()-1);
         setEditorContent("");
-        toolBar.setFileIDE((FileIDE)theoryFileNames.get(getSelectedIndex()));
+        toolBar.setFileIDE(theoryFileNames.get(getSelectedIndex()));
         setFontDimension(getFontDimension());
         getSelectedJavaEditArea().setSaved(true);
         editArea.addPropertyChangeListener(this);
         editArea.setCaretLine(1);
     }
-    public void loadTheory() {
+    @Override
+	public void loadTheory() {
         FileIDE fileIDE = toolBar.getFileIDE();
         boolean found = false;
         int index = -1;
         for (int i=0 ;i<theoryFileNames.size() && !found;i++)
         {
-            if(fileIDE.getFileName().equals(((FileIDE)theoryFileNames.get(i)).getFileName()) && fileIDE.getFilePath().equals(((FileIDE)theoryFileNames.get(i)).getFilePath()))
+            if(fileIDE.getFileName().equals(theoryFileNames.get(i).getFileName()) && fileIDE.getFilePath().equals(theoryFileNames.get(i).getFilePath()))
             {
                 found = true;
                 index = i;
@@ -231,20 +246,22 @@ public class TheoryTabbedPane
             setSelectedIndex(index);
         }
     }
-    public void saveTheory()
+    @Override
+	public void saveTheory()
     {
         theoryFileNames.set(getSelectedIndex(), toolBar.getFileIDE());
         setTitleAt(getSelectedIndex(),toolBar.getFileIDE().getFileName());
         getSelectedJavaEditArea().setSaved(true);
     }
-    public void getTheory()
+    @Override
+	public void getTheory()
     {
         FileIDE fileIDE = new FileIDE(engine.getTheory().toString(),null);
         JavaEditArea editArea = new JavaEditArea(completionProvider);
         addTab("Theory loaded", editArea);
         theoryFileNames.add(fileIDE);
         setSelectedIndex(getTabCount()-1);
-        toolBar.setFileIDE((FileIDE)fileIDE);
+        toolBar.setFileIDE(fileIDE);
         setFontDimension(getFontDimension());
 
         editArea.setTheory(fileIDE.getContent());
@@ -253,15 +270,18 @@ public class TheoryTabbedPane
     }
 
     //FontDimensionHandler interface methods
-    public void incFontDimension()
+    @Override
+	public void incFontDimension()
     {
         setFontDimension(getFontDimension()+1);
     }
-    public void decFontDimension()
+    @Override
+	public void decFontDimension()
     {
         setFontDimension(getFontDimension()-1);
     }
-    public void setFontDimension(int dimension)
+    @Override
+	public void setFontDimension(int dimension)
     {
         for (int i=0;i<getTabCount();i++)
         {
@@ -271,7 +291,8 @@ public class TheoryTabbedPane
         consoleDialog.setFontDimension(dimension);
         statusBar.setFontDimension(dimension);
     }
-    public int getFontDimension()
+    @Override
+	public int getFontDimension()
     {
         if (statusBar!=null)
             return statusBar.getFont().getSize();
@@ -285,7 +306,7 @@ public class TheoryTabbedPane
         boolean isClosable = false;
         if (!getJavaEditAreaAt(index).isSaved())
         {
-            FileIDE fileIDE = (FileIDE)theoryFileNames.get(index);
+            FileIDE fileIDE = theoryFileNames.get(index);
             Object[] options = {"Yes", "No", "Cancel"};
             int result = JOptionPane.showOptionDialog(this,
                 "The file '"
@@ -345,7 +366,8 @@ public class TheoryTabbedPane
             height=16;
         }
          
-        public void paintIcon(Component c, Graphics g, int x, int y)
+        @Override
+		public void paintIcon(Component c, Graphics g, int x, int y)
         {
             this.x_pos=x;
             this.y_pos=y;
@@ -369,12 +391,14 @@ public class TheoryTabbedPane
             }
         }
 
-        public int getIconWidth()
+        @Override
+		public int getIconWidth()
         {
             return width + (fileIcon != null? fileIcon.getIconWidth() : 0);
         }
          
-        public int getIconHeight()
+        @Override
+		public int getIconHeight()
         {
             return height;
         }

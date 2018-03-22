@@ -101,7 +101,8 @@ public class JavaTerm<O> extends Compound<JavaTerm<O>> {
     }
 
     /** Creates a new instance of JavaTerm */
-    public alice.tuprolog.Struct marshal() {
+    @Override
+	public alice.tuprolog.Struct marshal() {
         try {
             
             alice.tuprolog.Term[] termArr = new alice.tuprolog.Term[_properties.size()];
@@ -134,7 +135,8 @@ public class JavaTerm<O> extends Compound<JavaTerm<O>> {
     }
     */
 
-    public String getName() {
+    @Override
+	public String getName() {
         return _class.getAnnotation(Termifiable.class).predicate();
     }
 
@@ -142,11 +144,13 @@ public class JavaTerm<O> extends Compound<JavaTerm<O>> {
         return _class;
     }
 
-    public int arity() {
+    @Override
+	public int arity() {
         return _properties.size();
     }
 
-    public <Z> Z toJava() {       
+    @Override
+	public <Z> Z toJava() {       
         try {                
             Object po = _class.newInstance();
             java.beans.BeanInfo binfo = java.beans.Introspector.getBeanInfo(_class);
@@ -192,7 +196,8 @@ public class JavaTerm<O> extends Compound<JavaTerm<O>> {
         return new JavaTerm<Z>(termKlass, terms);
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return getName() + _properties;
     }
 }

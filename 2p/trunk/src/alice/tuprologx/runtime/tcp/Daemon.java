@@ -22,7 +22,8 @@ class Acceptor implements Runnable {
         }
     }
 
-    public void run() {
+    @Override
+	public void run() {
         if (!initOk)
             return;
         System.out.println("[ User "+Thread.currentThread()+ " ] start.");
@@ -63,7 +64,8 @@ public class Daemon implements Runnable {
         s=new ServerSocket(port);
     }
 
-    public void run() {
+    @Override
+	public void run() {
         System.out.println("prolog TCP daemon start.");
         while (true){
             try {

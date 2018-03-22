@@ -35,6 +35,7 @@ public class Var<X extends Term<?>> extends Term<X> {
     	_theName = name; _theValue = uncheckedCast(val);
     }
     		
+	@Override
 	public <Z> Z toJava() {
 		// return _theValue != null ? (Z)_theValue.toJava() : (Z)this;
 		return uncheckedCast( _theValue != null ? _theValue.toJava() : this );
@@ -42,7 +43,8 @@ public class Var<X extends Term<?>> extends Term<X> {
         
     public X getValue() {return _theValue;}
     
-    public alice.tuprolog.Var marshal() {
+    @Override
+	public alice.tuprolog.Var marshal() {
         try {
             alice.tuprolog.Var v= new alice.tuprolog.Var(_theName);                 
             if (_theValue != null) {
@@ -71,7 +73,8 @@ public class Var<X extends Term<?>> extends Term<X> {
         return _theName;
     }
     
-    public String toString() {
+    @Override
+	public String toString() {
 		return "Var("+_theName+(_theValue != null ? "/"+_theValue : "")+")";
 	}
         

@@ -4,8 +4,6 @@ import java.awt.Dialog;
 import java.io.IOException;
 
 import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import antext.ConfigureTask;

@@ -64,35 +64,43 @@ public abstract class Number extends Term implements Comparable<Number> {
     
     /** is an int Integer number? 
      * @deprecated Use <tt>instanceof Int</tt> instead. */
-    public abstract boolean isTypeInt();
+    @Deprecated
+	public abstract boolean isTypeInt();
 
     /** is an int Integer number?
      * @deprecated Use <tt>instanceof Int</tt> instead. */
-    public abstract boolean isInt();
+    @Deprecated
+	public abstract boolean isInt();
     
     /** is a float Real number? 
      * @deprecated Use <tt>instanceof alice.tuprolog.Float</tt> instead. */
-    public abstract boolean isTypeFloat();
+    @Deprecated
+	public abstract boolean isTypeFloat();
 
     /** is a float Real number?
      * @deprecated Use <tt>instanceof alice.tuprolog.Float</tt> instead. */
-    public abstract boolean isFloat();
+    @Deprecated
+	public abstract boolean isFloat();
     
     /** is a double Real number? 
      * @deprecated Use <tt>instanceof alice.tuprolog.Double</tt> instead.*/
-    public abstract boolean isTypeDouble();
+    @Deprecated
+	public abstract boolean isTypeDouble();
 
     /** is a double Real number?
      * @deprecated Use <tt>instanceof alice.tuprolog.Double</tt> instead. */
-    public abstract boolean isDouble();
+    @Deprecated
+	public abstract boolean isDouble();
     
     /** is a long Integer number? 
      * @deprecated Use <tt>instanceof alice.tuprolog.Long</tt> instead. */
-    public abstract boolean isTypeLong();
+    @Deprecated
+	public abstract boolean isTypeLong();
 
     /** is a long Integer number?
      * @deprecated Use <tt>instanceof alice.tuprolog.Long</tt> instead. */
-    public abstract boolean isLong();
+    @Deprecated
+	public abstract boolean isLong();
     
     public static Number createNumber(String s) {
         Term t = Term.createTerm(s);
@@ -104,55 +112,65 @@ public abstract class Number extends Term implements Comparable<Number> {
     /**
      * Gets the actual term referred by this Term.
      */
-    public Term getTerm() {
+    @Override
+	public Term getTerm() {
         return this;
     }
     
     // checking type and properties of the Term
     
     /** is this term a prolog numeric term? */
-    final public boolean isNumber() {
+    @Override
+	final public boolean isNumber() {
         return true;
     }
     
     /** is this term a struct  */
-    final public boolean isStruct() {
+    @Override
+	final public boolean isStruct() {
         return false;
     }
     
     /** is this term a variable  */
-    final public boolean isVar() {
+    @Override
+	final public boolean isVar() {
         return false;
     }
     
-    final public boolean isEmptyList() {
+    @Override
+	final public boolean isEmptyList() {
         return false;
     }
     
     //
     
     /** is this term a constant prolog term? */
-    final public boolean isAtomic() {
+    @Override
+	final public boolean isAtomic() {
         return true;
     }
     
     /** is this term a prolog compound term? */
-    final public boolean isCompound() {
+    @Override
+	final public boolean isCompound() {
         return false;
     }
     
     /** is this term a prolog (alphanumeric) atom? */
-    final public boolean isAtom() {
+    @Override
+	final public boolean isAtom() {
         return false;
     }
     
     /** is this term a prolog list? */
-    final public boolean isList() {
+    @Override
+	final public boolean isList() {
         return false;
     }
     
     /** is this term a ground term? */
-    final public boolean isGround() {
+    @Override
+	final public boolean isGround() {
         return true;
     }
     
@@ -172,14 +190,16 @@ public abstract class Number extends Term implements Comparable<Number> {
      * the list argument passed contains the list of variables to be renamed
      * (if empty list then no renaming)
      */
-    Term copy(AbstractMap<Var,Var> vMap, int idExecCtx) {
+    @Override
+	Term copy(AbstractMap<Var,Var> vMap, int idExecCtx) {
         return this;
     }
     
     /**
      * gets a copy of the term.
      */
-    Term copy(AbstractMap<Var,Var> vMap, AbstractMap<Term,Var> substMap) {
+    @Override
+	Term copy(AbstractMap<Var,Var> vMap, AbstractMap<Term,Var> substMap) {
         return this;
     }
     
@@ -190,14 +210,16 @@ public abstract class Number extends Term implements Comparable<Number> {
 	}
     
     
-    long resolveTerm(long count) {
+    @Override
+	long resolveTerm(long count) {
         return count;
     }
     
     /**
      *
      */
-    public void free() {}
+    @Override
+	public void free() {}
     
     void restoreVariables() {}
     

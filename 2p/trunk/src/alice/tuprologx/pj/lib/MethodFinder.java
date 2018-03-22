@@ -95,7 +95,8 @@ public final class MethodFinder {
      *
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(final Object o) {
+    @Override
+	public boolean equals(final Object o) {
         if (this == o) {
             return true;
         } else if (o == null || getClass() != o.getClass()) {
@@ -145,7 +146,7 @@ public final class MethodFinder {
             throw new NoSuchMethodException("no member in " + clazz.getName() + " matching given args");
         }
         if (matchingMembers.size() == 1) {
-            return (Member) matchingMembers.get(0);
+            return matchingMembers.get(0);
         }
         return findMostSpecificMemberIn(matchingMembers);
     }
@@ -304,7 +305,8 @@ public final class MethodFinder {
      * {@inheritDoc}
      * @see java.lang.Object#hashCode()
      */
-    public int hashCode() {
+    @Override
+	public int hashCode() {
         return clazz.hashCode();
     }
 
@@ -370,8 +372,8 @@ public final class MethodFinder {
      * procedure in the Java Language Specification, section 15.12.2.
      */
     private boolean memberIsMoreSpecific(final Member first, final Member second) {
-        Class<?>[] firstParamTypes = (Class[]) paramMap.get(first);
-        Class<?>[] secondParamTypes = (Class[]) paramMap.get(second);
+        Class<?>[] firstParamTypes = paramMap.get(first);
+        Class<?>[] secondParamTypes = paramMap.get(second);
         return ClassUtilities.compatibleClasses(secondParamTypes, firstParamTypes);
     }
 }

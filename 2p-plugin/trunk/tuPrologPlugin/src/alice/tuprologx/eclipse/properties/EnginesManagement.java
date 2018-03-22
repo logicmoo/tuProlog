@@ -47,7 +47,7 @@ public class EnginesManagement extends PropertyPage {
 
 	// Crea i componenti grafici e ne gestisce la visualizzazione
 	protected Control createContents(final Composite parent) {
-		final String name = ((IResource) getElement()).getName();
+		final IProject project = ((IProject) getElement());
 
 		final Composite container = new Composite(parent, SWT.NULL);
 		container.setLayout(new RowLayout(SWT.VERTICAL));
@@ -64,10 +64,10 @@ public class EnginesManagement extends PropertyPage {
 		listEngine.setToolTipText("Loaded engines");
 
 		String[] items = new String[PrologEngineFactory.getInstance()
-				.getProjectEngines(name).size()];
+				.getProjectEngines(project).size()];
 		for (int j = 0; j < PrologEngineFactory.getInstance()
-				.getProjectEngines(name).size(); j++) {
-			items[j] = PrologEngineFactory.getInstance().getEngine(name, j)
+				.getProjectEngines(project).size(); j++) {
+			items[j] = PrologEngineFactory.getInstance().getEngine(project, j)
 					.getName();
 		}
 		listEngine.setItems(items);
@@ -91,9 +91,9 @@ public class EnginesManagement extends PropertyPage {
 						scopeGroup.setText("Default scope of: \""
 								+ motoreScelto + "\"");
 						for (int i = 0; i < PrologEngineFactory.getInstance()
-								.getProjectEngines(name).size(); i++) {
+								.getProjectEngines(project).size(); i++) {
 							if (PrologEngineFactory.getInstance()
-									.getEngine(name, i).getName()
+									.getEngine(project, i).getName()
 									.equals(motoreScelto)) {
 								Vector<String> lib = PropertyManager
 										.getLibrariesFromProperties(
@@ -138,7 +138,7 @@ public class EnginesManagement extends PropertyPage {
 								}
 					}
 					if (PrologEngineFactory.getInstance()
-							.getProjectEngines(name).size() != 1) {
+							.getProjectEngines(project).size() != 1) {
 						deleteEngine.setEnabled(true);
 					} else
 						deleteEngine.setEnabled(false);
@@ -167,7 +167,7 @@ public class EnginesManagement extends PropertyPage {
 					scopeGroup.setText("Default scope of:                  ");
 					listEngine.add(scelta);
 					PrologEngine engine = PrologEngineFactory.getInstance()
-							.addEngine(name, scelta);
+							.addEngine(project, scelta);
 					Vector<String> v = new Vector<String>();
 					PropertyManager.setLibrariesOnEngine(v, engine);
 					PropertyManager.setLibraryInProperties(
@@ -200,7 +200,7 @@ public class EnginesManagement extends PropertyPage {
 				scopeGroup.setText("Default scope of:                  ");
 				for (int i = 0; i < selection.length; i++) {
 					listEngine.remove(selection[i]);
-					PrologEngineFactory.getInstance().deleteEngine(name,
+					PrologEngineFactory.getInstance().deleteEngine(project,
 							selection[i]);
 					PropertyManager.deleteEngineInProperties(
 							(IProject) getElement(), selection[i],
@@ -237,12 +237,12 @@ public class EnginesManagement extends PropertyPage {
 					listLibrary.setToolTipText("Loaded libraries on: ");
 					scopeGroup.setText("Default scope of:                  ");
 					for (int i = 0; i < PrologEngineFactory.getInstance()
-							.getProjectEngines(name).size(); i++)
+							.getProjectEngines(project).size(); i++)
 						if (PrologEngineFactory.getInstance()
-								.getEngine(name, i).getName()
+								.getEngine(project, i).getName()
 								.equals(motoreScelto))
 							PrologEngineFactory.getInstance()
-									.getEngine(name, i).rename(scelta);
+									.getEngine(project, i).rename(scelta);
 
 					Vector<?> lib = PropertyManager.getLibrariesFromProperties(
 							(IProject) getElement(), motoreScelto);
@@ -333,13 +333,13 @@ public class EnginesManagement extends PropertyPage {
 					}
 					r.add(scelta);
 					for (int i = 0; i < PrologEngineFactory.getInstance()
-							.getProjectEngines(name).size(); i++) {
+							.getProjectEngines(project).size(); i++) {
 						if (PrologEngineFactory.getInstance()
-								.getEngine(name, i).getName()
+								.getEngine(project, i).getName()
 								.equals(motoreScelto)) {
 							PropertyManager.setLibrariesOnEngine(r,
 									PrologEngineFactory.getInstance()
-											.getEngine(name, i));
+											.getEngine(project, i));
 							listLibrary.add(scelta);
 							PropertyManager.setLibraryInProperties(
 									(IProject) getElement(), motoreScelto,
@@ -376,12 +376,12 @@ public class EnginesManagement extends PropertyPage {
 						r.add(t[i]);
 					}
 					for (int i = 0; i < PrologEngineFactory.getInstance()
-							.getProjectEngines(name).size(); i++) {
+							.getProjectEngines(project).size(); i++) {
 						if (PrologEngineFactory.getInstance()
-								.getEngine(name, i).getName() == motoreScelto) {
+								.getEngine(project, i).getName() == motoreScelto) {
 							PropertyManager.setLibrariesOnEngine(r,
 									PrologEngineFactory.getInstance()
-											.getEngine(name, i));
+											.getEngine(project, i));
 						}
 					}
 				}
@@ -451,16 +451,16 @@ public class EnginesManagement extends PropertyPage {
 
 	// Setta i valori di default quando il bottone "Apply default" viene premuto
 	protected void performDefaults() {
-		final String name = ((IResource) getElement()).getName();
+		final IProject project = ((IProject) getElement());
 		for (int i = 0; i < listEngine.getItems().length; i++) {
-			PrologEngineFactory.getInstance().deleteEngine(name,
+			PrologEngineFactory.getInstance().deleteEngine(project,
 					listEngine.getItem(i));
 			listEngine.remove(listEngine.getItem(i));
 			PropertyManager.deleteEngineInProperties((IProject) getElement(),
 					listEngine.getItem(i), listEngine.getItems());
 		}
 		PrologEngine engine = PrologEngineFactory.getInstance().insertEntry(
-				name, "Engine1");
+				project, "Engine1");
 		String[] libs = engine.getLibrary();
 		for (int i = 0; i < libs.length; i++)
 			engine.removeLibrary(libs[i]);
@@ -468,7 +468,7 @@ public class EnginesManagement extends PropertyPage {
 		libraries[0] = "alice.tuprolog.lib.BasicLibrary";
 		libraries[1] = "alice.tuprolog.lib.IOLibrary";
 		libraries[2] = "alice.tuprolog.lib.ISOLibrary";
-		libraries[3] = "alice.tuprolog.lib.JavaLibrary";
+		libraries[3] = "alice.tuprolog.lib.OOLibrary";
 		for (int i = 0; i < libraries.length; i++)
 			engine.addLibrary(libraries[i]);
 		PropertyManager.addEngineInProperty((IProject) getElement(),

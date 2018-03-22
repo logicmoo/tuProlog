@@ -32,11 +32,13 @@ public class TheoryLibrary extends Library {
         this.name = name;
     }
     
-    public String getTheory(){
+    @Override
+	public String getTheory(){
         return th.toString();
     }
     
-    public String getName(){
+    @Override
+	public String getName(){
         return name;
     }
 }

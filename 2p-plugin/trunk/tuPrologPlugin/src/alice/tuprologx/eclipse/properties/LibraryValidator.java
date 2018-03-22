@@ -18,7 +18,8 @@ public class LibraryValidator implements IInputValidator {
 		if (!scelta.equals("alice.tuprolog.lib.BasicLibrary")
 				&& !scelta.equals("alice.tuprolog.lib.IOLibrary")
 				&& !scelta.equals("alice.tuprolog.lib.JavaLibrary")
-				&& !scelta.equals("alice.tuprolog.lib.ISOLibrary"))
+				&& !scelta.equals("alice.tuprolog.lib.ISOLibrary")
+				&& !scelta.equals("alice.tuprolog.lib.OOLibrary"))
 			return "Library not exist";
 		return null;
 	}

@@ -11,7 +11,8 @@ class GeneratingJavaFileManager extends ForwardingJavaFileManager<JavaFileManage
     this.gcf = gcf;
   }
 
-  public JavaFileObject getJavaFileForOutput( Location location, String className, JavaFileObject.Kind kind, 
+  @Override
+public JavaFileObject getJavaFileForOutput( Location location, String className, JavaFileObject.Kind kind, 
 		                                      FileObject sibling) throws IOException {
     return gcf;
   }

@@ -46,7 +46,7 @@ public class ClauseDatabase extends HashMap<String,FamilyClausesList> implements
 
 	FamilyClausesList abolish(String key) 
 	{
-		return (FamilyClausesList) remove(key);
+		return remove(key);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class ClauseDatabase extends HashMap<String,FamilyClausesList> implements
 	 * @return  The list of matching-compatible predicates
 	 */
 	List<ClauseInfo> getPredicates(Term headt) {
-		FamilyClausesList family = (FamilyClausesList) get(((Struct) headt).getPredicateIndicator());
+		FamilyClausesList family = get(((Struct) headt).getPredicateIndicator());
 		if (family == null){
 			return new ReadOnlyLinkedList<ClauseInfo>();
 		}
@@ -71,13 +71,14 @@ public class ClauseDatabase extends HashMap<String,FamilyClausesList> implements
 	 * @return      The family clauses
 	 */
 	List<ClauseInfo> getPredicates(String key){
-		FamilyClausesList family = (FamilyClausesList) get(key);
+		FamilyClausesList family = get(key);
 		if(family == null){
 			return new ReadOnlyLinkedList<ClauseInfo>();
 		}
 		return new ReadOnlyLinkedList<ClauseInfo>(family);
 	}
 
+	@Override
 	public Iterator<ClauseInfo> iterator() {
 		return new CompleteIterator(this);
 	}
@@ -91,6 +92,7 @@ public class ClauseDatabase extends HashMap<String,FamilyClausesList> implements
 			values = clauseDatabase.values().iterator();
 		}
 
+		@Override
 		public boolean hasNext() {
 			if (workingList != null && workingList.hasNext())
 				return true;
@@ -101,12 +103,14 @@ public class ClauseDatabase extends HashMap<String,FamilyClausesList> implements
 			return false;
 		}
 
+		@Override
 		public synchronized ClauseInfo next() {
 			if (workingList.hasNext())
 				return workingList.next();
 			else return null;
 		}
 
+		@Override
 		public void remove() {
 			workingList.remove();
 		}

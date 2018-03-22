@@ -78,7 +78,8 @@ public class PJAnnotationProcessor extends ElementScanner6<Void,Void> implements
     private SignatureExpr signature;
     
 
-    public Void visitType(TypeElement d, Void v) {                 
+    @Override
+	public Void visitType(TypeElement d, Void v) {                 
         TypeElement oldDecl = enclosingDeclaration;
         enclosingDeclaration = d;        
         String theory="";
@@ -99,7 +100,8 @@ public class PJAnnotationProcessor extends ElementScanner6<Void,Void> implements
         return null;
     }
 
-    public Void visitExecutable(ExecutableElement d, Void v) {        
+    @Override
+	public Void visitExecutable(ExecutableElement d, Void v) {        
         PrologMethod pm = d.getAnnotation(PrologMethod.class);                
         if (pm != null) {                
             String theory = "";
@@ -358,7 +360,8 @@ public class PJAnnotationProcessor extends ElementScanner6<Void,Void> implements
         return formedType;
     }
 
-    public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment env) {        
+    @Override
+	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment env) {        
         Collection<? extends Element> decls = env.getElementsAnnotatedWith(PrologClass.class);        
         for (Element d : decls) {
             scan(d,null);
@@ -366,7 +369,8 @@ public class PJAnnotationProcessor extends ElementScanner6<Void,Void> implements
         return true;
     }
 
-    public Iterable<? extends Completion> getCompletions(Element element, AnnotationMirror annotation, ExecutableElement member, String userText) {
+    @Override
+	public Iterable<? extends Completion> getCompletions(Element element, AnnotationMirror annotation, ExecutableElement member, String userText) {
         return null;
     }
 
@@ -411,7 +415,8 @@ public class PJAnnotationProcessor extends ElementScanner6<Void,Void> implements
         return false;        
     }
     */
-    public void init(ProcessingEnvironment processingEnv) {        
+    @Override
+	public void init(ProcessingEnvironment processingEnv) {        
         env = processingEnv;                
         //teCompound = env.getElementUtils().getTypeElement("alice.tuprologx.pj.model.Compound");
         //teCompound1 = env.getElementUtils().getTypeElement("alice.tuprologx.pj.model.Compound1");
@@ -438,15 +443,18 @@ public class PJAnnotationProcessor extends ElementScanner6<Void,Void> implements
         j2PExceptionType = env.getTypeUtils().getDeclaredType(teJ2PException);        
     }
 
-    public SourceVersion getSupportedSourceVersion() {
+    @Override
+	public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.RELEASE_6;
     }
 
-    public Set<String> getSupportedOptions() {
+    @Override
+	public Set<String> getSupportedOptions() {
         return new java.util.TreeSet<String>();
     }
 
-    public Set<String> getSupportedAnnotationTypes() {
+    @Override
+	public Set<String> getSupportedAnnotationTypes() {
         return new java.util.TreeSet<String>(Arrays.asList(supportedAnnotations));        
     }
     

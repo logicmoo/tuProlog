@@ -38,7 +38,8 @@ public class DefaultInputHandler extends InputHandler
     /**
      * Sets up the default key bindings.
      */
-    public void addDefaultKeyBindings()
+    @Override
+	public void addDefaultKeyBindings()
     {
         addKeyBinding("BACK_SPACE",BACKSPACE);
         addKeyBinding("C+BACK_SPACE",BACKSPACE_WORD);
@@ -105,7 +106,8 @@ public class DefaultInputHandler extends InputHandler
      * @param keyBinding The key binding
      * @param action The action
      */
-    public void addKeyBinding(String keyBinding, ActionListener action) {
+    @Override
+	public void addKeyBinding(String keyBinding, ActionListener action) {
         
         Hashtable<KeyStroke,Object> current = bindings;
 
@@ -138,7 +140,8 @@ public class DefaultInputHandler extends InputHandler
      * implemented.
      * @param keyBinding The key binding
      */
-    public void removeKeyBinding(String keyBinding)
+    @Override
+	public void removeKeyBinding(String keyBinding)
     {
         throw new InternalError("Not yet implemented");
     }
@@ -146,7 +149,8 @@ public class DefaultInputHandler extends InputHandler
     /**
      * Removes all key bindings from this input handler.
      */
-    public void removeAllKeyBindings()
+    @Override
+	public void removeAllKeyBindings()
     {
         bindings.clear();
     }
@@ -156,7 +160,8 @@ public class DefaultInputHandler extends InputHandler
      * key bindings. Setting key bindings in the copy will also
      * set them in the original.
      */
-    public InputHandler copy()
+    @Override
+	public InputHandler copy()
     {
         return new DefaultInputHandler(this);
     }
@@ -165,7 +170,8 @@ public class DefaultInputHandler extends InputHandler
      * Handle a key pressed event. This will look up the binding for
      * the key stroke and execute it.
      */
-    public void keyPressed(KeyEvent evt)
+    @Override
+	public void keyPressed(KeyEvent evt)
     {
         int keyCode = evt.getKeyCode();
         int modifiers = evt.getModifiers();
@@ -176,7 +182,7 @@ public class DefaultInputHandler extends InputHandler
             keyCode == KeyEvent.VK_META)
             return;
 
-        if((modifiers & ~KeyEvent.SHIFT_MASK) != 0
+        if((modifiers & ~InputEvent.SHIFT_MASK) != 0
             || evt.isActionKey()
             || keyCode == KeyEvent.VK_BACK_SPACE
             || keyCode == KeyEvent.VK_DELETE
@@ -233,7 +239,8 @@ public class DefaultInputHandler extends InputHandler
     /**
      * Handle a key typed event. This inserts the key into the text area.
      */
-    public void keyTyped(KeyEvent evt)
+    @Override
+	public void keyTyped(KeyEvent evt)
     {
         int modifiers = evt.getModifiers();
         char c = evt.getKeyChar();
@@ -242,9 +249,9 @@ public class DefaultInputHandler extends InputHandler
          * if(c != KeyEvent.CHAR_UNDEFINED && (modifiers & KeyEvent.ALT_MASK) == 0)
          */
         if(c != KeyEvent.CHAR_UNDEFINED 
-        		&& ( !isMacOSX && (modifiers & KeyEvent.ALT_MASK) == 0 ) 
+        		&& ( !isMacOSX && (modifiers & InputEvent.ALT_MASK) == 0 ) 
         		//this is used when not on osx
-        		|| ( isMacOSX && (modifiers & KeyEvent.META_MASK) == 0 ) 
+        		|| ( isMacOSX && (modifiers & InputEvent.META_MASK) == 0 ) 
         		//this is needed on osx to filter characters when using the meta key
         	)
         {

@@ -30,6 +30,7 @@ public class List<X extends Term<?>> extends Term<List<X>> implements Iterable<X
 		}
 	}
 	
+	@Override
 	public <Z> Z/*Collection<Z>*/ toJava() {
 		Vector<Z> _javaList = new Vector<Z>(_theList.size());
 		for (Term<?> t : _theList) {
@@ -41,6 +42,7 @@ public class List<X extends Term<?>> extends Term<List<X>> implements Iterable<X
 		return uncheckedCast(_javaList);
 	}
 
+	@Override
 	public String toString() {
 		return "List"+_theList;
 	}
@@ -56,7 +58,8 @@ public class List<X extends Term<?>> extends Term<List<X>> implements Iterable<X
             return new List<X>(tail);
         }
         
-        public alice.tuprolog.Struct marshal() {
+        @Override
+		public alice.tuprolog.Struct marshal() {
             alice.tuprolog.Term[] termArray = new alice.tuprolog.Term[_theList.size()];
             int i=0;
             for (Term<?> t : _theList) {
@@ -79,7 +82,8 @@ public class List<X extends Term<?>> extends Term<List<X>> implements Iterable<X
             return (!(t instanceof alice.tuprolog.Var) && t.isList() && t instanceof alice.tuprolog.Struct);
         }
 
-        public Iterator<X> iterator() {
+        @Override
+		public Iterator<X> iterator() {
             return _theList.iterator();
         }
         

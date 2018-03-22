@@ -142,6 +142,7 @@ public class Parser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 	 * (a period), <tt>false</tt> otherwise.
 	 * @throws InvalidTermException if a syntax error is found. 
 	 */
+	@Override
 	public Term nextTerm(boolean endNeeded) throws InvalidTermException {
 		try {
 			Token t = tokenizer.readToken();
@@ -651,6 +652,7 @@ public class Parser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 		return tokenizer.tokenOffset();
 	}
 	
+	@Override
 	public int[] offsetToRowColumn(int offset) {
     	return tokenizer.offsetToRowColumn(offset);
 	}

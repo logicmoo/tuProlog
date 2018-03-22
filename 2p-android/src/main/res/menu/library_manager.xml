@@ -1,0 +1,5 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item android:id="@+id/import_library" android:title="@string/import_library" android:icon="@drawable/ic_menu_import" android:alphabeticShortcut="i"></item>
+
+</menu>

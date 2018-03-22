@@ -48,6 +48,7 @@ public class AndroidDynamicClassLoader extends AbstractDynamicClassLoader
 		this.dexPath = dexPath;
 	}
 
+	@Override
 	public Class<?> findClass(String className) throws ClassNotFoundException
 	{		
 		setDexPath(createPathString());

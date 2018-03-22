@@ -83,7 +83,8 @@ public class PJ implements MethodHandler {
         }
     }
 
-    public Object invoke(Object receiver, Method method, Method proceed, Object[] args) throws Throwable {                                        
+    @Override
+	public Object invoke(Object receiver, Method method, Method proceed, Object[] args) throws Throwable {                                        
         if (method.getDeclaringClass().equals(PrologObject.class)) {
             return invokeInternal(receiver, method, args); //dispatch PrologObject interface calls!
         }
@@ -107,11 +108,11 @@ public class PJ implements MethodHandler {
         //PrologMetaField[] metaFields = metaClass.getPrologFields();
         PrologInvocationContext ctx = new PrologInvocationContext(method, args);        
         /* theory = class_theory + method_theory + fields_theories */
-        WithTermifiable withTermifiable = (WithTermifiable)metaClass.getJavaClass().getAnnotation(WithTermifiable.class);
+        WithTermifiable withTermifiable = metaClass.getJavaClass().getAnnotation(WithTermifiable.class);
         if (withTermifiable != null) {
             for (String className : withTermifiable.value()) {
                 Class<?> klass = Class.forName(className);
-                String termName = ((Termifiable)klass.getAnnotation(Termifiable.class)).predicate();
+                String termName = klass.getAnnotation(Termifiable.class).predicate();
                 JavaTerm.hashtable.put(termName, klass);
             }
         }

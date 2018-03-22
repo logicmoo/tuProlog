@@ -36,7 +36,8 @@ public class PJProlog /*extends alice.tuprolog.Prolog*/ {
     
     public <G extends Term<?>, S extends Term<?>> Iterable<PrologSolution<G,S>>  solveAll(final G query) {            
             class SolutionProxy implements Iterable<PrologSolution<G,S>> {
-                public Iterator<PrologSolution<G,S>> iterator() {                
+                @Override
+				public Iterator<PrologSolution<G,S>> iterator() {                
                     PrologSolution<G,S> first = PJProlog.this.solve(query);
                     return new SolutionIterator<G,S>(first);
                 }
@@ -85,11 +86,13 @@ public class PJProlog /*extends alice.tuprolog.Prolog*/ {
             this.current = first;
         }
 
-        public void remove() {
+        @Override
+		public void remove() {
             throw new UnsupportedOperationException();
         }
 
-        public PrologSolution<G,S> next() {
+        @Override
+		public PrologSolution<G,S> next() {
             if (current != null) {
                 hasNext();
                 PrologSolution<G,S> temp = current;
@@ -102,7 +105,8 @@ public class PJProlog /*extends alice.tuprolog.Prolog*/ {
             }
         }
 
-        public boolean hasNext() {
+        @Override
+		public boolean hasNext() {
             if (next == null) {
                 try {
                     next = new PrologSolution<G,S>(engine.solveNext());                    

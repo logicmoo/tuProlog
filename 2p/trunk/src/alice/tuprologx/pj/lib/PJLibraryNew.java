@@ -58,6 +58,7 @@ public class PJLibraryNew extends OOLibrary {
 	/**
 	 * library theory
 	 */
+	@Override
 	public String getTheory() {
 		return
 		//
@@ -594,7 +595,7 @@ public class PJLibraryNew extends OOLibrary {
 		Object[] values = new Object[method.getArity()];
 		Class<?>[] types = new Class[method.getArity()];
 		for (int i = 0; i < method.getArity(); i++) {
-			if (!parse_arg(values, types, i, (Term) method.getTerm(i)))
+			if (!parse_arg(values, types, i, method.getTerm(i)))
 				return null;
 		}
 		return new Signature(values, types);

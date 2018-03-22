@@ -118,7 +118,8 @@ public class SyntaxStyle
     /**
      * Returns a string representation of this object.
      */
-    public String toString()
+    @Override
+	public String toString()
     {
         return getClass().getName() + "[color=" + color +
             (italic ? ",italic" : "") +

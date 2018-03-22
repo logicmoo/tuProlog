@@ -37,95 +37,118 @@ public class ReadOnlyLinkedList<E> implements List<E>{
         }
     }
 
-    public boolean add(E o){
+    @Override
+	public boolean add(E o){
         throw new UnsupportedOperationException("This is a read-only list");
     }
 
-    public void add(int index, E element){
+    @Override
+	public void add(int index, E element){
         throw new UnsupportedOperationException("This is a read-only list");
     }
 
-    public boolean addAll(Collection<? extends E> c){
+    @Override
+	public boolean addAll(Collection<? extends E> c){
         throw new UnsupportedOperationException("This is a read-only list");
     }
 
-    public boolean addAll(int index, Collection<? extends E> c){
+    @Override
+	public boolean addAll(int index, Collection<? extends E> c){
         throw new UnsupportedOperationException("This is a read-only list");
     }
 
-    public void clear(){
+    @Override
+	public void clear(){
         throw new UnsupportedOperationException("This is a read-only list");
     }
 
-    public int size() {
+    @Override
+	public int size() {
         return list.size();
     }
 
-    public boolean isEmpty() {
+    @Override
+	public boolean isEmpty() {
         return list.isEmpty();
     }
 
-    public boolean contains(Object o) {
+    @Override
+	public boolean contains(Object o) {
         return list.contains(o);
     }
 
-    public Iterator<E> iterator() {
+    @Override
+	public Iterator<E> iterator() {
         return new ListItr(list, 0);
     }
 
-    public Object[] toArray() {
+    @Override
+	public Object[] toArray() {
         return list.toArray();
     }
 
-    public <T> T[] toArray(T[] a) {
+    @Override
+	public <T> T[] toArray(T[] a) {
         return list.toArray(a);
     }
 
-    public boolean remove(Object o) {
+    @Override
+	public boolean remove(Object o) {
         throw new UnsupportedOperationException("This is a read-only list");
     }
 
-    public boolean containsAll(Collection<?> c) {
+    @Override
+	public boolean containsAll(Collection<?> c) {
         return list.containsAll(c);
     }
 
-    public boolean removeAll(Collection<?> c) {
+    @Override
+	public boolean removeAll(Collection<?> c) {
         throw new UnsupportedOperationException("This is a read-only list");
     }
 
-    public boolean retainAll(Collection<?> c) {
+    @Override
+	public boolean retainAll(Collection<?> c) {
         throw new UnsupportedOperationException("This is a read-only list");
     }
 
-    public E get(int index) {
+    @Override
+	public E get(int index) {
         return list.get(index);
     }
 
-    public E set(int index, E element) {
+    @Override
+	public E set(int index, E element) {
         throw new UnsupportedOperationException("This is a read-only list");
     }
 
-    public E remove(int index) {
+    @Override
+	public E remove(int index) {
         throw new UnsupportedOperationException("This is a read-only list");
     }
 
-    public int indexOf(Object o) {
+    @Override
+	public int indexOf(Object o) {
         return list.indexOf(o);
     }
 
-    public int lastIndexOf(Object o) {
+    @Override
+	public int lastIndexOf(Object o) {
         return list.lastIndexOf(o);
     }
 
-    public ListIterator<E> listIterator() {
+    @Override
+	public ListIterator<E> listIterator() {
         return new ListItr(list, 0);
     }
 
-    public ListIterator<E> listIterator(int index) {
+    @Override
+	public ListIterator<E> listIterator(int index) {
         return new ListItr(list, index);
     }
 
-    public List<E> subList(int fromIndex, int toIndex) {
+    @Override
+	public List<E> subList(int fromIndex, int toIndex) {
         return list.subList(fromIndex, toIndex);
     }
 
@@ -146,39 +169,48 @@ public class ReadOnlyLinkedList<E> implements List<E>{
             it = list.listIterator(index);
         }
 
-        public boolean hasNext() {
+        @Override
+		public boolean hasNext() {
             return it.hasNext();
         }
 
-        public E next() {
+        @Override
+		public E next() {
             return it.next();
         }
 
-        public boolean hasPrevious() {
+        @Override
+		public boolean hasPrevious() {
             return it.hasPrevious();
         }
 
-        public E previous() {
+        @Override
+		public E previous() {
             return it.previous();
         }
 
-        public int nextIndex() {
+        @Override
+		public int nextIndex() {
             return it.nextIndex();
         }
 
-        public int previousIndex() {
+        @Override
+		public int previousIndex() {
             return it.previousIndex();
         }
 
-        public void remove() {
+        @Override
+		public void remove() {
             throw new UnsupportedOperationException("This is a read-only list");
         }
 
-        public void set(E o) {
+        @Override
+		public void set(E o) {
             throw new UnsupportedOperationException("This is a read-only list");
         }
 
-        public void add(E o) {
+        @Override
+		public void add(E o) {
             throw new UnsupportedOperationException("This is a read-only list");
         }
     }

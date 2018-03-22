@@ -49,7 +49,8 @@ import alice.tuprolog.interfaces.IOperatorManager;
      * Creates a new operator. If the operator is already provided,
      * it replaces it with the new one
      */
-    public synchronized void opNew(String name,String type,int prio) {
+    @Override
+	public synchronized void opNew(String name,String type,int prio) {
         final Operator op = new Operator(name, type, prio);
         if (prio >= OP_LOW && prio <= OP_HIGH)
             operatorList.addOperator(op);
@@ -89,7 +90,8 @@ import alice.tuprolog.interfaces.IOperatorManager;
      * 16/05/2011		 
      * Clone operation added		 
      */		 
-    public IOperatorManager clone() {		 
+    @Override
+	public IOperatorManager clone() {		 
     	OperatorManager om = new OperatorManager();		 
     	om.operatorList = (OperatorRegister)this.operatorList.clone();		 
     	return om;		 
@@ -128,10 +130,10 @@ import alice.tuprolog.interfaces.IOperatorManager;
         @Override		 
         public Object clone() {		 
         	OperatorRegister or = (OperatorRegister)super.clone();		 
-        	Iterator<Operator> ior = (Iterator<Operator>)or.iterator();		 
+        	Iterator<Operator> ior = or.iterator();		 
         	or.nameTypeToKey = new HashMap<String, Operator>();		 
         	while(ior.hasNext()) {		 
-        		Operator o = (Operator)ior.next();		 
+        		Operator o = ior.next();		 
         		or.nameTypeToKey.put(o.name + o.type, o);		 
         	}		 
         	return or;

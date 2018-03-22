@@ -82,20 +82,23 @@ public class GUILauncher {
      */
     public static void main(String[] args) {
         GUILauncher launcher = new GUILauncher();
+        
+        System.out.println("We are on a J2SE " + System.getProperty("java.version") + " plaftorm");
+        
         // Get J2SE version
-        String version = System.getProperty("java.version");
-        int versionNumber = launcher.getVersionNumber(version);
-        int subVersionNumber = launcher.getSubVersionNumber(version);
-        System.out.println("We are on a J2SE " + versionNumber + "." + subVersionNumber + ".x plaftorm");
-        if (versionNumber == 1)
-            if (subVersionNumber == 1)
-                launcher.launchDotNetGUI();
-            else {
-                launcher.launchJavaGUI();
-                // launcher.launchDotNetGUI();
-            }
-        else
-            launcher.launchJavaGUI();
+        //String version = System.getProperty("java.version");
+        //int versionNumber = launcher.getVersionNumber(version);
+        //int subVersionNumber = launcher.getSubVersionNumber(version);
+        //System.out.println("We are on a J2SE " + versionNumber + "." + subVersionNumber + ".x plaftorm");
+//        if (versionNumber == 1)
+//            if (subVersionNumber == 1)
+//                launcher.launchDotNetGUI();
+//            else {
+//                launcher.launchJavaGUI();
+//                // launcher.launchDotNetGUI();
+//            }
+//        else
+         launcher.launchJavaGUI();
     }
 
 } // end GUILauncher class

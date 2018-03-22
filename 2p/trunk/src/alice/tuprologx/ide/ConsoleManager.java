@@ -97,7 +97,8 @@ public class ConsoleManager
     }
 
     // method of QueryListener interface
-    public void newQueryResultAvailable(QueryEvent event)
+    @Override
+	public void newQueryResultAvailable(QueryEvent event)
     {
         queryEventList.add(event);
         queryEventListString.add(event.getSolveInfo().toString());
@@ -139,28 +140,34 @@ public class ConsoleManager
     }
 
     //methods of Console interface
-    public boolean hasOpenAlternatives()
+    @Override
+	public boolean hasOpenAlternatives()
     {
         return engine.hasOpenAlternatives();
     }
-    public void enableTheoryCommands(boolean flag)
+    @Override
+	public void enableTheoryCommands(boolean flag)
     {
         ide.enableTheoryCommands(flag);
     }
-    public void getNextSolution()
+    @Override
+	public void getNextSolution()
     {
         new EngineThread(engine).start();
     }
-    public void acceptSolution()
+    @Override
+	public void acceptSolution()
     {
         engine.solveEnd();
     }
-    public void stopEngine()
+    @Override
+	public void stopEngine()
     {
         // stop the tuProlog engine
         engine.solveHalt();
     }
-    public String getGoal()
+    @Override
+	public String getGoal()
     {
         return inputField.getGoal();
     }
@@ -195,7 +202,8 @@ public class ConsoleManager
     	IO.getUserContextInputStream().setCounter();
     }
 
-    public void propertyChange(PropertyChangeEvent event) {
+    @Override
+	public void propertyChange(PropertyChangeEvent event) {
         String propertyName = event.getPropertyName();
         if (propertyName.equals("millsStopEngine"))
         {

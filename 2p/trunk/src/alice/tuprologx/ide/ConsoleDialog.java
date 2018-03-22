@@ -140,7 +140,8 @@ public class ConsoleDialog
         bNext.setEnabled(false);
         bNext.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 getNextSolution();
             }
@@ -151,7 +152,8 @@ public class ConsoleDialog
         bAccept.setEnabled(false);
         bAccept.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 acceptSolution();
             }
@@ -162,7 +164,8 @@ public class ConsoleDialog
         bStop.setEnabled(false);
         bStop.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 stopEngine();
             }
@@ -173,7 +176,8 @@ public class ConsoleDialog
         bClear.setEnabled(false);
         bClear.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 clear();
             }
@@ -184,7 +188,8 @@ public class ConsoleDialog
         bExport.setEnabled(false);
         bExport.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 exportCSV();
             }
@@ -355,11 +360,14 @@ public class ConsoleDialog
 
     public String getStatusMessage(){return statusMessage;}
 
-    public void addPropertyChangeListener(PropertyChangeListener listener){propertyChangeSupport.addPropertyChangeListener(listener);}
-    public void removePropertyChangeListener(PropertyChangeListener listener){propertyChangeSupport.removePropertyChangeListener(listener);}
+    @Override
+	public void addPropertyChangeListener(PropertyChangeListener listener){propertyChangeSupport.addPropertyChangeListener(listener);}
+    @Override
+	public void removePropertyChangeListener(PropertyChangeListener listener){propertyChangeSupport.removePropertyChangeListener(listener);}
 
     //OutputListener interface method
-    public void onOutput(OutputEvent event)
+    @Override
+	public void onOutput(OutputEvent event)
     {
         output.setText(output.getText() + event.getMsg());
         tp.setBackgroundAt(OUTPUT_INDEX, new Color(184, 229, 207));
@@ -371,12 +379,14 @@ public class ConsoleDialog
      * a ReadListener.
      * When it is called a read operation the input tab is selected
      */
-    public void readCalled(ReadEvent event) {
+    @Override
+	public void readCalled(ReadEvent event) {
     	tp.setSelectedIndex(INPUT_INDEX);
     }
     /***/
     
     /*Castagna 06/2011*/  	
+	@Override
 	public void onException(ExceptionEvent event) {
 		try {
 		    StyledDocument doc = exception.getStyledDocument();
@@ -389,7 +399,8 @@ public class ConsoleDialog
 	/**/
 
     //InformationToDisplayListener interface method
-    public void onInformation(InformationToDisplayEvent event)
+    @Override
+	public void onInformation(InformationToDisplayEvent event)
     {
         if (event.getSolveType()==1)//if there is information about a solveAll operation
         {
@@ -533,7 +544,7 @@ public class ConsoleDialog
             }
             String[][] data = new String[rows][columns];
             for (int i = 0; i < tableModelList.size(); i++)
-                data[i / columns][i % columns] = (String) tableModelList.get(i);
+                data[i / columns][i % columns] = tableModelList.get(i);
             return data;
         } else
             return null;
@@ -617,7 +628,7 @@ public class ConsoleDialog
                 }
                 tableModel = new String[tableModelList.size() / variables.length][variables.length];
                 for (int i = 0; i < tableModelList.size(); i++)
-                    tableModel[i / variables.length][i % variables.length] = (String) tableModelList.get(i);
+                    tableModel[i / variables.length][i % variables.length] = tableModelList.get(i);
                 tableSolve = newPrologTable(tableModel,variables);
             }
             if (selectDisplayModality == 1 || selectDisplayModality == 2) {
@@ -632,15 +643,15 @@ public class ConsoleDialog
                 tableModel = new String[tableModelList.size() / 2][2];
                 if (selectDisplayModality == 1) {
                     for (int i = 0; i < tableModelList.size(); i++)
-                        tableModel[i / 2][i % 2] = (String) tableModelList.get(i);
+                        tableModel[i / 2][i % 2] = tableModelList.get(i);
                 }
                 if (selectDisplayModality == 2) {
                     int j = 0;
                     for (int var = 0; var < variables.length; var++)
                         for(int i = 0 + 2 * var; i < tableModelList.size();) {
-                            tableModel[j / 2][j % 2] = (String) tableModelList.get(i);
+                            tableModel[j / 2][j % 2] = tableModelList.get(i);
                             j++;
-                            tableModel[j / 2][j % 2] = (String) tableModelList.get(i+1);
+                            tableModel[j / 2][j % 2] = tableModelList.get(i+1);
                             i = i + 2 * variables.length;
                             j++;
                         }
@@ -675,7 +686,8 @@ public class ConsoleDialog
     }
 
     //PropertyChangeListener interface method
-    public void propertyChange(PropertyChangeEvent event) {
+    @Override
+	public void propertyChange(PropertyChangeEvent event) {
         String propertyName = event.getPropertyName();
         if (propertyName.equals("selectDisplayModality"))
         {
@@ -752,7 +764,8 @@ public class ConsoleDialog
     }
 
     //MouseListener interface methods
-    public void mouseClicked(MouseEvent event)
+    @Override
+	public void mouseClicked(MouseEvent event)
     {
         if (tp.getSelectedIndex()!=2)
         {
@@ -784,17 +797,22 @@ public class ConsoleDialog
             refreshFont();
         }
     }
-    public void mouseEntered(MouseEvent event) {}
-    public void mouseExited(MouseEvent event) {}
-    public void mousePressed(MouseEvent event) {}
-    public void mouseReleased(MouseEvent event) {}
+    @Override
+	public void mouseEntered(MouseEvent event) {}
+    @Override
+	public void mouseExited(MouseEvent event) {}
+    @Override
+	public void mousePressed(MouseEvent event) {}
+    @Override
+	public void mouseReleased(MouseEvent event) {}
 
     //ChangeListener interface methods
     /**
      * this method enable bExport JButton if the user sees a not empty table
      * else disable it
      */
-    public void stateChanged(ChangeEvent arg0) {
+    @Override
+	public void stateChanged(ChangeEvent arg0) {
         if (tp.getSelectedIndex() == SOLUTION_INDEX)
         {
             bExport.setEnabled(false);

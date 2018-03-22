@@ -85,7 +85,8 @@ public class SubGoalStore {
         return (index < goals.size());
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return "goals: " + goals + " "
                 + "index: " + index;
     }

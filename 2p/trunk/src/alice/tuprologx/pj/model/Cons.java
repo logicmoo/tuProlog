@@ -66,10 +66,12 @@ public class Cons<H extends Term<?>, R extends Compound<?>> extends Compound<Con
         }
     }
     */
-    public Iterator<Term<?>> iterator() {
+    @Override
+	public Iterator<Term<?>> iterator() {
         return new Iterator<Term<?>>() {
-            Cons<?, ?> theTuple = (Cons<?,?>)Cons.this;	
-            public Term<?> next() {
+            Cons<?, ?> theTuple = Cons.this;	
+            @Override
+			public Term<?> next() {
                 if (theTuple == null) {
                     throw new java.util.NoSuchElementException();
                 }
@@ -77,10 +79,12 @@ public class Cons<H extends Term<?>, R extends Compound<?>> extends Compound<Con
                 theTuple=(theTuple.getRest() instanceof Cons ? (Cons<?,?>)theTuple.getRest() : null);
                 return head;
             }
-            public boolean hasNext() {		
+            @Override
+			public boolean hasNext() {		
                 return theTuple != null;
             }
-            public void remove() {throw new UnsupportedOperationException();}
+            @Override
+			public void remove() {throw new UnsupportedOperationException();}
         };
     }
     
@@ -107,7 +111,8 @@ public class Cons<H extends Term<?>, R extends Compound<?>> extends Compound<Con
         return _theRest;
     }
 
-    public String getName() {
+    @Override
+	public String getName() {
         return _theName;
     }
 
@@ -120,9 +125,11 @@ public class Cons<H extends Term<?>, R extends Compound<?>> extends Compound<Con
         return new Cons<H,R2>(_theName,newTermArr);
     }
 
-    public int arity() {return 1+_theRest.arity();}
+    @Override
+	public int arity() {return 1+_theRest.arity();}
 
-    public String toString() {
+    @Override
+	public String toString() {
         String res = "Compound:'"+getName()+"'(";
         for (Term<?> t : this) {        
             res += t+",";            
@@ -148,7 +155,8 @@ public class Cons<H extends Term<?>, R extends Compound<?>> extends Compound<Con
         return (!(t instanceof alice.tuprolog.Var) && t.isCompound() && !t.isList());
     }
     
-    public <Z> Z toJava() {
+    @Override
+	public <Z> Z toJava() {
     /*    if (isPrologObject())
             return (Z)toPrologObject();
         else {*/
@@ -163,7 +171,8 @@ public class Cons<H extends Term<?>, R extends Compound<?>> extends Compound<Con
         //}
     }
 
-    public alice.tuprolog.Struct marshal() {
+    @Override
+	public alice.tuprolog.Struct marshal() {
         alice.tuprolog.Term[] termArray = new alice.tuprolog.Term[arity()];
         int i = 0;
         for (Term<?> t: this) {

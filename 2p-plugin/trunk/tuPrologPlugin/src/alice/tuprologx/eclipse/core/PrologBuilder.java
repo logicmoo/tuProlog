@@ -44,19 +44,19 @@ public class PrologBuilder extends IncrementalProjectBuilder {
 						String projectName = project.getName();
 						String theory = "";
 						for (int j = 0; j < PrologEngineFactory.getInstance()
-								.getProjectEngines(projectName).size(); j++) {
+								.getProjectEngines(project).size(); j++) {
 							theory = theory
 									+ "***"
 									+ PrologEngineFactory.getInstance()
-											.getEngine(project.getName(), j)
+											.getEngine(project, j)
 											.getName()
 									+ "***\n"
 									+ PrologEngineFactory.getInstance()
-											.getEngine(project.getName(), j)
+											.getEngine(project, j)
 											.getTheory() + "\n";
 							PrologEngineFactory
 									.getInstance()
-									.getEngine(project.getName(), j)
+									.getEngine(project, j)
 									.addTheory(
 											(Theory) PrologParser.t
 													.elementAt(j));
@@ -65,7 +65,7 @@ public class PrologBuilder extends IncrementalProjectBuilder {
 						if (theory != null) {
 							viewSet.refresh(theory);
 							PrologEngineFactory.getInstance()
-									.getEngine(project.getName(), 0)
+									.getEngine(project, 0)
 									.refresh("refresh" + theory);
 						}
 						// riporto il motore a null per i build successivi
@@ -76,7 +76,7 @@ public class PrologBuilder extends IncrementalProjectBuilder {
 		} else {
 			IProject project = getProject();
 			PrologEngineFactory factory = PrologEngineFactory.getInstance();
-			engine = factory.getEngine(project.getName(), 0);
+			engine = factory.getEngine(project, 0);
 			engine.refresh("Parser found syntax error(s), cannot make any query");
 			engine.addTheory(null);
 		}
@@ -93,8 +93,8 @@ public class PrologBuilder extends IncrementalProjectBuilder {
 		// reperisce il motore dal progetto
 		IProject project = getProject();
 		PrologEngineFactory factory = PrologEngineFactory.getInstance();
-		for (int i = 0; i < factory.getProjectEngines(project.getName()).size(); i++) {
-			engine = factory.getEngine(project.getName(), i);
+		for (int i = 0; i < factory.getProjectEngines(project).size(); i++) {
+			engine = factory.getEngine(project, i);
 			if (engine != null) { // e' stato trovato un motore --> faccio
 									// partire il build
 				// se l'ultimo build e' stato effettuato con uno scope
