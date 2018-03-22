@@ -204,7 +204,8 @@ public class ClauseInfo {
     /**
      * Gets the string representation with default operator representation
      */
-    public String toString() {
+    @Override
+	public String toString() {
         // default prio: xfx
         String st=indentPredicates(clause.getArg(1));
         return( clause.getArg(0).toString() + " :-\n\t"+st+".\n");

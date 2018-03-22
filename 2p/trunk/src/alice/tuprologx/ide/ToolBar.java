@@ -96,7 +96,8 @@ public class ToolBar extends JPanel
         bNew.setPreferredSize(new Dimension(32,32));
         bNew.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 newTheory();
             }
@@ -108,7 +109,8 @@ public class ToolBar extends JPanel
         bOpen.setPreferredSize(new Dimension(32,32));
         bOpen.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 loadTheory();
             }
@@ -120,7 +122,8 @@ public class ToolBar extends JPanel
         bSave.setPreferredSize(new Dimension(32,32));
         bSave.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 saveTheory();
             }
@@ -132,7 +135,8 @@ public class ToolBar extends JPanel
         bSaveAs.setPreferredSize(new Dimension(32,32));
         bSaveAs.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 saveTheoryAs();
             }
@@ -144,7 +148,8 @@ public class ToolBar extends JPanel
         bLibMan.setPreferredSize(new Dimension(32,32));
         bLibMan.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 openLibraryManager();
             }
@@ -156,7 +161,8 @@ public class ToolBar extends JPanel
         bDebug.setPreferredSize(new Dimension(32,32));
         bDebug.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 viewDebugInformation();
             }
@@ -168,7 +174,8 @@ public class ToolBar extends JPanel
         bConfigure.setPreferredSize(new Dimension(32,32));
         bConfigure.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 configure();
             }
@@ -180,7 +187,8 @@ public class ToolBar extends JPanel
         bAbout.setPreferredSize(new Dimension(32,32));
         bAbout.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 viewAboutInformation();
             }
@@ -193,7 +201,8 @@ public class ToolBar extends JPanel
         bSpy.setPreferredSize(new Dimension(32,32));
         bSpy.addActionListener(new ActionListener()
         {
-        	public void actionPerformed(ActionEvent event)
+        	@Override
+			public void actionPerformed(ActionEvent event)
             {
         		ConsoleManager consoleManager = JavaIDE.getConsoleManager();
                 Theory theory = engine.getTheory();
@@ -294,11 +303,13 @@ public class ToolBar extends JPanel
         propertyChangeSupport.firePropertyChange("StatusMessage", oldStatusMessage, statusMessage);
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
+    @Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
+    @Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
 

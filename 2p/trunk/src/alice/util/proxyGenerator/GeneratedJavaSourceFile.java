@@ -11,7 +11,8 @@ class GeneratedJavaSourceFile extends SimpleJavaFileObject {
     this.javaSource = javaSource;
   }
 
-  public CharSequence getCharContent(boolean ignoreEncodeErrors) throws IOException {
+  @Override
+public CharSequence getCharContent(boolean ignoreEncodeErrors) throws IOException {
     return javaSource;
   }
 }

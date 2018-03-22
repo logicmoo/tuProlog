@@ -158,7 +158,7 @@ public class Var extends Term {
 	Term copy(AbstractMap<Var,Var> vMap, int idExecCtx) {
 		Term tt = getTerm();
 		if (tt == this) {
-			Var v = (Var)(vMap.get(this));
+			Var v = (vMap.get(this));
 			if (v == null) {
 				//No occurence of v before
 				v = new Var(name,idExecCtx,0,internalTimestamp/*, this.isCyclic*/);
@@ -174,7 +174,7 @@ public class Var extends Term {
 	public Term copyAndRetainFreeVar(AbstractMap<Var,Var> vMap, int idExecCtx) {
 		Term tt = getTerm();
 		if (tt == this) {
-			Var v = (Var)(vMap.get(this));
+			Var v = (vMap.get(this));
 			if (v == null) {
 				//No occurence of v before
 				v = this; //!!!
@@ -223,6 +223,7 @@ public class Var extends Term {
 	/**
 	 * De-unify the variable
 	 */
+	@Override
 	public void free() {
 		link = null;
 	}
@@ -264,6 +265,7 @@ public class Var extends Term {
 	 *  For unbound variable it is the variable itself, while
 	 *  for bound variable it is the bound term.
 	 */
+	@Override
 	public Term getTerm() {
 		Term tt = this;
 		Term t  = link;
@@ -299,18 +301,22 @@ public class Var extends Term {
 		internalTimestamp = t;
 	}
 
+	@Override
 	public boolean isNumber() {
 		return false;
 	}
 
+	@Override
 	public boolean isStruct() {
 		return false;
 	}
 
+	@Override
 	public boolean isVar() {
 		return true;
 	}
 
+	@Override
 	public boolean isEmptyList() {
 		Term t=getTerm();
 		if (t==this) {
@@ -320,6 +326,7 @@ public class Var extends Term {
 		}
 	}
 
+	@Override
 	public boolean isAtomic() {
 		Term t=getTerm();
 		if (t==this) {
@@ -329,6 +336,7 @@ public class Var extends Term {
 		}
 	}
 
+	@Override
 	public boolean isCompound() {
 		Term t=getTerm();
 		if (t==this) {
@@ -338,6 +346,7 @@ public class Var extends Term {
 		}
 	}
 
+	@Override
 	public boolean isAtom() {
 		Term t=getTerm();
 		if (t==this) {
@@ -347,6 +356,7 @@ public class Var extends Term {
 		}
 	}
 
+	@Override
 	public boolean isList() {
 		Term t = getTerm();
 		if (t == this)
@@ -355,6 +365,7 @@ public class Var extends Term {
 			return t.isList();
 	}
 
+	@Override
 	public boolean isGround(){
 		Term t=getTerm();
 		if (t==this) {
@@ -409,7 +420,8 @@ public class Var extends Term {
 	 /**
 	  * Resolve the occurence of variables in a Term
 	  */
-	 long resolveTerm(long count) {
+	 @Override
+	long resolveTerm(long count) {
 		 Term tt=getTerm();
 		 if (tt != this) {
 			 return tt.resolveTerm(count);
@@ -446,7 +458,8 @@ public class Var extends Term {
 	  * then it's success and a new link is created (retractable by a code)
 	  * (test done if occursCheck is enabled)
 	  */
-	 boolean unify(List<Var> vl1, List<Var> vl2, Term t, boolean isOccursCheckEnabled) {
+	 @Override
+	boolean unify(List<Var> vl1, List<Var> vl2, Term t, boolean isOccursCheckEnabled) {
 		 Term tt = getTerm();
 		 if(tt == this) {
 			 t = t.getTerm();
@@ -497,6 +510,7 @@ public class Var extends Term {
 		 }
 	}
 
+	@Override
 	public boolean isGreater(Term t) {
 		 Term tt = getTerm();
 		 if (tt == this) {

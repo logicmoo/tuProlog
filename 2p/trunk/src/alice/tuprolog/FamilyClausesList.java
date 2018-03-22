@@ -73,6 +73,7 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 	/**
 	 * @deprecated 
 	 */
+	@Deprecated
 	@Override
 	public boolean addAll(int index, Collection<? extends ClauseInfo> c) {
 		throw new UnsupportedOperationException("Not supported.");
@@ -81,6 +82,7 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 	/**
 	 * @deprecated
 	 */
+	@Deprecated
 	@Override
 	public void add(int index, ClauseInfo element) {
 		throw new UnsupportedOperationException("Not supported.");
@@ -89,6 +91,7 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 	/**
 	 * @deprecated
 	 */
+	@Deprecated
 	@Override
 	public ClauseInfo set(int index, ClauseInfo element) {
 		throw new UnsupportedOperationException("Not supported.");
@@ -132,7 +135,7 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 
 	@Override
 	public boolean remove(Object ci){
-		if(super.remove((ClauseInfo) ci))
+		if(super.remove(ci))
 		{
 			unregister((ClauseInfo) ci);
 
@@ -326,10 +329,12 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 			it = list.superListIterator(index);
 		}
 
+		@Override
 		public boolean hasNext() {
 			return it.hasNext();
 		}
 
+		@Override
 		public ClauseInfo next() {
 			// Alessandro Montanari - alessandro.montanar5@studio.unibo.it
 			currentIndex = it.nextIndex();
@@ -337,10 +342,12 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 			return it.next();
 		}
 
+		@Override
 		public boolean hasPrevious() {
 			return it.hasPrevious();
 		}
 
+		@Override
 		public ClauseInfo previous() {
 			// Alessandro Montanari - alessandro.montanar5@studio.unibo.it
 			currentIndex = it.previousIndex();
@@ -348,14 +355,17 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 			return it.previous();
 		}
 
+		@Override
 		public int nextIndex() {
 			return it.nextIndex();
 		}
 
+		@Override
 		public int previousIndex() {
 			return it.previousIndex();
 		}
 
+		@Override
 		public void remove() {
 			// Alessandro Montanari - alessandro.montanar5@studio.unibo.it
 			ClauseInfo ci = l.get(currentIndex);
@@ -365,11 +375,13 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 			unregister(ci);
 		}
 
+		@Override
 		public void set(ClauseInfo o) {
 			it.set(o);
 			//throw new UnsupportedOperationException("Not supported.");
 		}
 
+		@Override
 		public void add(ClauseInfo o) {
 			l.addLast(o);
 

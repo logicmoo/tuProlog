@@ -18,16 +18,19 @@ public class Atom extends Term<Atom> {
 
 	public Atom (String s) {_theAtom=s;}
 	
+	@Override
 	public <Z> Z toJava() {
 		//return (Z)_theAtom;
 		return uncheckedCast(_theAtom);
 	}
 
+	@Override
 	public String toString() {
 		return "Atom("+_theAtom+")";
 	}
         
-        public alice.tuprolog.Struct marshal() {
+        @Override
+		public alice.tuprolog.Struct marshal() {
             return new alice.tuprolog.Struct(_theAtom); 
         }
         

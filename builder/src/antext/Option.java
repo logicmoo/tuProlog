@@ -1,6 +1,5 @@
 package antext;
 
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Hashtable;
@@ -109,6 +108,7 @@ public class Option extends ConfigureTaskNestedElement {
 		return childrenOptions;
 	}
 	
+	@Override
 	public boolean equals(Object other) {
 		if(!(other instanceof Option))
 			return false;

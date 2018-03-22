@@ -54,7 +54,7 @@ class History {
         index--;
         if (index < 0)
             index = 0;
-        return (String) history.get(index);
+        return history.get(index);
     }
 
     /**
@@ -69,7 +69,7 @@ class History {
         index++;
         if (index >= history.size())
             index = history.size() - 1;
-        return (String) history.get(index);
+        return history.get(index);
     }
 
 } // end History class

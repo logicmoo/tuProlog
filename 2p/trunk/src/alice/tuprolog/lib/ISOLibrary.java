@@ -377,7 +377,8 @@ public class ISOLibrary extends Library {
     /**
      * library theory
      */
-    public String getTheory() {
+    @Override
+	public String getTheory() {
         return
         //
         // operators defined by the ISOLibrary theory

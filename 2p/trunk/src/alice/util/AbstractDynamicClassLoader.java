@@ -38,6 +38,7 @@ public abstract class AbstractDynamicClassLoader extends ClassLoader
 		listURLs = new ArrayList<URL>(Arrays.asList(urls));
 	}
 	
+	@Override
 	public Class<?> loadClass(String className) throws ClassNotFoundException {  
         return findClass(className);  
 	}

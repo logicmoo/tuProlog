@@ -272,6 +272,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	/**
 	 * Gets the component managing primitives
 	 */
+	@Override
 	public PrimitiveManager getPrimitiveManager() {
 		return primitiveManager;
 	}
@@ -284,6 +285,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	}
 
 	/** Gets the component managing operators */
+	@Override
 	public OperatorManager getOperatorManager() {
 		return opManager; 
 	}
@@ -353,6 +355,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @throws InvalidTheoryException if the new theory is not valid
 	 * @see Theory
 	 */
+	@Override
 	public void addTheory(Theory th) throws InvalidTheoryException {	//no syn
 		Theory oldTh = getTheory();
 		theoryManager.consult(th, true, null);
@@ -367,6 +370,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 *
 	 * @return current(dynamic) theory
 	 */
+	@Override
 	public Theory getTheory() {	//no syn
 		try {
 			return new Theory(theoryManager.getTheory(true));
@@ -389,6 +393,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	/**
 	 * Clears current theory
 	 */
+	@Override
 	public void clearTheory() {	//no syn
 		try {
 			setTheory(new Theory());
@@ -410,6 +415,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @return the reference to the Library just loaded
 	 * @throws InvalidLibraryException if name is not a valid library
 	 */
+	@Override
 	public Library loadLibrary(String className) throws InvalidLibraryException {	//no syn
 		return libraryManager.loadLibrary(className);
 	}
@@ -449,6 +455,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 *
 	 * @return the list of the library names
 	 */
+	@Override
 	public String[] getCurrentLibraries() {		//no syn
 		return libraryManager.getCurrentLibraries();
 	}
@@ -460,6 +467,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @param name of the library to be unloaded
 	 * @throws InvalidLibraryException if name is not a valid loaded library
 	 */
+	@Override
 	public void unloadLibrary(String name) throws InvalidLibraryException {		//no syn
 		libraryManager.unloadLibrary(name);
 	}
@@ -472,6 +480,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @return the reference to the library loaded, null if the library is
 	 *         not found
 	 */
+	@Override
 	public Library getLibrary(String name) {	//no syn
 		return libraryManager.getLibrary(name);
 	}
@@ -529,6 +538,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @return the result of the demonstration
 	 * @see SolveInfo
 	 **/
+	@Override
 	public SolveInfo solve(String st) throws MalformedGoalException {
 		try {
 			Parser p = new Parser(opManager, st);
@@ -546,6 +556,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @throws NoMoreSolutionException if no more solutions are present
 	 * @see SolveInfo
 	 **/
+	@Override
 	public SolveInfo solveNext() throws NoMoreSolutionException {
 		if (hasOpenAlternatives()) {
 			SolveInfo sinfo = engineManager.solveNext();
@@ -559,6 +570,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	/**
 	 * Halts current solve computation
 	 */
+	@Override
 	public void solveHalt() {
 		engineManager.solveHalt();
 	}
@@ -566,6 +578,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	/**
 	 * Accepts current solution
 	 */
+	@Override
 	public void solveEnd() {	//no syn
 		engineManager.solveEnd();
 	}
@@ -577,6 +590,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 *
 	 * @return true if open alternatives are present
 	 */
+	@Override
 	public boolean hasOpenAlternatives() {		//no syn
 		boolean b =  engineManager.hasOpenAlternatives();
 		return b;
@@ -642,6 +656,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * @param term      the term to be represented as a string
 	 * @return the string representing the term
 	 */
+	@Override
 	public String toString(Term term) {		//no syn
 		return (term.toStringAsArgY(opManager, OperatorManager.OP_HIGH));
 	}
@@ -661,6 +676,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 * Switches on/off the notification of spy information events
 	 * @param state  - true for enabling the notification of spy event
 	 */
+	@Override
 	public synchronized void setSpy(boolean state) {
 		spy = state;
 	}
@@ -781,6 +797,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 *
 	 * @param l the listener
 	 */
+	@Override
 	public synchronized void addOutputListener(OutputListener l) {
 		outputListeners.add(l);
 	}
@@ -818,6 +835,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 *
 	 * @param l the listener
 	 */
+	@Override
 	public synchronized void addSpyListener(SpyListener l) {
 		spyListeners.add(l);
 	}
@@ -837,6 +855,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 *
 	 * @param l the listener
 	 */
+	@Override
 	public synchronized void addExceptionListener(ExceptionListener l) {
 		exceptionListeners.add(l);
 	}
@@ -847,6 +866,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 *
 	 * @param l the listener
 	 */
+	@Override
 	public synchronized void removeOutputListener(OutputListener l) {
 		outputListeners.remove(l);
 	}
@@ -854,6 +874,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	/**
 	 * Removes all output event listeners
 	 */
+	@Override
 	public synchronized void removeAllOutputListeners() {
 		outputListeners.clear();
 	}
@@ -891,6 +912,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 *
 	 * @param l the listener
 	 */
+	@Override
 	public synchronized void removeSpyListener(SpyListener l) {
 		spyListeners.remove(l);
 	}
@@ -898,6 +920,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	/**
 	 * Removes all spy event listeners
 	 */
+	@Override
 	public synchronized void removeAllSpyListeners() {
 		spyListeners.clear();
 	}
@@ -924,6 +947,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	 *
 	 * @param l the listener
 	 */
+	@Override
 	public synchronized void removeExceptionListener(ExceptionListener l) {
 		exceptionListeners.remove(l);
 	}
@@ -933,6 +957,7 @@ public class Prolog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	/**
 	 * Removes all exception event listeners
 	 */
+	@Override
 	public synchronized void removeAllExceptionListeners() {
 		exceptionListeners.clear();
 	}

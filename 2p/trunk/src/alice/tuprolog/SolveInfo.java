@@ -160,7 +160,7 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
         if (isSuccess) {
             Iterator<Var> it = bindings.iterator();
             while (it.hasNext()) {
-                Var v = (Var)it.next();
+                Var v = it.next();
                 if (v!=null && v.getName().equals(varName)) {
                     return v.getTerm();
                 }
@@ -177,7 +177,8 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
      * variables with bindings.  For failed demo, the method returns false string.
      * 
      */    
-    public String toString() {
+    @Override
+	public String toString() {
         if (isSuccess) {
             StringBuffer st = new StringBuffer("yes");
             if (bindings.size() > 0) {
@@ -187,7 +188,7 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
             }
             Iterator<Var> it = bindings.iterator();
             while(it.hasNext()) {
-                Var v = (Var) it.next();
+                Var v = it.next();
                 if (v != null && !v.isAnonymous() && v.isBound() && 
                         (!(v.getTerm() instanceof Var) || (!((Var) (v.getTerm())).getName().startsWith("_")))) {
                     st.append(v);

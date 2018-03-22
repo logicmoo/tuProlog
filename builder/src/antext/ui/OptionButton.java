@@ -7,16 +7,13 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
-import org.apache.tools.ant.taskdefs.CallTarget;
-
-import antext.ConfigureTask;
 import antext.Option;
 
 @SuppressWarnings("serial")
@@ -169,8 +166,8 @@ public class OptionButton extends JPanel implements MouseListener {
 					BuildOptionsPanel.BUTTON_SIZE
 			);
 			
-			setVerticalTextPosition(AbstractButton.BOTTOM);
-			setHorizontalTextPosition(AbstractButton.CENTER);
+			setVerticalTextPosition(SwingConstants.BOTTOM);
+			setHorizontalTextPosition(SwingConstants.CENTER);
 			
 			if(option.getIcon() != null) {
 				setIcon(option.getIcon());

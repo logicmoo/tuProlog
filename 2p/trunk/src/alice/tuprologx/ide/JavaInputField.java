@@ -55,12 +55,14 @@ public class JavaInputField
     public JavaInputField(CompletionProvider completionProvider) {
         inputField = new JTextField();
         inputField.addKeyListener(new KeyAdapter() {
-            public void keyReleased(KeyEvent event) {
+            @Override
+			public void keyReleased(KeyEvent event) {
                 inputFieldKeyReleased(event);
             }
         });
         inputField.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
+            @Override
+			public void actionPerformed(ActionEvent event) {
                 solve();
             }
         });
@@ -78,7 +80,8 @@ public class JavaInputField
         solveButton.setPreferredSize(new Dimension(18,18));
         solveButton.setToolTipText("Solve");
         solveButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
+            @Override
+			public void actionPerformed(ActionEvent event) {
                 solve();
             }
         });
@@ -89,7 +92,8 @@ public class JavaInputField
         solveAllButton.setPreferredSize(new Dimension(18,18));
         solveAllButton.setToolTipText("Solve All");
         solveAllButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
+            @Override
+			public void actionPerformed(ActionEvent event) {
                 solveAll();
             }
         });
@@ -135,7 +139,8 @@ public class JavaInputField
     /**
 	 * Since the solve() method must be placed in this class, I need a reference to the Console where output, solveInfo, tuProlog engine and the ProcessInput thread are placed. This behaviour will change as soon as there will be no need of separate input components for .NET and Java2, i.e. as soon as the AltGr bug in Thinlet, preventing the use of italian keycombo AltGr + '?' and AltGr + '+' to write '[' and ']', will be solved.
 	 */
-    public void setConsole(ConsoleManager consoleManager)
+    @Override
+	public void setConsole(ConsoleManager consoleManager)
     {
         this.console = consoleManager;
     }
@@ -171,7 +176,8 @@ public class JavaInputField
         history.add(getGoal());
     }
 
-    public String getGoal() {
+    @Override
+	public String getGoal() {
         return inputField.getText();
     }
 

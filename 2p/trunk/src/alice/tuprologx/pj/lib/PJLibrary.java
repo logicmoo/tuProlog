@@ -85,6 +85,7 @@ public class PJLibrary extends Library {
 	/**
 	 * library theory
 	 */
+	@Override
 	public String getTheory() {
 		return
 		//
@@ -118,6 +119,7 @@ public class PJLibrary extends Library {
 	}
 	
 	
+	@Override
 	public void dismiss() {
 		currentObjects.clear();
 		currentObjects_inverse.clear();
@@ -130,16 +132,18 @@ public class PJLibrary extends Library {
 		staticObjects_inverse.clear();
 	}
 	
+	@Override
 	public   void onSolveBegin(Term goal) {
 		//id = 0;
 		currentObjects.clear();
 		currentObjects_inverse.clear();
 		for(Map.Entry<Object, Struct> en: staticObjects_inverse.entrySet()){
-			bindDynamicObject((Struct) en.getValue(), en.getKey());
+			bindDynamicObject(en.getValue(), en.getKey());
 		}
 		preregisterObjects();
 	}
 	
+	@Override
 	public void onSolveEnd() { }
 	
 	/**
@@ -760,7 +764,7 @@ public class PJLibrary extends Library {
 		Object[] values = new Object[method.getArity()];
 		Class<?>[] types = new Class[method.getArity()];
 		for (int i = 0; i < method.getArity(); i++) {
-			if (!parse_arg(values, types, i, (Term) method.getTerm(i)))
+			if (!parse_arg(values, types, i, method.getTerm(i)))
 				return null;
 		}
 		return new Signature(values, types);
@@ -1340,7 +1344,7 @@ public class PJLibrary extends Library {
 			
 			return null;
 		case 1:
-			return (Method) goodMethods.firstElement();
+			return goodMethods.firstElement();
 		default:
 			return mostSpecificMethod(goodMethods);
 		}
@@ -1426,7 +1430,7 @@ public class PJLibrary extends Library {
 		for (int i = 0; i != methods.size(); i++) {
 			for (int j = 0; j != methods.size(); j++) {
 				if ((i != j) &&
-						(moreSpecific((Method) methods.elementAt(i), (Method) methods.elementAt(j)))) {
+						(moreSpecific(methods.elementAt(i), methods.elementAt(j)))) {
 					methods.removeElementAt(j);
 					if (i > j) i--;
 					j--;
@@ -1434,7 +1438,7 @@ public class PJLibrary extends Library {
 			}
 		}
 		if (methods.size() == 1)
-			return (Method) methods.elementAt(0);
+			return methods.elementAt(0);
 		else
 			throw new NoSuchMethodException(">1 most specific method");
 	}
@@ -1563,6 +1567,7 @@ class Signature implements Serializable {
 		return values;
 	}
 	
+	@Override
 	public String toString() {
 		String st = "";
 		for (int i = 0; i < types.length; i++) {

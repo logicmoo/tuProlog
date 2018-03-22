@@ -57,11 +57,13 @@ public class Clause<H extends Term<?>, B extends Term<?>> extends Compound2<H,B>
         return isFact;
     }
     
-    public String toString() {
+    @Override
+	public String toString() {
         return "Clause{"+getHead()+(isFact() ? "" : " :- "+getBody())+"}";
     }
 
-    public Struct marshal() {
+    @Override
+	public Struct marshal() {
         if (!isFact()) {
             return super.marshal();
         }

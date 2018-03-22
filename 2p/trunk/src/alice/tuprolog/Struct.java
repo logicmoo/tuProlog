@@ -203,7 +203,8 @@ public class Struct extends Term {
     }
     
     /** @deprecated Use Struct#getPredicateIndicator instead. */
-    String getHashKey() {
+    @Deprecated
+	String getHashKey() {
         return getPredicateIndicator();
     }
     
@@ -261,39 +262,47 @@ public class Struct extends Term {
     // checking type and properties of the Term
     
     /** is this term a prolog numeric term? */
-    public boolean isNumber() {
+    @Override
+	public boolean isNumber() {
         return false;
     }
     
     /** is this term a struct  */
-    public boolean isStruct() {
+    @Override
+	public boolean isStruct() {
         return true;
     }
     
     /** is this term a variable  */
-    public boolean isVar() {
+    @Override
+	public boolean isVar() {
         return false;
     }
     
     // check type services
     
-    public boolean isAtomic() {
+    @Override
+	public boolean isAtomic() {
         return  arity == 0;
     }
     
-    public boolean isCompound() {
+    @Override
+	public boolean isCompound() {
         return arity > 0;
     }
     
-    public boolean isAtom() {
+    @Override
+	public boolean isAtom() {
         return (arity == 0 || isEmptyList());
     }
     
-    public boolean isList() {
+    @Override
+	public boolean isList() {
         return (name.equals(".") && arity == 2 && arg[1].isList()) || isEmptyList();
     }
     
-    public boolean isGround() {
+    @Override
+	public boolean isGround() {
         for (int i=0; i<arity; i++) {
             if (!arg[i].isGround()) {
                 return false;
@@ -309,7 +318,8 @@ public class Struct extends Term {
         return(name.equals(":-") && arity > 1 && arg[0].getTerm() instanceof Struct);
     }    
     
-    public Term getTerm() {
+    @Override
+	public Term getTerm() {
         return this;
     }
     
@@ -346,7 +356,8 @@ public class Struct extends Term {
     /**
      * Test if a term is greater than other
      */
-    public boolean isGreater(Term t) {
+    @Override
+	public boolean isGreater(Term t) {
         t = t.getTerm();
         if (!(t instanceof Struct)) {
             return true;
@@ -376,7 +387,8 @@ public class Struct extends Term {
      * Gets a copy of this structure
      * @param vMap is needed for register occurence of same variables
      */
-    Term copy(AbstractMap<Var,Var> vMap, int idExecCtx) {
+    @Override
+	Term copy(AbstractMap<Var,Var> vMap, int idExecCtx) {
         Struct t = new Struct(arity);
         t.resolved  = resolved;
         t.name      = name;
@@ -412,7 +424,8 @@ public class Struct extends Term {
      * Gets a copy of this structure
      * @param vMap is needed for register occurence of same variables
      */
-    Term copy(AbstractMap<Var,Var> vMap, AbstractMap<Term,Var> substMap) {
+    @Override
+	Term copy(AbstractMap<Var,Var> vMap, AbstractMap<Term,Var> substMap) {
         Struct t = new Struct(arity);
         t.resolved  = false;
         t.name      = name;
@@ -430,7 +443,8 @@ public class Struct extends Term {
     /**
      * resolve term
      */
-    long resolveTerm(long count) {
+    @Override
+	long resolveTerm(long count) {
         if (resolved) {
             return count;
         } else {
@@ -490,7 +504,8 @@ public class Struct extends Term {
     /**
      * Is this structure an empty list?
      */
-    public boolean isEmptyList() {
+    @Override
+	public boolean isEmptyList() {
         return name.equals("[]") && arity == 0;
     }
     
@@ -626,7 +641,8 @@ public class Struct extends Term {
      * @param vl2 list of variables unified
      * @return true if the term is unifiable with this one
      */
-    boolean unify(List<Var> vl1,List<Var> vl2,Term t, boolean isOccursCheckEnabled) {
+    @Override
+	boolean unify(List<Var> vl1,List<Var> vl2,Term t, boolean isOccursCheckEnabled) {
         // In fase di unificazione bisogna annotare tutte le variabili della struct completa.
         t = t.getTerm();
         if (t instanceof Struct) {
@@ -646,7 +662,8 @@ public class Struct extends Term {
     }
     
     /** dummy method */
-    public void free() {}
+    @Override
+	public void free() {}
     
     /**
 	 * Set primitive behaviour associated at structure
@@ -675,7 +692,8 @@ public class Struct extends Term {
      * Specific representations are provided for lists and atoms.
      * Names starting with upper case letter are enclosed in apices.
      */
-    public String toString() {
+    @Override
+	public String toString() {
         // empty list case
         if (isEmptyList()) return "[]";
         // list case
@@ -768,7 +786,8 @@ public class Struct extends Term {
         }
     }
     
-    String toStringAsArg(OperatorManager op, int prio, boolean x) {
+    @Override
+	String toStringAsArg(OperatorManager op, int prio, boolean x) {
         int p = 0;
         String v = "";
         
@@ -861,7 +880,8 @@ public class Struct extends Term {
         return v;
     }
     
-    public Term iteratedGoalTerm() {
+    @Override
+	public Term iteratedGoalTerm() {
         if (name.equals("^") && arity == 2) {
             Term goal = getTerm(1);
             return goal.iteratedGoalTerm();

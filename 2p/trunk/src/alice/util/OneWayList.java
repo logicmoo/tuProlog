@@ -75,7 +75,8 @@ public class OneWayList<E> {
         return tail.get(index-1);
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         String elem;
         if(head==null) elem = "null";
             else elem = head.toString();

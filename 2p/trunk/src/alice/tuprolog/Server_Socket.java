@@ -25,6 +25,7 @@ public class Server_Socket extends AbstractSocket{
 		return true;
 	}
 	
+	@Override
 	boolean unify(List<Var> varsUnifiedArg1, List<Var> varsUnifiedArg2, Term t, boolean isOccursCheckEnabled) {
 		t = t.getTerm();
         if (t instanceof Var) {

@@ -3,7 +3,6 @@ package antext.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +16,7 @@ import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
@@ -60,8 +60,8 @@ public class BuildOptionsPanel extends JPanel implements OptionButton.Listener, 
 		btnRunSelected.setVisible(false);
 		btnRunSelected.addActionListener(this);
 		btnRunSelected.setSize(120, 70);
-		btnRunSelected.setVerticalTextPosition(AbstractButton.BOTTOM);
-		btnRunSelected.setHorizontalTextPosition(AbstractButton.CENTER);
+		btnRunSelected.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnRunSelected.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnRunSelected.setIcon(ResourceLoader.getImage("run"));		
 		pnlCenter.add(btnRunSelected, pnlCenter.getComponentCount());
 		

@@ -50,7 +50,8 @@ public class ExecutionContext {
     
     public int getId() { return id; }
     
-    public String toString(){
+    @Override
+	public String toString(){
         return "        id: "+id+"\n"+
         "      currentGoal: "+currentGoal+"\n"+
         "           clause: "+clause+"\n"+

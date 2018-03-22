@@ -923,7 +923,8 @@ public class BasicLibrary extends Library {
         throw new PrologError(error);
     }
 
-    public String getTheory() {
+    @Override
+	public String getTheory() {
         return
         //
         // operators defined by the BasicLibrary theory
@@ -1373,7 +1374,8 @@ public class BasicLibrary extends Library {
     /**
      * Defines some synonyms
      */
-    public String[][] getSynonymMap() {
+    @Override
+	public String[][] getSynonymMap() {
         return new String[][] { { "+", "expression_plus", "functor" },
                 { "-", "expression_minus", "functor" },
                 { "*", "expression_multiply", "functor" },

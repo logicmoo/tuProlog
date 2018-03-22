@@ -63,7 +63,8 @@ public class GenericFrame
         else
         {
             addWindowListener(new WindowAdapter() {
-                public void windowClosing(WindowEvent event) {
+                @Override
+				public void windowClosing(WindowEvent event) {
                     dispose();
                 }
             });
@@ -92,7 +93,8 @@ public class GenericFrame
 
     class WindowListener extends WindowAdapter
     {
-        public void windowClosing(WindowEvent w)
+        @Override
+		public void windowClosing(WindowEvent w)
         {
             onClose();
         }

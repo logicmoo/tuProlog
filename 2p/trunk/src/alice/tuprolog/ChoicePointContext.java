@@ -34,7 +34,8 @@ public class ChoicePointContext {
     OneWayList<List<Var>> varsToDeunify;
     
     
-    public String toString(){
+    @Override
+	public String toString(){
         return "     ChoicePointId: "+executionContext.getId()+":"+indexSubGoal+"\n"+
                //"varsToDeunify: "+getVarsToDeunify()+"\n"+
                "     compGoals:     "+compatibleGoals+"\n";

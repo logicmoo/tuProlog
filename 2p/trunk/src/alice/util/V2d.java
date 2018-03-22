@@ -43,7 +43,8 @@ public class V2d implements java.io.Serializable {
         return new V2d(x*fact,y*fact);
     }
 
-    public String toString(){
+    @Override
+	public String toString(){
         return "V2d("+x+","+y+")";
     }
 }

@@ -103,7 +103,8 @@ public class PrologTable
 
     //cells are enabled, but not editable
 
-    public boolean isCellEditable(int row, int column)
+    @Override
+	public boolean isCellEditable(int row, int column)
     {
         return false;
     }

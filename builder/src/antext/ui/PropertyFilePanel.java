@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -14,14 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-import antext.PropertyDef;
 import antext.PropertyFile;
-import antext.ui.propertyfield.BooleanPropertyField;
-import antext.ui.propertyfield.AbstractFilePropertyField;
-import antext.ui.propertyfield.DirectoryPropertyField;
-import antext.ui.propertyfield.FilePropertyField;
 import antext.ui.propertyfield.PropertyField;
-import antext.ui.propertyfield.StringPropertyField;
 
 @SuppressWarnings("serial")
 public class PropertyFilePanel extends JPanel {

@@ -142,13 +142,13 @@ public class IOLibrary extends Library {
         	inputStreamName = STDIN_NAME;
         } else {
             try {
-                inputStream = new FileInputStream(((Struct) arg0).getName());
+                inputStream = new FileInputStream(arg0.getName());
             } catch (FileNotFoundException e) {
                 throw PrologError.domain_error(engine.getEngineManager(), 1,
                         "stream", arg0);
             }
         }
-        inputStreamName = ((Struct) arg0).getName();
+        inputStreamName = arg0.getName();
         return true;
     }
 
@@ -190,13 +190,13 @@ public class IOLibrary extends Library {
             outputStreamName = STDOUT_NAME;
         } else {
             try {
-                outputStream = new FileOutputStream(((Struct) arg0).getName());
+                outputStream = new FileOutputStream(arg0.getName());
             } catch (FileNotFoundException e) {
                 throw PrologError.domain_error(engine.getEngineManager(), 1,
                         "stream", arg);
             }
         }
-        outputStreamName = ((Struct) arg0).getName();
+        outputStreamName = arg0.getName();
         return true;
     }
 
@@ -442,7 +442,7 @@ public class IOLibrary extends Library {
                     file_name);
         Struct fileName = (Struct) file_name.getTerm();
         Struct goal = null;
-        String path = alice.util.Tools.removeApices(((Struct) fileName).toString());
+        String path = alice.util.Tools.removeApices(fileName.toString());
         if(! new File(path).isAbsolute()) {
             path = engine.getCurrentDirectory()  + File.separator + path;
         }
@@ -472,7 +472,7 @@ public class IOLibrary extends Library {
         if( !seed.isInteger() ){
             throw PrologError.type_error(engine.getEngineManager(), 1, "Integer Number", t);
         }
-        gen.setSeed(((Number)seed).longValue());
+        gen.setSeed(seed.longValue());
         return true;
     }
 
@@ -485,7 +485,8 @@ public class IOLibrary extends Library {
         return unify(num, new Int(gen.nextInt(arg.intValue())));
     }
 
-    public String getTheory() {
+    @Override
+	public String getTheory() {
         return "consult(File) :- text_from_file(File,Text), add_theory(Text).\n"
                 + "reconsult(File) :- text_from_file(File,Text), set_theory(Text).\n"
                 + "solve_file(File,Goal) :- solve_file_goal_guard(File,Goal),text_from_file(File,Text),text_term(Text,Goal),call(Goal).\n"

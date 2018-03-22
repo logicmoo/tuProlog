@@ -33,7 +33,8 @@ import java.awt.event.WindowListener;
 @SuppressWarnings("serial")
 public class Applet extends JApplet {
 
-    public void init() {
+    @Override
+	public void init() {
         JavaIDE ide = new JavaIDE();
 
         // Remove the attached window listener, causing the applet to

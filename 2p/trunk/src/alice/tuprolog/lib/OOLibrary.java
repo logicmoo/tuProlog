@@ -114,7 +114,8 @@ public class OOLibrary extends Library {
 		}
     }
     
-    public String getTheory() {
+    @Override
+	public String getTheory() {
         return
         //
         // operators defined by the JavaLibrary theory
@@ -155,7 +156,8 @@ public class OOLibrary extends Library {
         		
     }
 
-    public void dismiss() {
+    @Override
+	public void dismiss() {
         currentObjects.clear();
         currentObjects_inverse.clear();
     }
@@ -167,7 +169,8 @@ public class OOLibrary extends Library {
         staticObjects_inverse.clear();
     }
 
-    public void onSolveBegin(Term goal) {
+    @Override
+	public void onSolveBegin(Term goal) {
         currentObjects.clear();
         currentObjects_inverse.clear();
         Iterator<Map.Entry<Object,Struct>> it = staticObjects_inverse.entrySet().iterator();
@@ -178,7 +181,8 @@ public class OOLibrary extends Library {
         preregisterObjects();
     }
 
-    public void onSolveEnd() {
+    @Override
+	public void onSolveEnd() {
     }
 
     /**
@@ -298,7 +302,7 @@ public class OOLibrary extends Library {
 		    		lambda_expression = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(lambda_expression);
 		    	
 		    		Class<?> lambdaMetaFactory = alice.util.proxyGenerator.Generator.make(
-						ClassLoader.getSystemClassLoader(),
+						java.lang.ClassLoader.getSystemClassLoader(),
 				        "MyLambdaFactory"+counter,
 				        "" +           
 				            "public class MyLambdaFactory"+counter+" {\n" +
@@ -1086,7 +1090,7 @@ public class OOLibrary extends Library {
         Object[] values = new Object[method.getArity()];
         Class<?>[] types = new Class[method.getArity()];
         for (int i = 0; i < method.getArity(); i++) {
-            if (!parse_arg(values, types, i, (Term) method.getTerm(i)))
+            if (!parse_arg(values, types, i, method.getTerm(i)))
                 return null;
         }
         return new Signature(values, types);
@@ -1739,7 +1743,7 @@ public class OOLibrary extends Library {
 
             return null;
         case 1:
-            return (Method) goodMethods.firstElement();
+            return goodMethods.firstElement();
         default:
             return mostSpecificMethod(goodMethods);
         }
@@ -1828,8 +1832,8 @@ public class OOLibrary extends Library {
         for (int i = 0; i != methods.size(); i++) {
             for (int j = 0; j != methods.size(); j++) {
                 if ((i != j)
-                        && (moreSpecific((Method) methods.elementAt(i),
-                                (Method) methods.elementAt(j)))) {
+                        && (moreSpecific(methods.elementAt(i),
+                                methods.elementAt(j)))) {
                     methods.removeElementAt(j);
                     if (i > j)
                         i--;
@@ -1838,7 +1842,7 @@ public class OOLibrary extends Library {
             }
         }
         if (methods.size() == 1)
-            return (Method) methods.elementAt(0);
+            return methods.elementAt(0);
         else
             throw new NoSuchMethodException(">1 most specific method");
     }
@@ -1972,7 +1976,8 @@ class Signature implements Serializable {
         return values;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         String st = "";
         for (int i = 0; i < types.length; i++) {
             st = st + "\n  Argument " + i + " -  VALUE: " + values[i]

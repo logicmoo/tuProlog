@@ -26,6 +26,7 @@ public class PrologError extends Throwable {
 	/**/
 
 	/*Castagna 06/2011*/
+	@Override
 	public String toString()
 	{
 		return descriptionError;

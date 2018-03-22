@@ -101,7 +101,8 @@ public class DebugAreaFrame extends GenericFrame implements SpyListener, Warning
         clear.setPreferredSize(new Dimension(32,32));
         clear.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 clear();
             }
@@ -114,7 +115,8 @@ public class DebugAreaFrame extends GenericFrame implements SpyListener, Warning
         collapseAllButton.setToolTipText("Collapse all nodes");
         collapseAllButton.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 collapseAll();
             }
@@ -127,7 +129,8 @@ public class DebugAreaFrame extends GenericFrame implements SpyListener, Warning
         expandAllButton.setToolTipText("Expand all nodes");
         expandAllButton.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 expandAll();
             }
@@ -140,7 +143,8 @@ public class DebugAreaFrame extends GenericFrame implements SpyListener, Warning
         expandSelectedNodesButton.setToolTipText("Expand selected nodes");
         expandSelectedNodesButton.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 expandSelectedNodes();
             }
@@ -153,7 +157,8 @@ public class DebugAreaFrame extends GenericFrame implements SpyListener, Warning
         collapseSelectedNodesButton.setToolTipText("Collapse selected nodes");
         collapseSelectedNodesButton.addActionListener(new ActionListener()
         {
-            public void actionPerformed(ActionEvent event)
+            @Override
+			public void actionPerformed(ActionEvent event)
             {
                 collapseSelectedNodes();
             }
@@ -167,7 +172,8 @@ public class DebugAreaFrame extends GenericFrame implements SpyListener, Warning
         debug.addChangeListener(this);
     }
 
-    public void onSpy(SpyEvent event)
+    @Override
+	public void onSpy(SpyEvent event)
     {
         DefaultTreeModel model = (DefaultTreeModel)spyTree.getModel();
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(event.getMsg());
@@ -187,7 +193,8 @@ public class DebugAreaFrame extends GenericFrame implements SpyListener, Warning
         /**/
     }
 
-    public void onWarning(WarningEvent event)
+    @Override
+	public void onWarning(WarningEvent event)
     {
         warningPane.setText(warningPane.getText()+event.getMsg()+"\n");
         warningPane.setCaretPosition(warningPane.getDocument().getLength()-1);
@@ -247,7 +254,8 @@ public class DebugAreaFrame extends GenericFrame implements SpyListener, Warning
         }
     }
 
-    public void stateChanged(ChangeEvent arg0) {
+    @Override
+	public void stateChanged(ChangeEvent arg0) {
         if (debug.getSelectedIndex()==0)
         {
             collapseAllButton.setEnabled(false);

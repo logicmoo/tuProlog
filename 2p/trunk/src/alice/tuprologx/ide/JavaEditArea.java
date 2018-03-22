@@ -28,6 +28,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
+import org.fife.ui.rsyntaxtextarea.TokenTypes;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import java.beans.*;
@@ -82,7 +83,7 @@ public class JavaEditArea extends JPanel implements TheoryEditArea, FileEditArea
         atmf.putMapping("text/Prolog", "alice.tuprologx.ide.PrologTokenMaker2");
         inputTheory.setSyntaxEditingStyle("text/Prolog");
         SyntaxScheme scheme = inputTheory.getSyntaxScheme();
-        scheme.getStyle(Token.VARIABLE).foreground = Color.BLUE;
+        scheme.getStyle(TokenTypes.VARIABLE).foreground = Color.BLUE;
         
         // Add text completion
         AutoCompletion ac = new AutoCompletion(completionProvider);
@@ -105,7 +106,8 @@ public class JavaEditArea extends JPanel implements TheoryEditArea, FileEditArea
         //constraints.insets = new java.awt.Insets(0, 0, 10, 0);
 
         inputTheory.addCaretListener(new CaretListener() {
-            public void caretUpdate(CaretEvent event) {
+            @Override
+			public void caretUpdate(CaretEvent event) {
                 setCaretLine(inputTheory.getCaretLineNumber() + 1);
             }
         });
@@ -113,13 +115,16 @@ public class JavaEditArea extends JPanel implements TheoryEditArea, FileEditArea
         dirty = false;
         saved = true;
         inputTheory.getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent event) {
+            @Override
+			public void insertUpdate(DocumentEvent event) {
                 changedUpdate(event);
             }
-            public void removeUpdate(DocumentEvent event) {
+            @Override
+			public void removeUpdate(DocumentEvent event) {
                 changedUpdate(event);
             }
-            public void changedUpdate(DocumentEvent event) {
+            @Override
+			public void changedUpdate(DocumentEvent event) {
                 if (!dirty)
                     setDirty(true);
                   if (saved)
@@ -136,47 +141,56 @@ public class JavaEditArea extends JPanel implements TheoryEditArea, FileEditArea
         propertyChangeSupport = new PropertyChangeSupport(this);
     }
     
-    public void setCaretLine(int caretLine) {
+    @Override
+	public void setCaretLine(int caretLine) {
         int oldCaretLine = getCaretLine();
         this.caretLine = caretLine;
         propertyChangeSupport.firePropertyChange("caretLine", oldCaretLine, caretLine);
     }
 
-    public int getCaretLine() {
+    @Override
+	public int getCaretLine() {
         return caretLine;
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
+    @Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
+    @Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
 
-    public void setTheory(String theory) {
+    @Override
+	public void setTheory(String theory) {
         inputTheory.setText(theory);
 
         //to set caret at the begin of the edit area
         inputTheory.setCaretPosition(0);
     }
 
-    public String getTheory() {
+    @Override
+	public String getTheory() {
         return inputTheory.getText();
     }
 
 
-    public void setDirty(boolean flag) {
+    @Override
+	public void setDirty(boolean flag) {
         dirty = flag;
     }
 
 
-    public boolean isDirty() {
+    @Override
+	public boolean isDirty() {
         return dirty;
     }
 
 
-    public void setSaved(boolean flag) {
+    @Override
+	public void setSaved(boolean flag) {
         if (inputTheory.isEditable())
         {
             boolean oldSaved = isSaved();
@@ -186,13 +200,15 @@ public class JavaEditArea extends JPanel implements TheoryEditArea, FileEditArea
     }
 
 
-    public boolean isSaved() {
+    @Override
+	public boolean isSaved() {
         return saved;
     }
 
     /* Managing Undo/Redo actions. */
 
-    public void undoAction() {
+    @Override
+	public void undoAction() {
         try {
             undoManager.undo();
         } catch (CannotUndoException e) {
@@ -200,7 +216,8 @@ public class JavaEditArea extends JPanel implements TheoryEditArea, FileEditArea
         }
     }
 
-    public void redoAction() {
+    @Override
+	public void redoAction() {
         try {
             undoManager.redo();
         } catch (CannotRedoException e) {

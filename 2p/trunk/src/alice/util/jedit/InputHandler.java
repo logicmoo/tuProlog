@@ -129,7 +129,7 @@ public abstract class InputHandler extends KeyAdapter
      */
     public static ActionListener getAction(String name)
     {
-        return (ActionListener)actions.get(name);
+        return actions.get(name);
     }
 
     /**
@@ -141,7 +141,7 @@ public abstract class InputHandler extends KeyAdapter
         Enumeration<String> en = getActions();
         while(en.hasMoreElements())
         {
-            String name = (String)en.nextElement();
+            String name = en.nextElement();
             ActionListener _listener = getAction(name);
             if(_listener == listener)
                 return name;
@@ -404,7 +404,8 @@ public abstract class InputHandler extends KeyAdapter
 
     public static class backspace implements ActionListener
     {
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
 
@@ -441,7 +442,8 @@ public abstract class InputHandler extends KeyAdapter
 
     public static class backspace_word implements ActionListener
     {
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             int start = textArea.getSelectionStart();
@@ -487,7 +489,8 @@ public abstract class InputHandler extends KeyAdapter
 
     public static class delete implements ActionListener
     {
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
 
@@ -524,7 +527,8 @@ public abstract class InputHandler extends KeyAdapter
 
     public static class delete_word implements ActionListener
     {
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             int start = textArea.getSelectionStart();
@@ -576,7 +580,8 @@ public abstract class InputHandler extends KeyAdapter
             this.select = select;
         }
 
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
 
@@ -628,7 +633,8 @@ public abstract class InputHandler extends KeyAdapter
             this.select = select;
         }
 
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             if(select)
@@ -649,7 +655,8 @@ public abstract class InputHandler extends KeyAdapter
             this.select = select;
         }
 
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
 
@@ -695,7 +702,8 @@ public abstract class InputHandler extends KeyAdapter
             this.select = select;
         }
 
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             if(select)
@@ -707,7 +715,8 @@ public abstract class InputHandler extends KeyAdapter
 
     public static class insert_break implements ActionListener
     {
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
 
@@ -723,7 +732,8 @@ public abstract class InputHandler extends KeyAdapter
 
     public static class insert_tab implements ActionListener
     {
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
 
@@ -746,7 +756,8 @@ public abstract class InputHandler extends KeyAdapter
             this.select = select;
         }
 
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             int caret = textArea.getCaretPosition();
@@ -773,7 +784,8 @@ public abstract class InputHandler extends KeyAdapter
             this.select = select;
         }
 
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             int caret = textArea.getCaretPosition();
@@ -811,7 +823,8 @@ public abstract class InputHandler extends KeyAdapter
             this.select = select;
         }
 
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             int lineCount = textArea.getLineCount();
@@ -845,7 +858,8 @@ public abstract class InputHandler extends KeyAdapter
             this.select = select;
         }
 
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             int caret = textArea.getCaretPosition();
@@ -881,7 +895,8 @@ public abstract class InputHandler extends KeyAdapter
 
     public static class overwrite implements ActionListener
     {
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             textArea.setOverwriteEnabled(
@@ -898,7 +913,8 @@ public abstract class InputHandler extends KeyAdapter
             this.select = select;
         }
 
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             int caret = textArea.getCaretPosition();
@@ -925,7 +941,8 @@ public abstract class InputHandler extends KeyAdapter
             this.select = select;
         }
 
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             int caret = textArea.getCaretPosition();
@@ -963,7 +980,8 @@ public abstract class InputHandler extends KeyAdapter
             this.select = select;
         }
 
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             int firstLine = textArea.getFirstLine();
@@ -993,7 +1011,8 @@ public abstract class InputHandler extends KeyAdapter
             this.select = select;
         }
 
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             int caret = textArea.getCaretPosition();
@@ -1030,7 +1049,8 @@ public abstract class InputHandler extends KeyAdapter
     public static class repeat implements ActionListener,
         InputHandler.NonRecordable
     {
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             textArea.getInputHandler().setRepeatEnabled(true);
@@ -1045,7 +1065,8 @@ public abstract class InputHandler extends KeyAdapter
 
     public static class toggle_rect implements ActionListener
     {
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             textArea.setSelectionRectangular(
@@ -1056,7 +1077,8 @@ public abstract class InputHandler extends KeyAdapter
     public static class insert_char implements ActionListener,
         InputHandler.NonRepeatable
     {
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             String str = evt.getActionCommand();
@@ -1078,7 +1100,8 @@ public abstract class InputHandler extends KeyAdapter
 
     public static class cut implements ActionListener
     {
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             textArea.cut();
@@ -1087,7 +1110,8 @@ public abstract class InputHandler extends KeyAdapter
 
         public static class copy implements ActionListener
     {
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             textArea.copy();
@@ -1096,7 +1120,8 @@ public abstract class InputHandler extends KeyAdapter
 
         public static class paste implements ActionListener
     {
-        public void actionPerformed(ActionEvent evt)
+        @Override
+		public void actionPerformed(ActionEvent evt)
         {
             JEditTextArea textArea = getTextArea(evt);
             textArea.paste();

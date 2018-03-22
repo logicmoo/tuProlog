@@ -27,7 +27,8 @@ public class TextAreaRenderer
     this.isBorderedCellArray = isBorderedCellArray;
   }
 
-  public Component getTableCellRendererComponent(//
+  @Override
+public Component getTableCellRendererComponent(//
       JTable table, Object obj, boolean isSelected,
       boolean hasFocus, int row, int column) {
     // set the colours, etc. using the standard for that platform
@@ -87,7 +88,7 @@ public class TextAreaRenderer
     int maximum_height = 0;
     Enumeration<TableColumn> columns = table.getColumnModel().getColumns();
     while (columns.hasMoreElements()) {
-      TableColumn tc = (TableColumn) columns.nextElement();
+      TableColumn tc = columns.nextElement();
       TableCellRenderer cellRenderer = tc.getCellRenderer();
       if (cellRenderer instanceof TextAreaRenderer) {
         TextAreaRenderer tar = (TextAreaRenderer) cellRenderer;

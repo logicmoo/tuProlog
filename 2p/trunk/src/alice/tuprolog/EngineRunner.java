@@ -286,7 +286,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     private void defreeze() {
         last_env = env;
         if (stackEnv.isEmpty()) return;
-        env = (Engine)(stackEnv.removeLast());
+        env = (stackEnv.removeLast());
     }
     
     List<ClauseInfo> find(Term t) {

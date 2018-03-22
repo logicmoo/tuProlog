@@ -37,7 +37,8 @@ public class StateBacktrack extends State {
     /* (non-Javadoc)
      * @see alice.tuprolog.AbstractRunState#doJob()
      */
-    void doJob(Engine e) {
+    @Override
+	void doJob(Engine e) {
         ChoicePointContext curChoice = e.choicePointSelector.fetch();
         if (curChoice == null) {
             e.nextState = c.END_FALSE;

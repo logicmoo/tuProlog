@@ -16,7 +16,8 @@ public class TestVarIsEqual extends TestCase {
   String yes = "yes.\n";
   private SysoutListener sysoutListener = new SysoutListener();
   
-  protected void setUp() throws Exception {
+  @Override
+protected void setUp() throws Exception {
     super.setUp();
     core = new Prolog();
     core.addOutputListener(sysoutListener);
@@ -25,7 +26,8 @@ public class TestVarIsEqual extends TestCase {
   private class SysoutListener implements OutputListener {
     public StringBuilder builder = new StringBuilder("");
     
-    public void onOutput(OutputEvent ev) {
+    @Override
+	public void onOutput(OutputEvent ev) {
       builder.append(ev.getMsg());
     }
     public String getAllOutput() {

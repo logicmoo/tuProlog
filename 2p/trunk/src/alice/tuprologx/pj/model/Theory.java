@@ -180,7 +180,8 @@ public class Theory extends List<Clause<?,?>> {
         return temp.toArray(new Clause<?,?>[temp.size()]);
     }
     
-    public alice.tuprolog.Struct marshal() {            
+    @Override
+	public alice.tuprolog.Struct marshal() {            
             alice.tuprolog.Struct s = super.marshal();
             java.util.Iterator<? extends alice.tuprolog.Term> listIterator = s.listIterator();
             while (listIterator.hasNext()) {

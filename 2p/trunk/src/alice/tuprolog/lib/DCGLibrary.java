@@ -32,7 +32,8 @@ public class DCGLibrary extends Library {
     public DCGLibrary() {
     }
 
-    public String getTheory() {
+    @Override
+	public String getTheory() {
         return ":- op(1200, xfx, '-->'). \n"
                 + ":- op(200, xfx, '\\'). \n"
                 + "dcg_nonterminal(X) :- list(X), !, fail. \n"

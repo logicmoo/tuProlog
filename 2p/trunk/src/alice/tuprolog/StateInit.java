@@ -34,7 +34,8 @@ public class StateInit extends State {
     /* (non-Javadoc)
      * @see alice.tuprolog.AbstractRunState#doJob()
      */
-    void doJob(Engine e) {
+    @Override
+	void doJob(Engine e) {
     	
         e.prepareGoal();
         

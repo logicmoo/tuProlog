@@ -40,7 +40,8 @@ public class Agent {
     
   
     private OutputListener defaultOutputListener = new OutputListener() {
-        public void onOutput(OutputEvent ev) {
+        @Override
+		public void onOutput(OutputEvent ev) {
             System.out.print(ev.getMsg());
         }
     };
@@ -143,7 +144,8 @@ public class Agent {
         AgentThread(Agent agent){
             this.agent=agent;
         }
-        final public void run(){
+        @Override
+		final public void run(){
             agent.body();
         }
     }

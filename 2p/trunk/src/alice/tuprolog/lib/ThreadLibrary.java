@@ -22,6 +22,7 @@ public class ThreadLibrary extends Library {
 	private static final long serialVersionUID = 1L;
 	protected EngineManager engineManager;
 	
+	@Override
 	public void setEngine(Prolog en) {	
         engine = en;
         engineManager = en.getEngineManager();
@@ -262,6 +263,7 @@ public class ThreadLibrary extends Library {
 		return true;
 	}
 	
+	@Override
 	public String getTheory(){
 		return 
 		"thread_execute(ID, GOAL):- thread_create(ID, GOAL), '$next'(ID). \n" +

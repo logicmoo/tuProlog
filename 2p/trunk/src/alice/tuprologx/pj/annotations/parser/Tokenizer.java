@@ -82,7 +82,8 @@ public class Tokenizer {
     }
 
     public static final Token TK_COMMA = new Token() { 
-        public boolean accept(Tokenizer t) {
+        @Override
+		public boolean accept(Tokenizer t) {
             if (t.charBuffer.peek() == ',') {
                 t.charBuffer.pop();
                 t.value = ",";                
@@ -93,7 +94,8 @@ public class Tokenizer {
     };
 
     public static final Token TK_PAR_OPEN = new Token() { 
-        public boolean accept(Tokenizer t) {
+        @Override
+		public boolean accept(Tokenizer t) {
             if (t.charBuffer.peek() == '(') {
                 t.charBuffer.pop();
                 t.value = "(";                
@@ -104,7 +106,8 @@ public class Tokenizer {
     };
 
     public static final Token TK_PAR_CLOSE = new Token() { 
-        public boolean accept(Tokenizer t) {
+        @Override
+		public boolean accept(Tokenizer t) {
             if (t.charBuffer.peek() == ')') {
                 t.charBuffer.pop();
                 t.value = ")";                
@@ -115,7 +118,8 @@ public class Tokenizer {
     };
 
     public static final Token TK_BRA_OPEN = new Token() { 
-        public boolean accept(Tokenizer t) {
+        @Override
+		public boolean accept(Tokenizer t) {
             if (t.charBuffer.peek() == '{') {
                 t.charBuffer.pop();
                 t.value = "{";                
@@ -126,7 +130,8 @@ public class Tokenizer {
     };
 
     public static final Token TK_BRA_CLOSE = new Token() { 
-        public boolean accept(Tokenizer t) {
+        @Override
+		public boolean accept(Tokenizer t) {
             if (t.charBuffer.peek() == '}') {
                 t.charBuffer.pop();
                 t.value = "}";                
@@ -137,7 +142,8 @@ public class Tokenizer {
     };
 
     public static final Token TK_RET = new Token() { 
-        public boolean accept(Tokenizer t) {
+        @Override
+		public boolean accept(Tokenizer t) {
             if (t.charBuffer.peek() == '-' && t.charBuffer.get(t.charBuffer.size() - 2) == '>') {
                 t.charBuffer.pop();
                 t.charBuffer.pop();
@@ -149,7 +155,8 @@ public class Tokenizer {
     };    
 
     public static final Token TK_MINUS = new Token() { 
-        public boolean accept(Tokenizer t) {
+        @Override
+		public boolean accept(Tokenizer t) {
             if (t.charBuffer.peek() == '-' && t.charBuffer.get(t.charBuffer.size() - 2) != '>') {                
                 t.charBuffer.pop();
                 t.value = "-";                
@@ -160,7 +167,8 @@ public class Tokenizer {
     };
 
     public static final Token TK_PLUS = new Token() { 
-        public boolean accept(Tokenizer t) {
+        @Override
+		public boolean accept(Tokenizer t) {
             if (t.charBuffer.peek() == '+') {
                 t.charBuffer.pop();
                 t.value = "+";                
@@ -171,7 +179,8 @@ public class Tokenizer {
     };
 
     public static final Token TK_AT = new Token() { 
-        public boolean accept(Tokenizer t) {
+        @Override
+		public boolean accept(Tokenizer t) {
             if (t.charBuffer.peek() == '@') {
                 t.charBuffer.pop();
                 t.value = "@";                
@@ -182,7 +191,8 @@ public class Tokenizer {
     };
 
     public static final Token TK_INOUT = new Token() { 
-        public boolean accept(Tokenizer t) {
+        @Override
+		public boolean accept(Tokenizer t) {
             if (t.charBuffer.peek() == '?') {
                 t.charBuffer.pop();
                 t.value = "?";                
@@ -193,7 +203,8 @@ public class Tokenizer {
     };
 
     public static final Token TK_GROUND = new Token() { 
-        public boolean accept(Tokenizer t) {
+        @Override
+		public boolean accept(Tokenizer t) {
             if (t.charBuffer.peek() == '!') {
                 t.charBuffer.pop();
                 t.value = "!";                
@@ -204,7 +215,8 @@ public class Tokenizer {
     };
 
     public static final Token TK_IDENT = new Token() {
-        public boolean accept(Tokenizer t) {
+        @Override
+		public boolean accept(Tokenizer t) {
             String buf = "";
             if (Character.isLetter(t.charBuffer.peek())) {                
                 while (Character.isLetter(t.charBuffer.peek()) || Character.isDigit(t.charBuffer.peek())) {
@@ -217,7 +229,8 @@ public class Tokenizer {
     };
 
     public static final Token TK_UNKNOWN = new Token() { 
-        public boolean accept(Tokenizer t) {
+        @Override
+		public boolean accept(Tokenizer t) {
             return true;
         }
     };

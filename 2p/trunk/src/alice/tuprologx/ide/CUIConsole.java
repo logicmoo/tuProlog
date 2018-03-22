@@ -65,7 +65,8 @@ public class CUIConsole extends Automaton implements Serializable, OutputListene
         }
     }
 
-    public void boot(){
+    @Override
+	public void boot(){
         System.out.println(incipit);
         become("goalRequest");
     }
@@ -170,17 +171,21 @@ public class CUIConsole extends Automaton implements Serializable, OutputListene
         }
     }
 
-    public void onOutput(OutputEvent e) {
+    @Override
+	public void onOutput(OutputEvent e) {
         System.out.print(e.getMsg());
     }
-    public void onSpy(SpyEvent e) {
+    @Override
+	public void onSpy(SpyEvent e) {
         System.out.println(e.getMsg());
     }
-    public void onWarning(WarningEvent e) {
+    @Override
+	public void onWarning(WarningEvent e) {
         System.out.println(e.getMsg());
     }
 
     /*Castagna 06/2011*/  
+	@Override
 	public void onException(ExceptionEvent e) {
     	 System.out.println(e.getMsg());
 	}

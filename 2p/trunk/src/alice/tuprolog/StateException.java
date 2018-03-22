@@ -16,7 +16,8 @@ public class StateException extends State {
         stateName = "Exception";
     }
 
-    void doJob(Engine e) {
+    @Override
+	void doJob(Engine e) {
         String errorType = e.currentContext.currentGoal.getName();
         if (errorType.equals("throw"))
             prologError(e);
@@ -203,7 +204,7 @@ public class StateException extends State {
             return false;
         Iterator<? extends Term> it = list.listIterator();
         while (it.hasNext()) {
-            Term nextTerm = (Term) it.next();
+            Term nextTerm = it.next();
             if (!nextTerm.isCompound())
                 continue;
             Struct element = (Struct) nextTerm;

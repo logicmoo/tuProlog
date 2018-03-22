@@ -58,7 +58,8 @@ public class SpyEvent extends EventObject {
         return env;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return msg + ((env == null) ? "" : env.toString());
     }
 

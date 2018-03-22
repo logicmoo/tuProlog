@@ -21,7 +21,8 @@ public class PrologFileChooser extends JFileChooser
         this.type=type;
     }
 
-    public void approveSelection ()
+    @Override
+	public void approveSelection ()
     {
         boolean approve = true;
 

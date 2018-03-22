@@ -121,7 +121,8 @@ public class SyntaxDocument extends PlainDocument
      * state immediately so that any event listeners get a
      * consistent token marker.
      */
-    protected void fireInsertUpdate(DocumentEvent evt)
+    @Override
+	protected void fireInsertUpdate(DocumentEvent evt)
     {
         if(tokenMarker != null)
         {
@@ -143,7 +144,8 @@ public class SyntaxDocument extends PlainDocument
      * state immediately so that any event listeners get a
      * consistent token marker.
      */
-    protected void fireRemoveUpdate(DocumentEvent evt)
+    @Override
+	protected void fireRemoveUpdate(DocumentEvent evt)
     {
         if(tokenMarker != null)
         {

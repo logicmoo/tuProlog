@@ -30,7 +30,8 @@ abstract class State {
     
     abstract void doJob(Engine e);
     
-    public String toString() {
+    @Override
+	public String toString() {
         return stateName;
     }
     

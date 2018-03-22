@@ -21,12 +21,14 @@ public class Proxy implements alice.tuprologx.runtime.tcp.Prolog {
         in=new ObjectInputStream(socket.getInputStream());
     }
 
-    public void clearTheory() throws Exception {
+    @Override
+	public void clearTheory() throws Exception {
         out.writeObject(new NetMsg("clearTheory"));
         out.flush();
     }
 
-    public Theory getTheory() throws Exception {
+    @Override
+	public Theory getTheory() throws Exception {
         out.writeObject(new NetMsg("getTheory"));
         out.flush();
         Boolean b=(Boolean)in.readObject();
@@ -37,7 +39,8 @@ public class Proxy implements alice.tuprologx.runtime.tcp.Prolog {
         return null;
     }
 
-    public void setTheory(Theory th) throws Exception {
+    @Override
+	public void setTheory(Theory th) throws Exception {
         out.writeObject(new NetMsg("setTheory"));
         out.writeObject(th);
         out.flush();
@@ -47,7 +50,8 @@ public class Proxy implements alice.tuprologx.runtime.tcp.Prolog {
         }
     }
 
-    public void addTheory(Theory th) throws Exception {
+    @Override
+	public void addTheory(Theory th) throws Exception {
         out.writeObject(new NetMsg("addTheory"));
         out.writeObject(th);
         out.flush();
@@ -58,7 +62,8 @@ public class Proxy implements alice.tuprologx.runtime.tcp.Prolog {
     }
 
 
-    public SolveInfo solve(String st) throws Exception {
+    @Override
+	public SolveInfo solve(String st) throws Exception {
         out.writeObject(new NetMsg("solveString"));
         out.writeObject(st);
         out.flush();
@@ -71,7 +76,8 @@ public class Proxy implements alice.tuprologx.runtime.tcp.Prolog {
         }
     }
 
-    public SolveInfo solve(Term term) throws Exception {
+    @Override
+	public SolveInfo solve(Term term) throws Exception {
         out.writeObject(new NetMsg("solveTerm"));
         out.writeObject(term);
         out.flush();
@@ -84,7 +90,8 @@ public class Proxy implements alice.tuprologx.runtime.tcp.Prolog {
         }
     }
 
-    public SolveInfo solveNext() throws Exception {
+    @Override
+	public SolveInfo solveNext() throws Exception {
         out.writeObject(new NetMsg("solveNext"));
         out.flush();
         Boolean b=(Boolean)in.readObject();
@@ -96,26 +103,30 @@ public class Proxy implements alice.tuprologx.runtime.tcp.Prolog {
         }
     }
 
-    public boolean hasOpenAlternatives() throws Exception {
+    @Override
+	public boolean hasOpenAlternatives() throws Exception {
         out.writeObject(new NetMsg("hasOpenAlternatives"));
         out.flush();
         Boolean b=(Boolean)in.readObject();
         return b.booleanValue();
     }
 
-    public void solveHalt() throws Exception {
+    @Override
+	public void solveHalt() throws Exception {
         out.writeObject(new NetMsg("solveHalt"));
         out.flush();
     }
 
-    public void solveEnd()  throws Exception {
+    @Override
+	public void solveEnd()  throws Exception {
         out.writeObject(new NetMsg("solveEnd"));
         out.flush();
     }
 
 
 
-    public void loadLibrary(String st) throws Exception{
+    @Override
+	public void loadLibrary(String st) throws Exception{
         out.writeObject(new NetMsg("loadLibrary"));
         out.writeObject(st);
         out.flush();
@@ -125,7 +136,8 @@ public class Proxy implements alice.tuprologx.runtime.tcp.Prolog {
         }
     }
 
-    public void unloadLibrary(String st) throws Exception {
+    @Override
+	public void unloadLibrary(String st) throws Exception {
         out.writeObject(new NetMsg("unloadLibrary"));
         out.writeObject(st);
         out.flush();

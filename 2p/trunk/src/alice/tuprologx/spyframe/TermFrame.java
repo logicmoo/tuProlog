@@ -57,7 +57,7 @@ public class TermFrame extends JFrame implements ActionListener{
    */
   public TermFrame(Term term){
     super("termframe");
-    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     Container c=getContentPane();
     ptt=new Tree<Term>(term2tree, term);
     c.add(new JScrollPane(ptt));

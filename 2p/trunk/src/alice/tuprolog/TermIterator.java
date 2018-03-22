@@ -42,7 +42,8 @@ class TermIterator implements Iterator<Term>, java.io.Serializable {
         hasNext = (next != null);    
     }
     
-    public Term next() {
+    @Override
+	public Term next() {
         if (hasNext) {
             if (next == null) {
                 next = parser.nextTerm(true);
@@ -67,7 +68,8 @@ class TermIterator implements Iterator<Term>, java.io.Serializable {
      * @throws InvalidTermException if, while the parser checks for the
      * existence of the next term, a syntax error is encountered.
      */
-    public boolean hasNext() {
+    @Override
+	public boolean hasNext() {
         if (hasNext)
             return hasNext;
         next = parser.nextTerm(true);
@@ -76,7 +78,8 @@ class TermIterator implements Iterator<Term>, java.io.Serializable {
         return hasNext;
     }
     
-    public void remove() {
+    @Override
+	public void remove() {
         throw new UnsupportedOperationException();
     }
     
