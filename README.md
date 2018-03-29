@@ -6,12 +6,15 @@ tuProlog is a light-weight Prolog system for distributed applications and infras
 
 **Current version: tuProlog 3.3.0 (released on March 22, 2018)**
 
-## **Highlights** ##
+## **Requirements** ##
 
-The minimum platform for tuProlog 3 is Java 8 *with JDK* (not just a pure JRE): users not interested in the new_lambda/3 predicate, however, can go for a standard JRE, as usual. 
-Accordingly, this version is currently released for Java SE and .NET platforms only, since Java 8 support in not available in Android 4.4 -- we are waiting for Android 5. For similar reasons, the Eclipse plugin is under an extensive refactoring, and will not be available for a while
+The required platform for tuProlog 3 is Java 8 *with JDK* (not just a pure JRE): users not interested in the new_lambda/3 predicate, however, can go for a standard JRE.
 
 tuProlog 2.9.2 is intended to be the last stable version supporting Java 7.
+
+The Eclipse plugin works on Eclipse Neon and Oxygen (64 bit).
+             
+The Android app works on Android 5.0.1 and above.
 
 ### **New features version 3.3.0**###
 This version aims to provide a stable environment
@@ -24,18 +27,6 @@ This version aims to provide a stable environment
 All tuProlog versions are now available from this site
 except for the Eclipse plugin which must be downloaded and installed directly from the Eclipse Update Manager - see detailed instructions.
 
-Java: tuProlog 3.2.1 (zip) (requires Java 8)
-
-Java: tuProlog 2.9.2 (zip) (requires Java 7)
-
-.NET:tuProlog 3.2.1-NET (zip) (requires .NET framework 4)
-
-Android:tuProlog 2.9.1 Android (apk) (requires Android 2.3.3)
-
-Eclipse:  install from Eclipse Update Manager -- see below for details.
-
-MANUAL: tuProlog 3.2.1 User Guide (pdf)
-
 ### **Installation** ###
 
 **Java version
@@ -45,16 +36,13 @@ MANUAL: tuProlog 3.2.1 User Guide (pdf)
 Just unzip the release archive in a folder of your choice, and double click the executable 2p.exe
 
 **Android version**
-Just copy the 2p-android.apk archive in your device (e.g. in the download folder) and double click to start installation. Please remove any previous versions first, otherwise the install process may fail.
+Just copy the apk archive in your device (e.g. in the download folder) and double click to start installation. The new app can co-exist side by side with the previous one, as it is released under a different name.
 
 **Eclipse plugin**
-Installation must be performed via the Eclipse Update Manager: to this end, the proper Update Site must be configured first - see the detailed configuration instructions.
+Installation must be performed via the Eclipse Update Manager, with the proper Update Site properly configured - see the detailed configuration instructions.
+Please note that, due to the Eclipse installation policy, it is not possible to reinstall previous versions, or more generally to downgrade an installed plugin to an older version (unless re-installing from a fresh Eclipse install).
 
-**Please note:** due to a renaming of the plugin deployment package, the Eclipse Check for Update feature will NOT be able to upgrade the plugin from version 2.6 or earlier versions -- please use the Install new software feature instead, manually looking for new software in the tuProlog update site and looking the new tuProlog feature.
-
-**Eclipse requirements:** tuProlog 2.9 (and 2.8, 2.7) requires Eclipse Juno or Kepler SR1, older tuProlog versions require Eclipse Indigo. A compatibility issue exists for Eclipse Kepler SR2 and Luna, where internal core components (parts of the Lucene package) have been unexpectedly removed. The lack of such components will prevent the tuProlog plugin (all versions but 2.9) to install unless the two missing packages are manually copied into the ECLIPSE/plugins directory. We are working to patch this issue in tuProlog 2.9: this is why this plugin is NOT currently available yet.
-
-**Numbering scheme**
+**tuProlog Numbering scheme**
 The numbering scheme adopted aims to provide a clear cross-platform view of the version being used.
 
 The first two digits represent the engine version. So, as long as you see that the same two digits are the same, you can count that the inner baheviour will be the same, too.
