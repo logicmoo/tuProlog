@@ -4,7 +4,7 @@
 
 tuProlog is a light-weight Prolog system for distributed applications and infrastructures, intentionally designed around a minimal core (containing only the most essential properties of a Prolog engine), to be later configured by (statically and dynamically) loading/unloading libraries of predicates. tuProlog also natively supports multi-paradigm programming, providing a clean, seamless integration model between Prolog and mainstream object-oriented languages -- namely Java, for tuProlog Java version, and any .NET-based language (C#, F#..), for tuProlog .NET version. It is also easily deployable, just requiring the presence of a Java/CLR virtual machine and an invocation upon a single self-contained archive file. Interoperability is further developed along the two main lines of Internet standard patterns and coordination models.
 
-**Current version: tuProlog 3.2.1 (released on February 14, 2017)**
+**Current version: tuProlog 3.3.0 (released on March 22, 2018)**
 
 ## **Highlights** ##
 
@@ -13,12 +13,12 @@ Accordingly, this version is currently released for Java SE and .NET platforms o
 
 tuProlog 2.9.2 is intended to be the last stable version supporting Java 7.
 
-### **New features**###
+### **New features version 3.3.0**###
 This version aims to provide a stable environment
 
-* adds the full support for the JSON serialization and de-serialization;
+* the new eclipse plugin;
 
-* occurs check management via suitable Prolog flag.
+* the new android application.
 
 ### **Download** ###
 All tuProlog versions are now available from this site
