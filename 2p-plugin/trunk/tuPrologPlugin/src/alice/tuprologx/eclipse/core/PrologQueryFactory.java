@@ -10,7 +10,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
 
-import alice.tuprolog.InvalidTheoryException;
+
 import alice.tuprolog.Theory;
 import alice.tuprologx.eclipse.TuProlog;
 import alice.tuprologx.eclipse.editors.PrologEditor;
@@ -27,8 +27,8 @@ public class PrologQueryFactory extends Observable {
 		
 	private static PrologQueryFactory instance;
 	Vector<PrologQuery> queries;
-	private int queryId;
-	private static boolean init;
+	//private int queryId;
+	//private static boolean init;
 	//private static Theory lastTheory;
 	public static PrologQueryFactory getInstance(){
 		if (instance == null){
@@ -39,7 +39,7 @@ public class PrologQueryFactory extends Observable {
 	
 	public PrologQueryFactory()
 	{
-		queryId = 0;
+		//queryId = 0;
 		queries = new Vector<PrologQuery>();
 		/*try {
 			lastTheory = new Theory("");
@@ -47,7 +47,7 @@ public class PrologQueryFactory extends Observable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-		init = true;
+		//init = true;
 	}
 	
 	public void addQuery(PrologQuery query)
@@ -82,8 +82,9 @@ public class PrologQueryFactory extends Observable {
 			// aggiunta DD ai fini di debug
 			e1.printStackTrace();
 		}
-		
-		PrologEngine engine = PrologEngineFactory.getInstance().getEngine(currentProject,0);
+		//Riccardo Vasumini 20/08/18 correzione NullPointer Exception quando si usa la perspective in un progetto java
+		PrologEngine engine = PrologEngineFactory.getInstance().insertEntry(currentProject, "EngineOfProject-"+currentProject.getName());
+		//PrologEngine engine = PrologEngineFactory.getInstance().getEngine(currentProject,0); 	---> vecchia soluzione
 		PrologQueryScope scope = new PrologQueryScope(engine);
 		scope.setProject(currentProject);
 		/*Add the file open in the PrologEditor to the query scope*/

@@ -1,0 +1,67 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: tuprolog-guide.aux
+A level-1 auxiliary file: what-is-tuprolog.aux
+A level-1 auxiliary file: installing-tuprolog.aux
+A level-1 auxiliary file: getting-started.aux
+A level-1 auxiliary file: tuprolog-basics.aux
+A level-1 auxiliary file: tuprolog-libraries.aux
+A level-1 auxiliary file: exceptions.aux
+A level-1 auxiliary file: mpp-in-java.aux
+A level-1 auxiliary file: mpp-in-dotnet.aux
+A level-1 auxiliary file: mpp-in-android.aux
+A level-1 auxiliary file: version-history.aux
+The style file: plain.bst
+Database file #1: bibliography.bib
+Warning--to sort, need author or key in ikvm
+Warning--to sort, need author or key in iso95
+Warning--to sort, need author or key in JSON
+Warning--to sort, need author or key in GSON
+Warning--to sort, need author or key in POJO
+Warning--to sort, need author or key in bug16
+Warning--to sort, need author or key in bug20
+Warning--to sort, need author or key in bug14
+Warning--to sort, need author or key in test-suite-bagof
+Warning--empty author in iso95
+You've used 15 entries,
+            2118 wiz_defined-function locations,
+            577 strings with 5973 characters,
+and the built_in function-call counts, 3364 in all, are:
+= -- 322
+> -- 81
+< -- 2
++ -- 39
+- -- 22
+* -- 180
+:= -- 470
+add.period$ -- 36
+call.type$ -- 15
+change.case$ -- 54
+chr.to.int$ -- 0
+cite$ -- 25
+duplicate$ -- 145
+empty$ -- 367
+format.name$ -- 22
+if$ -- 757
+int.to.chr$ -- 0
+int.to.str$ -- 15
+missing$ -- 8
+newline$ -- 69
+num.names$ -- 12
+pop$ -- 125
+preamble$ -- 1
+purify$ -- 41
+quote$ -- 0
+skip$ -- 110
+stack$ -- 0
+substring$ -- 184
+swap$ -- 25
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 56
+warning$ -- 10
+while$ -- 21
+width$ -- 17
+write$ -- 131
+(There were 10 warnings)

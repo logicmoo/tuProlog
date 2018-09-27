@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: tuProlog Development Tools
 Bundle-SymbolicName: tuPrologPlugin;singleton:=true
-Bundle-Version: 3.2.1
+Bundle-Version: 3.3.0
 Bundle-Activator: alice.tuprologx.eclipse.TuProlog
 Bundle-Vendor: tuprolog team @ Alma mater Studiorum - Università di Bologna
 Export-Package: alice.tuprolog,
@@ -69,3 +69,5 @@ Bundle-ClassPath: .,
  lib/prefuse.jar,
  lib/tuprolog.jar
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: tuPrologPlugin
+

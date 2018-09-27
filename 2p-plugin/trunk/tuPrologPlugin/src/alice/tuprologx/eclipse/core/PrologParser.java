@@ -77,7 +77,7 @@ public class PrologParser extends IncrementalProjectBuilder {
 				alternativeScope[i] = new Vector<String>();
 				String tmp = "";
 				try {
-					tmp = args.get(new Integer(i)).toString();
+					tmp = args.get(i).toString();
 				} catch (Exception e) {
 				}
 				StringTokenizer st = new StringTokenizer(tmp, ";");

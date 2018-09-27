@@ -60,6 +60,11 @@ public class TheoryView extends ViewPart {
 			return getName();
 		}
 
+		
+
+
+
+
 	}
 
 	class TreeParent extends TreeObject {

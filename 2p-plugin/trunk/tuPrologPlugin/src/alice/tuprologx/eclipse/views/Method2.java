@@ -177,12 +177,12 @@ public class Method2 extends ViewPart {
 				 * Hooked with new parser
 				 * 
 				 */
-                int line=0;
+                
                 Term t=null;
                 try{
                 	t= ms.nextTerm(true);
                 	if (t != null) {
-                    	line = ms.getCurrentLine();
+                    	//int line = ms.getCurrentLine();
                     	//end = ms.getCurrentPos() - off - 2;
                     	//end = doc.getLineOffset(line)- off - 4;
                     	Element name = new Element(t.toString(),off,end);

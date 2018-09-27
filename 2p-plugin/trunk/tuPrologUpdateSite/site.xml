@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description name="tuProlog Plug-in Update Site" url="https://bitbucket.org/tuprologteam/tuprolog/raw/TH-DEMIAN/2p-plugin/trunk/tuPrologUpdateSite/">
+   <description name="tuProlog Plug-in Update Site" url="https://bitbucket.org/tuprologteam/tuprolog/raw/TH-VASUMINI/2p-plugin/trunk/tuPrologUpdateSite/">
       This in the Update Site of tuPtolog plug-in, it allows Update Manager to find newer 
       versions of plug-is and sugest user to install it.
    </description>
@@ -26,6 +26,12 @@
       <category name="tuProlog Plug-in Features"/>
    </feature>
    <feature url="features/tuPrologFeature_3.2.1.jar" id="tuPrologFeature" version="3.2.1">
+      <category name="tuProlog Plug-in Features"/>
+   </feature>
+   <feature url="features/tuPrologFeature_3.3.0.jar" id="tuPrologFeature" version="3.3.0">
+      <category name="tuProlog Plug-in Features"/>
+   </feature>
+   <feature url="features/tuPrologPlugin_3.3.0.jar" id="tuPrologPlugin" version="3.3.0">
       <category name="tuProlog Plug-in Features"/>
    </feature>
    <category-def name="tuProlog Plug-in Features" label="tuProlog Plug-in Features"/>

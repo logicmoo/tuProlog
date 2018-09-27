@@ -37,14 +37,19 @@ public class PrologEngineFactory {
 		else
 			return null;
 	}
-
+	//Riccardo Vasumini 22/08/18 aggiunto il controllo sull'esistenza o meno della key project in registry
+	//così facendo non vi è più l'array index out of bounds exception
+	//il plugin adesso funziona correttamente sia con tuPrologProject che con JavaProject
 	public PrologEngine insertEntry(IProject project, String name) {
-		if (project != null) {
+		if (project != null && !this.registry.containsKey(project)) {
 			PrologEngine engine = new PrologEngine(project.getName(), name);
 			Vector<PrologEngine> engines = new Vector<PrologEngine>();
 			engines.add(engine);
 			registry.put(project, engines);
 			return engine;
+		}
+		else if(project != null && this.registry.containsKey(project)) {
+			return this.registry.get(project).get(0);
 		}
 		return null;
 	}

@@ -41,7 +41,7 @@ public class PrologBuilder extends IncrementalProjectBuilder {
 				Display.getDefault().asyncExec(new Runnable() {
 					public void run() {
 						IProject project = getProject();
-						String projectName = project.getName();
+						//String projectName = project.getName();
 						String theory = "";
 						for (int j = 0; j < PrologEngineFactory.getInstance()
 								.getProjectEngines(project).size(); j++) {
