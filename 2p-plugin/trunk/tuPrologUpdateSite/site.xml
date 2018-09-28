@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description name="tuProlog Plug-in Update Site" url="https://bitbucket.org/tuprologteam/tuprolog/raw/TH-VASUMINI/2p-plugin/trunk/tuPrologUpdateSite/">
+   <description name="tuProlog Plug-in Update Site" url="https://bitbucket.org/tuprologteam/tuprolog/raw/master/2p-plugin/trunk/tuPrologUpdateSite/">
       This in the Update Site of tuPtolog plug-in, it allows Update Manager to find newer 
       versions of plug-is and sugest user to install it.
    </description>

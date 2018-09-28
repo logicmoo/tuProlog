@@ -185,8 +185,8 @@ Library.
    </license>
 
    <url>
-      <update label="tuProlog Plug-in Update Site" url="https://bitbucket.org/tuprologteam/tuprolog/raw/TH-VASUMINI/2p-plugin/trunk/tuPrologUpdateSite/"/>
-      <discovery label="tuProlog in Bitbucket" url="https://bitbucket.org/tuprologteam/tuprolog/raw/TH-VASUMINI/2p-plugin/trunk/"/>
+      <update label="tuProlog Plug-in Update Site" url="https://bitbucket.org/tuprologteam/tuprolog/raw/master/2p-plugin/trunk/tuPrologUpdateSite/"/>
+      <discovery label="tuProlog in Bitbucket" url="https://bitbucket.org/tuprologteam/tuprolog/raw/master/2p-plugin/trunk/"/>
    </url>
 
    <plugin
