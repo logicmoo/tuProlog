@@ -50,8 +50,7 @@ public class BasicLibrary extends Library {
         if (th instanceof Var)
             throw PrologError.instantiation_error(engine.getEngineManager(), 1);
         if (!th.isAtom()) {
-            throw PrologError.type_error(engine.getEngineManager(), 1, "atom",
-                    th);
+            throw PrologError.type_error(engine.getEngineManager(), 1, "atom", th);
         }
         try {
             Struct theory = (Struct) th;

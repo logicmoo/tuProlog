@@ -28,12 +28,20 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.EventListener;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
+
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
 
 import alice.tuprolog.Int;
 import alice.tuprolog.Library;
@@ -280,7 +288,7 @@ public class OOLibrary extends Library {
     }
     
     /**
-     * @author Roberta Calegari
+     * @author Roberta Calegari revisione 4 ott 2018 post passaggio java 9
      * 
      * Creates of a lambda object - not backtrackable case
      * @param interfaceName represent the name of the target interface i.e. 'java.util.function.Predicate<String>'
@@ -289,7 +297,7 @@ public class OOLibrary extends Library {
      * 
      * @throws JavaException, Exception
      */
-	@SuppressWarnings("unchecked") //Modificato da Alberto
+	@SuppressWarnings("unchecked") 
 	public <T> boolean new_lambda_3(Term interfaceName, Term implementation, Term id)throws JavaException, Exception {
 		if(lambdaPlugin != null){
 			String mode = lambdaPlugin.mode();
@@ -301,19 +309,21 @@ public class OOLibrary extends Library {
 		    		target_class = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(target_class);
 		    		lambda_expression = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(lambda_expression);
 		    	
-		    		Class<?> lambdaMetaFactory = alice.util.proxyGenerator.Generator.make(
-						java.lang.ClassLoader.getSystemClassLoader(),
-				        "MyLambdaFactory"+counter,
-				        "" +           
-				            "public class MyLambdaFactory"+counter+" {\n" +
+		    		String className ="MyLambdaFactory"+counter;
+		    		String lambdaClassCode =            
+				            	"public class "+className+" {\n" +
 				            "  public "+target_class+" getFunction() {\n" + 
 						    " 		return "+lambda_expression+"; \n"+ 
-				            "  }\n" +
-				            "}\n"
-		    		);
-				
-		    		Object myLambdaFactory = lambdaMetaFactory.newInstance(); 
+						    "  }\n" +
+				            "}\n";
+		    		Path lambdaPath = saveSource(lambdaClassCode, className);
+		    			    		
+		    		Path lambdaPathCompiled = compileSource(lambdaPath, className);
+		    		 
+		    		Object myLambdaFactory = createClassInstance(lambdaPathCompiled, className);
+		    		
 		    		Class<?> myLambdaClass = myLambdaFactory.getClass(); 
+		    		
 		    		Method[] allMethods = myLambdaClass.getDeclaredMethods();
 		    		T myLambdaInstance=null; 
 		    		for (Method m : allMethods) {
@@ -321,6 +331,7 @@ public class OOLibrary extends Library {
 		    			if (mname.startsWith("getFunction"))
 		    				myLambdaInstance=(T) m.invoke(myLambdaFactory);
 		    		}
+		    		System.out.println("arrivo step 6");
 		    		id = id.getTerm();
 		    		if (bindDynamicObject(id, myLambdaInstance))
 		    			return true;
@@ -333,8 +344,30 @@ public class OOLibrary extends Library {
 		}
 		return false;
     }
+	
+	private Path saveSource(String source, String className) throws IOException {
+        String tmpProperty = System.getProperty("java.io.tmpdir");
+        Path sourcePath = Paths.get(tmpProperty, className+".java");
+        Files.write(sourcePath, source.getBytes(StandardCharsets.UTF_8.name()));
+        return sourcePath;
+    }
 
-    /**
+    private Path compileSource(Path javaFile,String className) {
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        compiler.run(null, null, null, javaFile.toFile().getAbsolutePath());
+        return javaFile.getParent().resolve(className+"class");
+    }
+
+    private Object createClassInstance(Path javaClass,String className)
+            throws MalformedURLException, ClassNotFoundException, IllegalAccessException, InstantiationException, IllegalArgumentException, InvocationTargetException, SecurityException {
+        URL classUrl = javaClass.getParent().toFile().toURI().toURL();
+        URLClassLoader classLoader = URLClassLoader.newInstance(new URL[]{classUrl});
+        Class<?> clazz = Class.forName(className, true, classLoader);
+        return clazz.getDeclaredConstructors()[0].newInstance();
+        //clazz.newInstance(); deprecato da java 9
+    }
+	
+	/**
      * Destroy the link to a java object - called not directly, but from
      * predicate java_object (as second choice, for backtracking)
      * 
