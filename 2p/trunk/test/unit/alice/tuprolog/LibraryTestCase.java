@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 public class LibraryTestCase extends TestCase {
 	
-	public void testLibraryFunctor() throws PrologException {
+	public void testLibraryFunctor() throws TuPrologException {
 		TuProlog engine = new TuProlog();
 		engine.loadLibrary(new TestLibrary());
 		SolveInfo goal = engine.solve("N is sum(1, 3).");
@@ -12,7 +12,7 @@ public class LibraryTestCase extends TestCase {
 		assertEquals(new TuInt(4), goal.getVarValue("N"));
 	}
 	
-	public void testLibraryPredicate() throws PrologException {
+	public void testLibraryPredicate() throws TuPrologException {
 		TuProlog engine = new TuProlog();
 		engine.loadLibrary(new TestLibrary());
 		TestOutputListener l = new TestOutputListener();

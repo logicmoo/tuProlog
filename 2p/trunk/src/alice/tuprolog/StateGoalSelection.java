@@ -24,7 +24,7 @@ import alice.tuprolog.Term;
  * @author Alex Benini
  *
  */
-public class StateGoalSelection extends State {
+public class StateGoalSelection extends TuState {
     
     public StateGoalSelection(EngineRunner c) {
         this.c = c;

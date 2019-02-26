@@ -23,6 +23,6 @@ package alice.tuprolog;
  *
  *
  */
-public class MalformedGoalException extends PrologException {
+public class MalformedGoalException extends TuPrologException {
 	private static final long serialVersionUID = 1L;
 }

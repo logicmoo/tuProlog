@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.concurrent.Semaphore;
 import java.util.regex.Pattern;
 
-import alice.tuprolog.AbstractSocket;
+import alice.tuprolog.TuAbstractSocket;
 import alice.tuprolog.Client_Socket;
 import alice.tuprolog.Datagram_Socket;
 import alice.tuprolog.TuInt;
@@ -288,7 +288,7 @@ public boolean tcp_socket_server_accept_3(Term ServerSock, Term Client_Addr, Ter
 		throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
 	}
 
-	AbstractSocket as= (AbstractSocket)ServerSock.getTerm();
+	TuAbstractSocket as= (TuAbstractSocket)ServerSock.getTerm();
 	if(!as.isServerSocket()){									// ServerSock has to be a Server_Socket
 		throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
 	}
@@ -384,7 +384,7 @@ public boolean write_to_socket_2(Term Socket, Term Msg) throws TuPrologError {
 	if (Socket.getTerm() instanceof alice.tuprolog.TuVar) { // Socket has to be bound
 		throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
 	}
-	if (((AbstractSocket) Socket.getTerm()).isServerSocket()) { // Only Client_Sockets can send data
+	if (((TuAbstractSocket) Socket.getTerm()).isServerSocket()) { // Only Client_Sockets can send data
 		throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
 	}
 	if (Msg.getTerm() instanceof alice.tuprolog.TuVar) { // Record has to be bound
@@ -418,7 +418,7 @@ public boolean read_from_socket_3(Term Socket, Term Msg, TuStruct Options) throw
 	if (!(Msg.getTerm() instanceof alice.tuprolog.TuVar)) { // Message has to be a variable
 		throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
 	}
-	if (!((AbstractSocket) Socket.getTerm()).isClientSocket()) { // Only Client_Sockets can receive data
+	if (!((TuAbstractSocket) Socket.getTerm()).isClientSocket()) { // Only Client_Sockets can receive data
 		throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
 	} else {
 		Socket sock = (((Client_Socket) Socket.getTerm()).getSocket());
@@ -484,7 +484,7 @@ public boolean aread_from_socket_2(Term Socket, TuStruct Options) throws TuProlo
 	if (Socket.getTerm() instanceof alice.tuprolog.TuVar) { // Socket has to be bound
 		throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
 	}
-	if (!((AbstractSocket) Socket.getTerm()).isClientSocket()) { // Only Client_Sockets can receive data
+	if (!((TuAbstractSocket) Socket.getTerm()).isClientSocket()) { // Only Client_Sockets can receive data
 		throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
 	} else {
 		// Retrieve socket from the term Socket passed to this method
@@ -602,7 +602,7 @@ public boolean getAddress_2(Term sock, Term addr) throws TuPrologError {
 	if (sock.getTerm() instanceof alice.tuprolog.TuVar) { // Socket has to be bound
 		throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
 	}
-	AbstractSocket abs = (AbstractSocket) sock.getTerm();
+	TuAbstractSocket abs = (TuAbstractSocket) sock.getTerm();
 	if (abs.isClientSocket()) {
 		Socket s = (((Client_Socket) sock.getTerm()).getSocket());
 		addr.unify(this.getEngine(), new TuStruct(s.getInetAddress().toString(), new TuStruct(new TuInt(s.getLocalPort()).toString())));

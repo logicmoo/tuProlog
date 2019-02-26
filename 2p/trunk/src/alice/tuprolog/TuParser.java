@@ -64,7 +64,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 
 	private static OperatorManager defaultOperatorManager = new DefaultOperatorManager();
 
-	private Tokenizer tokenizer;
+	private TuTokenizer tokenizer;
 	private OperatorManager opManager = defaultOperatorManager;
 	/*Castagna 06/2011*/
 	private HashMap<Term, Integer> offsetsMap;		 
@@ -108,7 +108,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 	 * creating a parser with default operator interpretation
 	 */	
 	public TuParser(String theoryText, HashMap<Term, Integer> mapping) {		 
-		tokenizer = new Tokenizer(theoryText);		 
+		tokenizer = new TuTokenizer(theoryText);		 
 		offsetsMap = mapping;		 
 	}
 	/**/
@@ -117,7 +117,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 	 * creating a parser with default operator interpretation
 	 */
 	public TuParser(String theoryText) {
-		tokenizer = new Tokenizer(theoryText);
+		tokenizer = new TuTokenizer(theoryText);
 		/*Castagna 06/2011*/
 		offsetsMap = null;
 		/**/        
@@ -127,7 +127,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 	 * creating a parser with default operator interpretation
 	 */
 	public TuParser(InputStream theoryText) {
-		tokenizer = new Tokenizer(new BufferedReader(new InputStreamReader(theoryText)));
+		tokenizer = new TuTokenizer(new BufferedReader(new InputStreamReader(theoryText)));
 	}
 
 	//  user interface
@@ -145,7 +145,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 	@Override
 	public Term nextTerm(boolean endNeeded) throws InvalidTermException {
 		try {
-			Token t = tokenizer.readToken();
+			TuToken t = tokenizer.readToken();
 			if (t.isEOF())
 				return null;
 
@@ -159,7 +159,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 	            		tokenizer.offsetToRowColumn(getCurrentOffset())[1] - 1);
 				/**/
 
-			if (endNeeded && tokenizer.readToken().getType() != Tokenizer.END)
+			if (endNeeded && tokenizer.readToken().getType() != TuTokenizer.END)
 				/*Castagna 06/2011*/
 	            //throw new InvalidTermException("The term " + term + " is not ended with a period.");
 				throw new InvalidTermException("The term '" + term + "' is not ended with a period.",
@@ -193,7 +193,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 	public static Term parseSingleTerm(String st, OperatorManager op) throws InvalidTermException {
 		try {
 			TuParser p = new TuParser(op, st);
-			Token t = p.tokenizer.readToken();
+			TuToken t = p.tokenizer.readToken();
 			if (t.isEOF())
 	            throw new InvalidTermException("Term starts with EOF");
 
@@ -223,7 +223,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 			//return null;
 
 		//{op(yfx,n) exprA(n-1) | op(yf,n)}*
-		Token t = tokenizer.readToken();
+		TuToken t = tokenizer.readToken();
 		for (; t.isOperator(commaIsEndMarker); t = tokenizer.readToken()) {
 
 			int YFX = opManager.opPrio(t.seq, "yfx");
@@ -266,7 +266,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 		IdentifiedTerm left = parseLeftSide(commaIsEndMarker, maxPriority);
 
 		//2.left is followed by either xfx, xfy or xf operators, parse these
-		Token operator = tokenizer.readToken();
+		TuToken operator = tokenizer.readToken();
 		for (; operator.isOperator(commaIsEndMarker); operator = tokenizer.readToken()) {
 			int XFX = opManager.opPrio(operator.seq, "xfx");
 			int XFY = opManager.opPrio(operator.seq, "xfy");
@@ -341,13 +341,13 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 	 */
 	private IdentifiedTerm parseLeftSide(boolean commaIsEndMarker, int maxPriority) throws InvalidTermException, IOException {
 		//1. prefix expression
-		Token f = tokenizer.readToken();
+		TuToken f = tokenizer.readToken();
 		if (f.isOperator(commaIsEndMarker)) {
 			int FX = opManager.opPrio(f.seq, "fx");
 			int FY = opManager.opPrio(f.seq, "fy");
 
 			if (f.seq.equals("-")) {
-				Token t = tokenizer.readToken();
+				TuToken t = tokenizer.readToken();
 				if (t.isNumber())
 					/*Michele Castagna 06/2011*/
 					//return new IdentifiedTerm(0, Parser.createNumber("-" + t.seq));
@@ -409,7 +409,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 	 *              '(' exprA(1200) ')'
 	 */
 	private Term expr0() throws InvalidTermException, IOException {
-		Token t1 = tokenizer.readToken();
+		TuToken t1 = tokenizer.readToken();
 
 		/*Castagna 06/2011*/
 		/*
@@ -425,26 +425,26 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 		
 		int tempStart = tokenizer.tokenStart();
 
-        if (t1.isType(Tokenizer.INTEGER)) {
+        if (t1.isType(TuTokenizer.INTEGER)) {
         	Term i = TuParser.parseInteger(t1.seq);
         	map(i, tokenizer.tokenStart());
             return i; //todo moved method to Number
         }
 
-        if (t1.isType(Tokenizer.FLOAT)) {
+        if (t1.isType(TuTokenizer.FLOAT)) {
         	Term f = TuParser.parseFloat(t1.seq);
         	map(f, tokenizer.tokenStart());
             return f;   //todo moved method to Number
         }
 
-        if (t1.isType(Tokenizer.VARIABLE)) {
+        if (t1.isType(TuTokenizer.VARIABLE)) {
         	Term v = new TuVar(t1.seq);
         	map(v, tokenizer.tokenStart());
             return v;             //todo switched to use the internal check for "_" in Var(String)
         }
 		/**/
 		
-		if (t1.isType(Tokenizer.ATOM) || t1.isType(Tokenizer.SQ_SEQUENCE) || t1.isType(Tokenizer.DQ_SEQUENCE)) {
+		if (t1.isType(TuTokenizer.ATOM) || t1.isType(TuTokenizer.SQ_SEQUENCE) || t1.isType(TuTokenizer.DQ_SEQUENCE)) {
 			if (!t1.isFunctor())
 			/*Castagna 06/2011*/
 			{
@@ -456,12 +456,12 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 			/**/
 
 			String functor = t1.seq;
-			Token t2 = tokenizer.readToken();   //reading left par
-			if (!t2.isType(Tokenizer.LPAR))
+			TuToken t2 = tokenizer.readToken();   //reading left par
+			if (!t2.isType(TuTokenizer.LPAR))
 				throw new InvalidTermException("Something identified as functor misses its first left parenthesis");//todo check can be skipped
 			LinkedList<Term> a = expr0_arglist();     //reading arguments
-			Token t3 = tokenizer.readToken();
-			if (t3.isType(Tokenizer.RPAR))      //reading right par
+			TuToken t3 = tokenizer.readToken();
+			if (t3.isType(TuTokenizer.RPAR))      //reading right par
 			/*Castagna 06/2011*/
 			{
 				//return new Struct(functor, a);
@@ -478,9 +478,9 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 			/**/
 		}
 
-		if (t1.isType(Tokenizer.LPAR)) {
+		if (t1.isType(TuTokenizer.LPAR)) {
 			Term term = expr(false);
-			if (tokenizer.readToken().isType(Tokenizer.RPAR))
+			if (tokenizer.readToken().isType(TuTokenizer.RPAR))
 				return term;
 			/*Castagna 06/2011*/
             //throw new InvalidTermException("Missing right parenthesis: ("+term + " -> here <-");
@@ -490,14 +490,14 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 			/**/
 		}
 
-		if (t1.isType(Tokenizer.LBRA)) {
-			Token t2 = tokenizer.readToken();
-			if (t2.isType(Tokenizer.RBRA))
+		if (t1.isType(TuTokenizer.LBRA)) {
+			TuToken t2 = tokenizer.readToken();
+			if (t2.isType(TuTokenizer.RBRA))
 				return new TuStruct();
 
 			tokenizer.unreadToken(t2);
 			Term term = expr0_list();
-			if (tokenizer.readToken().isType(Tokenizer.RBRA))
+			if (tokenizer.readToken().isType(TuTokenizer.RBRA))
 				return term;
 			/*Castagna 06/2011*/
             //throw new InvalidTermException("Missing right bracket: ["+term + " -> here <-");
@@ -507,9 +507,9 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 			/**/
 		}
 
-		if (t1.isType(Tokenizer.LBRA2)) {
-			Token t2 = tokenizer.readToken();
-			if (t2.isType(Tokenizer.RBRA2))
+		if (t1.isType(TuTokenizer.LBRA2)) {
+			TuToken t2 = tokenizer.readToken();
+			if (t2.isType(TuTokenizer.RBRA2))
 			/*Castagna 06/2011*/
 			{
 				//return new Struct("{}");
@@ -521,7 +521,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 			tokenizer.unreadToken(t2);
 			Term arg = expr(false);
 			t2 = tokenizer.readToken();
-			if (t2.isType(Tokenizer.RBRA2))
+			if (t2.isType(TuTokenizer.RBRA2))
 			/*Castagna 06/2011*/
 			{
 				//return new Struct("{}", arg);
@@ -547,7 +547,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 	//todo make non-recursive?
 	private Term expr0_list() throws InvalidTermException, IOException {
 		Term head = expr(true);
-		Token t = tokenizer.readToken();
+		TuToken t = tokenizer.readToken();
 		if (",".equals(t.seq))
 			return new TuStruct(head, expr0_list());
 		if ("|".equals(t.seq))
@@ -568,7 +568,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 	//todo make non-recursive
 	private LinkedList<Term> expr0_arglist() throws InvalidTermException, IOException {
 		Term head = expr(true);
-		Token t = tokenizer.readToken();
+		TuToken t = tokenizer.readToken();
 		if (",".equals(t.seq)) {
 			LinkedList<Term> l = expr0_arglist();
 			l.addFirst(head);

@@ -346,7 +346,7 @@ public class PrologInvocationContext {
                 return result;
             }
         }
-        catch (alice.tuprolog.PrologException ex) {
+        catch (alice.tuprolog.TuPrologException ex) {
             return null;
         }
     }

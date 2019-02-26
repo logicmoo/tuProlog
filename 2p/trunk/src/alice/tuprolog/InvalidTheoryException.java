@@ -23,7 +23,7 @@ package alice.tuprolog;
  * @see TuTheory
  *
  */
-public class InvalidTheoryException extends PrologException {
+public class InvalidTheoryException extends TuPrologException {
 	private static final long serialVersionUID = 1L;
     public int line = -1;
     public int pos = -1;

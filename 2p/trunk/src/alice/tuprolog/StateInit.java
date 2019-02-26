@@ -24,7 +24,7 @@ import alice.tuprolog.TuStruct;
  *
  * Initial state of demostration
  */
-public class StateInit extends State {
+public class StateInit extends TuState {
     
     public StateInit(EngineRunner c) {
         this.c = c;

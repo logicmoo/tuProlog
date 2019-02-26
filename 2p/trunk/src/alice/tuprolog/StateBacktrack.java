@@ -27,7 +27,7 @@ import alice.util.OneWayList;
  * @author Alex Benini
  *
  */
-public class StateBacktrack extends State {
+public class StateBacktrack extends TuState {
     
     public StateBacktrack(EngineRunner c) {
         this.c = c;

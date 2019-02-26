@@ -27,7 +27,7 @@ public class LibraryManager
 
 	/*  */
 	private TuProlog prolog;
-	private TheoryManager theoryManager;
+	private TuTheoryManager theoryManager;
 	private PrimitiveManager primitiveManager;
 	private Hashtable<String, URL> externalLibraries = new Hashtable<String, URL>();
 

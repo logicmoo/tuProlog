@@ -15,24 +15,29 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
 package alice.tuprolog;
 
 /**
- * @author Alex Benini
+ * This exception is raised when an halt code is requested
+ * and no halt predicate has been issued
  *
- * Template for states of Core Engine
+ * @see SolveInfo
+ *
  */
-abstract class State {
+public class TuHaltException extends TuPrologException {
+	private static final long serialVersionUID = 1L;
+    private int value;
     
-    protected EngineRunner c;
-    protected String stateName;
+    public TuHaltException() {
+        value = 0;
+    }
     
-    abstract void doJob(TuEngine e);
+    public TuHaltException(int haltType) {
+        value = haltType;
+    }
     
-    @Override
-	public String toString() {
-        return stateName;
+    public int getValue() {
+        return value;
     }
     
 }

@@ -31,13 +31,13 @@ public class TuEngine implements IEngine {
 	int nResultAsked; //Alberto
 	boolean hasOpenAlternatives; //Alberto
 	boolean mustStop;
-	State nextState;
+	TuState nextState;
 	Term query;
 	TuStruct startGoal;
 	Collection<TuVar> goalVars;
 	ExecutionContext currentContext; 
 	ChoicePointContext currentAlternative;
-	ChoicePointStore choicePointSelector;
+	TuChoicePointStore choicePointSelector;
 	EngineRunner manager;
 
 	public TuEngine(EngineRunner manager, Term query) {
@@ -119,7 +119,7 @@ public class TuEngine implements IEngine {
 		return l;
 	}
 
-	public ChoicePointStore getChoicePointStore() {
+	public TuChoicePointStore getChoicePointStore() {
 		return choicePointSelector;
 	}
 
@@ -131,7 +131,7 @@ public class TuEngine implements IEngine {
 
 	void initialize(ExecutionContext eCtx) {
 		currentContext = eCtx;
-		choicePointSelector = new ChoicePointStore();
+		choicePointSelector = new TuChoicePointStore();
 		nDemoSteps = 1;
 		currentAlternative = null;
 	}

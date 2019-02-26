@@ -50,7 +50,7 @@ public class TuProlog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	public static final boolean EXCLUDE_KB_IN_SERIALIZATION = false;
 	
 	/*  manager of current theory */
-	private TheoryManager theoryManager;
+	private TuTheoryManager theoryManager;
 	/*  component managing primitive  */
 	private PrimitiveManager primitiveManager;    
 	/* component managing operators */
@@ -174,7 +174,7 @@ public class TuProlog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 		flagManager      = new FlagManager();
 		libraryManager   = new LibraryManager();        
 		opManager        = new OperatorManager();
-		theoryManager    = new TheoryManager();
+		theoryManager    = new TuTheoryManager();
 		primitiveManager = new PrimitiveManager();
 		engineManager    = new EngineManager();
 		//config managers
@@ -265,7 +265,7 @@ public class TuProlog implements /*Castagna 06/2011*/IProlog,/**/ Serializable {
 	/**
 	 * Gets the component managing theory
 	 */
-	public TheoryManager getTheoryManager() {
+	public TuTheoryManager getTheoryManager() {
 		return theoryManager;
 	}
 

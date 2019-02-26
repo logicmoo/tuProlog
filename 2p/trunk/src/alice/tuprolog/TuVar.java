@@ -20,7 +20,7 @@ package alice.tuprolog;
 import java.util.*;
 
 import alice.tuprolog.InvalidTermException;
-import alice.tuprolog.TermVisitor;
+import alice.tuprolog.TuTermVisitor;
 import nu.xom.xslt.XSLException;
 
 /**
@@ -577,7 +577,7 @@ public class TuVar extends TuTerm {
 
     /*Castagna 06/2011*/
     @Override
-    public void accept(TermVisitor tv) {
+    public void accept(TuTermVisitor tv) {
         tv.visit(this);
     }
 

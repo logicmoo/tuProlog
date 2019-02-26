@@ -26,7 +26,7 @@ import alice.tuprolog.TuStruct;
  *
  * End state of demostration.
  */
-public class StateEnd extends State {
+public class StateEnd extends TuState {
     
     private int endState;    
     private TuStruct goal;

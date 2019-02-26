@@ -40,7 +40,7 @@ public class JavaLibraryTestCase extends TestCase {
 		assertFalse(goal.isSuccess());
 	}
 
-	public void testDynamicObjectsRetrival() throws PrologException {
+	public void testDynamicObjectsRetrival() throws TuPrologException {
 		TuProlog engine = new TuProlog();
 		OOLibrary lib = (OOLibrary) engine.getLibrary("alice.tuprolog.lib.OOLibrary");
 		String theory = "demo(C) :- \n" +
@@ -55,7 +55,7 @@ public class JavaLibraryTestCase extends TestCase {
 	}
 
 	
-	public void test_java_object() throws PrologException, IOException
+	public void test_java_object() throws TuPrologException, IOException
 	{
 		// Testing URLClassLoader with a paths' array
 		setPath(true);
@@ -83,7 +83,7 @@ public class JavaLibraryTestCase extends TestCase {
 	}
 	
 
-	public void test_java_object_2() throws PrologException, IOException
+	public void test_java_object_2() throws TuPrologException, IOException
 	{
 		setPath(true);
 		theory = "demo_hierarchy(Gear) :- \n"
@@ -98,7 +98,7 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(8, result2.intValue());
 	}
 	
-	public void test_invalid_path_java_object() throws PrologException, IOException
+	public void test_invalid_path_java_object() throws TuPrologException, IOException
 	{
 		//Testing incorrect path
 		setPath(false);
@@ -113,7 +113,7 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(true, info.isHalted());
 	}
 
-	public void test_java_call_3() throws PrologException, IOException
+	public void test_java_call_3() throws TuPrologException, IOException
 	{
 		//Testing java_call_3 using URLClassLoader 
 		setPath(true); 
@@ -141,7 +141,7 @@ public class JavaLibraryTestCase extends TestCase {
 		
 	}
 
-	public void test_invalid_path_java_call_4() throws PrologException, IOException
+	public void test_invalid_path_java_call_4() throws TuPrologException, IOException
 	{
 		//Testing java_call_4 with invalid path
 		setPath(false);
@@ -151,7 +151,7 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(true, info.isHalted());
 	}
 
-	public void test_java_array() throws PrologException, IOException
+	public void test_java_array() throws TuPrologException, IOException
 	{
 		//Testing java_array_length using URLClassLoader 
 		setPath(true);
@@ -181,7 +181,7 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(1, resultInt2.intValue());
 	}
 
-	public void test_set_classpath() throws PrologException, IOException
+	public void test_set_classpath() throws TuPrologException, IOException
 	{
 		//Testing java_array_length using URLClassLoader 
 		setPath(true);
@@ -198,7 +198,7 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(10, resultInt.intValue());
 	}
 	
-	public void test_get_classpath() throws PrologException, IOException
+	public void test_get_classpath() throws TuPrologException, IOException
 	{
 		//Testing get_classpath using DynamicURLClassLoader with not URLs added
 		theory =  "demo(P) :- get_classpath(P).";
@@ -227,7 +227,7 @@ public class JavaLibraryTestCase extends TestCase {
 //		assertEquals(true, info.isSuccess());
 	}
 	
-	public void test_register_1() throws PrologException, IOException
+	public void test_register_1() throws TuPrologException, IOException
 	{
 		setPath(true);
 		theory = "demo(Obj) :- \n" +
@@ -257,7 +257,7 @@ public class JavaLibraryTestCase extends TestCase {
 	}
 	
 	
-	public void test_unregister_1() throws PrologException, IOException
+	public void test_unregister_1() throws TuPrologException, IOException
 	{
 		// Test invalid object_id unregistration
 		theory = "demo(Obj1) :- unregister(Obj1).";
@@ -281,7 +281,7 @@ public class JavaLibraryTestCase extends TestCase {
 		assertNull(obj);
 	}
 	
-	public void test_java_catch() throws PrologException, IOException
+	public void test_java_catch() throws TuPrologException, IOException
 	{
 		setPath(true);
 		theory = "goal :- set_classpath([" + paths + "]), java_object('TestStaticClass', [], Obj), Obj <- testMyException. \n"
@@ -294,7 +294,7 @@ public class JavaLibraryTestCase extends TestCase {
 		assertEquals(true, info.isSuccess());
 	}
 	
-	public void test_interface() throws PrologException, IOException
+	public void test_interface() throws TuPrologException, IOException
 	{
 		setPath(true);
 		theory = "goal1 :- set_classpath([" + paths + "])," +

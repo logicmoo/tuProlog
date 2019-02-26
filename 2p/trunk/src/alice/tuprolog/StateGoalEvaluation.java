@@ -17,13 +17,13 @@
  */
 package alice.tuprolog;
 
-import alice.tuprolog.HaltException;
-import alice.tuprolog.JavaException;
+import alice.tuprolog.TuHaltException;
+import alice.tuprolog.TuJavaException;
 
 /**
  * @author Alex Benini
  */
-public class StateGoalEvaluation extends State {
+public class StateGoalEvaluation extends TuState {
 
 	public StateGoalEvaluation(EngineRunner c) {
 		this.c = c;
@@ -45,7 +45,7 @@ public class StateGoalEvaluation extends State {
 				e.nextState = (primitive
 						.evalAsPredicate(e.currentContext.currentGoal)) ? c.GOAL_SELECTION
 								: c.BACKTRACK;
-			} catch (HaltException he) {
+			} catch (TuHaltException he) {
 				e.nextState = c.END_HALT;
 			} catch (Throwable t) {
 
@@ -58,9 +58,9 @@ public class StateGoalEvaluation extends State {
 					/*Castagna 06/2011*/					
 					e.manager.exception(error.toString());
 					/**/
-				} else if (t instanceof JavaException) {
+				} else if (t instanceof TuJavaException) {
 					// cast da Throwable a JavaException
-					JavaException exception = (JavaException) t;
+					TuJavaException exception = (TuJavaException) t;
 
 					// sostituisco il gol in cui si ? verificato l'errore con il
 					// subgoal java_throw/1

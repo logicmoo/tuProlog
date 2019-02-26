@@ -82,64 +82,56 @@ public class TuDouble extends TuNumber {
     }
 
     /** is an int Integer number? 
-     * @deprecated Use <tt>instanceof Int</tt> instead. */
-    @Deprecated
+     * Was <tt>instanceof Int</tt> instead. */
     @Override
     final public boolean isTypeInt() {
         return false;
     }
 
     /** is an int Integer number?
-     * @deprecated Use <tt>instanceof Int</tt> instead. */
-    @Deprecated
+     * Was <tt>instanceof Int</tt> instead. */
     @Override
     final public boolean isInt() {
         return false;
     }
 
     /** is a float Real number? 
-     * @deprecated Use <tt>instanceof alice.tuprolog.Float</tt> instead. */
-    @Deprecated
+     * Was <tt>instanceof alice.tuprolog.Float</tt> instead. */
     @Override
     final public boolean isTypeFloat() {
         return false;
     }
 
     /** is a float Real number?
-     * @deprecated Use <tt>instanceof alice.tuprolog.Float</tt> instead. */
-    @Deprecated
+     * Was <tt>instanceof alice.tuprolog.Float</tt> instead. */
     @Override
     final public boolean isFloat() {
         return false;
     }
 
     /** is a double Real number? 
-     * @deprecated Use <tt>instanceof alice.tuprolog.Double</tt> instead. */
-    @Deprecated
+     * Was <tt>instanceof alice.tuprolog.Double</tt> instead. */
     @Override
     final public boolean isTypeDouble() {
         return true;
     }
 
     /** is a double Real number?
-     * @deprecated Use <tt>instanceof alice.tuprolog.Double</tt> instead. */
-    @Deprecated
+     * Was <tt>instanceof alice.tuprolog.Double</tt> instead. */
     @Override
     final public boolean isDouble() {
         return true;
     }
 
     /** is a long Integer number? 
-     * @deprecated Use <tt>instanceof alice.tuprolog.Long</tt> instead. */
-    @Deprecated
+     * Was <tt>instanceof alice.tuprolog.Long</tt> instead. */
     @Override
     final public boolean isTypeLong() {
         return false;
     }
 
     /** is a long Integer number?
-     * @deprecated Use <tt>instanceof alice.tuprolog.Long</tt> instead. */
-    @Deprecated
+     * Was <tt>instanceof alice.tuprolog.Long</tt> instead. */
     @Override
     final public boolean isLong() {
         return false;

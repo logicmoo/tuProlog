@@ -27,18 +27,18 @@ public class TheoryManagerTestCase extends TestCase {
 		assertTrue(warningListener.warning.indexOf("InvalidLibraryException") > 0);
 	}
 
-	public void testAssertNotBacktrackable() throws PrologException {
+	public void testAssertNotBacktrackable() throws TuPrologException {
 		TuProlog engine = new TuProlog();
 		SolveInfo firstSolution = engine.solve("assertz(a(z)).");
 		assertTrue(firstSolution.isSuccess());
 		assertFalse(firstSolution.hasOpenAlternatives());
 	}
 
-	public void testAbolish() throws PrologException {
+	public void testAbolish() throws TuPrologException {
 		TuProlog engine = new TuProlog();
 		String theory = "test(A, B) :- A is 1+2, B is 2+3.";
 		engine.setTheory(new TuTheory(theory));
-		TheoryManager manager = engine.getTheoryManager();
+		TuTheoryManager manager = engine.getTheoryManager();
 		TuStruct testTerm = new TuStruct("test", new TuStruct("a"), new TuStruct("b"));
 		List<ClauseInfo> testClauses = manager.find(testTerm);
 		assertEquals(1, testClauses.size());

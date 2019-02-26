@@ -20,7 +20,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
 	private static final long serialVersionUID = 1L;
     
 	private TuProlog mediator;
-    private TheoryManager theoryManager;
+    private TuTheoryManager theoryManager;
     private PrimitiveManager primitiveManager;
     private LibraryManager libraryManager;
     private EngineManager engineManager;
@@ -30,7 +30,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     private boolean detached;
     private boolean solving;
     private Term query;
-    private TermQueue msgs;
+    private TuTermQueue msgs;
     private ArrayList<Boolean> next;
     private int countNext;
     private Lock lockVar;               
@@ -48,16 +48,16 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     
     private SolveInfo sinfo;
     
-    final State INIT;
-    final State GOAL_EVALUATION;
-    final State EXCEPTION;
-    final State RULE_SELECTION;
-    final State GOAL_SELECTION;
-    final State BACKTRACK;
-    final State END_FALSE;
-    final State END_TRUE;
-    final State END_TRUE_CP;
-    final State END_HALT;
+    final TuState INIT;
+    final TuState GOAL_EVALUATION;
+    final TuState EXCEPTION;
+    final TuState RULE_SELECTION;
+    final TuState GOAL_SELECTION;
+    final TuState BACKTRACK;
+    final TuState END_FALSE;
+    final TuState END_TRUE;
+    final TuState END_TRUE_CP;
+    final TuState END_HALT;
     
     public static final int HALT    = -1;
     public static final int FALSE   =  0;
@@ -68,7 +68,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     	
         INIT             = new StateInit(this);
         GOAL_EVALUATION  = new StateGoalEvaluation(this);
-        EXCEPTION        = new StateException(this);
+        EXCEPTION        = new TuStateException(this);
         RULE_SELECTION   = new StateRuleSelection(this);
         GOAL_SELECTION   = new StateGoalSelection(this);
         BACKTRACK        = new StateBacktrack(this);
@@ -93,7 +93,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
         detached = false;
         solving = false;
         sinfo = null;
-        msgs = new TermQueue();
+        msgs = new TuTermQueue();
         next = new ArrayList<Boolean>();
         countNext = 0;
         lockVar = new ReentrantLock();  
@@ -429,7 +429,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
                 return msgs.size();
         }
         
-        TheoryManager getTheoryManager() {
+        TuTheoryManager getTheoryManager() {
             return theoryManager;
          }
         

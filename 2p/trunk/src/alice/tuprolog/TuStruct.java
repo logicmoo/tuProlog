@@ -24,7 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import alice.tuprolog.InvalidTermException;
-import alice.tuprolog.TermVisitor;
+import alice.tuprolog.TuTermVisitor;
 import nu.xom.xslt.XSLException;
 
 /**
@@ -203,7 +203,6 @@ public class TuStruct extends TuTerm {
     }
 
     /** @deprecated Use Struct#getPredicateIndicator instead. */
-    @Deprecated
     String getHashKey() {
         return getPredicateIndicator();
     }
@@ -866,7 +865,7 @@ public class TuStruct extends TuTerm {
 
     /*Castagna 06/2011*/
     @Override
-    public void accept(TermVisitor tv) {
+    public void accept(TuTermVisitor tv) {
         tv.visit(this);
     }
 

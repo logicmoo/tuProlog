@@ -45,7 +45,7 @@ public class ConcordionSingleton {
 
 	/* Return true if there is an exception */
 	public boolean successWithException(String goal, String theory)
-			throws PrologException {
+			throws TuPrologException {
 
 		TuProlog engine = null;
 		@SuppressWarnings("unused")
@@ -63,7 +63,7 @@ public class ConcordionSingleton {
 
 	/* Return type of error */
 	public String successWithExceptionAndText(String goal, String theory)
-			throws PrologException {
+			throws TuPrologException {
 
 		TuProlog engine = null;
 		@SuppressWarnings("unused")

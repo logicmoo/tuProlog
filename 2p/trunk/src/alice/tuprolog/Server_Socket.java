@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.util.List;
 
 
-public class Server_Socket extends AbstractSocket{
+public class Server_Socket extends TuAbstractSocket{
 	private ServerSocket socket;
 	private static final long serialVersionUID = 1L;
 	public Server_Socket(ServerSocket s){
@@ -30,8 +30,8 @@ public class Server_Socket extends AbstractSocket{
 		t = t.getTerm();
         if (t instanceof TuVar) {
             return t.unify(varsUnifiedArg1, varsUnifiedArg2, this,  isOccursCheckEnabled);
-        } else if (t instanceof AbstractSocket && ((AbstractSocket) t).isServerSocket()) {
-        	InetAddress addr= ((AbstractSocket) t).getAddress();
+        } else if (t instanceof TuAbstractSocket && ((TuAbstractSocket) t).isServerSocket()) {
+        	InetAddress addr= ((TuAbstractSocket) t).getAddress();
             return socket.getInetAddress().toString().equals(addr.toString());
         } else {
             return false;

@@ -24,7 +24,7 @@ public class ImplementationDefinedHooks {
 	}
 
 	public boolean successWithException(String goal, String theory)
-			throws PrologException {
+			throws TuPrologException {
 
 		return ConcordionSingleton.getInstance().successWithException(goal,
 				theory);
@@ -32,7 +32,7 @@ public class ImplementationDefinedHooks {
 	}
 
 	public String successWithExceptionAndText(String goal, String theory)
-			throws PrologException {
+			throws TuPrologException {
 
 		return ConcordionSingleton.getInstance().successWithExceptionAndText(
 				goal, theory);

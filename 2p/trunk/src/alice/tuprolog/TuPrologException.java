@@ -15,19 +15,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package alice.tuprolog.lib;
-import alice.tuprolog.TuPrologException;
+package alice.tuprolog;
 
 /**
- * This exception is raised when a not valid identifier is used
- * to register an object in the JavaLibrary
- *
- * @see OOLibrary
- *
- *
- *
- *
+ * Base class for tuProlog exceptions. Used
+ * also for representing generic 2P exceptions.
  */
-public class InvalidObjectIdException extends TuPrologException {
+public class TuPrologException extends Exception {
 	private static final long serialVersionUID = 1L;
+    public TuPrologException() {}
+    
+    public TuPrologException(String st) {
+        super(st);
+    }
+    
 }

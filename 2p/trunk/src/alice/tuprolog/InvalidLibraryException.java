@@ -22,7 +22,7 @@ package alice.tuprolog;
  *
  * @see TuLibrary
  */
-public class InvalidLibraryException extends PrologException {
+public class InvalidLibraryException extends TuPrologException {
 	private static final long serialVersionUID = 1L;
     private String libraryName;
     private int line;

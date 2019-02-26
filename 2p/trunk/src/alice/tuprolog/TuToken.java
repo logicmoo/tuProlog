@@ -24,27 +24,27 @@ import java.io.Serializable;
  *
  *
  */
-class Token implements Serializable {
+class TuToken implements Serializable {
 	private static final long serialVersionUID = 1L;
     // token textual representation
     String seq;
     // token type and attribute
     int type;
     
-    public Token(String seq_,int type_) {
+    public TuToken(String seq_,int type_) {
         seq = seq_;
         type = type_;
     }
     
     public int getType() {
-        return(type & Tokenizer.TYPEMASK);
+        return(type & TuTokenizer.TYPEMASK);
     }
 
     /**
      * attribute could be EOF or ERROR
      */
     public int getAttribute() {
-        return type & Tokenizer.ATTRMASK;
+        return type & TuTokenizer.ATTRMASK;
     }
 
     public String getValue(){
@@ -54,19 +54,19 @@ class Token implements Serializable {
     public boolean isOperator(boolean commaIsEndMarker) {
         if (commaIsEndMarker && ",".equals(seq))
             return false;
-        return getAttribute() == Tokenizer.OPERATOR;
+        return getAttribute() == TuTokenizer.OPERATOR;
     }
 
     public boolean isFunctor() {
-        return getAttribute() == Tokenizer.FUNCTOR;
+        return getAttribute() == TuTokenizer.FUNCTOR;
     }
     
     public boolean isNumber() {
-        return type == Tokenizer.INTEGER || type == Tokenizer.FLOAT;
+        return type == TuTokenizer.INTEGER || type == TuTokenizer.FLOAT;
     }
 
     boolean isEOF() {
-        return getAttribute() == Tokenizer.EOF;
+        return getAttribute() == TuTokenizer.EOF;
     }
 
     boolean isType(int type) {

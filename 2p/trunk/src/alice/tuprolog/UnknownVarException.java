@@ -23,6 +23,6 @@ package alice.tuprolog;
  *
  *
  */
-public class UnknownVarException extends PrologException {
+public class UnknownVarException extends TuPrologException {
 	private static final long serialVersionUID = 1L;
 }

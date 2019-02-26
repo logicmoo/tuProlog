@@ -27,7 +27,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 
 import alice.tuprolog.InvalidTermException;
-import alice.tuprolog.TermVisitor;
+import alice.tuprolog.TuTermVisitor;
 import alice.tuprolog.json.JSONSerializerManager;
 import alice.util.OneWayList;
 import nu.xom.xslt.XSLException;
@@ -52,23 +52,19 @@ public abstract class TuTerm implements Term {
 
     /**
      * is this term a prolog numeric term?
-     * @deprecated Use <tt>instanceof Number</tt> instead.
+     * Was <tt>instanceof Number</tt> instead.
      */
     @Deprecated
     public abstract boolean isNumber();
 
     /**
      * is this term a struct?
-     * @deprecated Use <tt>instanceof Struct</tt> instead. 
-     */
-    @Deprecated
+     * Was <tt>instanceof Struct</tt> instead. */
     public abstract boolean isStruct();
 
     /**
      * is this term a variable?
-     * @deprecated Use <tt>instanceof Var</tt> instead. 
-     */
-    @Deprecated
+     * Was <tt>instanceof Var</tt> instead. */
     public abstract boolean isVar();
 
     /** is this term a null term?*/
@@ -387,7 +383,7 @@ public abstract class TuTerm implements Term {
      * Visitor pattern
      * @param tv - Visitor
      */
-    public abstract void accept(TermVisitor tv);
+    public abstract void accept(TuTermVisitor tv);
 
     //Alberto
     public String toJSON() {

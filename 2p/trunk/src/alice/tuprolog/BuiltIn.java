@@ -34,7 +34,7 @@ import java.util.List;
 public class BuiltIn extends TuLibrary {
 	private static final long serialVersionUID = 1L;
 	private EngineManager engineManager;
-	private TheoryManager theoryManager;
+	private TuTheoryManager theoryManager;
 	private LibraryManager libraryManager;
 	private FlagManager flagManager;
 	private PrimitiveManager primitiveManager;

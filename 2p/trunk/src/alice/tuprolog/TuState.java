@@ -15,19 +15,24 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package alice.tuprolog.lib;
-import alice.tuprolog.TuPrologException;
+
+package alice.tuprolog;
 
 /**
- * This exception is raised when a not valid identifier is used
- * to register an object in the JavaLibrary
+ * @author Alex Benini
  *
- * @see OOLibrary
- *
- *
- *
- *
+ * Template for states of Core Engine
  */
-public class InvalidObjectIdException extends TuPrologException {
-	private static final long serialVersionUID = 1L;
+abstract class TuState {
+    
+    protected EngineRunner c;
+    protected String stateName;
+    
+    abstract void doJob(TuEngine e);
+    
+    @Override
+	public String toString() {
+        return stateName;
+    }
+    
 }

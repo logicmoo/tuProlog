@@ -28,7 +28,7 @@ import alice.util.OneWayList;
  * @author Alex Benini
  *
  */
-public class StateRuleSelection extends State {
+public class StateRuleSelection extends TuState {
     
     public StateRuleSelection(EngineRunner c) {
         this.c = c;

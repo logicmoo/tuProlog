@@ -21,14 +21,14 @@ public class EngineManager implements java.io.Serializable {
 	private EngineRunner er1;
 	private int id = 0;
 	
-	private Hashtable<String, TermQueue> queues;
+	private Hashtable<String, TuTermQueue> queues;
 	private Hashtable<String, ReentrantLock> locks;
 
 	public void initialize(TuProlog vm) {
 		this.vm=vm;
 		runners=new Hashtable<Integer,EngineRunner>();
 		threads = new Hashtable<Integer,Integer>();
-		queues =new Hashtable<String, TermQueue>();
+		queues =new Hashtable<String, TuTermQueue>();
 		locks = new Hashtable<String, ReentrantLock>();
 		er1 = new EngineRunner(rootID);
 		er1.initialize(vm);	
@@ -98,7 +98,7 @@ public class EngineManager implements java.io.Serializable {
 	}
 	
 	public boolean sendMsg(String name, Term msg) {
-		TermQueue queue = queues.get(name);
+		TuTermQueue queue = queues.get(name);
 		if (queue==null) return false;
 		Term msgcopy = msg.copy(0, new LinkedHashMap<TuVar,TuVar>());
 		queue.store(msgcopy);
@@ -114,7 +114,7 @@ public class EngineManager implements java.io.Serializable {
 	public boolean getMsg(String name, Term msg){
 		EngineRunner er=findRunner();
 		if (er==null) return false;
-		TermQueue queue = queues.get(name);
+		TuTermQueue queue = queues.get(name);
 		if (queue==null) return false;
 		return queue.get(msg, vm, er);
 	}
@@ -128,7 +128,7 @@ public class EngineManager implements java.io.Serializable {
 	public boolean waitMsg(String name, Term msg){
 		EngineRunner er=findRunner();
 		if (er==null) return false;
-		TermQueue queue=queues.get(name);
+		TuTermQueue queue=queues.get(name);
 		if (queue==null) return false;
 		return queue.wait(msg, vm, er);
 	}
@@ -140,7 +140,7 @@ public class EngineManager implements java.io.Serializable {
 	}
 	
 	public boolean peekMsg(String name, Term msg){
-		TermQueue queue = queues.get(name);
+		TuTermQueue queue = queues.get(name);
 		if (queue==null) return false;
 		return queue.peek(msg, vm);
 	}
@@ -152,7 +152,7 @@ public class EngineManager implements java.io.Serializable {
 	}
 	
 	public boolean removeMsg(String name, Term msg){
-		TermQueue queue=queues.get(name);
+		TuTermQueue queue=queues.get(name);
 		if (queue==null) return false;
 		return queue.remove(msg, vm);
 	}
@@ -222,7 +222,7 @@ public class EngineManager implements java.io.Serializable {
 			}
 			runners=new Hashtable<Integer,EngineRunner>();
 			threads=new Hashtable<Integer,Integer>();
-			queues =new Hashtable<String, TermQueue>();
+			queues =new Hashtable<String, TuTermQueue>();
 			locks = new Hashtable<String, ReentrantLock>();
 			id = 0;
 		}
@@ -282,7 +282,7 @@ public class EngineManager implements java.io.Serializable {
 	public boolean createQueue (String name){
 		synchronized (queues){
 			if (queues.containsKey(name)) return true;
-			TermQueue newQ = new TermQueue();
+			TuTermQueue newQ = new TuTermQueue();
 			queues.put(name, newQ);		
 			}
 		return true;
@@ -300,7 +300,7 @@ public class EngineManager implements java.io.Serializable {
 	}
 
 	public int queueSize(String name){
-		TermQueue q=queues.get(name);
+		TuTermQueue q=queues.get(name);
 		if (q==null) return -1;
 		return q.size();
 	}

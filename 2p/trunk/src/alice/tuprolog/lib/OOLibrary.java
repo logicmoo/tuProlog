@@ -50,7 +50,7 @@ import alice.tuprolog.TuStruct;
 import alice.tuprolog.Term;
 import alice.tuprolog.TuVar;
 import alice.tuprolog.lib.annotations.OOLibraryEnableLambdas;
-import alice.tuprolog.JavaException;
+import alice.tuprolog.TuJavaException;
 import alice.util.AbstractDynamicClassLoader;
 import alice.util.AndroidDynamicClassLoader;
 import alice.util.InspectionUtils;
@@ -212,7 +212,7 @@ public class OOLibrary extends TuLibrary {
      /**
      * Deprecated from tuProlog 3.0 use new_object
      */
-    public boolean java_object_3(Term className, Term argl, Term id) throws JavaException {
+    public boolean java_object_3(Term className, Term argl, Term id) throws TuJavaException {
     	return new_object_3(className, argl,id);
     }
     
@@ -222,15 +222,15 @@ public class OOLibrary extends TuLibrary {
      * @param argl
      * @param id
      * @return
-     * @throws JavaException
+     * @throws TuJavaException
      */
-    public boolean new_object_3(Term className, Term argl, Term id) throws JavaException {
+    public boolean new_object_3(Term className, Term argl, Term id) throws TuJavaException {
         className = className.getTerm();
         TuStruct arg = (TuStruct) argl.getTerm();
         id = id.getTerm();
         try {
             if (!className.isAtom()) {
-                throw new JavaException(new ClassNotFoundException(
+                throw new TuJavaException(new ClassNotFoundException(
                         "Java class not found: " + className));
             }
             String clName = ((TuStruct) className).getName();
@@ -241,7 +241,7 @@ public class OOLibrary extends TuLibrary {
                 if (java_array(clName, nargs, id))
                     return true;
                 else
-                    throw new JavaException(new Exception());
+                    throw new TuJavaException(new Exception());
             }
             Signature args = parseArg(getArrayFromList(arg));
             if (args == null) {
@@ -255,7 +255,7 @@ public class OOLibrary extends TuLibrary {
                 Constructor<?> co = lookupConstructor(cl, args.getTypes(),args_value);
                 if (co == null) {
                     getEngine().warn("Constructor not found: class " + clName);
-                    throw new JavaException(new NoSuchMethodException(
+                    throw new TuJavaException(new NoSuchMethodException(
                             "Constructor not found: class " + clName));
                 }
 
@@ -263,27 +263,27 @@ public class OOLibrary extends TuLibrary {
                 if (bindDynamicObject(id, obj))
                     return true;
                 else
-                    throw new JavaException(new Exception());
+                    throw new TuJavaException(new Exception());
             } catch (ClassNotFoundException ex) {
                 getEngine().warn("Java class not found: " + clName);
-                throw new JavaException(ex);
+                throw new TuJavaException(ex);
             } catch (InvocationTargetException ex) {
                 getEngine().warn("Invalid constructor arguments.");
-                throw new JavaException(ex);
+                throw new TuJavaException(ex);
             } catch (NoSuchMethodException ex) {
                 getEngine().warn("Constructor not found: " + args.getTypes());
-                throw new JavaException(ex);
+                throw new TuJavaException(ex);
             } catch (InstantiationException ex) {
                 getEngine().warn(
                         "Objects of class " + clName
                                 + " cannot be instantiated");
-                throw new JavaException(ex);
+                throw new TuJavaException(ex);
             } catch (IllegalArgumentException ex) {
                 getEngine().warn("Illegal constructor arguments  " + args);
-                throw new JavaException(ex);
+                throw new TuJavaException(ex);
             }
         } catch (Exception ex) {
-            throw new JavaException(ex);
+            throw new TuJavaException(ex);
         }
     }
     
@@ -295,10 +295,10 @@ public class OOLibrary extends TuLibrary {
      * @param implementation contains the function implementation i.e. 's -> s.length()>4 '
      * @param id represent the identification_name of the created object function i.e. MyLambda
      * 
-     * @throws JavaException, Exception
+     * @throws TuJavaException, Exception
      */
 	@SuppressWarnings("unchecked") 
-	public <T> boolean new_lambda_3(Term interfaceName, Term implementation, Term id)throws JavaException, Exception {
+	public <T> boolean new_lambda_3(Term interfaceName, Term implementation, Term id)throws TuJavaException, Exception {
 		if(lambdaPlugin != null){
 			String mode = lambdaPlugin.mode();
 			if(mode.equalsIgnoreCase("active")){
@@ -336,9 +336,9 @@ public class OOLibrary extends TuLibrary {
 		    		if (bindDynamicObject(id, myLambdaInstance))
 		    			return true;
 		    		else
-		    			throw new JavaException(new Exception());
+		    			throw new TuJavaException(new Exception());
 		    	} catch (Exception ex) {
-		            throw new JavaException(ex);
+		            throw new TuJavaException(ex);
 		        }
 			}
 		}
@@ -371,9 +371,9 @@ public class OOLibrary extends TuLibrary {
      * Destroy the link to a java object - called not directly, but from
      * predicate java_object (as second choice, for backtracking)
      * 
-     * @throws JavaException
+     * @throws TuJavaException
      */
-    public boolean destroy_object_1(Term id) throws JavaException {
+    public boolean destroy_object_1(Term id) throws TuJavaException {
         id = id.getTerm();
         try {
             if (id.isGround()) {
@@ -381,16 +381,16 @@ public class OOLibrary extends TuLibrary {
             }
             return true;
         } catch (Exception ex) {
-            throw new JavaException(ex);
+            throw new TuJavaException(ex);
         }
     }
 
     /**
      * Deprecated from tuProlog 3.0 use new_class
      * 
-     * @throws JavaException
+     * @throws TuJavaException
      */
-    public boolean java_class_4(Term clSource, Term clName, Term clPathes,Term id) throws JavaException {
+    public boolean java_class_4(Term clSource, Term clName, Term clPathes,Term id) throws TuJavaException {
     	return new_class_4(clSource,  clName,  clPathes, id);
     }
     
@@ -401,9 +401,9 @@ public class OOLibrary extends TuLibrary {
      * @param clPathes: is a (possibly empty) Prolog list of class paths that may be required for a successful dynamic compilation of this class
      * @param id: reference to an instance of the meta-class java.lang.Class rep- resenting the newly-created class
      * @return boolean: true if created false otherwise
-     * @throws JavaException
+     * @throws TuJavaException
      */
-	public boolean new_class_4(Term clSource, Term clName, Term clPathes,Term id) throws JavaException {
+	public boolean new_class_4(Term clSource, Term clName, Term clPathes,Term id) throws TuJavaException {
 		TuStruct classSource = (TuStruct) clSource.getTerm();
 		TuStruct className = (TuStruct) clName.getTerm();
 		TuStruct classPathes = (TuStruct) clPathes.getTerm();
@@ -434,7 +434,7 @@ public class OOLibrary extends TuLibrary {
                 getEngine().warn("Compilation of java sources failed");
                 getEngine().warn(
                         "(creation of " + fullClassPath + ".java fail failed)");
-                throw new JavaException(ex);
+                throw new TuJavaException(ex);
             }
             String cmd = "javac " + cp + " " + fullClassPath + ".java";
 
@@ -450,7 +450,7 @@ public class OOLibrary extends TuLibrary {
             } catch (IOException ex) {
                 getEngine().warn("Compilation of java sources failed");
                 getEngine().warn("(java compiler (javac) invocation failed)");
-                throw new JavaException(ex);
+                throw new TuJavaException(ex);
             }
             try 
             {
@@ -474,16 +474,16 @@ public class OOLibrary extends TuLibrary {
                 if (bindDynamicObject(id, the_class))
                     return true;
                 else
-                    throw new JavaException(new Exception());
+                    throw new TuJavaException(new Exception());
             } catch (ClassNotFoundException ex) {
                 getEngine().warn("Compilation of java sources failed");
                 getEngine().warn(
                         "(Java Class compiled, but not created: "
                                 + fullClassName + " )");
-                throw new JavaException(ex);
+                throw new TuJavaException(ex);
             }
         } catch (Exception ex) {
-            throw new JavaException(ex);
+            throw new TuJavaException(ex);
         }
     }
 
@@ -491,11 +491,11 @@ public class OOLibrary extends TuLibrary {
 	 * 
 	 * Calls a method of a Java object
 	 * 
-	 * @throws JavaException
+	 * @throws TuJavaException
 	 * 
 	 */
 	public boolean java_call_3(Term objId, Term method_name, Term idResult)
-			throws JavaException {
+			throws TuJavaException {
 		objId = objId.getTerm();
 		idResult = idResult.getTerm();
 		TuStruct method = (TuStruct) method_name.getTerm();
@@ -506,7 +506,7 @@ public class OOLibrary extends TuLibrary {
 			methodName = method.getName();
 			if (!objId.isAtom()) {
 				if (objId instanceof TuVar) {
-					throw new JavaException(new IllegalArgumentException(objId
+					throw new TuJavaException(new IllegalArgumentException(objId
 							.toString()));
 				}
 				TuStruct sel = (TuStruct) objId;
@@ -524,10 +524,10 @@ public class OOLibrary extends TuLibrary {
 			args = parseArg(method);
 			// object and argument must be instantiated
 			if (objId instanceof TuVar)
-				throw new JavaException(new IllegalArgumentException(objId
+				throw new TuJavaException(new IllegalArgumentException(objId
 						.toString()));
 			if (args == null) {
-				throw new JavaException(new IllegalArgumentException());
+				throw new TuJavaException(new IllegalArgumentException());
 			}
 			String objName = alice.util.Tools.removeApices(objId.toString());
 			obj = staticObjects.containsKey(objName) ? staticObjects.get(objName) : currentObjects.get(objName);
@@ -543,11 +543,11 @@ public class OOLibrary extends TuLibrary {
 						res = m.invoke(obj, args_values);
 					} catch (IllegalAccessException ex) {
 						getEngine().warn("Method invocation failed: " + methodName+ "( signature: " + args + " )");
-						throw new JavaException(ex);
+						throw new TuJavaException(ex);
 					}
 				} else {
 					getEngine().warn("Method not found: " + methodName + "( signature: "+ args + " )");
-					throw new JavaException(new NoSuchMethodException("Method not found: " + methodName + "( signature: "+ args + " )"));
+					throw new TuJavaException(new NoSuchMethodException("Method not found: " + methodName + "( signature: "+ args + " )"));
 				}
 			} else {
 				if (objId.isCompound()) {
@@ -566,7 +566,7 @@ public class OOLibrary extends TuLibrary {
 							// if not found even as a class id -> consider as a
 							// String object value
 							getEngine().warn("Unknown class.");
-							throw new JavaException(ex);
+							throw new TuJavaException(ex);
 						}
 					}
 					else {
@@ -586,27 +586,27 @@ public class OOLibrary extends TuLibrary {
 			if (parseResult(idResult, res))
 				return true;
 			else
-				throw new JavaException(new Exception());
+				throw new TuJavaException(new Exception());
 		} catch (InvocationTargetException ex) {
 			getEngine().warn(
 					"Method failed: " + methodName + " - ( signature: " + args
 					+ " ) - Original Exception: "
 					+ ex.getTargetException());
-			throw new JavaException(new IllegalArgumentException());
+			throw new TuJavaException(new IllegalArgumentException());
 		} catch (NoSuchMethodException ex) {
 			getEngine().warn(
 					"Method not found: " + methodName + " - ( signature: "
 							+ args + " )");
-			throw new JavaException(ex);
+			throw new TuJavaException(ex);
 		} catch (IllegalArgumentException ex) {
 			getEngine().warn(
 					"Invalid arguments " + args + " - ( method: " + methodName
 					+ " )");
-			throw new JavaException(ex);
+			throw new TuJavaException(ex);
 		} catch (Exception ex) {
 			getEngine()
 			.warn("Generic error in method invocation " + methodName);
-			throw new JavaException(ex);
+			throw new TuJavaException(ex);
 		}
 	}
 	
@@ -615,10 +615,10 @@ public class OOLibrary extends TuLibrary {
      * 
      * Set global classpath
      * 
-     * @throws JavaException
+     * @throws TuJavaException
      * 
      */
-    public boolean set_classpath_1(Term paths) throws JavaException
+    public boolean set_classpath_1(Term paths) throws TuJavaException
     {
     	try {
     		paths = paths.getTerm();
@@ -631,10 +631,10 @@ public class OOLibrary extends TuLibrary {
     	}catch(IllegalArgumentException e)
         {
         	getEngine().warn("Illegal list of paths " + paths);
-            throw new JavaException(e);
+            throw new TuJavaException(e);
         }
         catch (Exception e) {
-        	throw new JavaException(e);
+        	throw new TuJavaException(e);
 		}
     }
     
@@ -643,11 +643,11 @@ public class OOLibrary extends TuLibrary {
      * 
      * Get global classpath
      * 
-     * @throws JavaException
+     * @throws TuJavaException
      * 
      */
     
-	public boolean get_classpath_1(Term paths) throws JavaException
+	public boolean get_classpath_1(Term paths) throws TuJavaException
     {
     	try {
     		paths = paths.getTerm();
@@ -675,10 +675,10 @@ public class OOLibrary extends TuLibrary {
     	}catch(IllegalArgumentException e)
         {
         	getEngine().warn("Illegal list of paths " + paths);
-            throw new JavaException(e);
+            throw new TuJavaException(e);
         }
         catch (Exception e) {
-        	throw new JavaException(e);
+        	throw new TuJavaException(e);
 		}
     }
 	
@@ -841,13 +841,13 @@ public class OOLibrary extends TuLibrary {
     }
     
     public boolean java_array_set_primitive_3(Term obj_id, Term i, Term what)
-            throws JavaException {
+            throws TuJavaException {
         TuStruct objId = (TuStruct) obj_id.getTerm();
         TuNumber index = (TuNumber) i.getTerm();
         what = what.getTerm();
         Object obj = null;
         if (!index.isInteger()) {
-            throw new JavaException(new IllegalArgumentException(index
+            throw new TuJavaException(new IllegalArgumentException(index
                     .toString()));
         }
         try {
@@ -857,39 +857,39 @@ public class OOLibrary extends TuLibrary {
             if (obj != null) {
                 cl = obj.getClass();
             } else {
-                throw new JavaException(new IllegalArgumentException(objId
+                throw new TuJavaException(new IllegalArgumentException(objId
                         .toString()));
             }
 
             if (!cl.isArray()) {
-                throw new JavaException(new IllegalArgumentException(objId
+                throw new TuJavaException(new IllegalArgumentException(objId
                         .toString()));
             }
             String name = cl.toString();
             if (name.equals("class [I")) {
                 if (!(what instanceof TuNumber)) {
-                    throw new JavaException(new IllegalArgumentException(what
+                    throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
                 }
                 byte v = (byte) ((TuNumber) what).intValue();
                 Array.setInt(obj, index.intValue(), v);
             } else if (name.equals("class [D")) {
                 if (!(what instanceof TuNumber)) {
-                    throw new JavaException(new IllegalArgumentException(what
+                    throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
                 }
                 double v = ((TuNumber) what).doubleValue();
                 Array.setDouble(obj, index.intValue(), v);
             } else if (name.equals("class [F")) {
                 if (!(what instanceof TuNumber)) {
-                    throw new JavaException(new IllegalArgumentException(what
+                    throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
                 }
                 float v = ((TuNumber) what).floatValue();
                 Array.setFloat(obj, index.intValue(), v);
             } else if (name.equals("class [L")) {
                 if (!(what instanceof TuNumber)) {
-                    throw new JavaException(new IllegalArgumentException(what
+                    throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
                 }
                 long v = ((TuNumber) what).longValue();
@@ -904,29 +904,29 @@ public class OOLibrary extends TuLibrary {
                 } else if (s.equals("false")) {
                     Array.setBoolean(obj, index.intValue(), false);
                 } else {
-                    throw new JavaException(new IllegalArgumentException(what
+                    throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
                 }
             } else if (name.equals("class [B")) {
                 if (!(what instanceof TuNumber)) {
-                    throw new JavaException(new IllegalArgumentException(what
+                    throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
                 }
                 int v = ((TuNumber) what).intValue();
                 Array.setByte(obj, index.intValue(), (byte) v);
             } else if (name.equals("class [S")) {
                 if (!(what instanceof TuNumber)) {
-                    throw new JavaException(new IllegalArgumentException(what
+                    throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
                 }
                 short v = (short) ((TuNumber) what).intValue();
                 Array.setShort(obj, index.intValue(), v);
             } else {
-                throw new JavaException(new Exception());
+                throw new TuJavaException(new Exception());
             }
             return true;
         } catch (Exception ex) {
-            throw new JavaException(ex);
+            throw new TuJavaException(ex);
         }
     }
     
@@ -937,15 +937,15 @@ public class OOLibrary extends TuLibrary {
      * @param i
      * @param what
      * @return
-     * @throws JavaException
+     * @throws TuJavaException
      */
-    public boolean java_array_get_primitive_3(Term obj_id, Term i, Term what) throws JavaException {
+    public boolean java_array_get_primitive_3(Term obj_id, Term i, Term what) throws TuJavaException {
         TuStruct objId = (TuStruct) obj_id.getTerm();
         TuNumber index = (TuNumber) i.getTerm();
         what = what.getTerm();
         Object obj = null;
         if (!index.isInteger()) {
-            throw new JavaException(new IllegalArgumentException(index.toString()));
+            throw new TuJavaException(new IllegalArgumentException(index.toString()));
         }
         try {
             Class<?> cl = null;
@@ -954,11 +954,11 @@ public class OOLibrary extends TuLibrary {
             if (obj != null) {
                 cl = obj.getClass();
             } else {
-                throw new JavaException(new IllegalArgumentException(objId.toString()));
+                throw new TuJavaException(new IllegalArgumentException(objId.toString()));
             }
 
             if (!cl.isArray()) {
-                throw new JavaException(new IllegalArgumentException(objId.toString()));
+                throw new TuJavaException(new IllegalArgumentException(objId.toString()));
             }
             String name = cl.toString();
             if (name.equals("class [I")) {
@@ -966,13 +966,13 @@ public class OOLibrary extends TuLibrary {
                 if (unify(what, value))
                     return true;
                 else
-                    throw new JavaException(new IllegalArgumentException(what.toString()));
+                    throw new TuJavaException(new IllegalArgumentException(what.toString()));
             } else if (name.equals("class [D")) {
                 Term value = new alice.tuprolog.TuDouble(Array.getDouble(obj,index.intValue()));
                 if (unify(what, value))
                     return true;
                 else
-                    throw new JavaException(new IllegalArgumentException(what
+                    throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
             } else if (name.equals("class [F")) {
                 Term value = new alice.tuprolog.TuFloat(Array.getFloat(obj, index
@@ -980,7 +980,7 @@ public class OOLibrary extends TuLibrary {
                 if (unify(what, value))
                     return true;
                 else
-                    throw new JavaException(new IllegalArgumentException(what
+                    throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
             } else if (name.equals("class [L")) {
                 Term value = new alice.tuprolog.TuLong(Array.getLong(obj, index
@@ -988,7 +988,7 @@ public class OOLibrary extends TuLibrary {
                 if (unify(what, value))
                     return true;
                 else
-                    throw new JavaException(new IllegalArgumentException(what
+                    throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
             } else if (name.equals("class [C")) {
                 Term value = new alice.tuprolog.TuStruct(""
@@ -996,7 +996,7 @@ public class OOLibrary extends TuLibrary {
                 if (unify(what, value))
                     return true;
                 else
-                    throw new JavaException(new IllegalArgumentException(what
+                    throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
             } else if (name.equals("class [Z")) {
                 boolean b = Array.getBoolean(obj, index.intValue());
@@ -1004,13 +1004,13 @@ public class OOLibrary extends TuLibrary {
                     if (unify(what, alice.tuprolog.Term.TRUE))
                         return true;
                     else
-                        throw new JavaException(new IllegalArgumentException(
+                        throw new TuJavaException(new IllegalArgumentException(
                                 what.toString()));
                 } else {
                     if (unify(what, alice.tuprolog.Term.FALSE))
                         return true;
                     else
-                        throw new JavaException(new IllegalArgumentException(
+                        throw new TuJavaException(new IllegalArgumentException(
                                 what.toString()));
                 }
             } else if (name.equals("class [B")) {
@@ -1019,7 +1019,7 @@ public class OOLibrary extends TuLibrary {
                 if (unify(what, value))
                     return true;
                 else
-                    throw new JavaException(new IllegalArgumentException(what
+                    throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
             } else if (name.equals("class [S")) {
                 Term value = new alice.tuprolog.TuInt(Array.getInt(obj, index
@@ -1027,14 +1027,14 @@ public class OOLibrary extends TuLibrary {
                 if (unify(what, value))
                     return true;
                 else
-                    throw new JavaException(new IllegalArgumentException(what
+                    throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
             } else {
-                throw new JavaException(new Exception());
+                throw new TuJavaException(new Exception());
             }
         } catch (Exception ex) {
             // ex.printStackTrace();
-            throw new JavaException(ex);
+            throw new TuJavaException(ex);
         }
 
     }
@@ -1074,7 +1074,7 @@ public class OOLibrary extends TuLibrary {
     /**
      * Returns an URL array from a String array
      *
-     * @throws JavaException
+     * @throws TuJavaException
      */
     private URL[] getURLsFromStringArray(String[] paths) throws MalformedURLException  
     {
@@ -1101,7 +1101,7 @@ public class OOLibrary extends TuLibrary {
     /**
      * Returns a String array from a Struct contains a list
      *
-     * @throws JavaException
+     * @throws TuJavaException
      */
     
     private String[] getStringArrayFromStruct(TuStruct list) {
@@ -1442,10 +1442,10 @@ public class OOLibrary extends TuLibrary {
      *            object identifier
      *            
      * @return true if the operation is successful
-     * @throws JavaException
+     * @throws TuJavaException
      *             if the object id is not valid
      */
-    public boolean register_1(Term id) throws JavaException
+    public boolean register_1(Term id) throws TuJavaException
     {
     	id = id.getTerm();
     	Object obj =  null; 
@@ -1456,7 +1456,7 @@ public class OOLibrary extends TuLibrary {
         }catch(InvalidObjectIdException e)
         {
         	getEngine().warn("Illegal object id " + id.toString());
-            throw new JavaException(e);
+            throw new TuJavaException(e);
         }
     }
     
@@ -1469,10 +1469,10 @@ public class OOLibrary extends TuLibrary {
      *            object identifier
      *            
      * @return true if the operation is successful
-     * @throws JavaException
+     * @throws TuJavaException
      *             if the object id is not valid
      */
-    public boolean unregister_1(Term id) throws JavaException
+    public boolean unregister_1(Term id) throws TuJavaException
     {
     	id = id.getTerm(); 
     	try
@@ -1481,7 +1481,7 @@ public class OOLibrary extends TuLibrary {
         }catch(InvalidObjectIdException e)
         {
         	getEngine().warn("Illegal object id " + id.toString());
-            throw new JavaException(e);
+            throw new TuJavaException(e);
         }
     }
     
