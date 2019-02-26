@@ -6,17 +6,17 @@ public class TheoryTestCase extends TestCase {
 
 	public void testToStringWithParenthesis() throws InvalidTheoryException {
 		String before = "a :- b, (d ; e).";
-		Theory theory = new Theory(before);
+		TuTheory theory = new TuTheory(before);
 		String after = theory.toString();
-		assertEquals(theory.toString(), new Theory(after).toString());
+		assertEquals(theory.toString(), new TuTheory(after).toString());
 	}
 	
 	public void testAppendClauseLists() throws InvalidTheoryException, MalformedGoalException {
-		Term[] clauseList = new Term[] {new Struct("p"), new Struct("q"), new Struct("r")};
-		Term[] otherClauseList = new Term[] {new Struct("a"), new Struct("b"), new Struct("c")};
-		Theory theory = new Theory(new Struct(clauseList));
-		theory.append(new Theory(new Struct(otherClauseList)));
-		Prolog engine = new Prolog();
+		Term[] clauseList = new Term[] {new TuStruct("p"), new TuStruct("q"), new TuStruct("r")};
+		Term[] otherClauseList = new Term[] {new TuStruct("a"), new TuStruct("b"), new TuStruct("c")};
+		TuTheory theory = new TuTheory(new TuStruct(clauseList));
+		theory.append(new TuTheory(new TuStruct(otherClauseList)));
+		TuProlog engine = new TuProlog();
 		engine.setTheory(theory);
 		assertTrue((engine.solve("p.")).isSuccess());
 		assertTrue((engine.solve("b.")).isSuccess());

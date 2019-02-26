@@ -1,6 +1,6 @@
 package alice.tuprolog.interfaces;
 
-import alice.tuprolog.Prolog;
+import alice.tuprolog.TuProlog;
 
 public class PrologFactory {
 	
@@ -11,7 +11,7 @@ public class PrologFactory {
 	 * IOLibrary, and  JavaLibrary
 	 */
 	public static IProlog createProlog() {
-		return new Prolog();
+		return new TuProlog();
 	}
 
 }

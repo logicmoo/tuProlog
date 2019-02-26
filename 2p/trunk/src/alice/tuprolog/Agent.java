@@ -28,12 +28,12 @@ import alice.tuprolog.event.OutputListener;
  * It needs a theory and optionally a goal.
  * It parses the theory, solves the goal and stops.
  *
- * @see alice.tuprolog.Prolog
+ * @see alice.tuprolog.TuProlog
  *
  */
 public class Agent {
     
-    private Prolog core;
+    private TuProlog core;
     private String theoryText;
     private InputStream theoryInputStream;
     private String goalText;
@@ -54,7 +54,7 @@ public class Agent {
      */
     public Agent(String theory){
         theoryText=theory;
-        core=new Prolog();
+        core=new TuProlog();
         core.addOutputListener(defaultOutputListener);
     }
     
@@ -64,7 +64,7 @@ public class Agent {
     public Agent(String theory,String goal){
         theoryText=theory;
         goalText=goal;
-        core=new Prolog();
+        core=new TuProlog();
         core.addOutputListener(defaultOutputListener);
     }
     
@@ -74,7 +74,7 @@ public class Agent {
      */
     public Agent(InputStream is){
         theoryInputStream=is;
-        core=new Prolog();
+        core=new TuProlog();
         core.addOutputListener(defaultOutputListener);
     }
     
@@ -85,7 +85,7 @@ public class Agent {
     public Agent(InputStream is,String goal){
         theoryInputStream=is;
         goalText=goal;
-        core=new Prolog();
+        core=new TuProlog();
         core.addOutputListener(defaultOutputListener);
     }
     
@@ -125,9 +125,9 @@ public class Agent {
     private void body(){
         try {
             if (theoryText==null){
-                core.setTheory(new Theory(theoryInputStream));
+                core.setTheory(new TuTheory(theoryInputStream));
             } else {
-                core.setTheory(new Theory(theoryText));
+                core.setTheory(new TuTheory(theoryText));
             }
             if (goalText!=null){
                 core.solve(goalText);

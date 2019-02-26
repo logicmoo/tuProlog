@@ -5,34 +5,34 @@ import junit.framework.TestCase;
 public class BuiltInTestCase extends TestCase {
 	
 	public void testConvertTermToGoal() throws InvalidTermException {
-		Term t = new Var("T");
-		Struct result = new Struct("call", t);
+		Term t = new TuVar("T");
+		TuStruct result = new TuStruct("call", t);
 		assertEquals(result, BuiltIn.convertTermToGoal(t));
-		assertEquals(result, BuiltIn.convertTermToGoal(new Struct("call", t)));
+		assertEquals(result, BuiltIn.convertTermToGoal(new TuStruct("call", t)));
 		
-		t = new Int(2);
+		t = new TuInt(2);
 		assertNull(BuiltIn.convertTermToGoal(t));
 		
-		t = new Struct("p", new Struct("a"), new Var("B"), new Struct("c"));
-		result = (Struct) t;
+		t = new TuStruct("p", new TuStruct("a"), new TuVar("B"), new TuStruct("c"));
+		result = (TuStruct) t;
 		assertEquals(result, BuiltIn.convertTermToGoal(t));
 		
-		Var linked = new Var("X");
-		linked.setLink(new Struct("!"));
-		Term[] arguments = new Term[] { linked, new Var("Y") };
-		Term[] results = new Term[] { new Struct("!"), new Struct("call", new Var("Y")) };
-		assertEquals(new Struct(";", results), BuiltIn.convertTermToGoal(new Struct(";", arguments)));
-		assertEquals(new Struct(",", results), BuiltIn.convertTermToGoal(new Struct(",", arguments)));
-		assertEquals(new Struct("->", results), BuiltIn.convertTermToGoal(new Struct("->", arguments)));
+		TuVar linked = new TuVar("X");
+		linked.setLink(new TuStruct("!"));
+		Term[] arguments = new Term[] { linked, new TuVar("Y") };
+		Term[] results = new Term[] { new TuStruct("!"), new TuStruct("call", new TuVar("Y")) };
+		assertEquals(new TuStruct(";", results), BuiltIn.convertTermToGoal(new TuStruct(";", arguments)));
+		assertEquals(new TuStruct(",", results), BuiltIn.convertTermToGoal(new TuStruct(",", arguments)));
+		assertEquals(new TuStruct("->", results), BuiltIn.convertTermToGoal(new TuStruct("->", arguments)));
 	}
 	
 	//Based on the bug #59 Grouping conjunctions in () changes result on sourceforge
 	public void testGroupingConjunctions() throws InvalidTheoryException, MalformedGoalException {
-		Prolog engine = new Prolog();
-		engine.setTheory(new Theory("g1. g2."));
+		TuProlog engine = new TuProlog();
+		engine.setTheory(new TuTheory("g1. g2."));
 		SolveInfo info = engine.solve("(g1, g2), (g3, g4).");
 		assertFalse(info.isSuccess());
-		engine.setTheory(new Theory("g1. g2. g3. g4."));
+		engine.setTheory(new TuTheory("g1. g2. g3. g4."));
 		info = engine.solve("(g1, g2), (g3, g4).");
 		assertTrue(info.isSuccess());
 	}

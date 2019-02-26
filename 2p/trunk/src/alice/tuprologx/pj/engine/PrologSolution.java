@@ -18,7 +18,7 @@ import java.util.Vector;
  *
  * @author Maurizio
  */
-public class PrologSolution<Q extends Term<?>, S extends Term<?>> /*implements ISolution<Q,S,Term<?>>*/ {
+public class PrologSolution<Q extends TxTerm<?>, S extends TxTerm<?>> /*implements ISolution<Q,S,Term<?>>*/ {
     
     private alice.tuprolog.SolveInfo _solveInfo;
     
@@ -27,16 +27,16 @@ public class PrologSolution<Q extends Term<?>, S extends Term<?>> /*implements I
         _solveInfo = si;
     }
 
-    public <Z extends Term<?>> Z getVarValue(String varName) throws alice.tuprolog.NoSolutionException {
+    public <Z extends TxTerm<?>> Z getVarValue(String varName) throws alice.tuprolog.NoSolutionException {
         alice.tuprolog.Term retValue;        
         retValue = _solveInfo.getVarValue(varName);
-        return Term.<Z>unmarshal(retValue);
+        return TxTerm.<Z>unmarshal(retValue);
     }
 
-    public <Z extends Term<?>> Z getTerm(String varName) throws alice.tuprolog.NoSolutionException, UnknownVarException {
+    public <Z extends TxTerm<?>> Z getTerm(String varName) throws alice.tuprolog.NoSolutionException, UnknownVarException {
         alice.tuprolog.Term retValue;                
         retValue = _solveInfo.getTerm(varName);
-        return Term.<Z>unmarshal(retValue);
+        return TxTerm.<Z>unmarshal(retValue);
     }
 
     public boolean isSuccess() {        
@@ -54,21 +54,21 @@ public class PrologSolution<Q extends Term<?>, S extends Term<?>> /*implements I
     public S getSolution() throws alice.tuprolog.NoSolutionException {
         alice.tuprolog.Term retValue;        
         retValue = _solveInfo.getSolution();
-        return Term.<S>unmarshal(retValue);
+        return TxTerm.<S>unmarshal(retValue);
     }
 
     public Q getQuery() {
         alice.tuprolog.Term retValue;        
         retValue = _solveInfo.getQuery();
-        return Term.<Q>unmarshal(retValue);
+        return TxTerm.<Q>unmarshal(retValue);
     }
 
-    public List<Term<?>> getBindingVars() throws alice.tuprolog.NoSolutionException {
-        List<alice.tuprolog.Var> retValue;        
+    public List<TxTerm<?>> getBindingVars() throws alice.tuprolog.NoSolutionException {
+        List<alice.tuprolog.TuVar> retValue;        
         retValue = _solveInfo.getBindingVars();
-        Vector<Term<?>> bindings = new Vector<Term<?>>();
+        Vector<TxTerm<?>> bindings = new Vector<TxTerm<?>>();
         for (alice.tuprolog.Term t : retValue) {
-            bindings.add(Term.unmarshal(t));
+            bindings.add(TxTerm.unmarshal(t));
         }
         return bindings;
     }

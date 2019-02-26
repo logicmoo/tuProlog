@@ -48,7 +48,7 @@ public class JavaIDE
     private static ConsoleManager consoleManager;
 
     public JavaIDE() {
-        super("tuProlog "+Prolog.getVersion()+" IDE");
+        super("tuProlog "+TuProlog.getVersion()+" IDE");
         initComponents();
     }
 
@@ -56,9 +56,9 @@ public class JavaIDE
      * Initialize the graphic components and set the dependencies among them.
      */
     private void initComponents() {
-        System.out.println("tuProlog system - release " + Prolog.getVersion());
+        System.out.println("tuProlog system - release " + TuProlog.getVersion());
 
-        final Prolog engine = new Prolog();
+        final TuProlog engine = new TuProlog();
         
         DefaultCompletionProvider commonCompletionProvider = CompletionUtils.createCompletionProvider();
         engine.addTheoryListener(new CompletionUpdateTheoryListener(commonCompletionProvider));

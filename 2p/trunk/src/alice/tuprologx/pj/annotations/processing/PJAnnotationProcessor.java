@@ -71,7 +71,7 @@ public class PJAnnotationProcessor extends ElementScanner6<Void,Void> implements
 
 	private TypeElement teJ2PException;    
     private ProcessingEnvironment env;
-    private Theory classTheory;
+    private TxTheory classTheory;
     //private Theory methodTheory;
     private TypeElement enclosingDeclaration;
     private PredicateExpr predicate;
@@ -124,13 +124,13 @@ public class PJAnnotationProcessor extends ElementScanner6<Void,Void> implements
         if (init != "") {
             alice.tuprolog.Term t = null;
             try {                
-                t = alice.tuprolog.Parser.parseSingleTerm(init);
+                t = alice.tuprolog.TuParser.parseSingleTerm(init);
             }
             catch (Throwable tw) {
                 env.getMessager().printMessage(ERROR,ERR_BAD_VAR_INIT,v);
                 return null;
             }
-            TypeElement te = env.getElementUtils().getTypeElement(Term.unmarshal(t).getClass().getCanonicalName());            
+            TypeElement te = env.getElementUtils().getTypeElement(TxTerm.unmarshal(t).getClass().getCanonicalName());            
             if (!env.getTypeUtils().isSubtype(te.asType(), v.asType()))
                 env.getMessager().printMessage(ERROR,ERR_BAD_TYPE_IN_VAR_INIT,v);
         }
@@ -176,9 +176,9 @@ public class PJAnnotationProcessor extends ElementScanner6<Void,Void> implements
         }        
     }
     
-    private Theory checkTheory(String theory) {        
-        Theory t = null;                  
-        t = new Theory(theory);                            
+    private TxTheory checkTheory(String theory) {        
+        TxTheory t = null;                  
+        t = new TxTheory(theory);                            
         /*if (t == null) {
             env.getMessager().printMessage(ERROR,ERR_THEORY_INVALID,enclosingDeclaration);
         } */       

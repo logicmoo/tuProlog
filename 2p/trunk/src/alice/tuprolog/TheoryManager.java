@@ -47,7 +47,7 @@ import alice.util.Tools;
  * rewritten by:
  * @author ivar.orstavik@hist.no
  *
- * @see Theory
+ * @see TuTheory
  */
 public class TheoryManager implements Serializable {
 	
@@ -56,16 +56,16 @@ public class TheoryManager implements Serializable {
 	private ClauseDatabase dynamicDBase;
 	private ClauseDatabase staticDBase;
 	private ClauseDatabase retractDBase;
-	private Prolog engine;
+	private TuProlog engine;
 	private PrimitiveManager primitiveManager;
 	private Stack<Term> startGoalStack;
-	Theory lastConsultedTheory;
+	TuTheory lastConsultedTheory;
 
-	public void initialize(Prolog vm) {
+	public void initialize(TuProlog vm) {
 		dynamicDBase = new ClauseDatabase();
 		staticDBase = new ClauseDatabase();
 		retractDBase = new ClauseDatabase();
-		lastConsultedTheory = new Theory();
+		lastConsultedTheory = new TuTheory();
 		engine = vm;
 		primitiveManager = engine.getPrimitiveManager();
 	}
@@ -73,7 +73,7 @@ public class TheoryManager implements Serializable {
 	/**
 	 * inserting of a clause at the head of the dbase
 	 */
-	public synchronized void assertA(Struct clause, boolean dyn, String libName, boolean backtrackable) {
+	public synchronized void assertA(TuStruct clause, boolean dyn, String libName, boolean backtrackable) {
 		ClauseInfo d = new ClauseInfo(toClause(clause), libName);
 		String key = d.getHead().getPredicateIndicator();
 		if (dyn) {
@@ -89,7 +89,7 @@ public class TheoryManager implements Serializable {
 	/**
 	 * inserting of a clause at the end of the dbase
 	 */
-	public synchronized void assertZ(Struct clause, boolean dyn, String libName, boolean backtrackable) {
+	public synchronized void assertZ(TuStruct clause, boolean dyn, String libName, boolean backtrackable) {
 		ClauseInfo d = new ClauseInfo(toClause(clause), libName);
 		String key = d.getHead().getPredicateIndicator();
 		if (dyn) {
@@ -105,9 +105,9 @@ public class TheoryManager implements Serializable {
 	/**
 	 * removing from dbase the first clause with head unifying with clause
 	 */
-	public synchronized ClauseInfo retract(Struct cl) {
-		Struct clause = toClause(cl);
-		Struct struct = ((Struct) clause.getArg(0));
+	public synchronized ClauseInfo retract(TuStruct cl) {
+		TuStruct clause = toClause(cl);
+		TuStruct struct = ((TuStruct) clause.getArg(0));
 		FamilyClausesList family = dynamicDBase.get(struct.getPredicateIndicator());
 		ExecutionContext ctx = engine.getEngineManager().getCurrentContext();
 		
@@ -156,8 +156,8 @@ public class TheoryManager implements Serializable {
 	 * removing from dbase all the clauses corresponding to the
 	 * predicate indicator passed as a parameter
 	 */
-	public synchronized boolean abolish(Struct pi) {		
-		if (!(pi instanceof Struct) || !pi.isGround() || !(pi.getArity() == 2))
+	public synchronized boolean abolish(TuStruct pi) {		
+		if (!(pi instanceof TuStruct) || !pi.isGround() || !(pi.getArity() == 2))
 			throw new IllegalArgumentException(pi + " is not a valid Struct");
 		if(!pi.getName().equals("/"))
 				throw new IllegalArgumentException(pi + " has not the valid predicate name. Espected '/' but was " + pi.getName());
@@ -179,14 +179,14 @@ public class TheoryManager implements Serializable {
 	 * implementation
 	 */
 	public synchronized List<ClauseInfo> find(Term headt) {
-		if (headt instanceof Struct) {
+		if (headt instanceof TuStruct) {
 			List<ClauseInfo> list = dynamicDBase.getPredicates(headt);
 			if (list.isEmpty())
 				list = staticDBase.getPredicates(headt);
 			return list;
 		}
 
-		if (headt instanceof Var){
+		if (headt instanceof TuVar){
 			throw new RuntimeException();
 		}
 		return new LinkedList<ClauseInfo>();
@@ -199,13 +199,13 @@ public class TheoryManager implements Serializable {
 	 * @param dynamicTheory if it is true, then the clauses are marked as dynamic
 	 * @param libName       if it not null, then the clauses are marked to belong to the specified library
 	 */
-	public synchronized void consult(Theory theory, boolean dynamicTheory, String libName) throws InvalidTheoryException {
+	public synchronized void consult(TuTheory theory, boolean dynamicTheory, String libName) throws InvalidTheoryException {
 		startGoalStack = new Stack<Term>();
 		int clause = 1;
 		try {
 			for (Iterator<? extends Term> it = theory.iterator(engine); it.hasNext();) {
 				clause++;	
-				Struct d = (Struct) it.next();
+				TuStruct d = (TuStruct) it.next();
 				if (!runDirective(d))
 					assertZ(d, dynamicTheory, libName, true);
 			}
@@ -256,9 +256,9 @@ public class TheoryManager implements Serializable {
 	}
 
 
-	private boolean runDirective(Struct c) {
-		if ("':-'".equals(c.getName()) || ":-".equals(c.getName()) && c.getArity() == 1 && c.getTerm(0) instanceof Struct) {
-			Struct dir = (Struct) c.getTerm(0);
+	private boolean runDirective(TuStruct c) {
+		if ("':-'".equals(c.getName()) || ":-".equals(c.getName()) && c.getArity() == 1 && c.getTerm(0) instanceof TuStruct) {
+			TuStruct dir = (TuStruct) c.getTerm(0);
 			try {
 				if (!primitiveManager.evalAsDirective(dir))
 					engine.warn("The directive " + dir.getPredicateIndicator() + " is unknown.");
@@ -274,21 +274,21 @@ public class TheoryManager implements Serializable {
 	/**
 	 * Gets a clause from a generic Term
 	 */
-	private Struct toClause(Struct t) {		//PRIMITIVE
+	private TuStruct toClause(TuStruct t) {		//PRIMITIVE
 		// TODO bad, slow way of cloning. requires approx twice the time necessary
-		t = (Struct) Term.createTerm(t.toString(), this.engine.getOperatorManager());
+		t = (TuStruct) Term.createTerm(t.toString(), this.engine.getOperatorManager());
 		if (!t.isClause())
-			t = new Struct(":-", t, new Struct("true"));
+			t = new TuStruct(":-", t, new TuStruct("true"));
 		primitiveManager.identifyPredicate(t);
 		return t;
 	}
 
 	public synchronized void solveTheoryGoal() {
-		Struct s = null;
+		TuStruct s = null;
 		while (!startGoalStack.empty()) {
 			s = (s == null) ?
-					(Struct) startGoalStack.pop() :
-						new Struct(",", startGoalStack.pop(), s);
+					(TuStruct) startGoalStack.pop() :
+						new TuStruct(",", startGoalStack.pop(), s);
 		}
 		if (s != null) {
 			try {
@@ -302,7 +302,7 @@ public class TheoryManager implements Serializable {
 	/**
 	 * add a goal eventually defined by last parsed theory.
 	 */
-	public synchronized void addStartGoal(Struct g) {
+	public synchronized void addStartGoal(TuStruct g) {
 		startGoalStack.push(g);
 	}
 
@@ -341,7 +341,7 @@ public class TheoryManager implements Serializable {
 	 * Gets last consulted theory
 	 * @return  last theory
 	 */
-	public synchronized Theory getLastConsultedTheory() {
+	public synchronized TuTheory getLastConsultedTheory() {
 		return lastConsultedTheory;
 	}
 	

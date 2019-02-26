@@ -5,8 +5,8 @@ import alice.tuprologx.pj.annotations.WithTermifiable;
 import alice.tuprologx.pj.annotations.Termifiable;
 import alice.tuprologx.pj.model.*;
 import alice.tuprologx.pj.meta.*;
-import alice.tuprologx.pj.model.Theory;
-import alice.tuprologx.pj.model.Clause;
+import alice.tuprologx.pj.model.TxTheory;
+import alice.tuprologx.pj.model.TxClause;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import javassist.util.proxy.*;
@@ -45,7 +45,7 @@ public class PJ implements MethodHandler {
     }
 
     @SuppressWarnings("unchecked")
-	public static <T> T newInstance(Class<?> cl, Theory init) throws Exception {
+	public static <T> T newInstance(Class<?> cl, TxTheory init) throws Exception {
             J2PProxyFactory pf = new J2PProxyFactory();
             pf.setSuperclass(cl.isInterface() ? Object.class : cl);
             pf.setInterfaces(cl.isInterface() ?
@@ -103,7 +103,7 @@ public class PJ implements MethodHandler {
         //some useful objects for dispatching the method call
         PrologObject po = (PrologObject)receiver;
         PrologMetaClass metaClass = getMetaClass(receiver);
-        Theory class_t = metaClass.getTheory();//classTheory(receiver.getClass());            
+        TxTheory class_t = metaClass.getTheory();//classTheory(receiver.getClass());            
         
         //PrologMetaField[] metaFields = metaClass.getPrologFields();
         PrologInvocationContext ctx = new PrologInvocationContext(method, args);        
@@ -113,31 +113,31 @@ public class PJ implements MethodHandler {
             for (String className : withTermifiable.value()) {
                 Class<?> klass = Class.forName(className);
                 String termName = klass.getAnnotation(Termifiable.class).predicate();
-                JavaTerm.hashtable.put(termName, klass);
+                TxJavaTerm.hashtable.put(termName, klass);
             }
         }
         engine().setTheory(class_t);
         if (receiver != null) {
-            JavaObject<Object> jo = new JavaObject<Object>(receiver);                        
-            Compound1<JavaObject<?>> head = new Compound1<JavaObject<?>>("this", jo);
-            Clause<Compound1<?>, Nil> ct = new Clause<Compound1<?>, Nil>(head,null);            
-            ArrayList<Clause<?,?>> list = new ArrayList<Clause<?,?>>();
+            TxJavaObject<Object> jo = new TxJavaObject<Object>(receiver);                        
+            TxCompound1<TxJavaObject<?>> head = new TxCompound1<TxJavaObject<?>>("this", jo);
+            TxClause<TxCompound1<?>, TxNil> ct = new TxClause<TxCompound1<?>, TxNil>(head,null);            
+            ArrayList<TxClause<?,?>> list = new ArrayList<TxClause<?,?>>();
             list.add(ct);
-            Theory t = new Theory(list);
+            TxTheory t = new TxTheory(list);
             engine().addTheory(t);
         }
         
         for (PrologMetaMethod metaMethod : metaClass.getPrologMethods()) {
-            Theory method_t = metaMethod.getTheory();
+            TxTheory method_t = metaMethod.getTheory();
             engine().addTheory(method_t);
         }
 
         for (PrologMetaField metaField : metaClass.getPrologFields()) {
-            Theory field_t = metaField.getTheory();
+            TxTheory field_t = metaField.getTheory();
             engine().addTheory(field_t);
         }
         
-        Theory t = po.getTheory();
+        TxTheory t = po.getTheory();
         if (t != null)
             engine().addTheory(t);
         
@@ -158,7 +158,7 @@ public class PJ implements MethodHandler {
         else if (method.getName().equals("getTheory"))
             return getTheory(receiver);
         else if (method.getName().equals("setTheory"))
-            return setTheory(receiver, (Theory)args[0]);
+            return setTheory(receiver, (TxTheory)args[0]);
         return null;                        
     }
 
@@ -177,10 +177,10 @@ public class PJ implements MethodHandler {
         }            
     }
     
-    private Theory getTheory(Object o) {
+    private TxTheory getTheory(Object o) {
         try {
             java.lang.reflect.Field metaclass_field = o.getClass().getField("_prolog$Theory");
-            Theory t = (Theory)metaclass_field.get(o);            
+            TxTheory t = (TxTheory)metaclass_field.get(o);            
             return t;
         }
         catch (Exception e) {
@@ -188,7 +188,7 @@ public class PJ implements MethodHandler {
         }            
     }
     
-    private Void setTheory(Object o, Theory t) {
+    private Void setTheory(Object o, TxTheory t) {
         try {
             java.lang.reflect.Field metaclass_field = o.getClass().getField("_prolog$Theory");
             metaclass_field.set(o, t);  
@@ -199,7 +199,7 @@ public class PJ implements MethodHandler {
         }            
     }
     
-    public static alice.tuprolog.Struct registerJavaObject(Object o) {
+    public static alice.tuprolog.TuStruct registerJavaObject(Object o) {
         //return engine.registerJavaObject(o);        
         try {
             return engine().getPJLibrary().register(o);
@@ -209,7 +209,7 @@ public class PJ implements MethodHandler {
         }
     }
     
-    public static Object getRegisteredJavaObject(alice.tuprolog.Struct t) {
+    public static Object getRegisteredJavaObject(alice.tuprolog.TuStruct t) {
         //return engine.getJavaObject(t); 
         try {
             Object obj = engine().getPJLibrary().getRegisteredObject(t);
@@ -227,7 +227,7 @@ public class PJ implements MethodHandler {
         try {
             pushEngine();
             engine().setTheory(po.getTheory());
-            Compound1<Term<?>> goal = new Compound1<Term<?>>("assert", Term.unmarshal(clause));
+            TxCompound1<TxTerm<?>> goal = new TxCompound1<TxTerm<?>>("assert", TxTerm.unmarshal(clause));
             engine().solve(goal);
             po.setTheory(engine().getTheory());
         }
@@ -243,7 +243,7 @@ public class PJ implements MethodHandler {
         try {
             pushEngine();
             engine().setTheory(po.getTheory());
-            Compound1<Term<?>> goal = new Compound1<Term<?>>("retract", Term.unmarshal(clause));
+            TxCompound1<TxTerm<?>> goal = new TxCompound1<TxTerm<?>>("retract", TxTerm.unmarshal(clause));
             engine().solve(goal);
             po.setTheory(engine().getTheory());
         }
@@ -259,7 +259,7 @@ public class PJ implements MethodHandler {
         try {
             pushEngine();
             engine().setTheory(po.getTheory());
-            alice.tuprolog.Struct goal = new alice.tuprolog.Struct("retractall", clause);
+            alice.tuprolog.TuStruct goal = new alice.tuprolog.TuStruct("retractall", clause);
             System.out.println(goal);
             engine().engine.solve(goal);
             po.setTheory(engine().getTheory());

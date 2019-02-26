@@ -5,8 +5,8 @@ package alice.tuprolog.lib;
  */
 
 import alice.tuprolog.*;
-import alice.tuprolog.Number;
-import alice.tuprolog.Long;
+import alice.tuprolog.TuNumber;
+import alice.tuprolog.TuLong;
 
 import java.util.*;
 import java.io.*;
@@ -19,7 +19,7 @@ import java.io.*;
  * 
  */
 
-public class ISOIOLibrary extends Library{
+public class ISOIOLibrary extends TuLibrary{
 	private static final long serialVersionUID = 1L;
     protected final int files = 1000; //numero casuale abbastanza alto per evitare eccezioni sulle dimensioni delle hashtable
     protected Hashtable<InputStream, Hashtable<String, Term>> inputStreams = new Hashtable<InputStream,Hashtable<String,Term>>(files);
@@ -38,29 +38,29 @@ public class ISOIOLibrary extends Library{
         
     }
     
-    public boolean open_4(Term source_sink, Term mode, Term stream, Term options)throws PrologError{
+    public boolean open_4(Term source_sink, Term mode, Term stream, Term options)throws TuPrologError{
         initLibrary();
         source_sink = source_sink.getTerm();
         mode = mode.getTerm();
         
-        if (source_sink instanceof Var) {
-            throw PrologError.instantiation_error(engine.getEngineManager(), 1);
+        if (source_sink instanceof TuVar) {
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         }
         
-        File file = new File(((Struct)source_sink).getName());
+        File file = new File(((TuStruct)source_sink).getName());
         if(!file.exists()){
-            throw PrologError.existence_error(engine.getEngineManager(), 1, "source_sink", source_sink, new Struct("File not found."));
+            throw TuPrologError.existence_error(engine.getEngineManager(), 1, "source_sink", source_sink, new TuStruct("File not found."));
         }
 
-        if(mode instanceof Var){
-            throw PrologError.instantiation_error(engine.getEngineManager(), 2);
+        if(mode instanceof TuVar){
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
         }
         else if(!mode.isAtom()){
-            throw PrologError.type_error(engine.getEngineManager(), 1, "atom",mode);
+            throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",mode);
         }
         
-        if(!(stream instanceof Var)){
-            throw PrologError.type_error(engine.getEngineManager(), 3, "variable", stream);
+        if(!(stream instanceof TuVar)){
+            throw TuPrologError.type_error(engine.getEngineManager(), 3, "variable", stream);
         }
         
         Hashtable<String, Term> properties = new Hashtable<String, Term>(10);
@@ -69,20 +69,20 @@ public class ISOIOLibrary extends Library{
         BufferedInputStream input = null;        
         
         if(result == true){
-            Struct openOptions = (Struct)options;
-            Struct in_out = (Struct)source_sink;
+            TuStruct openOptions = (TuStruct)options;
+            TuStruct in_out = (TuStruct)source_sink;
             if(openOptions.isList()){
                 if(!openOptions.isEmptyList()){
                     Iterator<? extends Term> i = openOptions.listIterator();
                     while(i.hasNext()){
-                        Struct option = null;
+                        TuStruct option = null;
                         Object obj = i.next();
-                        if(obj instanceof Var){
-                            throw PrologError.instantiation_error(engine.getEngineManager(), 4);
+                        if(obj instanceof TuVar){
+                            throw TuPrologError.instantiation_error(engine.getEngineManager(), 4);
                         }
-                        option = (Struct)obj;
+                        option = (TuStruct)obj;
                         if(!properties.containsKey(option.getName())){
-                            throw PrologError.domain_error(engine.getEngineManager(), 4, "stream_option", option);
+                            throw TuPrologError.domain_error(engine.getEngineManager(), 4, "stream_option", option);
                         }
                         
                         //controllo che alias non sia gia' associato ad uno stream aperto
@@ -93,15 +93,15 @@ public class ISOIOLibrary extends Library{
                                     if(currentElement2.getKey().equals("alias")){
                                         Term alias = currentElement2.getValue();
                                         for(int k = 0; k< option.getArity();k++){
-                                            if(((Struct)alias).getArity()>1){
-                                                for(int z = 0;z<((Struct)alias).getArity();z++){
-                                                    if((((Struct)alias).getArg(z)).equals(option.getArg(k))){
-                                                        throw PrologError.permission_error(engine.getEngineManager(), "open", "source_sink", alias, new Struct("Alias is already associated with an open stream."));
+                                            if(((TuStruct)alias).getArity()>1){
+                                                for(int z = 0;z<((TuStruct)alias).getArity();z++){
+                                                    if((((TuStruct)alias).getArg(z)).equals(option.getArg(k))){
+                                                        throw TuPrologError.permission_error(engine.getEngineManager(), "open", "source_sink", alias, new TuStruct("Alias is already associated with an open stream."));
                                                     }
                                                 }
                                             }
                                             else if(alias.equals(option.getArg(k))){
-                                                throw PrologError.permission_error(engine.getEngineManager(), "open", "source_sink", alias, new Struct("Alias is already associated with an open stream."));
+                                                throw TuPrologError.permission_error(engine.getEngineManager(), "open", "source_sink", alias, new TuStruct("Alias is already associated with an open stream."));
                                             }
                                         }
                                     }
@@ -114,15 +114,15 @@ public class ISOIOLibrary extends Library{
                                     if(currentElement2.getKey().equals("alias")){
                                         Term alias = currentElement2.getValue();
                                         for(int k = 0; k< option.getArity();k++){
-                                            if(((Struct)alias).getArity()>1){
-                                                for(int z = 0;z<((Struct)alias).getArity();z++){
-                                                    if((((Struct)alias).getArg(z)).equals(option.getArg(k))){
-                                                        throw PrologError.permission_error(engine.getEngineManager(), "open", "source_sink", alias, new Struct("Alias is already associated with an open stream."));
+                                            if(((TuStruct)alias).getArity()>1){
+                                                for(int z = 0;z<((TuStruct)alias).getArity();z++){
+                                                    if((((TuStruct)alias).getArg(z)).equals(option.getArg(k))){
+                                                        throw TuPrologError.permission_error(engine.getEngineManager(), "open", "source_sink", alias, new TuStruct("Alias is already associated with an open stream."));
                                                     }
                                                 }
                                             }
                                             else if(alias.equals(option.getArg(k))){
-                                                throw PrologError.permission_error(engine.getEngineManager(), "open", "source_sink", alias, new Struct("Alias is already associated with an open stream."));
+                                                throw TuPrologError.permission_error(engine.getEngineManager(), "open", "source_sink", alias, new TuStruct("Alias is already associated with an open stream."));
                                             }
                                         }
                                     }
@@ -134,15 +134,15 @@ public class ISOIOLibrary extends Library{
                                 for(int k = 0; k<arity; k++){
                                     arrayTerm[k] = option.getArg(k);
                                 }
-                                properties.put(option.getName(),new Struct(".",arrayTerm));
+                                properties.put(option.getName(),new TuStruct(".",arrayTerm));
                             }
                             else{
                                 properties.put(option.getName(),option.getArg(0));
                             }
                         }
                         else{
-                            Struct value = null;
-                            value =(Struct) option.getArg(0);
+                            TuStruct value = null;
+                            value =(TuStruct) option.getArg(0);
                             properties.put(option.getName(),value);
                         }
                     }
@@ -151,95 +151,95 @@ public class ISOIOLibrary extends Library{
                 }
             }
             else{
-                throw PrologError.type_error(engine.getEngineManager(), 4, "list", openOptions);
+                throw TuPrologError.type_error(engine.getEngineManager(), 4, "list", openOptions);
             }
             
-            Struct structMode = (Struct)mode;
+            TuStruct structMode = (TuStruct)mode;
             if(structMode.getName().equals("write")){
                 try{
                     output = new BufferedOutputStream(new FileOutputStream(in_out.getName()));
                 }
                 catch(Exception e){
                     //potrebbe essere sia FileNotFoundException sia SecurityException
-                    throw PrologError.permission_error(engine.getEngineManager(), "open", "source_sink", source_sink,
-                            new Struct("The source_sink specified by Source_sink cannot be opened."));
+                    throw TuPrologError.permission_error(engine.getEngineManager(), "open", "source_sink", source_sink,
+                            new TuStruct("The source_sink specified by Source_sink cannot be opened."));
                 }
-                properties.put("output", new Struct("true"));    
+                properties.put("output", new TuStruct("true"));    
                 outputStreams.put(output, properties);
-                return unify(stream, new Struct(output.toString()));
+                return unify(stream, new TuStruct(output.toString()));
             }
             else if(structMode.getName().equals("read")){
                     try {
                         input = new BufferedInputStream(new FileInputStream(in_out.getName()));
                     } catch (Exception e) {
-                        throw PrologError.permission_error(engine.getEngineManager(), "open", "source_sink", source_sink,
-                                new Struct("The source_sink specified by Source_sink cannot be opened."));
+                        throw TuPrologError.permission_error(engine.getEngineManager(), "open", "source_sink", source_sink,
+                                new TuStruct("The source_sink specified by Source_sink cannot be opened."));
                     }
-                    properties.put("input", new Struct("true"));
+                    properties.put("input", new TuStruct("true"));
                     
                     //mi servono queste istruzioni per set_stream_position
                     //faccio una mark valida fino alla fine del file, appena lo apro in modo che mi possa
                     //permettere di fare una reset all'inizio del file. Il +5 alloca un po di spazio in piu
                     //nel buffer, mi serve per per evitare che la mark non sia piu valida quando leggo la fine del file
-                    if(((Struct)properties.get("reposition")).getName().equals("true")){
+                    if(((TuStruct)properties.get("reposition")).getName().equals("true")){
                         try {
                             input.mark((input.available())+5);
                         } catch (IOException e) {
                                 // ED 2013-05-21: added to prevent Java warning "resource leak", input not closed
                                 try {input.close();} catch (IOException e2) {
-                                        throw PrologError.system_error(new Struct("An error has occurred in open when closing the input file."));
+                                        throw TuPrologError.system_error(new TuStruct("An error has occurred in open when closing the input file."));
                                 } 
                                 // END ED
-                            throw PrologError.system_error(new Struct("An error has occurred in open."));
+                            throw TuPrologError.system_error(new TuStruct("An error has occurred in open."));
                         }
                     }
                     inputStreams.put(input, properties);
-                    return unify(stream, new Struct(input.toString()));
+                    return unify(stream, new TuStruct(input.toString()));
             }
             else if(structMode.getName().equals("append")){
                 try{
                     output = new BufferedOutputStream(new FileOutputStream(in_out.getName(),true));
                 }
                 catch(Exception e){
-                    throw PrologError.permission_error(engine.getEngineManager(), "open", "source_sink", source_sink,
-                            new Struct("The source_sink specified by Source_sink cannot be opened."));
+                    throw TuPrologError.permission_error(engine.getEngineManager(), "open", "source_sink", source_sink,
+                            new TuStruct("The source_sink specified by Source_sink cannot be opened."));
                 }
-                properties.put("output", new Struct("true"));                    
+                properties.put("output", new TuStruct("true"));                    
                 outputStreams.put(output, properties);
-                return unify(stream, new Struct(output.toString()));
+                return unify(stream, new TuStruct(output.toString()));
             }
             else{
-                throw PrologError.domain_error(engine.getEngineManager(),2,"io_mode", mode);    
+                throw TuPrologError.domain_error(engine.getEngineManager(),2,"io_mode", mode);    
             }
         }
         else{
-            PrologError.system_error(new Struct("A problem has occurred with initialization of properties' hashmap."));
+            TuPrologError.system_error(new TuStruct("A problem has occurred with initialization of properties' hashmap."));
             return false;
         }
     }
     
-    public boolean open_3(Term source_sink, Term mode, Term stream)throws PrologError{
+    public boolean open_3(Term source_sink, Term mode, Term stream)throws TuPrologError{
         initLibrary();
         
         source_sink = source_sink.getTerm();
-        File file = new File(((Struct)source_sink).getName());
+        File file = new File(((TuStruct)source_sink).getName());
         if(!file.exists()){
-            throw PrologError.existence_error(engine.getEngineManager(), 1, "source_sink", source_sink, new Struct("File not found"));
+            throw TuPrologError.existence_error(engine.getEngineManager(), 1, "source_sink", source_sink, new TuStruct("File not found"));
         }
         mode = mode.getTerm();
-        if (source_sink instanceof Var) {
-            throw PrologError.instantiation_error(engine.getEngineManager(), 1);
+        if (source_sink instanceof TuVar) {
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         }
 
-        if(mode instanceof Var){
-            throw PrologError.instantiation_error(engine.getEngineManager(), 2);
+        if(mode instanceof TuVar){
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
         }
         else if(!mode.isAtom()){
-            throw PrologError.type_error(engine.getEngineManager(), 1, "atom",mode);
+            throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",mode);
         }
         
-        if(!(stream instanceof Var)){
-            throw PrologError.type_error(engine.getEngineManager(), 3, "variable", stream);
+        if(!(stream instanceof TuVar)){
+            throw TuPrologError.type_error(engine.getEngineManager(), 3, "variable", stream);
         }
         
         //siccome ? una open con la lista delle opzioni vuota, inizializzo comunque le opzioni
@@ -249,11 +249,11 @@ public class ISOIOLibrary extends Library{
         
         BufferedOutputStream output = null;
         BufferedInputStream input = null;
-        Struct structMode = (Struct)mode;
+        TuStruct structMode = (TuStruct)mode;
         
         if(result == true){
-            Struct in_out = (Struct)source_sink;
-            Struct value = new Struct(in_out.getName());
+            TuStruct in_out = (TuStruct)source_sink;
+            TuStruct value = new TuStruct(in_out.getName());
             properties.put("file_name", value);
             properties.put("mode", mode);
                 
@@ -263,92 +263,92 @@ public class ISOIOLibrary extends Library{
                 }
                 catch(Exception e){
                     //potrebbe essere sia FileNotFoundException sia SecurityException
-                    throw PrologError.permission_error(engine.getEngineManager(), "open", "source_sink", source_sink,
-                            new Struct("The source_sink specified by Source_sink cannot be opened."));
+                    throw TuPrologError.permission_error(engine.getEngineManager(), "open", "source_sink", source_sink,
+                            new TuStruct("The source_sink specified by Source_sink cannot be opened."));
                 }
-                properties.put("output", new Struct("true"));                    
+                properties.put("output", new TuStruct("true"));                    
                 outputStreams.put(output, properties);
-                return unify(stream, new Struct(output.toString()));
+                return unify(stream, new TuStruct(output.toString()));
             }
             else if(structMode.getName().equals("read")){
                     try {
                         input = new BufferedInputStream(new FileInputStream(in_out.getName()));
                     } catch (Exception e) {
-                        throw PrologError.permission_error(engine.getEngineManager(), "open", "source_sink", source_sink,
-                                new Struct("The source_sink specified by Source_sink cannot be opened."));
+                        throw TuPrologError.permission_error(engine.getEngineManager(), "open", "source_sink", source_sink,
+                                new TuStruct("The source_sink specified by Source_sink cannot be opened."));
                     }
-                    properties.put("input", new Struct("true"));
+                    properties.put("input", new TuStruct("true"));
                     
                     //vedi open_4 per spiegazione
-                    if(((Struct)properties.get("reposition")).getName().equals("true")){
+                    if(((TuStruct)properties.get("reposition")).getName().equals("true")){
                         try {
                             input.mark((input.available())+5);
                         } catch (IOException e) {
                                 // ED 2013-05-21: added to prevent Java warning "resource leak", input not closed
                                 try {input.close();} catch (IOException e2) {
-                                        throw PrologError.system_error(new Struct("An error has occurred in open when closing the input file."));
+                                        throw TuPrologError.system_error(new TuStruct("An error has occurred in open when closing the input file."));
                                 } 
                                 // END ED
-                            throw PrologError.system_error(new Struct("An error has occurred in open."));
+                            throw TuPrologError.system_error(new TuStruct("An error has occurred in open."));
                         }
                     }
                     
                     inputStreams.put(input, properties);
-                    return unify(stream, new Struct(input.toString()));
+                    return unify(stream, new TuStruct(input.toString()));
             }
             else if(structMode.getName().equals("append")){
                 try{
                     output = new BufferedOutputStream(new FileOutputStream(in_out.getName(),true));
                 }
                 catch(Exception e){
-                    throw PrologError.permission_error(engine.getEngineManager(), "open", "source_sink", source_sink,
-                            new Struct("The source_sink specified by Source_sink cannot be opened."));
+                    throw TuPrologError.permission_error(engine.getEngineManager(), "open", "source_sink", source_sink,
+                            new TuStruct("The source_sink specified by Source_sink cannot be opened."));
                 }
-                properties.put("output", new Struct("true"));                    
+                properties.put("output", new TuStruct("true"));                    
                 outputStreams.put(output, properties);
-                return unify(stream, new Struct(output.toString()));
+                return unify(stream, new TuStruct(output.toString()));
             }
             else{
-                throw PrologError.domain_error(engine.getEngineManager(), 1,"stream", in_out);    
+                throw TuPrologError.domain_error(engine.getEngineManager(), 1,"stream", in_out);    
             }
         }
         else{
-            PrologError.system_error(new Struct("A problem has occurred with the initialization of the hashmap properties."));
+            TuPrologError.system_error(new TuStruct("A problem has occurred with the initialization of the hashmap properties."));
             return false;
         }
     }
     
-    public boolean close_2(Term stream_or_alias, Term closeOptions)throws PrologError{
+    public boolean close_2(Term stream_or_alias, Term closeOptions)throws TuPrologError{
         initLibrary();
         //Struct result = null;
         OutputStream out = null;
         InputStream in = null;
         
         boolean force = false;
-        Struct closeOption = (Struct) closeOptions;
+        TuStruct closeOption = (TuStruct) closeOptions;
         
         if(closeOptions.isList()){
             if(!closeOptions.isEmptyList()){
                 Iterator<? extends Term> i = closeOption.listIterator();
                 while(i.hasNext()){
-                    Struct option = null;
+                    TuStruct option = null;
                     Object obj = i.next();
-                    if(obj instanceof Var){
-                        throw PrologError.instantiation_error(engine.getEngineManager(), 4);
+                    if(obj instanceof TuVar){
+                        throw TuPrologError.instantiation_error(engine.getEngineManager(), 4);
                     }
-                    option = (Struct)obj;
+                    option = (TuStruct)obj;
                     if(option.getName().equals("force")){
-                        Struct closeOptionValue = (Struct)option.getArg(0); 
+                        TuStruct closeOptionValue = (TuStruct)option.getArg(0); 
                         force = closeOptionValue.getName().equals("true") ? true : false;
                     }
                     else{
-                        throw PrologError.domain_error(engine.getEngineManager(), 2, "close_option", option);
+                        throw TuPrologError.domain_error(engine.getEngineManager(), 2, "close_option", option);
                     }
                 }
             }
         }
         else{
-            throw PrologError.type_error(engine.getEngineManager(), 4, "list", closeOptions);
+            throw TuPrologError.type_error(engine.getEngineManager(), 4, "list", closeOptions);
         }
         
         //Siccome non so di quale natura ? lo stream, provo a cercarlo sia in inputStreams che
@@ -358,7 +358,7 @@ public class ISOIOLibrary extends Library{
         try{
             in = find_input_stream(stream_or_alias);
         }
-        catch(PrologError p){
+        catch(TuPrologError p){
             out = find_output_stream(stream_or_alias);
         }
         
@@ -385,7 +385,7 @@ public class ISOIOLibrary extends Library{
                     }
                 }    
                 else{//lo stream rimane aperto,avverto che si sono verificati errori
-                    throw PrologError.system_error(new Struct("An error has occurred on stream closure."));
+                    throw TuPrologError.system_error(new TuStruct("An error has occurred on stream closure."));
                 }
             }
         }
@@ -406,7 +406,7 @@ public class ISOIOLibrary extends Library{
                     }
                 }
                 else{
-                    throw PrologError.system_error(new Struct("An error has occurred on stream closure."));
+                    throw TuPrologError.system_error(new TuStruct("An error has occurred on stream closure."));
                 }
             }
             inputStreams.remove(in);
@@ -414,7 +414,7 @@ public class ISOIOLibrary extends Library{
         return true;
     }
     
-    public boolean close_1(Term stream_or_alias)throws PrologError{
+    public boolean close_1(Term stream_or_alias)throws TuPrologError{
         initLibrary();
         //Struct result = null;
         OutputStream out = null;
@@ -423,7 +423,7 @@ public class ISOIOLibrary extends Library{
         try{
             in = find_input_stream(stream_or_alias);
         }
-        catch(PrologError p){
+        catch(TuPrologError p){
             out = find_output_stream(stream_or_alias);
         }
         
@@ -436,7 +436,7 @@ public class ISOIOLibrary extends Library{
             try {
                 out.close();
             } catch (IOException e) {
-                throw PrologError.system_error(new Struct("An error has occurred on stream closure."));
+                throw TuPrologError.system_error(new TuStruct("An error has occurred on stream closure."));
             }
             if(out_name.equals(outputStreamName)){
                 outputStreamName = "stdout";
@@ -452,7 +452,7 @@ public class ISOIOLibrary extends Library{
             try {
                 in.close();
             } catch (IOException e) {
-                throw PrologError.system_error(new Struct("An error has occurred on stream closure."));
+                throw TuPrologError.system_error(new TuStruct("An error has occurred on stream closure."));
             }
             if(in_name.equals(inputStreamName)){
                 inputStreamName = "stdin";
@@ -463,21 +463,21 @@ public class ISOIOLibrary extends Library{
         return true;
     }
     
-    public boolean set_input_1(Term stream_or_alias)throws PrologError{
+    public boolean set_input_1(Term stream_or_alias)throws TuPrologError{
         initLibrary();
         InputStream stream = find_input_stream(stream_or_alias);
         Hashtable<String,Term> entry = inputStreams.get(stream);
-        Struct name = (Struct)entry.get("file_name");
+        TuStruct name = (TuStruct)entry.get("file_name");
         inputStream = stream;
         inputStreamName = name.getName();
         return true;
     }
     
-    public boolean set_output_1(Term stream_or_alias)throws PrologError{
+    public boolean set_output_1(Term stream_or_alias)throws TuPrologError{
         initLibrary();
         OutputStream stream = find_output_stream(stream_or_alias);
         Hashtable<String,Term> entry = outputStreams.get(stream);
-        Struct name = (Struct)entry.get("file_name");
+        TuStruct name = (TuStruct)entry.get("file_name");
         outputStream = stream;
         outputStreamName = name.getName();
         return true;
@@ -485,37 +485,37 @@ public class ISOIOLibrary extends Library{
     
     //funzione integrata con codice Prolog: ricerca, data una proprieta', tutti gli stream
     //che la soddisfano
-    public boolean find_property_2(Term list, Term property)throws PrologError{
+    public boolean find_property_2(Term list, Term property)throws TuPrologError{
         initLibrary();
         if(outputStreams.isEmpty() && inputStreams.isEmpty()){
             return false;
         }
 
-        if(!(list instanceof Var)){
-            throw PrologError.instantiation_error(engine.getEngineManager(), 1);
+        if(!(list instanceof TuVar)){
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         }
         
         property = property.getTerm();
-        Struct prop = (Struct)property;
+        TuStruct prop = (TuStruct)property;
         String propertyName = prop.getName();
-        Struct propertyValue = null;
+        TuStruct propertyValue = null;
         if(!propertyName.equals("input") && !propertyName.equals("output")){
-            propertyValue = (Struct)prop.getArg(0);
+            propertyValue = (TuStruct)prop.getArg(0);
         }
-        List<Struct> resultList = new ArrayList<Struct>(); //object generico perche' sono sia inputStream che outputStream
+        List<TuStruct> resultList = new ArrayList<TuStruct>(); //object generico perche' sono sia inputStream che outputStream
             
         if(propertyName.equals("input")){
             for(Map.Entry<InputStream,Hashtable<String, Term>> stream:inputStreams.entrySet()){
-                resultList.add(new Struct(stream.getKey().toString()));
+                resultList.add(new TuStruct(stream.getKey().toString()));
             }
-            Struct result = new Struct(resultList.toArray(new Struct[1]));
+            TuStruct result = new TuStruct(resultList.toArray(new TuStruct[1]));
             return unify(list,result);
         }
         else if(propertyName.equals("output")){
             for(Map.Entry<OutputStream,Hashtable<String, Term>> stream:outputStreams.entrySet()){
-                resultList.add(new Struct(stream.getKey().toString()));
+                resultList.add(new TuStruct(stream.getKey().toString()));
             }
-            Struct result = new Struct(resultList.toArray(new Struct[1]));
+            TuStruct result = new TuStruct(resultList.toArray(new TuStruct[1]));
             return unify(list,result);
         }
         else{
@@ -523,22 +523,22 @@ public class ISOIOLibrary extends Library{
                 for(Map.Entry<String, Term> currentElement2 : currentElement.getValue().entrySet()){
                     if(currentElement2.getKey().equals(propertyName)){
                         if(propertyName.equals("alias")){
-                            int arity = ((Struct)currentElement2.getValue()).getArity();
+                            int arity = ((TuStruct)currentElement2.getValue()).getArity();
                             if(arity == 0){
                                 if(propertyValue.equals((currentElement2.getValue()))){
-                                    resultList.add(new Struct(currentElement.getKey().toString()));
+                                    resultList.add(new TuStruct(currentElement.getKey().toString()));
                                     break;
                                 }
                             }
                             for(int i = 0; i<arity; i++){
-                                if(propertyValue.equals(((Struct)currentElement2.getValue()).getArg(i))){
-                                    resultList.add(new Struct(currentElement.getKey().toString()));
+                                if(propertyValue.equals(((TuStruct)currentElement2.getValue()).getArg(i))){
+                                    resultList.add(new TuStruct(currentElement.getKey().toString()));
                                     break;
                                 }
                             }
                         }
                         else if(currentElement2.getValue().equals(propertyValue)){
-                            resultList.add(new Struct(currentElement.getKey().toString()));
+                            resultList.add(new TuStruct(currentElement.getKey().toString()));
                         }
                     }
                 }
@@ -548,28 +548,28 @@ public class ISOIOLibrary extends Library{
                 for(Map.Entry<String, Term> currentElement2 : currentElement.getValue().entrySet()){
                     if(currentElement2.getKey().equals(propertyName)){
                         if(propertyName.equals("alias")){
-                                int arity = ((Struct)currentElement2.getValue()).getArity();
+                                int arity = ((TuStruct)currentElement2.getValue()).getArity();
                             if(arity == 0){
                                 if(propertyValue.equals((currentElement2.getValue()))){
-                                    resultList.add(new Struct(currentElement.getKey().toString()));
+                                    resultList.add(new TuStruct(currentElement.getKey().toString()));
                                     break;
                                 }
                             }
                             for(int i = 0; i<arity; i++){
-                                if(propertyValue.equals(((Struct)currentElement2.getValue()).getArg(i))){
-                                    resultList.add(new Struct(currentElement.getKey().toString()));
+                                if(propertyValue.equals(((TuStruct)currentElement2.getValue()).getArg(i))){
+                                    resultList.add(new TuStruct(currentElement.getKey().toString()));
                                     break;
                                 }
                             }
                         }
                         else if(currentElement2.getValue().equals(propertyValue)){
-                            resultList.add(new Struct(currentElement.getKey().toString()));
+                            resultList.add(new TuStruct(currentElement.getKey().toString()));
                         }
                     }
                 }
             }
         } 
-        Struct result = new Struct(resultList.toArray(new Struct[1]));
+        TuStruct result = new TuStruct(resultList.toArray(new TuStruct[1]));
         return unify(list,result);
     }
     
@@ -580,11 +580,11 @@ public class ISOIOLibrary extends Library{
         return  "stream_property(S,P) :- find_property(L,P),member(S,L).\n"; 
     } 
     
-    public boolean at_end_of_stream_0()throws PrologError{
+    public boolean at_end_of_stream_0()throws TuPrologError{
         initLibrary();
         Hashtable<String,Term> entry = inputStreams.get(inputStream);
         Term value = entry.get("end_of_stream");
-        Struct eof = (Struct) value;
+        TuStruct eof = (TuStruct) value;
         if(eof.getName().equals("not")){
             return false;
         }
@@ -593,12 +593,12 @@ public class ISOIOLibrary extends Library{
         }
     }
     
-    public boolean at_end_of_stream_1(Term stream_or_alias) throws PrologError{
+    public boolean at_end_of_stream_1(Term stream_or_alias) throws TuPrologError{
         initLibrary();
         InputStream stream = find_input_stream(stream_or_alias);
         Hashtable<String,Term> entry = inputStreams.get(stream);
         Term value = entry.get("end_of_stream");
-        Struct eof = (Struct) value;
+        TuStruct eof = (TuStruct) value;
         if(eof.getName().equals("not")){
             return false;
         }
@@ -608,28 +608,28 @@ public class ISOIOLibrary extends Library{
     }
     
     //modificare la posizione dello stream se la proprieta' reposition e' true
-    public boolean set_stream_position_2(Term stream_or_alias, Term position)throws PrologError{
+    public boolean set_stream_position_2(Term stream_or_alias, Term position)throws TuPrologError{
         //soltanto per inputStream!
         initLibrary();
         InputStream in = find_input_stream(stream_or_alias);
         Term reposition = null;
         BufferedInputStream buffer = null;
         
-        if(position instanceof Var){
-            throw PrologError.instantiation_error(engine.getEngineManager(), 2);
+        if(position instanceof TuVar){
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
         }
         else{
-            if(!(position instanceof Number)){
-                throw PrologError.domain_error(engine.getEngineManager(), 2, "stream_position", position);
+            if(!(position instanceof TuNumber)){
+                throw TuPrologError.domain_error(engine.getEngineManager(), 2, "stream_position", position);
             }
         }
         
         Hashtable<String,Term> entry = inputStreams.get(in);
         reposition = entry.get("reposition");
             
-        Struct value = (Struct)reposition;
+        TuStruct value = (TuStruct)reposition;
         if(value.getName().equals("false")){
-            throw PrologError.permission_error(engine.getEngineManager(), "reposition", "stream", stream_or_alias, new Struct("Stream has property reposition(false)"));
+            throw TuPrologError.permission_error(engine.getEngineManager(), "reposition", "stream", stream_or_alias, new TuStruct("Stream has property reposition(false)"));
         }
         
         if(in instanceof BufferedInputStream){
@@ -640,75 +640,75 @@ public class ISOIOLibrary extends Library{
             try {                                
                 buffer.reset();
                                 
-                Number n = (Number)position;
+                TuNumber n = (TuNumber)position;
                 long pos = n.longValue();
                 if(pos < 0){
-                    throw PrologError.domain_error(engine.getEngineManager(), 2, "+long", position);
+                    throw TuPrologError.domain_error(engine.getEngineManager(), 2, "+long", position);
                 }
                 
                 int size;
                 size = in.available();
                 
                 if(pos > size){
-                    throw PrologError.system_error(new Struct("Invalid operation. Input position is greater than file size."));
+                    throw TuPrologError.system_error(new TuStruct("Invalid operation. Input position is greater than file size."));
                 }
                 if(pos == size){
-                    entry.put("end_of_file", new Struct("at"));
+                    entry.put("end_of_file", new TuStruct("at"));
                 }
                 
                 buffer.skip(pos);
-                int new_pos = (new Long(pos)).intValue();
-                entry.put("position", new Int(new_pos));
+                int new_pos = (new TuLong(pos)).intValue();
+                entry.put("position", new TuInt(new_pos));
                 inputStreams.put(buffer, entry);
                 
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-                throw PrologError.system_error(new Struct("An error has occurred in method 'set_stream_position'."));
+                throw TuPrologError.system_error(new TuStruct("An error has occurred in method 'set_stream_position'."));
             }
         }
         return true;
     }
     
-    public boolean flush_output_0()throws PrologError{
+    public boolean flush_output_0()throws TuPrologError{
         initLibrary();
         try {
             outputStream.flush();
         } catch (IOException e) {
-            throw PrologError.system_error(new Struct("An error has occurred in method 'flush_output_0'."));
+            throw TuPrologError.system_error(new TuStruct("An error has occurred in method 'flush_output_0'."));
         }
         return true;
     }
     
-    public boolean flush_output_1(Term stream_or_alias) throws PrologError{
+    public boolean flush_output_1(Term stream_or_alias) throws TuPrologError{
         initLibrary();
         OutputStream stream = find_output_stream(stream_or_alias);
         try {
             stream.flush();
         } catch (IOException e) {
-            throw PrologError.system_error(new Struct("An error has occurred in method 'flush_output_1'."));
+            throw TuPrologError.system_error(new TuStruct("An error has occurred in method 'flush_output_1'."));
         }
         return true;
     }
     
-    public boolean get_char_2(Term stream_or_alias, Term arg) throws PrologError{
+    public boolean get_char_2(Term stream_or_alias, Term arg) throws TuPrologError{
         initLibrary();
         InputStream stream = find_input_stream(stream_or_alias);
         Character c = null;
         int value = 0;
         
-        if (!(arg instanceof Var)){
-            throw PrologError.instantiation_error(engine.getEngineManager(), 1);
+        if (!(arg instanceof TuVar)){
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         }
         
         Hashtable<String,Term> element = inputStreams.get(stream);
         
-        Struct struct_name = (Struct) element.get("file_name");
+        TuStruct struct_name = (TuStruct) element.get("file_name");
         String file_name = struct_name.toString();
         
-        Struct type =(Struct) element.get("type");
+        TuStruct type =(TuStruct) element.get("type");
         if(type.getName().equals("binary")){
-            throw PrologError.permission_error(engine.getEngineManager(), "input", "binary_stream", stream_or_alias, new Struct("The target stream is associated with a binary stream."));
+            throw TuPrologError.permission_error(engine.getEngineManager(), "input", "binary_stream", stream_or_alias, new TuStruct("The target stream is associated with a binary stream."));
         }
         
         //se lo stream e' stdin, leggo il carattere esattamente come fa get0 di IOLib
@@ -720,21 +720,21 @@ public class ISOIOLibrary extends Library{
         
         //se e' un file invece devo effettuare tutti i controlli sullo stream.
         try{        
-                Number position  = (Number) (element.get("position"));
-                Struct eof = (Struct) element.get("end_of_stream");
+                TuNumber position  = (TuNumber) (element.get("position"));
+                TuStruct eof = (TuStruct) element.get("end_of_stream");
                 
                 //se e' stata raggiunta la fine del file, controllo ed eseguo l'azione prestabilita nelle opzioni al momento dell'apertura del file.
                 if((eof.getName()).equals("past")){
                         Term actionTemp = element.get("eof_action");
-                        String action = ((Struct)actionTemp).getName();
+                        String action = ((TuStruct)actionTemp).getName();
                         
                         if(action.equals("error"))
-                                throw PrologError.permission_error(engine.getEngineManager(), "input","past_end_of_stream", new Struct("reader"), new Struct("End of file is reached."));
+                                throw TuPrologError.permission_error(engine.getEngineManager(), "input","past_end_of_stream", new TuStruct("reader"), new TuStruct("End of file is reached."));
                 else if(action.equals("eof_code"))
-                        return unify(arg,new Struct("-1"));
+                        return unify(arg,new TuStruct("-1"));
                 else if(action.equals("reset")){
-                        element.put("end_of_stream", new Struct("not"));
-                        element.put("position", new Int(0));
+                        element.put("end_of_stream", new TuStruct("not"));
+                        element.put("position", new TuInt(0));
                         stream.reset();
                     }
                 }
@@ -744,26 +744,26 @@ public class ISOIOLibrary extends Library{
 
                 if(!Character.isDefined(value)){
                     if(value == -1){
-                        element.put("end_of_stream", new Struct("past"));
+                        element.put("end_of_stream", new TuStruct("past"));
                     }
                     else{
-                        throw PrologError.representation_error(engine.getEngineManager(), 2, "character");
+                        throw TuPrologError.representation_error(engine.getEngineManager(), 2, "character");
                     }
                 }
-                Int i = (Int)position;
+                TuInt i = (TuInt)position;
                 int i2 = i.intValue();
                 i2++;
-                element.put("position",new Int(i2));
+                element.put("position",new TuInt(i2));
                 
                 if(value != -1){
                     //vado a controllare il prossimo carattere
                     //se e' fine file, end_of_stream diventa "at"
-                    Var nextChar = new Var();
+                    TuVar nextChar = new TuVar();
                     peek_code_2(stream_or_alias,nextChar);
                     Term nextCharTerm = nextChar.getTerm();
-                    Number nextCharValue = (Number)nextCharTerm;
+                    TuNumber nextCharValue = (TuNumber)nextCharTerm;
                     if(nextCharValue.intValue() == -1){
-                        element.put("end_of_stream", new Struct("at"));
+                        element.put("end_of_stream", new TuStruct("at"));
                     }
                 }
                              
@@ -773,72 +773,72 @@ public class ISOIOLibrary extends Library{
                     return unify(arg, Term.createTerm(value+""));
                 }
                 c = new Character((char)value);
-                return unify(arg,new Struct(c.toString()));
+                return unify(arg,new TuStruct(c.toString()));
         }catch(IOException ioe){
                 ioe.printStackTrace();
-                throw PrologError.system_error(new Struct("An I/O error has occurred"));
+                throw TuPrologError.system_error(new TuStruct("An I/O error has occurred"));
         }
     }
     
-    public boolean get_code_1(Term char_code)throws PrologError{
+    public boolean get_code_1(Term char_code)throws TuPrologError{
         initLibrary();
-        Struct s_or_a = new Struct(inputStream.toString());
+        TuStruct s_or_a = new TuStruct(inputStream.toString());
         return get_code_2(s_or_a,char_code);
     }
     
-    public boolean get_code_2(Term stream_or_alias, Term char_code) throws PrologError{
+    public boolean get_code_2(Term stream_or_alias, Term char_code) throws TuPrologError{
         initLibrary();
         InputStream stream = find_input_stream(stream_or_alias);
         
         int value = 0;
         
-        if (!(char_code instanceof Var)){
-            throw PrologError.instantiation_error(engine.getEngineManager(), 1);
+        if (!(char_code instanceof TuVar)){
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         }
         
         Hashtable<String,Term> element = inputStreams.get(stream);
-        Struct type =(Struct) element.get("type");
+        TuStruct type =(TuStruct) element.get("type");
         if(type.getName().equals("binary")){
-            throw PrologError.permission_error(engine.getEngineManager(), "input", "binary_stream", stream_or_alias, new Struct("The target stream is associated with a binary stream."));
+            throw TuPrologError.permission_error(engine.getEngineManager(), "input", "binary_stream", stream_or_alias, new TuStruct("The target stream is associated with a binary stream."));
         }
         
         //se file_name e' stdin leggo il codice del carattere normalmente
         //senza preoccuparmi di controllare tutte le opzioni dello stream. 
-        Struct struct_name = (Struct) element.get("file_name");
+        TuStruct struct_name = (TuStruct) element.get("file_name");
         String file_name = struct_name.toString();
         if(file_name.equals("stdin")){ 
                         try {
                     value = inputStream.read();
                 } 
                         catch (IOException e) {
-                    throw PrologError.permission_error(engine.getEngineManager(),
-                            "input", "stream", new Struct(inputStreamName), new Struct(
+                    throw TuPrologError.permission_error(engine.getEngineManager(),
+                            "input", "stream", new TuStruct(inputStreamName), new TuStruct(
                                     e.getMessage()));
                 }
                         
                 if (value == -1) {
-                    return unify(char_code, new Int(-1));
+                    return unify(char_code, new TuInt(-1));
                 } else {
-                    return unify(char_code, new Int(value));
+                    return unify(char_code, new TuInt(value));
                 }
         }
         
         //se invece lo stream e' un normale file, devo controllare tutte le opzioni decise in apertura.
         try{    
-                Number position  = (Number) (element.get("position"));
-                Struct eof = (Struct) element.get("end_of_stream");
+                TuNumber position  = (TuNumber) (element.get("position"));
+                TuStruct eof = (TuStruct) element.get("end_of_stream");
                 if(eof.equals("past")){
                     Term actionTemp = element.get("eof_action");
-                    String action = ((Struct)actionTemp).getName();
+                    String action = ((TuStruct)actionTemp).getName();
                     if(action.equals("error")){
-                        throw PrologError.permission_error(engine.getEngineManager(), "input","past_end_of_stream", new Struct("reader"), new Struct("End of file is reached."));
+                        throw TuPrologError.permission_error(engine.getEngineManager(), "input","past_end_of_stream", new TuStruct("reader"), new TuStruct("End of file is reached."));
                     }
                     else if(action.equals("eof_code")){
-                        return unify(char_code,new Struct("-1"));
+                        return unify(char_code,new TuStruct("-1"));
                     }
                     else if(action.equals("reset")){
-                        element.put("end_of_stream", new Struct("not"));
-                        element.put("position", new Int(0));
+                        element.put("end_of_stream", new TuStruct("not"));
+                        element.put("position", new TuInt(0));
                         stream.reset();
                     }
                 }
@@ -847,38 +847,38 @@ public class ISOIOLibrary extends Library{
                     
                 if(!Character.isDefined(value)){
                     if(value == -1){
-                        element.put("end_of_stream", new Struct("past"));
+                        element.put("end_of_stream", new TuStruct("past"));
                     }
                     else{
-                        throw PrologError.representation_error(engine.getEngineManager(), 2, "character");
+                        throw TuPrologError.representation_error(engine.getEngineManager(), 2, "character");
                     }
                 }
-                Int i = (Int)position;
+                TuInt i = (TuInt)position;
                 int i2 = i.intValue();
                 i2++;
-                element.put("position",new Int(i2));
+                element.put("position",new TuInt(i2));
                 
                 if(value != -1){
-                    Var nextChar = new Var();
+                    TuVar nextChar = new TuVar();
                     peek_code_2(stream_or_alias,nextChar);
                     Term nextCharTerm = nextChar.getTerm();
-                    Number nextCharValue = (Number)nextCharTerm;
+                    TuNumber nextCharValue = (TuNumber)nextCharTerm;
                     if(nextCharValue.intValue() == -1){
-                        element.put("end_of_stream", new Struct("at"));
+                        element.put("end_of_stream", new TuStruct("at"));
                     }
                 }
 
                 inputStreams.put(stream, element);
-                return unify(char_code,new Int(value));
+                return unify(char_code,new TuInt(value));
         }catch(IOException ioe){
                 ioe.printStackTrace();
-                throw PrologError.system_error(new Struct("An I/O error has occurred."));
+                throw TuPrologError.system_error(new TuStruct("An I/O error has occurred."));
         }
     }
     
-    public boolean peek_char_1(Term in_char)throws PrologError{
+    public boolean peek_char_1(Term in_char)throws TuPrologError{
         initLibrary();
-        Struct s_or_a = new Struct(inputStream.toString());
+        TuStruct s_or_a = new TuStruct(inputStream.toString());
         if(inputStreamName.equals("stdin")){
             inputStream.mark(5);
             boolean var = get_char_2(s_or_a,in_char);
@@ -887,7 +887,7 @@ public class ISOIOLibrary extends Library{
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                     e.printStackTrace();
-                PrologError.system_error(new Struct("An error has occurred in peek_char_1."));
+                TuPrologError.system_error(new TuStruct("An error has occurred in peek_char_1."));
             }
             return var;
         }
@@ -896,12 +896,12 @@ public class ISOIOLibrary extends Library{
         }
     }
     
-    public boolean peek_char_2(Term stream_or_alias, Term in_char)throws PrologError{
+    public boolean peek_char_2(Term stream_or_alias, Term in_char)throws TuPrologError{
         //come la get_char soltanto non cambio la posizione di lettura
         initLibrary();
         InputStream stream = find_input_stream(stream_or_alias);
         Hashtable<String,Term> element = inputStreams.get(stream);
-        String file_name = ((Struct)element.get("file_name")).getName();
+        String file_name = ((TuStruct)element.get("file_name")).getName();
         
         if(file_name.equals("stdin")){
                 return get_char_2(stream_or_alias,in_char);
@@ -912,39 +912,39 @@ public class ISOIOLibrary extends Library{
             stream2 = new FileInputStream(file_name);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            PrologError.system_error(new Struct("File not found."));
+            TuPrologError.system_error(new TuStruct("File not found."));
         }
         Character c = null;
         int value = 0;
         
-        if (!(in_char instanceof Var)){
-            throw PrologError.instantiation_error(engine.getEngineManager(), 1);
+        if (!(in_char instanceof TuVar)){
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         }
-        Struct type =(Struct) element.get("type");
+        TuStruct type =(TuStruct) element.get("type");
         if(type.getName().equals("binary")){
-            throw PrologError.permission_error(engine.getEngineManager(), "input", "binary_stream", stream_or_alias, new Struct("Target stream is associated with a binary stream."));
+            throw TuPrologError.permission_error(engine.getEngineManager(), "input", "binary_stream", stream_or_alias, new TuStruct("Target stream is associated with a binary stream."));
         }
         
         try{
-                Number position  = (Number) (element.get("position"));
-                Struct eof = (Struct) element.get("end_of_stream");
+                TuNumber position  = (TuNumber) (element.get("position"));
+                TuStruct eof = (TuStruct) element.get("end_of_stream");
                 if(eof.equals("past")){
                     Term actionTemp = element.get("eof_action");
-                    String action = ((Struct)actionTemp).getName();
+                    String action = ((TuStruct)actionTemp).getName();
                     if(action.equals("error")){
-                        throw PrologError.permission_error(engine.getEngineManager(), "input","past_end_of_stream", new Struct("reader"), new Struct("End of file has been reached."));
+                        throw TuPrologError.permission_error(engine.getEngineManager(), "input","past_end_of_stream", new TuStruct("reader"), new TuStruct("End of file has been reached."));
                     }
                     else if(action.equals("eof_code")){
-                        return unify(in_char,new Struct("-1"));
+                        return unify(in_char,new TuStruct("-1"));
                     }
                     else if(action.equals("reset")){
-                        element.put("end_of_stream", new Struct("not"));
-                        element.put("position", new Int(0));
+                        element.put("end_of_stream", new TuStruct("not"));
+                        element.put("position", new TuInt(0));
                         stream.reset();
                     }
                 }
                 else{
-                    Int i = (Int)position;
+                    TuInt i = (TuInt)position;
                     long nBytes = i.longValue();
                     stream2.skip(nBytes);
                     value = stream2.read();
@@ -953,7 +953,7 @@ public class ISOIOLibrary extends Library{
                 }
                 if(!Character.isDefined(value)&& value != -1){     //non devo nemmeno settare a eof la propriet? perch? la posizone
                                                 //dello stream deve rimanere inalterata.
-                    throw PrologError.representation_error(engine.getEngineManager(), 2, "character");
+                    throw TuPrologError.representation_error(engine.getEngineManager(), 2, "character");
                 }
                 inputStreams.put(stream, element);
                 
@@ -965,13 +965,13 @@ public class ISOIOLibrary extends Library{
                 return unify(in_char,Term.createTerm(c.toString()));
         }catch(IOException ioe){
                 ioe.printStackTrace();
-                throw PrologError.system_error(new Struct("An I/O error has occurred."));
+                throw TuPrologError.system_error(new TuStruct("An I/O error has occurred."));
         }
     }
     
-    public boolean peek_code_1(Term char_code)throws PrologError{
+    public boolean peek_code_1(Term char_code)throws TuPrologError{
         initLibrary();
-        Struct stream = new Struct(inputStream.toString());
+        TuStruct stream = new TuStruct(inputStream.toString());
         if(inputStreamName.equals("stdin")){
             inputStream.mark(5);
             boolean var = get_code_2(stream,char_code);
@@ -980,7 +980,7 @@ public class ISOIOLibrary extends Library{
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-                PrologError.system_error(new Struct("An error has occurred in peek_code_1."));
+                TuPrologError.system_error(new TuStruct("An error has occurred in peek_code_1."));
             }
             return var;
         }
@@ -989,12 +989,12 @@ public class ISOIOLibrary extends Library{
         }
     }
     
-    public boolean peek_code_2(Term stream_or_alias, Term char_code)throws PrologError{
+    public boolean peek_code_2(Term stream_or_alias, Term char_code)throws TuPrologError{
         initLibrary();
         //come la get_char soltanto non cambio la posizione di lettura
         InputStream stream = find_input_stream(stream_or_alias);
         Hashtable<String,Term> element = inputStreams.get(stream);
-        String file_name = ((Struct)element.get("file_name")).getName();
+        String file_name = ((TuStruct)element.get("file_name")).getName();
         
         FileInputStream stream2=null;
         try {
@@ -1002,38 +1002,38 @@ public class ISOIOLibrary extends Library{
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            PrologError.system_error(new Struct("File not found."));
+            TuPrologError.system_error(new TuStruct("File not found."));
         }
         int value = 0;
         
-        if (!(char_code instanceof Var)){
-            throw PrologError.instantiation_error(engine.getEngineManager(), 1);
+        if (!(char_code instanceof TuVar)){
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         }
-        Struct type =(Struct) element.get("type");
+        TuStruct type =(TuStruct) element.get("type");
         if(type.getName().equals("binary")){
-            throw PrologError.permission_error(engine.getEngineManager(), "input", "binary_stream", stream_or_alias, new Struct("Target stream is associated with a binary stream."));
+            throw TuPrologError.permission_error(engine.getEngineManager(), "input", "binary_stream", stream_or_alias, new TuStruct("Target stream is associated with a binary stream."));
         }
         
         try{
-                Number position  = (Number) (element.get("position"));
-                Struct eof = (Struct) element.get("end_of_stream");
+                TuNumber position  = (TuNumber) (element.get("position"));
+                TuStruct eof = (TuStruct) element.get("end_of_stream");
                 if(eof.equals("past")){
                     Term actionTemp = element.get("eof_action");
-                    String action = ((Struct)actionTemp).getName();
+                    String action = ((TuStruct)actionTemp).getName();
                     if(action.equals("error")){
-                        throw PrologError.permission_error(engine.getEngineManager(), "input","past_end_of_stream", new Struct("reader"), new Struct("End of file is reached."));
+                        throw TuPrologError.permission_error(engine.getEngineManager(), "input","past_end_of_stream", new TuStruct("reader"), new TuStruct("End of file is reached."));
                     }
                     else if(action.equals("eof_code")){
-                        return unify(char_code,new Struct("-1"));
+                        return unify(char_code,new TuStruct("-1"));
                     }
                     else if(action.equals("reset")){
-                        element.put("end_of_stream", new Struct("not"));
-                        element.put("position", new Int(0));
+                        element.put("end_of_stream", new TuStruct("not"));
+                        element.put("position", new TuInt(0));
                         stream.reset();
                     }
                 }
                 else{
-                    Int i = (Int)position;
+                    TuInt i = (TuInt)position;
                     long nBytes = i.longValue();
                     stream2.skip(nBytes);
                     value = stream2.read();
@@ -1041,41 +1041,41 @@ public class ISOIOLibrary extends Library{
                 }
                 if(!Character.isDefined(value) && value != -1){     //non devo nemmeno settare a eof la proprieta' perche' la posizone
                                                                                         //dello stream deve rimanere inalterata.
-                    throw PrologError.representation_error(engine.getEngineManager(), 2, "character");
+                    throw TuPrologError.representation_error(engine.getEngineManager(), 2, "character");
                 }
                 inputStreams.put(stream, element);
-                return unify(char_code,new Int(value));
+                return unify(char_code,new TuInt(value));
         }catch(IOException ioe){
                 ioe.printStackTrace();
-                throw PrologError.system_error(new Struct("An I/O error has occurred."));
+                throw TuPrologError.system_error(new TuStruct("An I/O error has occurred."));
         }
     }
     
-    public boolean put_char_2(Term stream_or_alias, Term in_char)throws PrologError{
+    public boolean put_char_2(Term stream_or_alias, Term in_char)throws TuPrologError{
         initLibrary();
         OutputStream stream = find_output_stream(stream_or_alias);
         String stream_name = get_output_name(stream);
         
         Hashtable<String,Term> element = outputStreams.get(stream);
-        Struct type =(Struct) element.get("type");
+        TuStruct type =(TuStruct) element.get("type");
         if(type.getName().equals("binary")){
-            throw PrologError.permission_error(engine.getEngineManager(), "input", "binary_stream", stream_or_alias, new Struct("Target stream is associated with a binary stream."));
+            throw TuPrologError.permission_error(engine.getEngineManager(), "input", "binary_stream", stream_or_alias, new TuStruct("Target stream is associated with a binary stream."));
         }
         
-        Struct arg0 = (Struct) in_char.getTerm();
+        TuStruct arg0 = (TuStruct) in_char.getTerm();
         
         if(arg0.isVar())
-            throw PrologError.instantiation_error(engine.getEngineManager(), 2);
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
         else if (!arg0.isAtom()) {
-            throw PrologError.type_error(engine.getEngineManager(), 2, "character", arg0);
+            throw TuPrologError.type_error(engine.getEngineManager(), 2, "character", arg0);
         } 
         else {            
             String ch = arg0.getName();
             if(!(Character.isDefined(ch.charAt(0)))){
-                throw PrologError.representation_error(engine.getEngineManager(), 2, "character");
+                throw TuPrologError.representation_error(engine.getEngineManager(), 2, "character");
             }
             if (ch.length() > 1) {
-                throw PrologError.type_error(engine.getEngineManager(), 2, "character", new Struct(ch));
+                throw TuPrologError.type_error(engine.getEngineManager(), 2, "character", new TuStruct(ch));
             } else {
                 if (stream_name.equals("stdout")) {
                     getEngine().stdOutput(ch);
@@ -1084,7 +1084,7 @@ public class ISOIOLibrary extends Library{
                         stream.write((byte) ch.charAt(0));
                     }catch(IOException ioe){
                         ioe.printStackTrace();
-                        throw PrologError.system_error(new Struct("An I/O error has occurred."));
+                        throw TuPrologError.system_error(new TuStruct("An I/O error has occurred."));
                     }
                 }
                 return true;
@@ -1092,34 +1092,34 @@ public class ISOIOLibrary extends Library{
         }
     }
     
-    public boolean put_code_1(Term char_code)throws PrologError{
+    public boolean put_code_1(Term char_code)throws TuPrologError{
         initLibrary();
-        Struct stream = new Struct(outputStream.toString());
+        TuStruct stream = new TuStruct(outputStream.toString());
         return put_code_2(stream,char_code);
     }
     
-    public boolean put_code_2(Term stream_or_alias, Term char_code) throws PrologError{
+    public boolean put_code_2(Term stream_or_alias, Term char_code) throws TuPrologError{
         initLibrary();
         OutputStream stream = find_output_stream(stream_or_alias);
         String stream_name = get_output_name(stream);
         
         Hashtable<String,Term> element = outputStreams.get(stream);
-        Struct type =(Struct) element.get("type");
+        TuStruct type =(TuStruct) element.get("type");
         if(type.getName().equals("binary")){
-            throw PrologError.permission_error(engine.getEngineManager(), "input", "binary_stream", stream_or_alias, new Struct("Target stream is associated with a binary stream."));
+            throw TuPrologError.permission_error(engine.getEngineManager(), "input", "binary_stream", stream_or_alias, new TuStruct("Target stream is associated with a binary stream."));
         }
         
-        Number arg0 = (Number) char_code.getTerm();
+        TuNumber arg0 = (TuNumber) char_code.getTerm();
         
         if(arg0.isVar()){
-            throw PrologError.instantiation_error(engine.getEngineManager(), 2);
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
         }
         else if (!arg0.isNumber()) {
-            throw PrologError.type_error(engine.getEngineManager(), 2, "character", arg0);
+            throw TuPrologError.type_error(engine.getEngineManager(), 2, "character", arg0);
         } 
         else {
                 if(Character.isDefined(arg0.intValue())){
-                    throw PrologError.representation_error(engine.getEngineManager(), 2, "character_code");
+                    throw TuPrologError.representation_error(engine.getEngineManager(), 2, "character_code");
                 }
                 if (stream_name.equals("stdout")) {
                     getEngine().stdOutput(""+arg0.intValue());
@@ -1128,14 +1128,14 @@ public class ISOIOLibrary extends Library{
                         stream.write(arg0.intValue());
                     }catch(IOException ioe){
                         ioe.printStackTrace();
-                        throw PrologError.system_error(new Struct("An I/O error has occurred."));
+                        throw TuPrologError.system_error(new TuStruct("An I/O error has occurred."));
                     }
                 }
         }
         return true;
     }
     
-    public boolean nl_1(Term stream_or_alias)throws PrologError{
+    public boolean nl_1(Term stream_or_alias)throws TuPrologError{
         initLibrary();
         OutputStream stream = find_output_stream(stream_or_alias);
         String stream_name = get_output_name(stream);
@@ -1145,54 +1145,54 @@ public class ISOIOLibrary extends Library{
             try {
                 stream.write('\n');
             } catch (IOException e) {
-                throw PrologError.permission_error(engine.getEngineManager(),
-                        "output", "stream", new Struct(outputStreamName),
-                        new Struct(e.getMessage()));
+                throw TuPrologError.permission_error(engine.getEngineManager(),
+                        "output", "stream", new TuStruct(outputStreamName),
+                        new TuStruct(e.getMessage()));
             }
         }
         return true;
     }
     
-    public boolean get_byte_1(Term in_byte) throws PrologError{
+    public boolean get_byte_1(Term in_byte) throws TuPrologError{
         //non faccio la stessa struttura della get_char perch? stdin e stdout sono type=text e non posso fare la get_byte su di loro
         //lo stesso vale per tutti gli altri predicati
         initLibrary();
-        Struct stream_or_alias = new Struct(inputStream.toString());
+        TuStruct stream_or_alias = new TuStruct(inputStream.toString());
         return get_byte_2(stream_or_alias,in_byte);
     }
     
-    public boolean get_byte_2(Term stream_or_alias, Term in_byte)throws PrologError{
+    public boolean get_byte_2(Term stream_or_alias, Term in_byte)throws TuPrologError{
         initLibrary();
         InputStream stream = find_input_stream(stream_or_alias);
         Byte b = null;
         Hashtable<String,Term> element = inputStreams.get(stream);
-        Struct type =(Struct) element.get("type");
+        TuStruct type =(TuStruct) element.get("type");
         if(type.getName().equals("text")){
-            throw PrologError.permission_error(engine.getEngineManager(), "input", "text_stream", stream_or_alias, new Struct("Target stream is associated with a text stream."));
+            throw TuPrologError.permission_error(engine.getEngineManager(), "input", "text_stream", stream_or_alias, new TuStruct("Target stream is associated with a text stream."));
         }
         
-        if (!(in_byte instanceof Var))
-            throw PrologError.instantiation_error(engine.getEngineManager(), 1);
+        if (!(in_byte instanceof TuVar))
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         
         try{
             DataInputStream reader = new DataInputStream(stream);
-            Number position  = (Number) (element.get("position"));
-            Int i = (Int)position;
+            TuNumber position  = (TuNumber) (element.get("position"));
+            TuInt i = (TuInt)position;
             int i2 = i.intValue();
             reader.skipBytes(i2-1);
-            Struct eof = (Struct) element.get("end_of_stream");
+            TuStruct eof = (TuStruct) element.get("end_of_stream");
             if(eof.equals("past")){
                 Term actionTemp = element.get("eof_action");
-                String action = ((Struct)actionTemp).getName();
+                String action = ((TuStruct)actionTemp).getName();
                 if(action.equals("error")){
-                    throw PrologError.permission_error(engine.getEngineManager(), "input","past_end_of_stream", new Struct("reader"), new Struct("End of file is reached."));
+                    throw TuPrologError.permission_error(engine.getEngineManager(), "input","past_end_of_stream", new TuStruct("reader"), new TuStruct("End of file is reached."));
                 }
                 else if(action.equals("eof_code")){
-                    return unify(in_byte,new Struct("-1"));
+                    return unify(in_byte,new TuStruct("-1"));
                 }
                 else if(action.equals("reset")){
-                    element.put("end_of_stream", new Struct("not"));
-                    element.put("position", new Int(0));
+                    element.put("end_of_stream", new TuStruct("not"));
+                    element.put("position", new TuInt(0));
                     reader.reset();
                 }
                     
@@ -1201,15 +1201,15 @@ public class ISOIOLibrary extends Library{
             b = reader.readByte();
                         
             i2++; //incremento la posizione dello stream
-            element.put("position",new Int(i2));
+            element.put("position",new TuInt(i2));
             
             //if(b != -1){
-                Var nextByte = new Var();
+                TuVar nextByte = new TuVar();
                 peek_byte_2(stream_or_alias,nextByte);
                 Term nextByteTerm = nextByte.getTerm();
-                Number nextByteValue = (Number)nextByteTerm;
+                TuNumber nextByteValue = (TuNumber)nextByteTerm;
                 if(nextByteValue.intValue() == -1){
-                    element.put("end_of_stream", new Struct("at"));
+                    element.put("end_of_stream", new TuStruct("at"));
                 }
             //}
             
@@ -1217,49 +1217,49 @@ public class ISOIOLibrary extends Library{
             return unify(in_byte,Term.createTerm(b.toString()));
         }
         catch(IOException ioe){
-            element.put("end_of_stream", new Struct("past"));
+            element.put("end_of_stream", new TuStruct("past"));
             return unify(in_byte, Term.createTerm("-1"));
         }
     }
     
-    public boolean peek_byte_1(Term in_byte)throws PrologError{
+    public boolean peek_byte_1(Term in_byte)throws TuPrologError{
         initLibrary();
-        Struct stream_or_alias = new Struct(inputStream.toString());
+        TuStruct stream_or_alias = new TuStruct(inputStream.toString());
         return peek_char_2(stream_or_alias,in_byte);
     }
     
-    public boolean peek_byte_2(Term stream_or_alias, Term in_byte)throws PrologError{
+    public boolean peek_byte_2(Term stream_or_alias, Term in_byte)throws TuPrologError{
         initLibrary();
         InputStream stream = find_input_stream(stream_or_alias);
         Byte b = null;
         Hashtable<String,Term> element = inputStreams.get(stream);
-        Struct type =(Struct) element.get("type");
+        TuStruct type =(TuStruct) element.get("type");
         if(type.getName().equals("text")){
-            throw PrologError.permission_error(engine.getEngineManager(), "input", "text_stream", stream_or_alias, new Struct("Target stream is associated with a text stream."));
+            throw TuPrologError.permission_error(engine.getEngineManager(), "input", "text_stream", stream_or_alias, new TuStruct("Target stream is associated with a text stream."));
         }
         
-        if (!(in_byte instanceof Var))
-            throw PrologError.instantiation_error(engine.getEngineManager(), 1);
+        if (!(in_byte instanceof TuVar))
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         
         try{
             DataInputStream reader = new DataInputStream(stream);
-            Number position  = (Number) (element.get("position"));
-            Int i = (Int)position;
+            TuNumber position  = (TuNumber) (element.get("position"));
+            TuInt i = (TuInt)position;
             int i2 = i.intValue();
             reader.skipBytes(i2-2);
-            Struct eof = (Struct) element.get("end_of_stream");
+            TuStruct eof = (TuStruct) element.get("end_of_stream");
             if(eof.equals("past")){
                 Term actionTemp = element.get("eof_action");
-                String action = ((Struct)actionTemp).getName();
+                String action = ((TuStruct)actionTemp).getName();
                 if(action.equals("error")){
-                    throw PrologError.permission_error(engine.getEngineManager(), "input","past_end_of_stream", new Struct("reader"), new Struct("End of file is reached."));
+                    throw TuPrologError.permission_error(engine.getEngineManager(), "input","past_end_of_stream", new TuStruct("reader"), new TuStruct("End of file is reached."));
                 }
                 else if(action.equals("eof_code")){
-                    return unify(in_byte,new Struct("-1"));
+                    return unify(in_byte,new TuStruct("-1"));
                 }
                 else if(action.equals("reset")){
-                    element.put("end_of_stream", new Struct("not"));
-                    element.put("position", new Int(0));
+                    element.put("end_of_stream", new TuStruct("not"));
+                    element.put("position", new TuInt(0));
                     reader.reset();
                 }
                     
@@ -1272,12 +1272,12 @@ public class ISOIOLibrary extends Library{
             return unify(in_byte,Term.createTerm(b.toString()));
         }
         catch(IOException e){
-            element.put("end_of_stream", new Struct("past"));
+            element.put("end_of_stream", new TuStruct("past"));
             return unify(in_byte, Term.createTerm("-1"));
         }
     }
     
-    public boolean put_byte_1(Term out_byte)throws PrologError{
+    public boolean put_byte_1(Term out_byte)throws TuPrologError{
 //        //richiamo il metodo di IOLibrary che lavora sullo stream corrente
 //        //la posso utilizzare cosi' com'e' in quanto presenta gia' tutti i controlli sul parametro arg richiesti
 //        initLibrary();
@@ -1285,25 +1285,25 @@ public class ISOIOLibrary extends Library{
 //        return IOLib.put_1(out_byte);
         
         initLibrary();
-        Struct stream_or_alias = new Struct(outputStream.toString());
+        TuStruct stream_or_alias = new TuStruct(outputStream.toString());
         return put_byte_2(stream_or_alias, out_byte);
         
     }
     
-    public boolean put_byte_2(Term stream_or_alias, Term out_byte)throws PrologError{
+    public boolean put_byte_2(Term stream_or_alias, Term out_byte)throws TuPrologError{
         initLibrary();
         OutputStream stream = find_output_stream(stream_or_alias);
         out_byte = out_byte.getTerm();
-        Number b = (Number)out_byte.getTerm();
+        TuNumber b = (TuNumber)out_byte.getTerm();
         
         Hashtable<String,Term> element = outputStreams.get(stream);
-        Struct type =(Struct) element.get("type");
+        TuStruct type =(TuStruct) element.get("type");
         if(type.getName().equals("text")){
-            throw PrologError.permission_error(engine.getEngineManager(), "output", "text_stream", stream_or_alias, new Struct("Target stream is associated with a text stream."));
+            throw TuPrologError.permission_error(engine.getEngineManager(), "output", "text_stream", stream_or_alias, new TuStruct("Target stream is associated with a text stream."));
         }
         
-        if (out_byte instanceof Var)
-            throw PrologError.instantiation_error(engine.getEngineManager(), 1);
+        if (out_byte instanceof TuVar)
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         
         if (stream.equals("stdout")) {
                         //lo standard output non e' uno stream binario, 
@@ -1313,68 +1313,68 @@ public class ISOIOLibrary extends Library{
         else {
                try {
                    DataOutputStream writer = new DataOutputStream(stream);
-                    Number position  = (Number) (element.get("position"));
-                    Int i = (Int)position;
+                    TuNumber position  = (TuNumber) (element.get("position"));
+                    TuInt i = (TuInt)position;
                     int i2 = i.intValue();
                     
                     writer.writeByte(b.intValue());
                     
                     i2++;
-                    element.put("position",new Int(i2));
+                    element.put("position",new TuInt(i2));
                     outputStreams.put(stream, element);
                 } 
                 catch (IOException e) {
-                    throw PrologError.permission_error(engine.getEngineManager(), "output", "stream",new Struct(outputStreamName), new Struct(e.getMessage()));
+                    throw TuPrologError.permission_error(engine.getEngineManager(), "output", "stream",new TuStruct(outputStreamName), new TuStruct(e.getMessage()));
                 }
             }
             return true;
     }
     
-    public boolean read_term_2(Term in_term, Term options)throws PrologError{
+    public boolean read_term_2(Term in_term, Term options)throws TuPrologError{
         initLibrary();
-        Struct stream_or_alias = new Struct(inputStream.toString());
+        TuStruct stream_or_alias = new TuStruct(inputStream.toString());
         return read_term_3(stream_or_alias,in_term,options);
     }
     
-    public boolean read_term_3(Term stream_or_alias, Term in_term, Term options)throws PrologError{
+    public boolean read_term_3(Term stream_or_alias, Term in_term, Term options)throws TuPrologError{
         initLibrary();
         InputStream stream = find_input_stream(stream_or_alias);
                 
-        if(options instanceof Var){
-            throw PrologError.instantiation_error(engine.getEngineManager(), 3); 
+        if(options instanceof TuVar){
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 3); 
         }
         
         Hashtable<String,Term> element = inputStreams.get(stream);
-        Struct type =(Struct) element.get("type");
-        Struct eof = (Struct) element.get("end_of_stream");
-        Struct action = (Struct) element.get("eof_action");
-        Number position = (Number) element.get("position");
+        TuStruct type =(TuStruct) element.get("type");
+        TuStruct eof = (TuStruct) element.get("end_of_stream");
+        TuStruct action = (TuStruct) element.get("eof_action");
+        TuNumber position = (TuNumber) element.get("position");
         if(type.getName().equals("binary")){
-            throw PrologError.permission_error(engine.getEngineManager(), "input", "binary_stream", stream_or_alias, new Struct("Target stream is associated with a binary stream."));
+            throw TuPrologError.permission_error(engine.getEngineManager(), "input", "binary_stream", stream_or_alias, new TuStruct("Target stream is associated with a binary stream."));
         }
         if((eof.getName()).equals("past") && (action.getName()).equals("error")){
-            throw PrologError.permission_error(engine.getEngineManager(), "past_end_of_stream", "stream", stream_or_alias, new Struct("Target stream has position at past_end_of_stream"));
+            throw TuPrologError.permission_error(engine.getEngineManager(), "past_end_of_stream", "stream", stream_or_alias, new TuStruct("Target stream has position at past_end_of_stream"));
         }
         
-        Struct variables = null;
-        Struct variable_names = null;
-        Struct singletons = null;
+        TuStruct variables = null;
+        TuStruct variable_names = null;
+        TuStruct singletons = null;
         
         boolean variables_bool=false;
         boolean variable_names_bool=false;
         boolean singletons_bool=false;
         
-        Struct readOptions = (Struct)options; 
+        TuStruct readOptions = (TuStruct)options; 
         if(readOptions.isList()){
             if(!readOptions.isEmptyList()){
                 Iterator<? extends Term> i = readOptions.listIterator();
                 while(i.hasNext()){
-                    Struct option = null;
+                    TuStruct option = null;
                     Object obj = i.next();
-                    if(obj instanceof Var){
-                        throw PrologError.instantiation_error(engine.getEngineManager(), 3);
+                    if(obj instanceof TuVar){
+                        throw TuPrologError.instantiation_error(engine.getEngineManager(), 3);
                     }                    
-                    option = (Struct)obj;
+                    option = (TuStruct)obj;
                     if(option.getName().equals("variables")){
                         variables_bool=true;
                     }
@@ -1385,13 +1385,13 @@ public class ISOIOLibrary extends Library{
                         singletons_bool=true;
                     }
                     else{
-                        PrologError.domain_error(engine.getEngineManager(), 3, "read_option", option);
+                        TuPrologError.domain_error(engine.getEngineManager(), 3, "read_option", option);
                     }
                 }
             }
         }
         else{
-            throw PrologError.type_error(engine.getEngineManager(), 3, "list", options);
+            throw TuPrologError.type_error(engine.getEngineManager(), 3, "list", options);
         }
         
         try {
@@ -1434,14 +1434,14 @@ public class ISOIOLibrary extends Library{
                 }
             } while (true);
             
-            Int p = (Int)position;
+            TuInt p = (TuInt)position;
             int p2 = p.intValue();
             p2 += (st.getBytes()).length;
             
             if(ch == -1){
                 st = "-1";
-                element.put("end_of_stream",new Struct("past"));
-                element.put("position",new Int(p2));
+                element.put("end_of_stream",new TuStruct("past"));
+                element.put("position",new TuInt(p2));
                 inputStreams.put(stream, element);
                 return unify(in_term,Term.createTerm(st));
             }
@@ -1449,7 +1449,7 @@ public class ISOIOLibrary extends Library{
             if(variables_bool == false && variable_names_bool == false && singletons_bool == false){
                 return unify(in_term, getEngine().toTerm(st));
             }
-            Var input_term = new Var();
+            TuVar input_term = new TuVar();
             unify(input_term,Term.createTerm(st));
                     
             //opzione variables + variables_name
@@ -1464,7 +1464,7 @@ public class ISOIOLibrary extends Library{
             Hashtable<Term,String> association_for_replace = new Hashtable<Term,String>(variables_list.size());
             
             LinkedHashSet<Term> set = new LinkedHashSet<Term>(variables_list);
-            List<Var> vars = new ArrayList<Var>();
+            List<TuVar> vars = new ArrayList<TuVar>();
 
             if(variables_bool == true){
                 int num = 0;
@@ -1476,7 +1476,7 @@ public class ISOIOLibrary extends Library{
                             associations_table.put(t, "X"+num);
                         }
                     }
-                    vars.add(new Var("X"+num));
+                    vars.add(new TuVar("X"+num));
                 }
             }
                         
@@ -1504,23 +1504,23 @@ public class ISOIOLibrary extends Library{
                         
             //unisco le liste con i relativi termini
             Iterator<? extends Term> i = readOptions.listIterator();
-            Struct option = null;
+            TuStruct option = null;
             while(i.hasNext()){
                 Object obj = i.next();
-                option = (Struct)obj;
+                option = (TuStruct)obj;
                 if(option.getName().equals("variables")){
-                    variables = new Struct();
-                    variables = (Struct) Term.createTerm(vars.toString());
+                    variables = new TuStruct();
+                    variables = (TuStruct) Term.createTerm(vars.toString());
                     unify(option.getArg(0),variables);
                 }
                 else if(option.getName().equals("variable_name")){
-                    variable_names = new Struct();
-                    variable_names = (Struct)Term.createTerm(associations_table.toString());
+                    variable_names = new TuStruct();
+                    variable_names = (TuStruct)Term.createTerm(associations_table.toString());
                     unify(option.getArg(0),variable_names);
                 }
                 else if(option.getName().equals("singletons")){
-                    singletons = new Struct();
-                    singletons = (Struct)Term.createTerm(singl.toString());
+                    singletons = new TuStruct();
+                    singletons = (TuStruct)Term.createTerm(singl.toString());
                     unify(option.getArg(0),singletons);
                 }
             }
@@ -1534,7 +1534,7 @@ public class ISOIOLibrary extends Library{
             }
             
             //vado a modificare la posizione di lettura
-            element.put("position",new Int(p2));
+            element.put("position",new TuInt(p2));
             inputStreams.put(stream, element); 
             return unify(in_term, getEngine().toTerm(string_term));
         } catch (Exception ex){
@@ -1547,42 +1547,42 @@ public class ISOIOLibrary extends Library{
             variables.add(t);
         }
         else{
-            Struct term_struct = (Struct)t.getTerm();
+            TuStruct term_struct = (TuStruct)t.getTerm();
             for(int i = 0;i<term_struct.getArity();i++){
                 analize_term(variables,term_struct.getArg(i));
             }
         }
     }
     
-    public boolean read_2(Term stream_or_alias, Term in_term)throws PrologError{
+    public boolean read_2(Term stream_or_alias, Term in_term)throws TuPrologError{
         initLibrary();
-        Struct options = new Struct(".",new Struct());
+        TuStruct options = new TuStruct(".",new TuStruct());
         return read_term_3(stream_or_alias,in_term,options);
     }
     
-    public boolean write_term_2(Term out_term, Term options)throws PrologError{
+    public boolean write_term_2(Term out_term, Term options)throws TuPrologError{
         initLibrary();
-        Struct stream_or_alias = new Struct(outputStream.toString());
+        TuStruct stream_or_alias = new TuStruct(outputStream.toString());
         return write_term_3(stream_or_alias,out_term,options);
     }
     
-    public boolean write_term_3(Term stream_or_alias, Term out_term, Term optionsTerm)throws PrologError{
+    public boolean write_term_3(Term stream_or_alias, Term out_term, Term optionsTerm)throws TuPrologError{
         initLibrary();
         out_term = out_term.getTerm();
                 
         OutputStream output = find_output_stream(stream_or_alias);
         String output_name = get_output_name(output);
-        Struct writeOptionsList = (Struct)optionsTerm.getTerm(); 
+        TuStruct writeOptionsList = (TuStruct)optionsTerm.getTerm(); 
         
         boolean quoted = false;
         boolean ignore_ops = false;
         boolean numbervars = false;
-        Struct writeOption = null;
+        TuStruct writeOption = null;
         
         Hashtable<String,Term> element = outputStreams.get(output);
-        Struct type =(Struct) element.get("type");
+        TuStruct type =(TuStruct) element.get("type");
         if(type.getName().equals("binary")){
-            throw PrologError.permission_error(engine.getEngineManager(), "output", "binary_stream", stream_or_alias, new Struct("Target stream is associated with a binary stream."));
+            throw TuPrologError.permission_error(engine.getEngineManager(), "output", "binary_stream", stream_or_alias, new TuStruct("Target stream is associated with a binary stream."));
         }
         
         if(writeOptionsList.isList()){
@@ -1592,30 +1592,30 @@ public class ISOIOLibrary extends Library{
                     //siccome queste opzioni sono true o false analizzo direttamente il loro valore
                     //e restituisco il loro valore all'interno dell'opzione corrispondente
                     Object obj = i.next();
-                    if(obj instanceof Var){
-                        throw PrologError.instantiation_error(engine.getEngineManager(), 3);
+                    if(obj instanceof TuVar){
+                        throw TuPrologError.instantiation_error(engine.getEngineManager(), 3);
                     }
-                    writeOption = (Struct)obj;
+                    writeOption = (TuStruct)obj;
                     if(writeOption.getName().equals("quoted")){
-                        quoted = ((Struct) writeOption.getArg(0)).getName().equals("true")? true:false;
+                        quoted = ((TuStruct) writeOption.getArg(0)).getName().equals("true")? true:false;
                     }
                     else if(writeOption.getName().equals("ignore_ops")){
-                        ignore_ops =((Struct) writeOption.getArg(0)).getName().equals("true")? true:false;
+                        ignore_ops =((TuStruct) writeOption.getArg(0)).getName().equals("true")? true:false;
                     }
                     else if(writeOption.getName().equals("numbervars")){
-                        numbervars = ((Struct) writeOption.getArg(0)).getName().equals("true")? true:false;
+                        numbervars = ((TuStruct) writeOption.getArg(0)).getName().equals("true")? true:false;
                     }
                     else{
-                        throw PrologError.domain_error(engine.getEngineManager(), 3, "write_options", writeOptionsList.getTerm());
+                        throw TuPrologError.domain_error(engine.getEngineManager(), 3, "write_options", writeOptionsList.getTerm());
                     }
                 }
             }
         }
         else{
-            PrologError.type_error(engine.getEngineManager(), 3, "list", writeOptionsList);
+            TuPrologError.type_error(engine.getEngineManager(), 3, "list", writeOptionsList);
         }
         try{
-            if(!out_term.isCompound() && !(out_term instanceof Var)){
+            if(!out_term.isCompound() && !(out_term instanceof TuVar)){
                  
                 if (output_name.equals("stdout")) {
                      if(quoted == true){ //per scrivere sull'output devo richiamare l'output dell'Engine nel caso di stdio,
@@ -1640,7 +1640,7 @@ public class ISOIOLibrary extends Library{
             }
             
             
-            if(out_term instanceof Var){
+            if(out_term instanceof TuVar){
                 
                 if (output_name.equals("stdout")) {
                     if(quoted == true){ 
@@ -1662,7 +1662,7 @@ public class ISOIOLibrary extends Library{
                return true;
             }
             
-            Struct term = (Struct)out_term;
+            TuStruct term = (TuStruct)out_term;
             String result = "";
             Hashtable<String,Boolean> options = new Hashtable<String,Boolean>(3);
             options.put("numbervars", numbervars);
@@ -1680,12 +1680,12 @@ public class ISOIOLibrary extends Library{
             
         }
         catch(IOException ioe){
-            PrologError.system_error(new Struct("Write error has occurred in write_term/3."));
+            TuPrologError.system_error(new TuStruct("Write error has occurred in write_term/3."));
         }
         return true;
     }
     
-    private String create_string(Hashtable<String,Boolean> options, Struct term){
+    private String create_string(Hashtable<String,Boolean> options, TuStruct term){
         
         boolean numbervars = options.get("numbervars");
         boolean quoted = options.get("quoted");
@@ -1701,10 +1701,10 @@ public class ISOIOLibrary extends Library{
                 return list;
         }
                 
-        List<Operator> operatorList = engine.getCurrentOperatorList();
+        List<TuOperator> operatorList = engine.getCurrentOperatorList();
         String operator = "";
         int flagOp = 0;
-        for(Operator op : operatorList){
+        for(TuOperator op : operatorList){
             if(op.name.equals(term.getName())){
                 operator = op.name;
                 flagOp = 1;
@@ -1721,11 +1721,11 @@ public class ISOIOLibrary extends Library{
             if(i > 0 && flagOp==0)
                 result += ",";
             Term arg = term.getArg(i);
-            if(arg instanceof Number){
+            if(arg instanceof TuNumber){
                 if(term.getName().contains("$VAR")){
                 //sono nel tipo $VAR
                     if(numbervars == true){
-                        Int argNumber = (Int)term.getArg(i);
+                        TuInt argNumber = (TuInt)term.getArg(i);
                         int res = argNumber.intValue() % 26;
                         int div = argNumber.intValue()/26;
                         Character ch = 'A';
@@ -1760,7 +1760,7 @@ public class ISOIOLibrary extends Library{
                     }
                 }
             }
-            else if(arg instanceof Var){
+            else if(arg instanceof TuVar){
             // stampo il toString della variabile
                 if(ignore_ops == false){
                     result+= arg.toString();
@@ -1776,14 +1776,14 @@ public class ISOIOLibrary extends Library{
             }
             else if(arg.isCompound()){
                 if(ignore_ops == false){
-                    result+= create_string(options,(Struct)arg);
+                    result+= create_string(options,(TuStruct)arg);
                     if(i%2 == 0 && operator != ""){
                         result +=" "+operator+" ";
                     }
                     continue;
                 }
                 else{
-                    result+= create_string(options,(Struct)arg);
+                    result+= create_string(options,(TuStruct)arg);
                 }
                 
             }
@@ -1823,7 +1823,7 @@ public class ISOIOLibrary extends Library{
     }
     
 
-    private String print_list(Struct term, Hashtable<String, Boolean> options) {
+    private String print_list(TuStruct term, Hashtable<String, Boolean> options) {
         
         //boolean numbervars = options.get("numbervars");
         //boolean quoted = options.get("quoted");
@@ -1838,7 +1838,7 @@ public class ISOIOLibrary extends Library{
                     result+=",";
                 }
                 if(term.getArg(i).isList() && !(term.getArg(i).isEmptyList())){
-                    result += print_list((Struct)term.getArg(i),options);
+                    result += print_list((TuStruct)term.getArg(i),options);
                 }
                 else{
                     result += term.getArg(i);
@@ -1852,12 +1852,12 @@ public class ISOIOLibrary extends Library{
                     result+=",";
                 }
                 if((term.getArg(i)).isCompound() && !(term.getArg(i).isList())){
-                    result += create_string(options,(Struct)term.getArg(i));
+                    result += create_string(options,(TuStruct)term.getArg(i));
                 }
                 else{
                     //costruito cosi' per un problema di rappresentazione delle []
                     if((term.getArg(i).isList()) && !(term.getArg(i).isEmptyList()))
-                        result+=print_list((Struct)term.getArg(i),options);
+                        result+=print_list((TuStruct)term.getArg(i),options);
                     else{
                         if(!(term.getArg(i).isEmptyList()))
                             result+= term.getArg(i).toString();
@@ -1869,15 +1869,15 @@ public class ISOIOLibrary extends Library{
         }
     }
 
-    public boolean write_2(Term stream_or_alias, Term out_term) throws PrologError{
+    public boolean write_2(Term stream_or_alias, Term out_term) throws TuPrologError{
         initLibrary();
-        Struct options = new Struct(".",new Struct("quoted",new Struct("false")),
-                new Struct(".",new Struct("ignore_ops",new Struct("false")),
-                new Struct(".",new Struct("numbervars",new Struct("true")),new Struct())));
+        TuStruct options = new TuStruct(".",new TuStruct("quoted",new TuStruct("false")),
+                new TuStruct(".",new TuStruct("ignore_ops",new TuStruct("false")),
+                new TuStruct(".",new TuStruct("numbervars",new TuStruct("true")),new TuStruct())));
         return write_term_3(stream_or_alias,out_term,options);
     }
     
-    public boolean write_1(Term out_term) throws PrologError{
+    public boolean write_1(Term out_term) throws TuPrologError{
         if(write_flag == 0){
             return write_iso_1(out_term);
         }
@@ -1886,46 +1886,46 @@ public class ISOIOLibrary extends Library{
         }
     }
     
-    public boolean write_iso_1(Term out_term) throws PrologError{
+    public boolean write_iso_1(Term out_term) throws TuPrologError{
         initLibrary();
-        Struct stream_or_alias = new Struct(outputStream.toString());
-        Struct options = new Struct(".",new Struct("quoted",new Struct("false")),
-                new Struct(".",new Struct("ignore_ops",new Struct("false")),
-                new Struct(".",new Struct("numbervars",new Struct("true")),new Struct())));
+        TuStruct stream_or_alias = new TuStruct(outputStream.toString());
+        TuStruct options = new TuStruct(".",new TuStruct("quoted",new TuStruct("false")),
+                new TuStruct(".",new TuStruct("ignore_ops",new TuStruct("false")),
+                new TuStruct(".",new TuStruct("numbervars",new TuStruct("true")),new TuStruct())));
         return write_term_3(stream_or_alias,out_term,options);
     }
     
-    public boolean writeq_1(Term out_term)throws PrologError{
+    public boolean writeq_1(Term out_term)throws TuPrologError{
         initLibrary();
-        Struct stream_or_alias = new Struct(outputStream.toString());
-        Struct options = new Struct(".",new Struct("quoted",new Struct("true")),
-                    new Struct(".",new Struct("ignore_ops",new Struct("false")),
-                    new Struct(".",new Struct("numbervars",new Struct("true")),new Struct())));
+        TuStruct stream_or_alias = new TuStruct(outputStream.toString());
+        TuStruct options = new TuStruct(".",new TuStruct("quoted",new TuStruct("true")),
+                    new TuStruct(".",new TuStruct("ignore_ops",new TuStruct("false")),
+                    new TuStruct(".",new TuStruct("numbervars",new TuStruct("true")),new TuStruct())));
         return write_term_3(stream_or_alias,out_term,options);
     }
     
-    public boolean writeq_2(Term stream_or_alias, Term out_term) throws PrologError{
+    public boolean writeq_2(Term stream_or_alias, Term out_term) throws TuPrologError{
         initLibrary();
-        Struct options = new Struct(".",new Struct("quoted",new Struct("true")),
-                new Struct(".",new Struct("ignore_ops",new Struct("false")),
-                new Struct(".",new Struct("numbervars",new Struct("true")),new Struct())));
+        TuStruct options = new TuStruct(".",new TuStruct("quoted",new TuStruct("true")),
+                new TuStruct(".",new TuStruct("ignore_ops",new TuStruct("false")),
+                new TuStruct(".",new TuStruct("numbervars",new TuStruct("true")),new TuStruct())));
         return write_term_3(stream_or_alias,out_term,options);
     }
     
-    public boolean write_canonical_1(Term out_term) throws PrologError{
+    public boolean write_canonical_1(Term out_term) throws TuPrologError{
         initLibrary();
-        Struct stream_or_alias = new Struct(outputStream.toString());
-        Struct options = new Struct(".",new Struct("quoted",new Struct("true")),
-                new Struct(".",new Struct("ignore_ops",new Struct("true")),
-                new Struct(".",new Struct("numbervars",new Struct("false")),new Struct())));
+        TuStruct stream_or_alias = new TuStruct(outputStream.toString());
+        TuStruct options = new TuStruct(".",new TuStruct("quoted",new TuStruct("true")),
+                new TuStruct(".",new TuStruct("ignore_ops",new TuStruct("true")),
+                new TuStruct(".",new TuStruct("numbervars",new TuStruct("false")),new TuStruct())));
         return write_term_3(stream_or_alias,out_term,options);
     }
     
-    public boolean write_canonical_2(Term stream_or_alias, Term out_term)throws PrologError{
+    public boolean write_canonical_2(Term stream_or_alias, Term out_term)throws TuPrologError{
         initLibrary();
-        Struct options = new Struct(".",new Struct("quoted",new Struct("true")),
-                new Struct(".",new Struct("ignore_ops",new Struct("true")),
-                new Struct(".",new Struct("numbervars",new Struct("false")),new Struct())));
+        TuStruct options = new TuStruct(".",new TuStruct("quoted",new TuStruct("true")),
+                new TuStruct(".",new TuStruct("ignore_ops",new TuStruct("true")),
+                new TuStruct(".",new TuStruct("numbervars",new TuStruct("false")),new TuStruct())));
         return write_term_3(stream_or_alias,out_term,options);
     }
     
@@ -1934,7 +1934,7 @@ public class ISOIOLibrary extends Library{
         if(flag == 1)
             return;
         
-        Library library=null;
+        TuLibrary library=null;
         
         library = engine.getLibrary("alice.tuprolog.lib.IOLibrary");
         if(library == null){
@@ -1943,7 +1943,7 @@ public class ISOIOLibrary extends Library{
             } catch (InvalidLibraryException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-                PrologError.system_error(new Struct("IOLibrary does not exists."));
+                TuPrologError.system_error(new TuStruct("IOLibrary does not exists."));
             }
         }
         
@@ -1957,21 +1957,21 @@ public class ISOIOLibrary extends Library{
         //inserisco anche stdin e stdout all'interno dell'hashtable con le sue propriet?
         Hashtable<String, Term> propertyInput = new Hashtable<String, Term>(10);
         inizialize_properties(propertyInput);
-        propertyInput.put("input", new Struct("true"));
-        propertyInput.put("mode", new Struct("read"));
-        propertyInput.put("alias", new Struct("user_input"));
+        propertyInput.put("input", new TuStruct("true"));
+        propertyInput.put("mode", new TuStruct("read"));
+        propertyInput.put("alias", new TuStruct("user_input"));
         //per essere coerente con la rappresentazione in IOLibrary dove stdin ? inputStreamName
-        propertyInput.put("file_name", new Struct("stdin"));
-        propertyInput.put("eof_action", new Struct("reset"));
-        propertyInput.put("type", new Struct("text"));
+        propertyInput.put("file_name", new TuStruct("stdin"));
+        propertyInput.put("eof_action", new TuStruct("reset"));
+        propertyInput.put("type", new TuStruct("text"));
         Hashtable<String, Term> propertyOutput = new Hashtable<String, Term>(10);
         inizialize_properties(propertyOutput);
-        propertyOutput.put("output", new Struct("true"));
-        propertyOutput.put("mode", new Struct("append"));
-        propertyOutput.put("alias", new Struct("user_output"));
-        propertyOutput.put("eof_action", new Struct("reset"));
-        propertyOutput.put("file_name", new Struct("stdout"));
-        propertyOutput.put("type", new Struct("text"));
+        propertyOutput.put("output", new TuStruct("true"));
+        propertyOutput.put("mode", new TuStruct("append"));
+        propertyOutput.put("alias", new TuStruct("user_output"));
+        propertyOutput.put("eof_action", new TuStruct("reset"));
+        propertyOutput.put("file_name", new TuStruct("stdout"));
+        propertyOutput.put("type", new TuStruct("text"));
         inputStreams.put(inputStream,propertyInput);
         outputStreams.put(outputStream,propertyOutput);    
         
@@ -1980,16 +1980,16 @@ public class ISOIOLibrary extends Library{
     
     //serve per inizializzare la hashmap delle propriet?
     private boolean inizialize_properties(Hashtable<String,Term> map){
-        Struct s = new Struct();
+        TuStruct s = new TuStruct();
         map.put("file_name", s);
         map.put("mode", s);
-        map.put("input", new Struct("false"));
-        map.put("output", new Struct("false"));
+        map.put("input", new TuStruct("false"));
+        map.put("output", new TuStruct("false"));
         map.put("alias", s);
-        map.put("position", new Int(0));
-        map.put("end_of_stream", new Struct("not"));
-        map.put("eof_action", new Struct("error"));
-        map.put("reposition", new Struct("false"));
+        map.put("position", new TuInt(0));
+        map.put("end_of_stream", new TuStruct("not"));
+        map.put("eof_action", new TuStruct("error"));
+        map.put("reposition", new TuStruct("false"));
         map.put("type", s);
         return true;
     }
@@ -1998,15 +1998,15 @@ public class ISOIOLibrary extends Library{
     //funzioni ausiliarie per effettuare controlli sugli stream in ingresso e per
     //restituire lo stream aperto che sto cercando
     
-    private InputStream find_input_stream(Term stream_or_alias) throws PrologError{
+    private InputStream find_input_stream(Term stream_or_alias) throws TuPrologError{
         int flag = 0;
         InputStream result = null;
         stream_or_alias = stream_or_alias.getTerm();
-        Struct stream = (Struct)stream_or_alias;
+        TuStruct stream = (TuStruct)stream_or_alias;
         String stream_name = stream.getName();
         
-        if (stream_or_alias instanceof Var) { //controlla che non sia una variabile
-            throw PrologError.instantiation_error(engine.getEngineManager(), 1);
+        if (stream_or_alias instanceof TuVar) { //controlla che non sia una variabile
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         }
         
         //Il nome del file che viene passato in input potrebbe essere il nome del file oppure il suo alias
@@ -2029,7 +2029,7 @@ public class ISOIOLibrary extends Library{
                 } 
                 //se mi viene passato un alias lo cerco e restituisco lo stream associato.
                 else if(currentElement2.getKey().equals("alias")){ 
-                        Struct alias = (Struct)currentElement2.getValue();
+                        TuStruct alias = (TuStruct)currentElement2.getValue();
                     int arity = alias.getArity();
                     //Ci posso essere anche piu' di un alias associti a quello stream, percio' devo controllare l'arita'
                     //della struttura che contiene tutti gli alias.
@@ -2058,25 +2058,25 @@ public class ISOIOLibrary extends Library{
         //Siccome gli stream di input o output possono essere invocati anche come "stdin" e "stdout"
         //faccio un controllo anche su quei nomi.
         if(stream_name.contains("Output") || stream_name.equals("stdout"))
-                throw PrologError.permission_error(engine.getEngineManager(), "output", "stream", stream_or_alias, new Struct("S_or_a is an output stream"));
+                throw TuPrologError.permission_error(engine.getEngineManager(), "output", "stream", stream_or_alias, new TuStruct("S_or_a is an output stream"));
 
         if(flag == 0)
             //se lo stream non si trova all'interno della hashtable, significa che non ? mai stato aperto
-                throw PrologError.existence_error(engine.getEngineManager(), 1, "stream", stream_or_alias, new Struct("Input stream should be opened."));
+                throw TuPrologError.existence_error(engine.getEngineManager(), 1, "stream", stream_or_alias, new TuStruct("Input stream should be opened."));
         
         return result;
     }
     
     //stessa funzione di find_input_stream, ma sugli stream di output
-    private OutputStream find_output_stream(Term stream_or_alias)throws PrologError{    
+    private OutputStream find_output_stream(Term stream_or_alias)throws TuPrologError{    
         int flag = 0;
         OutputStream result = null;
         stream_or_alias = stream_or_alias.getTerm();
-        Struct stream = (Struct)stream_or_alias;
+        TuStruct stream = (TuStruct)stream_or_alias;
         String stream_name = stream.getName();
         
-        if (stream_or_alias instanceof Var) {
-            throw PrologError.instantiation_error(engine.getEngineManager(), 1);
+        if (stream_or_alias instanceof TuVar) {
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         }
         
         for(Map.Entry<OutputStream, Hashtable<String, Term>> currentElement : outputStreams.entrySet()){
@@ -2097,7 +2097,7 @@ public class ISOIOLibrary extends Library{
                 
                 //se mi viene passato un alias lo cerco e restituisco lo stream associato.
                 else if(currentElement2.getKey().equals("alias")){ 
-                        Struct alias = (Struct)currentElement2.getValue();
+                        TuStruct alias = (TuStruct)currentElement2.getValue();
                     int arity = alias.getArity();
                     //Ci posso essere anche piu' di un alias associti a quello stream, percio' devo controllare l'arita'
                     //della struttura che contiene tutti gli alias.
@@ -2123,11 +2123,11 @@ public class ISOIOLibrary extends Library{
         }
         
         if(stream_name.contains("Input") || stream_name.equals("stdin"))
-                throw PrologError.permission_error(engine.getEngineManager(), "input", "stream", stream_or_alias, new Struct("S_or_a is an input stream."));
+                throw TuPrologError.permission_error(engine.getEngineManager(), "input", "stream", stream_or_alias, new TuStruct("S_or_a is an input stream."));
 
         if(flag == 0)
             //se lo stream non si trova all'interno della hashtable, significa che non ? mai stato aperto
-                throw PrologError.existence_error(engine.getEngineManager(), 1, "stream", stream_or_alias, new Struct("Output stream should be opened."));
+                throw TuPrologError.existence_error(engine.getEngineManager(), 1, "stream", stream_or_alias, new TuStruct("Output stream should be opened."));
         
         return result;
     }
@@ -2147,7 +2147,7 @@ public class ISOIOLibrary extends Library{
                 break;
             }
         }
-        Struct returnElement = (Struct)file_name;
+        TuStruct returnElement = (TuStruct)file_name;
         return returnElement.getName();
     }
     
@@ -2161,12 +2161,12 @@ public class ISOIOLibrary extends Library{
                 break;
             }
         }
-        Struct returnElement = (Struct)file_name;
+        TuStruct returnElement = (TuStruct)file_name;
         return returnElement.getName();
     }
     
-    public boolean set_write_flag_1(Term number) throws PrologError{
-        Number n = (Number)number;
+    public boolean set_write_flag_1(Term number) throws TuPrologError{
+        TuNumber n = (TuNumber)number;
         if(n.intValue() == 1){
             write_flag = 1;
             return true;
@@ -2176,7 +2176,7 @@ public class ISOIOLibrary extends Library{
             return true;
         }
         else{
-            throw PrologError.domain_error(engine.getEngineManager(), 1, "0-1", number);
+            throw TuPrologError.domain_error(engine.getEngineManager(), 1, "0-1", number);
         }
     }
 }

@@ -8,7 +8,7 @@ import javax.swing.event.ChangeListener;
 
 import org.fife.ui.autocomplete.CompletionProvider;
 
-import alice.tuprolog.Prolog;
+import alice.tuprolog.TuProlog;
 
 import java.awt.event.*;
 import java.awt.*;
@@ -21,7 +21,7 @@ public class TheoryTabbedPane
 {
     private static final long serialVersionUID = 1L;
 
-    private Prolog engine;
+    private TuProlog engine;
 
     private ToolBar toolBar;
     private TheoryEditor editor;
@@ -56,7 +56,7 @@ public class TheoryTabbedPane
         super.addTab(FileName, new CloseTabIcon(extraIcon), component);
     }
 
-    public void setEngine(Prolog engine)
+    public void setEngine(TuProlog engine)
     {
         this.engine = engine;
     }

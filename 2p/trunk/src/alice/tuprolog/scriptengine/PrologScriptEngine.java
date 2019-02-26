@@ -23,11 +23,11 @@ import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.MalformedGoalException;
 import alice.tuprolog.NoMoreSolutionException;
 import alice.tuprolog.NoSolutionException;
-import alice.tuprolog.Prolog;
+import alice.tuprolog.TuProlog;
 import alice.tuprolog.SolveInfo;
-import alice.tuprolog.Struct;
-import alice.tuprolog.Theory;
-import alice.tuprolog.Var;
+import alice.tuprolog.TuStruct;
+import alice.tuprolog.TuTheory;
+import alice.tuprolog.TuVar;
 import alice.tuprolog.event.ExceptionEvent;
 import alice.tuprolog.event.ExceptionListener;
 import alice.tuprolog.event.OutputEvent;
@@ -55,7 +55,7 @@ public class PrologScriptEngine implements ScriptEngine, ExceptionListener, Outp
     public static final String HAS_OPEN_ALTERNATIVES = "hasOpenAlternatives";
     
     // Solution variables bound during the last call of eval(..)
-    protected List<Var> solveVars;
+    protected List<TuVar> solveVars;
     
     // The last evaluated script
     protected String previousScript;
@@ -68,13 +68,13 @@ public class PrologScriptEngine implements ScriptEngine, ExceptionListener, Outp
     protected ScriptContext defaultContext;
     
     /* And instance of prolog used to solve the given scripts */
-    protected Prolog prolog;
+    protected TuProlog prolog;
     
     /* Current Standard Output and Error */
     protected Writer outputWriter, errorWriter;
     
     public PrologScriptEngine() {
-        prolog = new Prolog();
+        prolog = new TuProlog();
         prolog.addExceptionListener(this);
         prolog.addOutputListener(this);
 
@@ -170,7 +170,7 @@ public class PrologScriptEngine implements ScriptEngine, ExceptionListener, Outp
         if(ooLib != null) {
             for(Map.Entry<String, Object> keyPair: bindings.entrySet()) {
                 try {
-                    ooLib.register(new Struct(keyPair.getKey()), keyPair.getValue());
+                    ooLib.register(new TuStruct(keyPair.getKey()), keyPair.getValue());
                 }
                 catch(InvalidObjectIdException ex) {
                     throw new ScriptException("Could not register object(" + keyPair.getKey() + "): " + ex.getMessage());
@@ -184,7 +184,7 @@ public class PrologScriptEngine implements ScriptEngine, ExceptionListener, Outp
                 useSolveNext = false;
             
             if(theory != null)
-                prolog.setTheory(new Theory(theory));
+                prolog.setTheory(new TuTheory(theory));
             
             if(useSolveNext)
                 info = prolog.solveNext();
@@ -194,7 +194,7 @@ public class PrologScriptEngine implements ScriptEngine, ExceptionListener, Outp
             previousScript = script;
             
             if(solveVars != null)
-	            for(Var v : solveVars) 
+	            for(TuVar v : solveVars) 
 	                bindings.remove(v.getName());
 
             bindings.put(IS_SUCCESS, info.isSuccess());
@@ -203,7 +203,7 @@ public class PrologScriptEngine implements ScriptEngine, ExceptionListener, Outp
             
             if(info.isSuccess()) {
                 solveVars = info.getBindingVars();
-                for(Var v : solveVars)            
+                for(TuVar v : solveVars)            
                     bindings.put(v.getName(), v.getTerm().toString());             
             }
             

@@ -23,7 +23,7 @@ public class PrologMetaClass {
     //private PrologClass _annotation;
     private PrologMetaField[] _fields;
     private PrologMetaMethod[] _methods;
-    private Theory _theory;
+    private TxTheory _theory;
     
     /** Creates a new instance of MetaPrologClass */
     public PrologMetaClass(Class<?> cl) {
@@ -71,7 +71,7 @@ public class PrologMetaClass {
             }
             cl = cl.getSuperclass(); 
         }                
-        _theory = new Theory(theory);		                
+        _theory = new TxTheory(theory);		                
     }
     
     public PrologMetaField[] getPrologFields() {
@@ -99,11 +99,11 @@ public class PrologMetaClass {
         return null;
     }
     
-    public Theory getTheory() {
+    public TxTheory getTheory() {
         return _theory;
     }
     
-    public void setTheory(Theory t) {
+    public void setTheory(TxTheory t) {
         _theory = t;
         for (PrologMetaMethod pmm : getPrologMethods()) {//refresh methods that rely upon this theory
             pmm.initClauses();

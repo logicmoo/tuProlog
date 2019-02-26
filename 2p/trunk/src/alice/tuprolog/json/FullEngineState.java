@@ -3,7 +3,7 @@ package alice.tuprolog.json;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import alice.tuprolog.Operator;
+import alice.tuprolog.TuOperator;
 import alice.tuprolog.Term;
 
 //Alberto
@@ -17,7 +17,7 @@ public class FullEngineState extends AbstractEngineState {
 	
 	private String dynTheory;
 	
-	private LinkedList<Operator> op;
+	private LinkedList<TuOperator> op;
 	
 	@Override
 	public void setQuery(Term query) {
@@ -83,11 +83,11 @@ public class FullEngineState extends AbstractEngineState {
 		return this.dynTheory;
 	}
 
-	public LinkedList<Operator> getOp() {
+	public LinkedList<TuOperator> getOp() {
 		return op;
 	}
 
-	public void setOp(LinkedList<Operator> list) {
+	public void setOp(LinkedList<TuOperator> list) {
 		this.op = list;
 	}
 

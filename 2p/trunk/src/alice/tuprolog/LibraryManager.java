@@ -23,10 +23,10 @@ public class LibraryManager
 {
 
 	/* dynamically loaded built-in libraries */
-	private ArrayList<Library> currentLibraries;
+	private ArrayList<TuLibrary> currentLibraries;
 
 	/*  */
-	private Prolog prolog;
+	private TuProlog prolog;
 	private TheoryManager theoryManager;
 	private PrimitiveManager primitiveManager;
 	private Hashtable<String, URL> externalLibraries = new Hashtable<String, URL>();
@@ -41,13 +41,13 @@ public class LibraryManager
 
 	LibraryManager()
 	{
-		currentLibraries = new ArrayList<Library>();
+		currentLibraries = new ArrayList<TuLibrary>();
 	}
 
 	/**
 	 * Config this Manager
 	 */
-	void initialize(Prolog vm)
+	void initialize(TuProlog vm)
 	{
 		prolog = vm;
 		theoryManager = vm.getTheoryManager();
@@ -66,15 +66,15 @@ public class LibraryManager
 	 * @throws InvalidLibraryException
 	 *             if name is not a valid library
 	 */
-	public synchronized Library loadLibrary(String className)
+	public synchronized TuLibrary loadLibrary(String className)
 			throws InvalidLibraryException
 	{
-		Library lib = null;
+		TuLibrary lib = null;
 		try
 		{
-			lib = (Library) Class.forName(className).newInstance();
+			lib = (TuLibrary) Class.forName(className).newInstance();
 			String name = lib.getName();
-			Library alib = getLibrary(name);
+			TuLibrary alib = getLibrary(name);
 			if (alib != null)
 			{
 				if (prolog.isWarning())
@@ -110,10 +110,10 @@ public class LibraryManager
 	 * @throws InvalidLibraryException
 	 *             if name is not a valid library
 	 */
-	public synchronized Library loadLibrary(String className, String[] paths)
+	public synchronized TuLibrary loadLibrary(String className, String[] paths)
 			throws InvalidLibraryException
 	{
-		Library lib = null;
+		TuLibrary lib = null;
 		URL[] urls = null;
 		ClassLoader loader = null;
 		String dexPath;
@@ -156,7 +156,7 @@ public class LibraryManager
 				loader = (ClassLoader) Class.forName("dalvik.system.DexClassLoader")
 											.getConstructor(String.class, String.class, String.class, ClassLoader.class)
 											.newInstance(dexPath, this.getOptimizedDirectory(), null, getClass().getClassLoader());
-				lib = (Library) Class.forName(className, true, loader).newInstance();
+				lib = (TuLibrary) Class.forName(className, true, loader).newInstance();
 			} else
 			{
 				urls = new URL[paths.length];
@@ -174,7 +174,7 @@ public class LibraryManager
 				{
 					loader = URLClassLoader.newInstance(urls, getClass()
 							.getClassLoader());
-					lib = (Library) Class.forName(className, true, loader)
+					lib = (TuLibrary) Class.forName(className, true, loader)
 							.newInstance();
 				} else
 				// .NET
@@ -190,7 +190,7 @@ public class LibraryManager
 						{
 							asm = Assembly.LoadFrom(paths[i]);
 							loader = new AssemblyCustomClassLoader(asm, urls);
-							lib = (Library) Class.forName(className, true, loader).newInstance();
+							lib = (TuLibrary) Class.forName(className, true, loader).newInstance();
 							if (lib != null)
 							{
 								classFound = true;
@@ -208,7 +208,7 @@ public class LibraryManager
 			}
 
 			String name = lib.getName();
-			Library alib = getLibrary(name);
+			TuLibrary alib = getLibrary(name);
 			if (alib != null)
 			{
 				if (prolog.isWarning())
@@ -269,11 +269,11 @@ public class LibraryManager
 	 * @throws InvalidLibraryException
 	 *             if name is not a valid library
 	 */
-	public synchronized void loadLibrary(Library lib)
+	public synchronized void loadLibrary(TuLibrary lib)
 			throws InvalidLibraryException
 	{
 		String name = lib.getName();
-		Library alib = getLibrary(name);
+		TuLibrary alib = getLibrary(name);
 		if (alib != null)
 		{
 			if (prolog.isWarning())
@@ -315,10 +315,10 @@ public class LibraryManager
 			throws InvalidLibraryException
 	{
 		boolean found = false;
-		Iterator<Library> it = currentLibraries.listIterator();
+		Iterator<TuLibrary> it = currentLibraries.listIterator();
 		while (it.hasNext())
 		{
-			Library lib = it.next();
+			TuLibrary lib = it.next();
 			if (lib.getName().equals(name))
 			{
 				found = true;
@@ -349,7 +349,7 @@ public class LibraryManager
 	 * @throws InvalidLibraryException
 	 *             if name is not a valid library
 	 */
-	private Library bindLibrary(Library lib) throws InvalidLibraryException
+	private TuLibrary bindLibrary(TuLibrary lib) throws InvalidLibraryException
 	{
 		try
 		{
@@ -362,7 +362,7 @@ public class LibraryManager
 			String th = lib.getTheory();
 			if (th != null)
 			{
-				theoryManager.consult(new Theory(th), false, name);
+				theoryManager.consult(new TuTheory(th), false, name);
 				theoryManager.solveTheoryGoal();
 			}
 			// in current theory there could be predicates and functors
@@ -391,9 +391,9 @@ public class LibraryManager
 	 * @return the reference to the library loaded, null if the library is not
 	 *         found
 	 */
-	public synchronized Library getLibrary(String name)
+	public synchronized TuLibrary getLibrary(String name)
 	{
-		for (Library alib : currentLibraries)
+		for (TuLibrary alib : currentLibraries)
 		{
 			if (alib.getName().equals(name))
 			{
@@ -405,7 +405,7 @@ public class LibraryManager
 
 	public synchronized void onSolveBegin(Term g)
 	{
-		for (Library alib : currentLibraries)
+		for (TuLibrary alib : currentLibraries)
 		{
 			alib.onSolveBegin(g);
 		}
@@ -413,7 +413,7 @@ public class LibraryManager
 
 	public synchronized void onSolveHalt()
 	{
-		for (Library alib : currentLibraries)
+		for (TuLibrary alib : currentLibraries)
 		{
 			alib.onSolveHalt();
 		}
@@ -421,7 +421,7 @@ public class LibraryManager
 
 	public synchronized void onSolveEnd()
 	{
-		for (Library alib : currentLibraries)
+		for (TuLibrary alib : currentLibraries)
 		{
 			alib.onSolveEnd();
 		}

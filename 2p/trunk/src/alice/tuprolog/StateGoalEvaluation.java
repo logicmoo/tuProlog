@@ -36,7 +36,7 @@ public class StateGoalEvaluation extends State {
 	 * @see alice.tuprolog.AbstractRunState#doJob()
 	 */
 	@Override
-	void doJob(Engine e) {
+	void doJob(TuEngine e) {
 		if (e.currentContext.currentGoal.isPrimitive()) {
 			// Recupero primitiva
 			PrimitiveInfo primitive = e.currentContext.currentGoal
@@ -49,12 +49,12 @@ public class StateGoalEvaluation extends State {
 				e.nextState = c.END_HALT;
 			} catch (Throwable t) {
 
-				if (t instanceof PrologError) {
+				if (t instanceof TuPrologError) {
 					// cast da Throwable a PrologError
-					PrologError error = (PrologError) t;
+					TuPrologError error = (TuPrologError) t;
 					// sostituisco il gol in cui si ? verificato l'errore con il
 					// subgoal throw/1
-					e.currentContext.currentGoal = new Struct("throw", error.getError());
+					e.currentContext.currentGoal = new TuStruct("throw", error.getError());
 					/*Castagna 06/2011*/					
 					e.manager.exception(error.toString());
 					/**/
@@ -64,7 +64,7 @@ public class StateGoalEvaluation extends State {
 
 					// sostituisco il gol in cui si ? verificato l'errore con il
 					// subgoal java_throw/1
-					e.currentContext.currentGoal = new Struct("java_throw", exception.getException());
+					e.currentContext.currentGoal = new TuStruct("java_throw", exception.getException());
 					/*Castagna 06/2011*/					
 					e.manager.exception(exception.getException().toString());
 					/**/

@@ -67,7 +67,7 @@ public class JavaIOManager extends IOFileOperations {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             currentLoadDirectory = chooser.getCurrentDirectory().toString();
             String theoryFileName = chooser.getCurrentDirectory() + File.separator + chooser.getSelectedFile().getName();
-            Theory theory = new Theory(new FileInputStream(theoryFileName));
+            TuTheory theory = new TuTheory(new FileInputStream(theoryFileName));
             return new FileIDE(theory.toString(),theoryFileName);
         } else
             return new FileIDE("",null);

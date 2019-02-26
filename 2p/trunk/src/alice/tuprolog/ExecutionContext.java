@@ -20,7 +20,7 @@ package alice.tuprolog;
 
 import java.util.*;
 
-import alice.tuprolog.Struct;
+import alice.tuprolog.TuStruct;
 import alice.tuprolog.SubGoalId;
 import alice.util.OneWayList;
 
@@ -33,14 +33,14 @@ public class ExecutionContext {
     
     private int id;
     int depth;
-    Struct currentGoal;
+    TuStruct currentGoal;
     ExecutionContext fatherCtx;
     SubGoalId fatherGoalId;
-    Struct clause;
-    Struct headClause;
+    TuStruct clause;
+    TuStruct headClause;
     SubGoalStore goalsToEval;
-    OneWayList<List<Var>> trailingVars;
-    OneWayList<List<Var>> fatherVarsList;
+    OneWayList<List<TuVar>> trailingVars;
+    OneWayList<List<TuVar>> fatherVarsList;
     ChoicePointContext choicePointAfterCut;
     boolean haveAlternatives;
     
@@ -63,7 +63,7 @@ public class ExecutionContext {
         return depth;
     }
     
-    public Struct getCurrentGoal() {
+    public TuStruct getCurrentGoal() {
         return currentGoal;
     }
     
@@ -71,11 +71,11 @@ public class ExecutionContext {
         return fatherGoalId;
     }
     
-    public Struct getClause() {
+    public TuStruct getClause() {
         return clause;
     }
     
-    public Struct getHeadClause() {
+    public TuStruct getHeadClause() {
         return headClause;
     }
     
@@ -83,9 +83,9 @@ public class ExecutionContext {
         return goalsToEval;
     }
     
-    public List<List<Var>> getTrailingVars() {
-        ArrayList<List<Var>> l = new ArrayList<List<Var>>();
-        OneWayList<List<Var>> t = trailingVars;
+    public List<List<TuVar>> getTrailingVars() {
+        ArrayList<List<TuVar>> l = new ArrayList<List<TuVar>>();
+        OneWayList<List<TuVar>> t = trailingVars;
         while (t != null) {
             l.add(t.getHead());
             t = t.getTail();
@@ -113,7 +113,7 @@ public class ExecutionContext {
      */
    
     //Alberto
-    boolean tryToPerformTailRecursionOptimization(Engine e)
+    boolean tryToPerformTailRecursionOptimization(TuEngine e)
     {
     	if(!haveAlternatives && e.currentContext.goalsToEval.getCurSGId() == null && !e.currentContext.goalsToEval.haveSubGoals() && !(e.currentContext.currentGoal.getName().equalsIgnoreCase("catch") || e.currentContext.currentGoal.getName().equalsIgnoreCase("java_catch")))
     	{
@@ -126,7 +126,7 @@ public class ExecutionContext {
     }
 
     //Alberto
-	void updateContextAndDepth(Engine e)
+	void updateContextAndDepth(TuEngine e)
 	{
 		fatherCtx = e.currentContext;
         depth = e.currentContext.depth +1; 

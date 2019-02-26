@@ -12,30 +12,30 @@ public class JavaException extends Throwable {
         this.e = e;
     }
 
-    public Struct getException() {
+    public TuStruct getException() {
         // java_exception
         String java_exception = e.getClass().getName();
         // Cause
         Term causeTerm = null;
         Throwable cause = e.getCause();
         if (cause != null)
-            causeTerm = new Struct(cause.toString());
+            causeTerm = new TuStruct(cause.toString());
         else
-            causeTerm = new Int(0);
+            causeTerm = new TuInt(0);
         // Message
         Term messageTerm = null;
         String message = e.getMessage();
         if (message != null)
-            messageTerm = new Struct(message);
+            messageTerm = new TuStruct(message);
         else
-            messageTerm = new Int(0);
+            messageTerm = new TuInt(0);
         // StackTrace
-        Struct stackTraceTerm = new Struct();
+        TuStruct stackTraceTerm = new TuStruct();
         StackTraceElement[] elements = e.getStackTrace();
         for (StackTraceElement element : elements)
-            stackTraceTerm.append(new Struct(element.toString()));
+            stackTraceTerm.append(new TuStruct(element.toString()));
         // return
-        return new Struct(java_exception, causeTerm, messageTerm,
+        return new TuStruct(java_exception, causeTerm, messageTerm,
                 stackTraceTerm);
     }
 

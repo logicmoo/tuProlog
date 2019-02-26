@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import alice.tuprolog.ClauseInfo;
-import alice.tuprolog.Struct;
+import alice.tuprolog.TuStruct;
 import alice.util.OneWayList;
 
 /**
@@ -39,12 +39,12 @@ public class StateRuleSelection extends State {
      * @see alice.tuprolog.AbstractRunState#doJob()
      */
     @Override
-	void doJob(Engine e) {
+	void doJob(TuEngine e) {
         /*----------------------------------------------------
          * Individuo compatibleGoals e
          * stabilisco se derivo da Backtracking.
          */
-        Struct goal = e.currentContext.currentGoal;
+        TuStruct goal = e.currentContext.currentGoal;
         boolean fromBacktracking = true;
         ChoicePointContext alternative = e.currentAlternative;
         ClauseStore clauseStore;
@@ -52,8 +52,8 @@ public class StateRuleSelection extends State {
         if (alternative == null) {
             /* from normal evaluation */
             fromBacktracking = false;
-            List<Var> varsList = new ArrayList<Var>();
-            e.currentContext.trailingVars = new OneWayList<List<Var>>(varsList,e.currentContext.trailingVars);
+            List<TuVar> varsList = new ArrayList<TuVar>();
+            e.currentContext.trailingVars = new OneWayList<List<TuVar>>(varsList,e.currentContext.trailingVars);
             clauseStore = ClauseStore.build(goal, varsList, c.find(goal));
             if (clauseStore == null){
                 e.nextState = c.BACKTRACK;
@@ -86,7 +86,7 @@ public class StateRuleSelection extends State {
             ChoicePointContext choicePoint = alternative;
             int depth = alternative.executionContext.depth;
             ec.choicePointAfterCut = choicePoint.prevChoicePointContext;
-            Struct currentGoal = choicePoint.executionContext.currentGoal;
+            TuStruct currentGoal = choicePoint.executionContext.currentGoal;
             while (currentGoal.getName().equals(";") && currentGoal.getArity() == 2) {
                 if (choicePoint.prevChoicePointContext != null) {
                     int distance = depth - choicePoint.prevChoicePointContext.executionContext.depth;
@@ -105,8 +105,8 @@ public class StateRuleSelection extends State {
             }
         }
             
-        Struct curGoal = curCtx.currentGoal;
-        List<Var> unifiedVars = e.currentContext.trailingVars.getHead();
+        TuStruct curGoal = curCtx.currentGoal;
+        List<TuVar> unifiedVars = e.currentContext.trailingVars.getHead();
         curGoal.unify(unifiedVars,unifiedVars,ec.headClause, c.getMediator().getFlagManager().isOccursCheckEnabled());
         
         ec.haveAlternatives = clauseStore.haveAlternatives();

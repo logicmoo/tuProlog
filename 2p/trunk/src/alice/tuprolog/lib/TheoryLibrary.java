@@ -22,12 +22,12 @@ import alice.tuprolog.*;
  * Library built from Prolog theory.
  * 
  */
-public class TheoryLibrary extends Library {
+public class TheoryLibrary extends TuLibrary {
 	private static final long serialVersionUID = 1L;
-    private Theory th;
+    private TuTheory th;
     private String name;
     
-    public TheoryLibrary(String name, Theory theory){
+    public TheoryLibrary(String name, TuTheory theory){
         this.th = theory;
         this.name = name;
     }

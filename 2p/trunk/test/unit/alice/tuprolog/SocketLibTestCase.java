@@ -13,14 +13,14 @@ import org.junit.Test;
 
 public class SocketLibTestCase {
 	
-	Prolog engine = null;
+	TuProlog engine = null;
 	String theory;
 	
 	
 	@Before
 	public void before() throws InvalidLibraryException, MalformedGoalException, NoSolutionException, UnknownVarException {
 		try {
-			engine = new Prolog();
+			engine = new TuProlog();
 			engine.loadLibrary("alice.tuprolog.lib.SocketLibrary");
 			engine.loadLibrary("alice.tuprolog.lib.ThreadLibrary");
 		} catch (InvalidLibraryException e) {
@@ -46,7 +46,7 @@ public class SocketLibTestCase {
 					"read_from_socket(Sock, Msg, []), " +
 					"mutex_unlock('mutex')." ;
 		
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		
 		SolveInfo result = engine.solve("server(doServer(SS)), client(doClient(CS,Msg)).");	
 		assertTrue(result.isSuccess());
@@ -57,7 +57,7 @@ public class SocketLibTestCase {
 		Var serverSock = (Var) result.getTerm("SS");	
 		System.out.println("[SocketLibTest] Server Socket: "+ serverSock);*/
 		
-		Struct msg = (Struct) result.getTerm("Msg");	
+		TuStruct msg = (TuStruct) result.getTerm("Msg");	
 		assertEquals(Term.createTerm("'msg inviato dal server'"), msg);
 	
 	}
@@ -78,7 +78,7 @@ public class SocketLibTestCase {
 					"write_to_socket(Sock, 'msg inviato dal client'), " +
 					"thread_sleep(1).\n" +
 		"read(ID1,Y):- thread_read(ID1,Y)." ;
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		
 		SolveInfo result = engine.solve("server(ID1), client(doClient(CS)), read(ID1,doServer(SS,Msg)).");	
 		assertTrue(result.isSuccess());
@@ -89,7 +89,7 @@ public class SocketLibTestCase {
 		Var serverSock = (Var) result.getTerm("SS");	
 		System.out.println("[SocketLibTest] Server Socket: "+ serverSock);*/
 		
-		Struct msg = (Struct) result.getTerm("Msg");	
+		TuStruct msg = (TuStruct) result.getTerm("Msg");	
 		assertEquals(Term.createTerm("'msg inviato dal client'"), msg);
 	}
 }

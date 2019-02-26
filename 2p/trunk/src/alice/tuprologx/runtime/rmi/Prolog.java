@@ -9,16 +9,16 @@ public interface Prolog extends java.rmi.Remote {
 
     public void clearTheory() throws java.rmi.RemoteException;
 
-   public Theory getTheory() throws java.rmi.RemoteException;
+   public TuTheory getTheory() throws java.rmi.RemoteException;
 
     /**
 	 * @param theory
 	 * @throws InvalidTheoryException
 	 * @throws java.rmi.RemoteException
 	 */
-    public void setTheory(Theory theory) throws InvalidTheoryException, java.rmi.RemoteException;
+    public void setTheory(TuTheory theory) throws InvalidTheoryException, java.rmi.RemoteException;
 
-    public void addTheory(Theory theory) throws InvalidTheoryException, java.rmi.RemoteException;
+    public void addTheory(TuTheory theory) throws InvalidTheoryException, java.rmi.RemoteException;
 
 
     public SolveInfo   solve(Term g) throws java.rmi.RemoteException;

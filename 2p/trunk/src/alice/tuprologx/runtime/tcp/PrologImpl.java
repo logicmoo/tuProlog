@@ -6,10 +6,10 @@ import  java.io.*;
 @SuppressWarnings("serial")
 public class PrologImpl implements java.io.Serializable {
 
-    alice.tuprolog.Prolog core;
+    alice.tuprolog.TuProlog core;
     //Vector solutionListeners;
 
-    public PrologImpl(alice.tuprolog.Prolog core_){
+    public PrologImpl(alice.tuprolog.TuProlog core_){
         core=core_;
         //utionListeners=new Vector();
     }
@@ -19,14 +19,14 @@ public class PrologImpl implements java.io.Serializable {
     }
 
     public void getTheory(ObjectInputStream in,ObjectOutputStream out) throws Exception {
-        Theory th=core.getTheory();
+        TuTheory th=core.getTheory();
         out.writeObject(new Boolean(false));
         out.writeObject(th);
     }
 
     public void setTheory(ObjectInputStream in,ObjectOutputStream out) throws Exception {
         try {
-            Theory th=(Theory)in.readObject();
+            TuTheory th=(TuTheory)in.readObject();
             core.setTheory(th);
             out.writeObject(new Boolean(true));
         } catch (InvalidTheoryException ex){
@@ -36,7 +36,7 @@ public class PrologImpl implements java.io.Serializable {
 
     public void addTheory(ObjectInputStream in,ObjectOutputStream out)  throws Exception {
         try {
-            Theory th=(Theory)in.readObject();
+            TuTheory th=(TuTheory)in.readObject();
             core.addTheory(th);
             out.writeObject(new Boolean(true));
         } catch (InvalidTheoryException ex){

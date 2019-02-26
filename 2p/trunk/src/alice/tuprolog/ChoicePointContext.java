@@ -31,7 +31,7 @@ public class ChoicePointContext {
     ExecutionContext executionContext;
     ChoicePointContext prevChoicePointContext;
     SubGoalId indexSubGoal;
-    OneWayList<List<Var>> varsToDeunify;
+    OneWayList<List<TuVar>> varsToDeunify;
     
     
     @Override
@@ -59,9 +59,9 @@ public class ChoicePointContext {
         return indexSubGoal;
     }
     
-    public List<List<Var>> getVarsToDeunify() {
-        ArrayList<List<Var>> l = new ArrayList<List<Var>>();
-        OneWayList<List<Var>> t = varsToDeunify;
+    public List<List<TuVar>> getVarsToDeunify() {
+        ArrayList<List<TuVar>> l = new ArrayList<List<TuVar>>();
+        OneWayList<List<TuVar>> t = varsToDeunify;
         while (t != null) {
             l.add(t.getHead());
             t = t.getTail();

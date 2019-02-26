@@ -30,19 +30,19 @@ public class ClauseInfo {
     /**
 	 * referring clause
 	 */
-    private Struct clause;
+    private TuStruct clause;
     
     /**
 	 * head of clause
 	 */
-    private Struct head;
+    private TuStruct head;
     
     /**
 	 * body of clause
 	 */
     private SubGoalTree body;
     
-    private Struct headCopy;
+    private TuStruct headCopy;
     
     private SubGoalTree bodyCopy;
     
@@ -56,7 +56,7 @@ public class ClauseInfo {
     /**
      * building a valid clause with a time stamp = original time stamp + NumVar in clause
      */
-    ClauseInfo(Struct clause_, String lib) {
+    ClauseInfo(TuStruct clause_, String lib) {
         clause = clause_;
         head = extractHead(clause);
         body = extractBody(clause.getArg(1));
@@ -67,8 +67,8 @@ public class ClauseInfo {
     /**
      * Gets a clause from a generic Term
      */
-    private Struct extractHead(Struct clause) {
-        return (Struct)clause.getArg(0);
+    private TuStruct extractHead(TuStruct clause) {
+        return (TuStruct)clause.getArg(0);
     }
     
     /**
@@ -81,14 +81,14 @@ public class ClauseInfo {
     }
     
     private static void extractBody(SubGoalTree parent, Term body) {
-        while (body instanceof Struct && ((Struct)body).getName().equals(",")) {
-            Term t = ((Struct)body).getArg(0);
-            if (t instanceof Struct && ((Struct)t).getName().equals(",")) {
+        while (body instanceof TuStruct && ((TuStruct)body).getName().equals(",")) {
+            Term t = ((TuStruct)body).getArg(0);
+            if (t instanceof TuStruct && ((TuStruct)t).getName().equals(",")) {
                 extractBody(parent.addChild(),t);
             } else {
                 parent.addChild(t);
             }
-            body = ((Struct)body).getArg(1);
+            body = ((TuStruct)body).getArg(1);
         }
         parent.addChild(body);
     }
@@ -134,12 +134,12 @@ public class ClauseInfo {
     }
     
    
-    Struct getClause() {
+    TuStruct getClause() {
         return clause;
     }
     
    
-    Struct getHead() {
+    TuStruct getHead() {
         return head;
     }    
     
@@ -156,12 +156,12 @@ public class ClauseInfo {
      * Perform copy for assertion operation
      */
     void performCopy() {
-        AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
-        clause = (Struct) clause.copy(v, Var.ORIGINAL);
-        v = new IdentityHashMap<Var,Var>();
-        head = (Struct)head.copy(v,Var.ORIGINAL);
+        AbstractMap<TuVar,TuVar> v = new LinkedHashMap<TuVar,TuVar>();
+        clause = (TuStruct) clause.copy(TuVar.ORIGINAL, v);
+        v = new IdentityHashMap<TuVar,TuVar>();
+        head = (TuStruct)head.copy(TuVar.ORIGINAL,v);
         body = new SubGoalTree();
-        bodyCopy(body,bodyCopy,v,Var.ORIGINAL);
+        bodyCopy(body,bodyCopy,v,TuVar.ORIGINAL);
     }
     
     /**
@@ -169,17 +169,17 @@ public class ClauseInfo {
      * @param idExecCtx Current ExecutionContext id
      */
     void performCopy(int idExecCtx) {
-        IdentityHashMap<Var,Var> v = new IdentityHashMap<Var,Var>();
-        headCopy = (Struct)head.copy(v,idExecCtx);
+        IdentityHashMap<TuVar,TuVar> v = new IdentityHashMap<TuVar,TuVar>();
+        headCopy = (TuStruct)head.copy(idExecCtx,v);
         bodyCopy = new SubGoalTree();
         bodyCopy(body,bodyCopy,v,idExecCtx);
     }
     
-    private void bodyCopy(SubGoalTree source, SubGoalTree destination, AbstractMap<Var,Var> map, int id) {
+    private void bodyCopy(SubGoalTree source, SubGoalTree destination, AbstractMap<TuVar,TuVar> map, int id) {
         for(AbstractSubGoalTree s: source){
             if (s.isLeaf()) {
                 SubGoalElement l = (SubGoalElement)s;
-                Term t = l.getValue().copy(map,id);
+                Term t = l.getValue().copy(id,map);
                 destination.addChild(t);
             } else {
                 SubGoalTree src  = (SubGoalTree)s; 
@@ -190,7 +190,7 @@ public class ClauseInfo {
     }
     
     
-    Struct getHeadCopy() {
+    TuStruct getHeadCopy() {
         return headCopy;
     }
     
@@ -212,8 +212,8 @@ public class ClauseInfo {
     }
     
     static private String indentPredicates(Term t) {
-        if (t instanceof Struct) {
-            Struct co=(Struct)t;
+        if (t instanceof TuStruct) {
+            TuStruct co=(TuStruct)t;
             if (co.getName().equals(",")){
                 return co.getArg(0).toString()+",\n\t"+indentPredicates(co.getArg(1));
             } else {
@@ -255,8 +255,8 @@ public class ClauseInfo {
     }*/
     
     static private String indentPredicatesAsArgX(Term t,OperatorManager op,int p) {
-        if (t instanceof Struct) {
-            Struct co=(Struct)t;
+        if (t instanceof TuStruct) {
+            TuStruct co=(TuStruct)t;
             if (co.getName().equals(",")) {
                int prio = op.opPrio(",","xfy");
                StringBuilder sb = new StringBuilder(prio >= p ? "(" : "");
@@ -276,8 +276,8 @@ public class ClauseInfo {
     }
 
     static private String indentPredicatesAsArgY(Term t,OperatorManager op,int p) {
-        if (t instanceof Struct) {
-            Struct co=(Struct)t;
+        if (t instanceof TuStruct) {
+            TuStruct co=(TuStruct)t;
             if (co.getName().equals(",")) {
                int prio = op.opPrio(",","xfy");
                StringBuilder sb = new StringBuilder(prio > p ? "(" : "");

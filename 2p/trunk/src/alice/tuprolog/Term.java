@@ -24,70 +24,70 @@ import java.util.AbstractMap;
 import java.util.LinkedList;
 import java.util.Collection;
 import java.util.IdentityHashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import alice.tuprolog.InvalidTermException;
 import alice.tuprolog.TermVisitor;
 import alice.tuprolog.json.JSONSerializerManager;
 import alice.util.OneWayList;
+import nu.xom.xslt.XSLException;
 
 /**
  * Term class is the root abstract class for prolog data type
- * @see Struct
- * @see Var
- * @see  Number
+ * @see TuStruct
+ * @see TuVar
+ * @see  TuNumber
  */
-public abstract class Term implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+public abstract interface Term extends Serializable {
 
     // true and false constants
-    public static final Term TRUE  = new Struct("true");
-    public static final Term FALSE = new Struct("false");   
-    
+    public static final Term TRUE = new TuStruct("true");
+    public static final Term FALSE = new TuStruct("false");
+
     //boolean isCyclic = false; //Alberto -> da usare quando si supporteranno i termini ciclici
-     
+
     // checking type and properties of the Term
-    
+
     /**
      * is this term a prolog numeric term?
      * @deprecated Use <tt>instanceof Number</tt> instead.
      */
     @Deprecated
-	public abstract boolean isNumber();
-    
+    public abstract boolean isNumber();
+
     /**
      * is this term a struct?
      * @deprecated Use <tt>instanceof Struct</tt> instead. 
      */
     @Deprecated
-	public abstract boolean isStruct();
-    
+    public abstract boolean isStruct();
+
     /**
      * is this term a variable?
      * @deprecated Use <tt>instanceof Var</tt> instead. 
      */
     @Deprecated
-	public abstract boolean isVar();
-    
+    public abstract boolean isVar();
+
     /** is this term a null term?*/
     public abstract boolean isEmptyList();
-    
+
     /** is this term a constant prolog term? */
     public abstract boolean isAtomic();
-    
+
     /** is this term a prolog compound term? */
     public abstract boolean isCompound();
-    
+
     /** is this term a prolog (alphanumeric) atom? */
     public abstract boolean isAtom();
-    
+
     /** is this term a prolog list? */
     public abstract boolean isList();
-    
+
     /** is this term a ground term? */
     public abstract boolean isGround();
-    
+
     /**
      * Tests for the equality of two object terms
      *
@@ -96,46 +96,33 @@ public abstract class Term implements Serializable {
      *
      */
     @Override
-	public boolean equals(Object t) {
-        if (!(t instanceof Term))
-            return false;
-        return isEqual((Term) t);
-    }
-    
+    public boolean equals(Object t);
+
     /**
      * is term greater than term t?
      */
     public abstract boolean isGreater(Term t);
-    
+
     /**
      * Tests if this term is (logically) equal to another
      */
-    public boolean isEqual(Term t){ //Alberto
-    	return this.toString().equals(t.toString());
-    }
-    
+    public boolean isEqual(Term t);
+
     /**
      * Tests if this term (as java object) is equal to another
      */
-    public boolean isEqualObject(Term t){ //Alberto
-    	if (!(t instanceof Term))
-            return false;
-    	else 
-    		return this == t;
-    }
-    
+    public boolean isEqualObject(Term t);
+
     /**
-	 * Gets the actual term referred by this Term. if the Term is a bound variable, the method gets the Term linked to the variable
-	 */
+     * Gets the actual term referred by this Term. if the Term is a bound variable, the method gets the Term linked to the variable
+     */
     public abstract Term getTerm();
-    
-    
+
     /**
      * Unlink variables inside the term
      */
     public abstract void free();
-    
-    
+
     /**
      * Resolves variables inside the term, starting from a specific time count.
      *
@@ -144,46 +131,25 @@ public abstract class Term implements Serializable {
      * @return the new time count, after resolving process
      */
     abstract long resolveTerm(long count);
-    
-    
+
     /**
      * Resolves variables inside the term
      * 
      * If the variables has been already resolved, no renaming is done.
      */
-    public void resolveTerm() {
-        resolveTerm(System.currentTimeMillis());
-    }
-    
-    
+    public void resolveTerm();
+
     /**
      * gets a engine's copy of this term.
      * @param idExecCtx Execution Context identified
      */
-    public Term copyGoal(AbstractMap<Var,Var> vars, int idExecCtx) {
-        return copy(vars,idExecCtx);
-    }
-    
-    
+    public Term copyGoal(AbstractMap<TuVar, TuVar> vars, int idExecCtx);
+
     /**
      * gets a copy of this term for the output
      */
-    public Term copyResult(Collection<Var> goalVars, List<Var> resultVars) {
-        IdentityHashMap<Var,Var> originals = new IdentityHashMap<Var,Var>();
-        for (Var key: goalVars) 
-        {
-            Var clone = new Var();
-            if (!key.isAnonymous())
-            {
-                clone =  new Var(key.getOriginalName()); 
-            }
-            originals.put(key,clone);
-            resultVars.add(clone);
-        }
-        return copy(originals,new IdentityHashMap<Term,Var>());
-    }
-    
-    
+    public Term copyResult(Collection<TuVar> goalVars, List<TuVar> resultVars);
+
     /**
      * gets a copy (with renamed variables) of the term.
      *
@@ -191,61 +157,24 @@ public abstract class Term implements Serializable {
      * (if empty list then no renaming)
      * @param idExecCtx Execution Context identifier
      */
-    abstract Term copy(AbstractMap<Var,Var> vMap, int idExecCtx);
-    
+    abstract Term copy(int idExecCtx, AbstractMap<TuVar, TuVar> vMap);
+
     //Alberto
-    public abstract Term copyAndRetainFreeVar(AbstractMap<Var,Var> vMap, int idExecCtx);
-    
+    public abstract Term copyAndRetainFreeVar(AbstractMap<TuVar, TuVar> vMap, int idExecCtx);
+
     /**
      * gets a copy for result.
      */
-    abstract Term copy(AbstractMap<Var,Var> vMap, AbstractMap<Term,Var> substMap);
-    
+    abstract Term copy(AbstractMap<TuVar, TuVar> vMap, AbstractMap<Term, TuVar> substMap);
+
     /**
      * Try to unify two terms
      * @param mediator have the reference of EngineManager
      * @param t1 the term to unify
      * @return true if the term is unifiable with this one
      */
-    public boolean unify(Prolog mediator, Term t1) {
-        EngineManager engine = mediator.getEngineManager();
-        resolveTerm();
-        t1.resolveTerm();
-        List<Var> v1 = new LinkedList<Var>(); /* Reviewed by: Paolo Contessi (was: ArrayList()) */
-        List<Var> v2 = new LinkedList<Var>(); /* Reviewed by: Paolo Contessi (was: ArrayList()) */
-        boolean ok = unify(v1,v2,t1, mediator.getFlagManager().isOccursCheckEnabled());
-        if (ok) {
-            ExecutionContext ec = engine.getCurrentContext();
-            if (ec != null) {
-                int id = (engine.getEnv()==null)? Var.PROGRESSIVE : engine.getEnv().nDemoSteps;
-                // Update trailingVars
-                ec.trailingVars = new OneWayList<List<Var>>(v1,ec.trailingVars);
-                // Renaming after unify because its utility regards not the engine but the user
-                int count = 0;
-                for(Var v:v1){
-                    v.rename(id,count);
-                    if(id>=0){
-                        id++;
-                    }else{
-                        count++;
-                    }
-                }
-                for(Var v:v2){
-                    v.rename(id,count);
-                    if(id>=0){
-                        id++;
-                    }else{
-                        count++;
-                    }
-                }
-            }
-            return true;
-        }
-        Var.free(v1);
-        Var.free(v2);
-    	return false;
-    }
-    
+    public boolean unify(TuProlog mediator, Term t1);
+
     //Alberto
     /**
      * Tests if this term is unifiable with an other term.
@@ -256,17 +185,8 @@ public abstract class Term implements Serializable {
      * @param isOccursCheckEnabled
      * @return true if the term is unifiable with this one
      */
-    public boolean match(boolean isOccursCheckEnabled, Term t) {
-        resolveTerm();
-        t.resolveTerm();
-        List<Var> v1 = new LinkedList<Var>();
-        List<Var> v2 = new LinkedList<Var>();
-        boolean ok = unify(v1,v2,t, isOccursCheckEnabled);
-        Var.free(v1);
-        Var.free(v2);
-        return ok;
-    }
-    
+    public boolean match(boolean isOccursCheckEnabled, Term t);
+
     /**
      * Tests if this term is unifiable with an other term.
      * No unification is done.
@@ -275,10 +195,8 @@ public abstract class Term implements Serializable {
      * @param t the term to checked
      * @return true if the term is unifiable with this one
      */
-    public boolean match(Term t) {
-        return match(true, t); //Alberto
-    }
-    
+    public boolean match(Term t);
+
     //Alberto
     /**
      * Tries to unify two terms, given a demonstration context
@@ -289,8 +207,8 @@ public abstract class Term implements Serializable {
      * @param varsUnifiedArg2 Vars unified in term t
      * @param isOccursCheckEnabled
      */
-    abstract boolean unify(List<Var> varsUnifiedArg1, List<Var> varsUnifiedArg2, Term t, boolean isOccursCheckEnabled);
-    
+    abstract boolean unify(List<TuVar> varsUnifiedArg1, List<TuVar> varsUnifiedArg2, Term t, boolean isOccursCheckEnabled);
+
     /**
      * Tries to unify two terms, given a demonstration context
      * identified by the mark integer.
@@ -299,8 +217,8 @@ public abstract class Term implements Serializable {
      * @param varsUnifiedArg1 Vars unified in myself
      * @param varsUnifiedArg2 Vars unified in term t
      */
-    abstract boolean unify(List<Var> varsUnifiedArg1, List<Var> varsUnifiedArg2, Term t);
-    
+    abstract boolean unify(List<TuVar> varsUnifiedArg1, List<TuVar> varsUnifiedArg2, Term t);
+
     /**
      * Static service to create a Term from a string.
      * @param st the string representation of the term
@@ -308,17 +226,17 @@ public abstract class Term implements Serializable {
      * @throws InvalidTermException if the string does not represent a valid term
      */
     public static Term createTerm(String st) {
-        return Parser.parseSingleTerm(st);
+        return TuParser.parseSingleTerm(st);
     }
-    
+
     /**
      * @deprecated Use {@link Term#createTerm(String)} instead.
      */
     @Deprecated
-	public static Term parse(String st) {
+    public static Term parse(String st) {
         return Term.createTerm(st);
     }
-    
+
     /**
      * Static service to create a Term from a string, providing an
      * external operator manager.
@@ -328,43 +246,39 @@ public abstract class Term implements Serializable {
      * @throws InvalidTermException if the string does not represent a valid term
      */
     public static Term createTerm(String st, OperatorManager op) {
-        return Parser.parseSingleTerm(st, op);
+        return TuParser.parseSingleTerm(st, op);
     }
-    
+
     /**
      * @deprecated Use {@link Term#createTerm(String, OperatorManager)} instead.
      */
     @Deprecated
-	public static Term parse(String st, OperatorManager op) {
+    public static Term parse(String st, OperatorManager op) {
         return Term.createTerm(st, op);
     }
-    
+
     /**
      * Gets an iterator providing
      * a term stream from a source text
      */
     public static java.util.Iterator<Term> getIterator(String text) {
-        return new Parser(text).iterator();
+        return new TuParser(text).iterator();
     }
-    
+
     // term representation
-    
+
     /**
      * Gets the string representation of this term
      * as an X argument of an operator, considering the associative property.
      */
-    String toStringAsArgX(OperatorManager op,int prio) {
-        return toStringAsArg(op,prio,true);
-    }
-    
+    String toStringAsArgX(OperatorManager op, int prio);
+
     /**
      * Gets the string representation of this term
      * as an Y argument of an operator, considering the associative property.
      */
-    String toStringAsArgY(OperatorManager op,int prio) {
-        return toStringAsArg(op,prio,false);
-    }
-    
+    String toStringAsArgY(OperatorManager op, int prio);
+
     /**
      * Gets the string representation of this term
      * as an argument of an operator, considering the associative property.
@@ -372,10 +286,8 @@ public abstract class Term implements Serializable {
      *  If the boolean argument is true, then the term must be considered
      *  as X arg, otherwise as Y arg (referring to prolog associative rules)
      */
-    String toStringAsArg(OperatorManager op,int prio,boolean x) {
-        return toString();
-    }
-    
+    String toStringAsArg(OperatorManager op, int prio, boolean x);
+
     /**
      * The iterated-goal term G of a term T is a term defined
      * recursively as follows:
@@ -385,37 +297,34 @@ public abstract class Term implements Serializable {
      * <li>else G is T</li>
      * </ul>
      */
-    public Term iteratedGoalTerm() {
-        return this;
-    }
-    
+    public Term iteratedGoalTerm();
+
     /*Castagna 06/2011*/
     /**
-	 * Visitor pattern
-	 * @param tv - Visitor
-	 */
-	public abstract void accept(TermVisitor tv);
-	
-	//Alberto
-	public String toJSON(){
-		return JSONSerializerManager.toJSON(this);
-	}
-		
-	//Alberto
-	public static Term fromJSON(String jsonString){
-		if(jsonString.contains("Var")) {
-			return JSONSerializerManager.fromJSON(jsonString, Var.class);	
-		} else if(jsonString.contains("Struct")) {
-			return JSONSerializerManager.fromJSON(jsonString, Struct.class);
-		} else if(jsonString.contains("Double")) {
-			return JSONSerializerManager.fromJSON(jsonString, Double.class);
-		} else if(jsonString.contains("Int")) {
-			return JSONSerializerManager.fromJSON(jsonString, Int.class);
-		} else if(jsonString.contains("Long")) {
-			return JSONSerializerManager.fromJSON(jsonString, Long.class);
-		} else if(jsonString.contains("Float")) {
-			return JSONSerializerManager.fromJSON(jsonString, Float.class);
-		} else
-			return null;
-	}
+     * Visitor pattern
+     * @param tv - Visitor
+     */
+    public abstract void accept(TermVisitor tv);
+
+    //Alberto
+    public String toJSON();
+
+    //Alberto
+    public static Term fromJSON(String jsonString) {
+        if (jsonString.contains("Var")) {
+            return JSONSerializerManager.fromJSON(jsonString, TuVar.class);
+        } else if (jsonString.contains("Struct")) {
+            return JSONSerializerManager.fromJSON(jsonString, TuStruct.class);
+        } else if (jsonString.contains("Double")) {
+            return JSONSerializerManager.fromJSON(jsonString, TuDouble.class);
+        } else if (jsonString.contains("Int")) {
+            return JSONSerializerManager.fromJSON(jsonString, TuInt.class);
+        } else if (jsonString.contains("Long")) {
+            return JSONSerializerManager.fromJSON(jsonString, TuLong.class);
+        } else if (jsonString.contains("Float")) {
+            return JSONSerializerManager.fromJSON(jsonString, TuFloat.class);
+        } else
+            return null;
+    }
+
 }

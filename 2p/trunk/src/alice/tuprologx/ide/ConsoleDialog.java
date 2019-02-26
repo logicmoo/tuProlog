@@ -8,7 +8,7 @@ import alice.tuprolog.event.OutputListener;
 import alice.tuprolog.event.ReadListener;
 import alice.tuprolog.SolveInfo;
 //import alice.tuprolog.Term;
-import alice.tuprolog.Var;
+import alice.tuprolog.TuVar;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -50,7 +50,7 @@ public class ConsoleDialog
     private PropertyChangeSupport propertyChangeSupport;
     private Console consoleManager;
     private String[] variables = null;
-    private java.util.List<Var> bindings = null;
+    private java.util.List<TuVar> bindings = null;
     private int selectDisplayModality = 0;
     /*Castagna 06/2011*/  
 	private boolean	exceptionEnabled;
@@ -419,7 +419,7 @@ public class ConsoleDialog
         if (variables == null || variables.length<getVariablesName(info).length)
             variables = getVariablesName(info);
         if (bindings == null)
-            bindings = new ArrayList<Var>();
+            bindings = new ArrayList<TuVar>();
         try
         {
             if (info.isSuccess())
@@ -448,7 +448,7 @@ public class ConsoleDialog
                 solution.setText(sol);
                 
                 // store bindings for visualization on the binding pane
-                for (Var v: info.getBindingVars()) {
+                for (TuVar v: info.getBindingVars()) {
                     if (!v.isAnonymous())
                         bindings.add(v);
                 }
@@ -529,11 +529,11 @@ public class ConsoleDialog
                 SolveInfo solution = ((QueryEvent) querySolutions[i]).getSolveInfo();
                 if (solution.isSuccess()) {
                     try {
-                        for (Var v: solution.getBindingVars()) {
+                        for (TuVar v: solution.getBindingVars()) {
                             if (!v.isAnonymous()) {
                                 String value = v.getTerm().toString();;
                                 if (v == v.getTerm())
-                                    value = new Var().getName();
+                                    value = new TuVar().getName();
                                 tableModelList.add(value);
                             }
                         }
@@ -575,7 +575,7 @@ public class ConsoleDialog
             String[] variables = new String[columns];
             try {
                 int position = 0;
-                for(Var v:info.getBindingVars()){
+                for(TuVar v:info.getBindingVars()){
                     if (!v.isAnonymous()) {
                         variables[position] = v.getName();
                         position++;
@@ -601,7 +601,7 @@ public class ConsoleDialog
     private int getVariablesNumber(SolveInfo info) {
         int count = 0;
         try {
-            for(Var v:info.getBindingVars()){
+            for(TuVar v:info.getBindingVars()){
                 if ( !v.isAnonymous())
                     count++;
             }
@@ -620,10 +620,10 @@ public class ConsoleDialog
         if (bindings != null && variables.length > 0) {
             if (selectDisplayModality == 0) {
                 ArrayList<String> tableModelList = new ArrayList<String>();
-                for(Var v:bindings){
+                for(TuVar v:bindings){
                     String value = v.getTerm().toString();;
                     if (v == v.getTerm())
-                        value = new Var().getName();
+                        value = new TuVar().getName();
                     tableModelList.add(value);
                 }
                 tableModel = new String[tableModelList.size() / variables.length][variables.length];
@@ -633,10 +633,10 @@ public class ConsoleDialog
             }
             if (selectDisplayModality == 1 || selectDisplayModality == 2) {
                 ArrayList<String> tableModelList = new ArrayList<String>();
-                for(Var v:bindings){
+                for(TuVar v:bindings){
                     String value = v.getTerm().toString();
                     if (v == v.getTerm())
-                        value = new Var().getName();
+                        value = new TuVar().getName();
                     tableModelList.add(v.getName());
                     tableModelList.add(value);
                 }

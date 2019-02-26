@@ -17,7 +17,7 @@
  */
 package alice.tuprolog;
 
-import alice.tuprolog.Struct;
+import alice.tuprolog.TuStruct;
 import alice.tuprolog.Term;
 
 /**
@@ -35,7 +35,7 @@ public class StateGoalSelection extends State {
      * @see alice.tuprolog.AbstractRunState#doJob()
      */
     @Override
-	void doJob(Engine e) {
+	void doJob(TuEngine e) {
         Term curGoal = null;
         while (curGoal == null) {
             curGoal = e.currentContext.goalsToEval.fetch();
@@ -51,7 +51,7 @@ public class StateGoalSelection extends State {
             } else {
                 // Caso di individuazione curGoal
                 Term goal_app = curGoal.getTerm();
-                if (!(goal_app instanceof Struct)) {
+                if (!(goal_app instanceof TuStruct)) {
                     e.nextState = c.END_FALSE;
                     return;
                 }
@@ -62,9 +62,9 @@ public class StateGoalSelection extends State {
                 // This enables the dynamic linking of built-ins for
                 // terms coming from outside the demonstration context.
                 if (curGoal != goal_app)
-                    curGoal = new Struct("call", goal_app);
+                    curGoal = new TuStruct("call", goal_app);
                 
-                e.currentContext.currentGoal = (Struct) curGoal;
+                e.currentContext.currentGoal = (TuStruct) curGoal;
                 e.nextState = c.GOAL_EVALUATION;
                 return;
             }            

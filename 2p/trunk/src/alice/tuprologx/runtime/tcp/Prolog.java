@@ -5,13 +5,13 @@ import alice.tuprolog.*;
 public interface Prolog {
 
     public void clearTheory() throws Exception;
-    public Theory getTheory() throws Exception;
+    public TuTheory getTheory() throws Exception;
     /**
 	 * @param theory
 	 * @throws Exception
 	 */
-    void setTheory(Theory theory) throws Exception;
-    void addTheory(Theory theory) throws Exception;
+    void setTheory(TuTheory theory) throws Exception;
+    void addTheory(TuTheory theory) throws Exception;
 
     public SolveInfo   solve(String g) throws Exception;
     public SolveInfo   solve(Term th) throws Exception;

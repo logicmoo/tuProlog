@@ -38,11 +38,11 @@ public class StateBacktrack extends State {
      * @see alice.tuprolog.AbstractRunState#doJob()
      */
     @Override
-	void doJob(Engine e) {
+	void doJob(TuEngine e) {
         ChoicePointContext curChoice = e.choicePointSelector.fetch();
         if (curChoice == null) {
             e.nextState = c.END_FALSE;
-            Struct goal = e.currentContext.currentGoal;
+            TuStruct goal = e.currentContext.currentGoal;
             if(!c.getTheoryManager().checkExistance(goal.getPredicateIndicator())) //Alberto
             	c.warn("The predicate " + goal.getPredicateIndicator() + " is unknown.");
             return;
@@ -53,25 +53,25 @@ public class StateBacktrack extends State {
         //deunify variables and reload old goal
         e.currentContext = curChoice.executionContext;
         Term curGoal = e.currentContext.goalsToEval.backTo(curChoice.indexSubGoal).getTerm();
-        if (!(curGoal instanceof Struct)) {
+        if (!(curGoal instanceof TuStruct)) {
             e.nextState = c.END_FALSE;
             return;
         }
-        e.currentContext.currentGoal = (Struct) curGoal;
+        e.currentContext.currentGoal = (TuStruct) curGoal;
         
         // Rende coerente l'execution_stack
         ExecutionContext curCtx = e.currentContext;
-        OneWayList<List<Var>> pointer = curCtx.trailingVars;
-        OneWayList<List<Var>> stopDeunify = curChoice.varsToDeunify;
-        List<Var> varsToDeunify = stopDeunify.getHead();
-        Var.free(varsToDeunify);
+        OneWayList<List<TuVar>> pointer = curCtx.trailingVars;
+        OneWayList<List<TuVar>> stopDeunify = curChoice.varsToDeunify;
+        List<TuVar> varsToDeunify = stopDeunify.getHead();
+        TuVar.free(varsToDeunify);
         varsToDeunify.clear();
         SubGoalId fatherIndex;
         // bring parent contexts to a previous state in the demonstration
         do {
             // deunify variables in sibling contexts
             while (pointer != stopDeunify) {
-                Var.free(pointer.getHead());
+                TuVar.free(pointer.getHead());
                 pointer = pointer.getTail();
             }
             curCtx.trailingVars = pointer;
@@ -81,11 +81,11 @@ public class StateBacktrack extends State {
             fatherIndex = curCtx.fatherGoalId;
             curCtx = curCtx.fatherCtx;
             curGoal = curCtx.goalsToEval.backTo(fatherIndex).getTerm();
-            if (!(curGoal instanceof Struct)) {
+            if (!(curGoal instanceof TuStruct)) {
                 e.nextState = c.END_FALSE;
                 return;
             }
-            curCtx.currentGoal = (Struct)curGoal;
+            curCtx.currentGoal = (TuStruct)curGoal;
             pointer = curCtx.trailingVars;
         } while (true);
         

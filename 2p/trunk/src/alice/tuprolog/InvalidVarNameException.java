@@ -20,7 +20,7 @@ package alice.tuprolog;
 /**
  * This exeption means that a not valid tuProlog variable has been specified.
  *
- * @see Var
+ * @see TuVar
  * @deprecated Use InvalidTermException with a meaningful message instead. 
  */
 @Deprecated

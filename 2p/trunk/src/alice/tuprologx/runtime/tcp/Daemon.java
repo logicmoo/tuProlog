@@ -45,16 +45,16 @@ class Acceptor implements Runnable {
 public class Daemon implements Runnable {
     public static int DEFAULT_PORT = 3203;
     ServerSocket s;
-    alice.tuprolog.Prolog   core;
+    alice.tuprolog.TuProlog   core;
     PrologImpl coreTCP;
 
-    public Daemon(alice.tuprolog.Prolog core_) throws IOException {
+    public Daemon(alice.tuprolog.TuProlog core_) throws IOException {
         core=core_;
         coreTCP=new PrologImpl(core);
         initCore(DEFAULT_PORT);
     }
 
-    public Daemon(alice.tuprolog.Prolog core_,int port) throws IOException {
+    public Daemon(alice.tuprolog.TuProlog core_,int port) throws IOException {
         core=core_;
         coreTCP=new PrologImpl(core);
         initCore(port);
@@ -88,7 +88,7 @@ public class Daemon implements Runnable {
                 System.err.println("args: { port }.");
                 System.exit(-1);
             }
-            alice.tuprolog.Prolog core=new alice.tuprolog.Prolog();
+            alice.tuprolog.TuProlog core=new alice.tuprolog.TuProlog();
             if (args.length>0){
                 int port=-1;
                 try {

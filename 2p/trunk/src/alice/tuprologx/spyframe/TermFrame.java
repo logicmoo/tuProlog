@@ -1,8 +1,8 @@
 package alice.tuprologx.spyframe;
 
-import alice.tuprolog.Struct;
+import alice.tuprolog.TuStruct;
 import alice.tuprolog.Term;
-import alice.tuprolog.Var;
+import alice.tuprolog.TuVar;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -27,18 +27,18 @@ public class TermFrame extends JFrame implements ActionListener{
       Node node=new Node(""+term);
       node.textcolor=node.bordercolor=Color.BLACK;
       //make it more specific if possible
-      if(term instanceof Var){
-        Var var=(Var)term;
+      if(term instanceof TuVar){
+        TuVar var=(TuVar)term;
         node.text=var.getName();
         node.textcolor=node.bordercolor=Color.BLUE;
         if(var.isBound()){
           node.kids=new Node[1];
           node.kids[0]=makeTreeFrom(var.getTerm());
         }
-      } else if(term instanceof alice.tuprolog.Number){
+      } else if(term instanceof alice.tuprolog.TuNumber){
         node.textcolor=node.bordercolor=Color.MAGENTA;
-      } else if(term instanceof Struct){
-        Struct struct=(Struct)term;
+      } else if(term instanceof TuStruct){
+        TuStruct struct=(TuStruct)term;
         node.text=struct.getName();
         int n=struct.getArity();
         node.kids=new Node[n];

@@ -9,11 +9,11 @@ import java.rmi.server.UnicastRemoteObject;
 public class PrologImpl extends UnicastRemoteObject
     implements alice.tuprologx.runtime.rmi.Prolog, Serializable {
 
-   private alice.tuprolog.Prolog imp;
+   private alice.tuprolog.TuProlog imp;
 
     public PrologImpl() throws RemoteException {
         try {
-            imp=new alice.tuprolog.Prolog();
+            imp=new alice.tuprolog.TuProlog();
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -25,17 +25,17 @@ public class PrologImpl extends UnicastRemoteObject
     }
 
     @Override
-	public Theory getTheory() throws RemoteException{
+	public TuTheory getTheory() throws RemoteException{
         return imp.getTheory();
     }
 
     @Override
-	public void setTheory(Theory theory) throws InvalidTheoryException, RemoteException {
+	public void setTheory(TuTheory theory) throws InvalidTheoryException, RemoteException {
         imp.setTheory(theory);
     }
 
     @Override
-	public void addTheory(Theory theory) throws InvalidTheoryException, RemoteException {
+	public void addTheory(TuTheory theory) throws InvalidTheoryException, RemoteException {
         imp.addTheory(theory);
     }
 

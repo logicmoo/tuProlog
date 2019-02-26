@@ -17,10 +17,10 @@ public class PrologMetaMethod {
     private Method _theMethod;
     private PrologMetaClass _enclosing;
     private PrologMethod _annotation;
-    private Theory _theory;
+    private TxTheory _theory;
     private int _arity;
     private String _predicateName;
-    private Clause<?,?>[] _clauses; 
+    private TxClause<?,?>[] _clauses; 
     /*
     private Vector<String> variableNames;
     private Vector<String> inputVariables;
@@ -63,19 +63,19 @@ public class PrologMetaMethod {
     }
     
     private void initTheory() {
-        _theory = new Theory(_annotation.clauses());
+        _theory = new TxTheory(_annotation.clauses());
     }
     
-    public Theory getTheory() {
+    public TxTheory getTheory() {
         return _theory;
     }
     
-    public void setTheory(Theory t) {
+    public void setTheory(TxTheory t) {
         _theory = t;
         initClauses();
     }
     
-    public Clause<?,?>[] getClauses() {
+    public TxClause<?,?>[] getClauses() {
         return _clauses;
     }
     
@@ -87,7 +87,7 @@ public class PrologMetaMethod {
         return _theMethod.getReturnType().equals(Iterable.class);
     }
     
-    public Object invoke(PrologObject o, Term<?>... args) {
+    public Object invoke(PrologObject o, TxTerm<?>... args) {
         try {
             return _theMethod.invoke(o,(Object)args);
         }

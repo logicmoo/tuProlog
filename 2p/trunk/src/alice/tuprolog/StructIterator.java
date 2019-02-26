@@ -22,13 +22,13 @@ import java.util.NoSuchElementException;
 /**
  * This class represents an iterator through the arguments of a Struct list.
  *
- * @see Struct
+ * @see TuStruct
  */
 class StructIterator implements java.util.Iterator<Term>, java.io.Serializable {
 	private static final long serialVersionUID = 1L;
-    Struct list;
+    TuStruct list;
     
-    StructIterator(Struct t) {
+    StructIterator(TuStruct t) {
         this.list = t;
     }
     
@@ -45,7 +45,7 @@ class StructIterator implements java.util.Iterator<Term>, java.io.Serializable {
         // to avoid redundant Struct#isList calls since it is only possible to get
         // a StructIterator on a Struct instance which is already a list.
         Term head = list.getTerm(0);
-        list = (Struct) list.getTerm(1);
+        list = (TuStruct) list.getTerm(1);
         return head;
     }
     

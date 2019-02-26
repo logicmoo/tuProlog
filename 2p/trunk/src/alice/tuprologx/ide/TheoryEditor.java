@@ -8,8 +8,8 @@ import java.awt.event.*;
 import java.net.URL;
 
 import alice.tuprolog.InvalidTheoryException;
-import alice.tuprolog.Prolog;
-import alice.tuprolog.Theory;
+import alice.tuprolog.TuProlog;
+import alice.tuprolog.TuTheory;
 
 public class TheoryEditor
     extends JPanel
@@ -20,7 +20,7 @@ public class TheoryEditor
     /**
 	 * The Prolog engine referenced by the editor.
 	 */
-    private Prolog engine;
+    private TuProlog engine;
     /**
 	 * The edit area used by the editor.
 	 */
@@ -116,7 +116,7 @@ public class TheoryEditor
 	 * Get the Prolog engine referenced by the editor.
 	 * @return  The Prolog engine referenced by the editor.
 	 */
-    public Prolog getEngine() {
+    public TuProlog getEngine() {
         return engine;
     }
 
@@ -124,7 +124,7 @@ public class TheoryEditor
 	 * Set the Prolog engine referenced by the editor.
 	 * @param engine  an <code>alice.tuprolog.Prolog</code> engine.
 	 */
-    public void setEngine(Prolog engine) {
+    public void setEngine(TuProlog engine) {
         this.engine = engine;
     }
 
@@ -163,7 +163,7 @@ public class TheoryEditor
         // insert a check on feededTheory? -> if true does not feed anything.
         String theory = editArea.getTheory();
         try {
-            getEngine().setTheory(new Theory(theory));
+            getEngine().setTheory(new TuTheory(theory));
             editArea.setDirty(false);
             setStatusMessage("New theory accepted.");
         } catch (InvalidTheoryException ite) {

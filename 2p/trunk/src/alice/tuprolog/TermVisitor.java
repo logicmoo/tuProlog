@@ -2,8 +2,8 @@
 package alice.tuprolog;
 
 public interface TermVisitor {
-	void visit(Struct s);
-	void visit(Var v);
-	void visit(Number n);
+	void visit(TuStruct s);
+	void visit(TuVar v);
+	void visit(TuNumber n);
 }
 /**/

@@ -36,9 +36,9 @@ public class ConcordionSingleton {
 	/* If there isn't a theory, insert null in the tag <td> */
 	public boolean success(String goal, String theory) throws Exception {
 
-		Prolog engine = new Prolog();
+		TuProlog engine = new TuProlog();
 		if (!theory.equalsIgnoreCase("null"))
-			engine.setTheory(new Theory(theory));
+			engine.setTheory(new TuTheory(theory));
 		SolveInfo info = engine.solve(goal);
 		return info.isSuccess();
 	}
@@ -47,13 +47,13 @@ public class ConcordionSingleton {
 	public boolean successWithException(String goal, String theory)
 			throws PrologException {
 
-		Prolog engine = null;
+		TuProlog engine = null;
 		@SuppressWarnings("unused")
 		SolveInfo info = null;
 		exFounded = false;
-		engine = new Prolog();
+		engine = new TuProlog();
 		if (!theory.equalsIgnoreCase("null"))
-			engine.setTheory(new Theory(theory));
+			engine.setTheory(new TuTheory(theory));
 		engine.addExceptionListener(ex);
 		info = engine.solve(goal);
 		//System.out.println(engine.getErrors());
@@ -65,13 +65,13 @@ public class ConcordionSingleton {
 	public String successWithExceptionAndText(String goal, String theory)
 			throws PrologException {
 
-		Prolog engine = null;
+		TuProlog engine = null;
 		@SuppressWarnings("unused")
 		SolveInfo info = null;
 		exFounded = false;
-		engine = new Prolog();
+		engine = new TuProlog();
 		if (!theory.equalsIgnoreCase("null"))
-			engine.setTheory(new Theory(theory));
+			engine.setTheory(new TuTheory(theory));
 		engine.addExceptionListener(ex);
 		info = engine.solve(goal);
 		if (exFounded)
@@ -120,17 +120,17 @@ public class ConcordionSingleton {
 			String theory, String variable, String solution, boolean replace,
 			int maxSolutions) throws Exception {
 
-		Prolog engine = new Prolog();
+		TuProlog engine = new TuProlog();
 		SolveInfo info = null;
 		List<String> results = new ArrayList<String>();
 
 
 		if (!theory.equalsIgnoreCase("null"))
-			engine.setTheory(new Theory(theory));
+			engine.setTheory(new TuTheory(theory));
 		info = engine.solve(goal);
 		while (info.isSuccess() && maxSolutions != 0) {
 
-			for (Var var : info.getBindingVars()) {
+			for (TuVar var : info.getBindingVars()) {
 
 				if ((var.toString()).startsWith(variable)) {
 
@@ -167,16 +167,16 @@ public class ConcordionSingleton {
 	private boolean successAndResultsVerifyReplace(String goal, String theory,
 			String variable, String solution, boolean replace) throws Exception {
 
-		Prolog engine = new Prolog();
+		TuProlog engine = new TuProlog();
 		SolveInfo info = null;
 		List<String> results = new ArrayList<String>();
 
 		if (!theory.equalsIgnoreCase("null"))
-			engine.setTheory(new Theory(theory));
+			engine.setTheory(new TuTheory(theory));
 		info = engine.solve(goal);
 		while (info.isSuccess()) {
 
-			for (Var var : info.getBindingVars()) {
+			for (TuVar var : info.getBindingVars()) {
 				if ((var.toString()).startsWith(variable)) {
 
 					variable = replaceForVariable(var.toString(), ' ');
@@ -225,11 +225,11 @@ public class ConcordionSingleton {
 	private String successAndResultVerifyReplace(String goal, String theory,
 			String variable, boolean replace) throws Exception {
 
-		Prolog engine = new Prolog();
+		TuProlog engine = new TuProlog();
 		if (!theory.equalsIgnoreCase("null"))
-			engine.setTheory(new Theory(theory));
+			engine.setTheory(new TuTheory(theory));
 		SolveInfo info = engine.solve(goal);
-		for (Var var : info.getBindingVars()) {
+		for (TuVar var : info.getBindingVars()) {
 			if ((var.toString()).startsWith(variable)) {
 
 				variable = replaceForVariable(var.toString(), ' ');
@@ -283,7 +283,7 @@ public class ConcordionSingleton {
 	
 	
 	 public Term value(String evaluable) throws Exception {
-	        Prolog engine = new Prolog();
+	        TuProlog engine = new TuProlog();
 	        SolveInfo result = engine.solve("X is " + evaluable);
 	        return result.getVarValue("X");
 	    }

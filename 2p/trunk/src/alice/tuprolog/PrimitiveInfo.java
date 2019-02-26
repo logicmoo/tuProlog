@@ -24,7 +24,7 @@ import java.lang.reflect.*;
  * Primitive class
  * referring to a builtin predicate or functor
  *
- * @see Struct
+ * @see TuStruct
  */
 public class PrimitiveInfo {
     
@@ -48,7 +48,7 @@ public class PrimitiveInfo {
     private String primitive_key;
     
     
-    public PrimitiveInfo(int type, String key, Library lib, Method m, int arity) throws NoSuchMethodException {
+    public PrimitiveInfo(int type, String key, TuLibrary lib, Method m, int arity) throws NoSuchMethodException {
         if (m==null) {
             throw new NoSuchMethodException();
         }
@@ -102,7 +102,7 @@ public class PrimitiveInfo {
      * @throws IllegalAccessException 
      * @throws Exception if invocation directive failure
      */
-    public synchronized void evalAsDirective(Struct g) throws IllegalAccessException, InvocationTargetException {
+    public synchronized void evalAsDirective(TuStruct g) throws IllegalAccessException, InvocationTargetException {
         for (int i=0; i<primitive_args.length; i++) {
             primitive_args[i] = g.getTerm(i);
         }
@@ -114,7 +114,7 @@ public class PrimitiveInfo {
      * evaluates the primitive as a predicate
      * @throws Exception if invocation primitive failure
      */
-    public synchronized boolean evalAsPredicate(Struct g) throws Throwable {
+    public synchronized boolean evalAsPredicate(TuStruct g) throws Throwable {
         for (int i=0; i<primitive_args.length; i++) {
             primitive_args[i] = g.getArg(i);
         }
@@ -132,7 +132,7 @@ public class PrimitiveInfo {
      * evaluates the primitive as a functor
      * @throws Throwable 
      */
-    public synchronized Term evalAsFunctor(Struct g) throws Throwable {
+    public synchronized Term evalAsFunctor(TuStruct g) throws Throwable {
         try {
             for (int i=0; i<primitive_args.length; i++) {
                 primitive_args[i] = g.getTerm(i);

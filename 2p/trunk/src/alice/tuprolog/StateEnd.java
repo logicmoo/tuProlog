@@ -19,7 +19,7 @@ package alice.tuprolog;
 
 import java.util.*;
 
-import alice.tuprolog.Struct;
+import alice.tuprolog.TuStruct;
 
 /**
  * @author Alex Benini
@@ -29,8 +29,8 @@ import alice.tuprolog.Struct;
 public class StateEnd extends State {
     
     private int endState;    
-    private Struct goal;
-    private List<Var> vars;
+    private TuStruct goal;
+    private List<TuVar> vars;
     
     /**
      * Constructor
@@ -45,11 +45,11 @@ public class StateEnd extends State {
         return endState;
     }
     
-    public Struct getResultGoal() {
+    public TuStruct getResultGoal() {
         return goal;
     }
     
-    public List<Var> getResultVars() {
+    public List<TuVar> getResultVars() {
         return vars;
     }
     
@@ -64,9 +64,9 @@ public class StateEnd extends State {
     }
     
     @Override
-	void doJob(Engine e) {	
-        vars = new ArrayList<Var>();
-        goal = (Struct)e.startGoal.copyResult(e.goalVars,vars);  
+	void doJob(TuEngine e) {	
+        vars = new ArrayList<TuVar>();
+        goal = (TuStruct)e.startGoal.copyResult(e.goalVars,vars);  
     }
     
 }

@@ -18,7 +18,7 @@
 package alice.tuprolog.lib;
 
 import alice.tuprolog.*;
-import alice.tuprolog.Number;
+import alice.tuprolog.TuNumber;
 
 /**
  * This class represents a tuProlog library providing most of the built-ins
@@ -29,33 +29,33 @@ import alice.tuprolog.Number;
  * 
  * 
  */
-public class ISOLibrary extends Library {
+public class ISOLibrary extends TuLibrary {
 	private static final long serialVersionUID = 1L;
     public ISOLibrary() {
     }
 
-    public boolean atom_length_2(Term arg0, Term len) throws PrologError {
+    public boolean atom_length_2(Term arg0, Term len) throws TuPrologError {
         arg0 = arg0.getTerm();
-        if (arg0 instanceof Var)
-            throw PrologError.instantiation_error(engine.getEngineManager(), 1);
+        if (arg0 instanceof TuVar)
+            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (!arg0.isAtom())
-            throw PrologError.type_error(engine.getEngineManager(), 1, "atom",
+            throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",
                     arg0);
-        Struct atom = (Struct) arg0;
-        return unify(len, new Int(atom.getName().length()));
+        TuStruct atom = (TuStruct) arg0;
+        return unify(len, new TuInt(atom.getName().length()));
     }
 
-    public boolean atom_chars_2(Term arg0, Term arg1) throws PrologError {
+    public boolean atom_chars_2(Term arg0, Term arg1) throws TuPrologError {
         arg0 = arg0.getTerm();
         arg1 = arg1.getTerm();
-        if (arg0 instanceof Var) {
+        if (arg0 instanceof TuVar) {
             if (!arg1.isList()) {
-                throw PrologError.type_error(engine.getEngineManager(), 2,
+                throw TuPrologError.type_error(engine.getEngineManager(), 2,
                         "list", arg1);
             }
-            Struct list = (Struct) arg1;
+            TuStruct list = (TuStruct) arg1;
             if (list.isEmptyList()) {
-                return unify(arg0, new Struct(""));
+                return unify(arg0, new TuStruct(""));
             }
             String st = "";
             while (!(list.isEmptyList())) {
@@ -74,20 +74,20 @@ public class ISOLibrary extends Library {
                 }
                 ;
                 st = st.concat(st1);
-                list = (Struct) list.getTerm(1);
+                list = (TuStruct) list.getTerm(1);
             }
-            return unify(arg0, new Struct(st));
+            return unify(arg0, new TuStruct(st));
         } else {
             if (!arg0.isAtom()) {
-                throw PrologError.type_error(engine.getEngineManager(), 1,
+                throw TuPrologError.type_error(engine.getEngineManager(), 1,
                         "atom", arg0);
             }
-            String st = ((Struct) arg0).getName();
+            String st = ((TuStruct) arg0).getName();
             Term[] tlist = new Term[st.length()];
             for (int i = 0; i < st.length(); i++) {
-                tlist[i] = new Struct(new String(new char[] { st.charAt(i) }));
+                tlist[i] = new TuStruct(new String(new char[] { st.charAt(i) }));
             }
-            Struct list = new Struct(tlist);
+            TuStruct list = new TuStruct(tlist);
             /*
              * for (int i=0; i<st.length(); i++){ Struct ch=new Struct(new
              * String(new char[]{ st.charAt(st.length()-i-1)} )); list=new
@@ -98,26 +98,26 @@ public class ISOLibrary extends Library {
         }
     }
 
-    public boolean char_code_2(Term arg0, Term arg1) throws PrologError {
+    public boolean char_code_2(Term arg0, Term arg1) throws TuPrologError {
         arg0 = arg0.getTerm();
         arg1 = arg1.getTerm();
-        if (arg1 instanceof Var) {
+        if (arg1 instanceof TuVar) {
             if (arg0.isAtom()) {
-                String st = ((Struct) arg0).getName();
+                String st = ((TuStruct) arg0).getName();
                 if (st.length() <= 1)
-                    return unify(arg1, new Int(st.charAt(0)));
+                    return unify(arg1, new TuInt(st.charAt(0)));
                 else
-                    throw PrologError.type_error(engine.getEngineManager(), 1,
+                    throw TuPrologError.type_error(engine.getEngineManager(), 1,
                             "character", arg0);
             } else
-                throw PrologError.type_error(engine.getEngineManager(), 1,
+                throw TuPrologError.type_error(engine.getEngineManager(), 1,
                         "character", arg0);
-        } else if ((arg1 instanceof Int)
-                || (arg1 instanceof alice.tuprolog.Long)) {
-            char c = (char) ((Number) arg1).intValue();
-            return unify(arg0, new Struct("" + c));
+        } else if ((arg1 instanceof TuInt)
+                || (arg1 instanceof alice.tuprolog.TuLong)) {
+            char c = (char) ((TuNumber) arg1).intValue();
+            return unify(arg0, new TuStruct("" + c));
         } else
-            throw PrologError.type_error(engine.getEngineManager(), 2,
+            throw TuPrologError.type_error(engine.getEngineManager(), 2,
                     "integer", arg1);
     }
 
@@ -132,8 +132,8 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Number)
-            return new alice.tuprolog.Double(Math.sin(((Number) val0)
+        if (val0 instanceof TuNumber)
+            return new alice.tuprolog.TuDouble(Math.sin(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -145,8 +145,8 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Number)
-            return new alice.tuprolog.Double(Math.cos(((Number) val0)
+        if (val0 instanceof TuNumber)
+            return new alice.tuprolog.TuDouble(Math.cos(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -158,8 +158,8 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Number)
-            return new alice.tuprolog.Double(Math.exp(((Number) val0)
+        if (val0 instanceof TuNumber)
+            return new alice.tuprolog.TuDouble(Math.exp(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -171,8 +171,8 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Number)
-            return new alice.tuprolog.Double(Math.atan(((Number) val0)
+        if (val0 instanceof TuNumber)
+            return new alice.tuprolog.TuDouble(Math.atan(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -184,8 +184,8 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Number)
-            return new alice.tuprolog.Double(Math.log(((Number) val0)
+        if (val0 instanceof TuNumber)
+            return new alice.tuprolog.TuDouble(Math.log(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -197,8 +197,8 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Number)
-            return new alice.tuprolog.Double(Math.sqrt(((Number) val0)
+        if (val0 instanceof TuNumber)
+            return new alice.tuprolog.TuDouble(Math.sqrt(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -210,11 +210,11 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Int || val0 instanceof alice.tuprolog.Long)
-            return new alice.tuprolog.Int(Math.abs(((Number) val0).intValue()));
-        if (val0 instanceof alice.tuprolog.Double
-                || val0 instanceof alice.tuprolog.Float)
-            return new alice.tuprolog.Double(Math.abs(((Number) val0)
+        if (val0 instanceof TuInt || val0 instanceof alice.tuprolog.TuLong)
+            return new alice.tuprolog.TuInt(Math.abs(((TuNumber) val0).intValue()));
+        if (val0 instanceof alice.tuprolog.TuDouble
+                || val0 instanceof alice.tuprolog.TuFloat)
+            return new alice.tuprolog.TuDouble(Math.abs(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -226,13 +226,13 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Int || val0 instanceof alice.tuprolog.Long)
-            return new alice.tuprolog.Double(
-                    ((Number) val0).intValue() > 0 ? 1.0 : -1.0);
-        if (val0 instanceof alice.tuprolog.Double
-                || val0 instanceof alice.tuprolog.Float)
-            return new alice.tuprolog.Double(
-                    ((Number) val0).doubleValue() > 0 ? 1.0 : -1.0);
+        if (val0 instanceof TuInt || val0 instanceof alice.tuprolog.TuLong)
+            return new alice.tuprolog.TuDouble(
+                    ((TuNumber) val0).intValue() > 0 ? 1.0 : -1.0);
+        if (val0 instanceof alice.tuprolog.TuDouble
+                || val0 instanceof alice.tuprolog.TuFloat)
+            return new alice.tuprolog.TuDouble(
+                    ((TuNumber) val0).doubleValue() > 0 ? 1.0 : -1.0);
         return null;
     }
 
@@ -243,8 +243,8 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Number)
-            return new alice.tuprolog.Double((long) Math.rint(((Number) val0)
+        if (val0 instanceof TuNumber)
+            return new alice.tuprolog.TuDouble((long) Math.rint(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -256,9 +256,9 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Number) {
-            double fl = ((Number) val0).doubleValue();
-            return new alice.tuprolog.Double(Math.abs(fl - Math.rint(fl)));
+        if (val0 instanceof TuNumber) {
+            double fl = ((TuNumber) val0).doubleValue();
+            return new alice.tuprolog.TuDouble(Math.abs(fl - Math.rint(fl)));
         }
         return null;
     }
@@ -270,8 +270,8 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Number)
-            return new alice.tuprolog.Double(((Number) val0).doubleValue());
+        if (val0 instanceof TuNumber)
+            return new alice.tuprolog.TuDouble(((TuNumber) val0).doubleValue());
         return null;
     }
 
@@ -282,8 +282,8 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Number)
-            return new Int((int) Math.floor(((Number) val0).doubleValue()));
+        if (val0 instanceof TuNumber)
+            return new TuInt((int) Math.floor(((TuNumber) val0).doubleValue()));
         return null;
     }
 
@@ -294,8 +294,8 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Number)
-            return new alice.tuprolog.Long(Math.round(((Number) val0)
+        if (val0 instanceof TuNumber)
+            return new alice.tuprolog.TuLong(Math.round(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -307,8 +307,8 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Number)
-            return new Int((int) Math.rint(((Number) val0).doubleValue()));
+        if (val0 instanceof TuNumber)
+            return new TuInt((int) Math.rint(((TuNumber) val0).doubleValue()));
         return null;
     }
 
@@ -319,12 +319,12 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Number)
-            return new Int((int) Math.ceil(((Number) val0).doubleValue()));
+        if (val0 instanceof TuNumber)
+            return new TuInt((int) Math.ceil(((TuNumber) val0).doubleValue()));
         return null;
     }
 
-    public Term div_2(Term v0, Term v1) throws PrologError {
+    public Term div_2(Term v0, Term v1) throws TuPrologError {
         Term val0 = null;
         Term val1 = null;
         try {
@@ -333,13 +333,13 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Number && val1 instanceof Number)
-            return new alice.tuprolog.Int(((Number) val0).intValue()
-                    / ((Number) val1).intValue());
+        if (val0 instanceof TuNumber && val1 instanceof TuNumber)
+            return new alice.tuprolog.TuInt(((TuNumber) val0).intValue()
+                    / ((TuNumber) val1).intValue());
         return null;
     }
 
-    public Term mod_2(Term v0, Term v1) throws PrologError {
+    public Term mod_2(Term v0, Term v1) throws TuPrologError {
         Term val0 = null;
         Term val1 = null;
         try {
@@ -348,12 +348,12 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Number && val1 instanceof Number) {
-            int x = ((Number) val0).intValue();
-            int y = ((Number) val1).intValue();
+        if (val0 instanceof TuNumber && val1 instanceof TuNumber) {
+            int x = ((TuNumber) val0).intValue();
+            int y = ((TuNumber) val1).intValue();
             int f = new java.lang.Double(Math.floor((double) x / (double) y))
                     .intValue();
-            return new Int(x - (f * y));
+            return new TuInt(x - (f * y));
         }
         return null;
     }
@@ -367,9 +367,9 @@ public class ISOLibrary extends Library {
         } catch (Throwable e) {
 
         }
-        if (val0 instanceof Number && val1 instanceof Number) {
-            return new alice.tuprolog.Double(Math.IEEEremainder(((Number) val0)
-                    .doubleValue(), ((Number) val1).doubleValue()));
+        if (val0 instanceof TuNumber && val1 instanceof TuNumber) {
+            return new alice.tuprolog.TuDouble(Math.IEEEremainder(((TuNumber) val0)
+                    .doubleValue(), ((TuNumber) val1).doubleValue()));
         }
         return null;
     }
@@ -458,10 +458,10 @@ public class ISOLibrary extends Library {
     // Java guards for Prolog predicates
 
     public boolean sub_atom_guard_5(Term arg0, Term arg1, Term arg2, Term arg3, Term arg4)
-            throws PrologError {
+            throws TuPrologError {
         arg0 = arg0.getTerm();
         if (!arg0.isAtom())
-            throw PrologError.type_error(engine.getEngineManager(), 1, "atom", arg0);
+            throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom", arg0);
         return true;
     }
 

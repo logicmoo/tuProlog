@@ -28,19 +28,19 @@ public class Proxy implements alice.tuprologx.runtime.tcp.Prolog {
     }
 
     @Override
-	public Theory getTheory() throws Exception {
+	public TuTheory getTheory() throws Exception {
         out.writeObject(new NetMsg("getTheory"));
         out.flush();
         Boolean b=(Boolean)in.readObject();
         if (b.booleanValue()){
-            Theory th=(Theory)in.readObject();
+            TuTheory th=(TuTheory)in.readObject();
             return th;
         }
         return null;
     }
 
     @Override
-	public void setTheory(Theory th) throws Exception {
+	public void setTheory(TuTheory th) throws Exception {
         out.writeObject(new NetMsg("setTheory"));
         out.writeObject(th);
         out.flush();
@@ -51,7 +51,7 @@ public class Proxy implements alice.tuprologx.runtime.tcp.Prolog {
     }
 
     @Override
-	public void addTheory(Theory th) throws Exception {
+	public void addTheory(TuTheory th) throws Exception {
         out.writeObject(new NetMsg("addTheory"));
         out.writeObject(th);
         out.flush();

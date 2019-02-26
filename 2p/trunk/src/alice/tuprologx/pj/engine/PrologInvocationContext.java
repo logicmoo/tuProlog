@@ -37,22 +37,22 @@ public class PrologInvocationContext {
         trace = m.isAnnotationPresent(TRACE.class);            
     }
     
-    public Term<?> buildGoal(Object[] args) throws Exception {        
-        Term<?>[] tlist = new Term<?>[variableNames.size()];
+    public TxTerm<?> buildGoal(Object[] args) throws Exception {        
+        TxTerm<?>[] tlist = new TxTerm<?>[variableNames.size()];
         int i = 0;
         int pos;
         for (String name : variableNames) {
             if ((pos = inputVariables.indexOf(name)) != -1) {
-                tlist[i] = (Term<?>)args[pos];
+                tlist[i] = (TxTerm<?>)args[pos];
             }
             i++;
         }
         for (i=0;i<tlist.length;i++) {
             if (tlist[i] == null) {
-                tlist[i] = new Var<Term<?>>("PJVAR"+i);
+                tlist[i] = new TxVar<TxTerm<?>>("PJVAR"+i);
             }
         }
-        return Cons.make(predicateName,tlist);        
+        return TxCons.make(predicateName,tlist);        
     }
     
     private void initPredicateName(Method m, PrologMethod pm) {
@@ -114,9 +114,9 @@ public class PrologInvocationContext {
             }
             if (returnType instanceof ParameterizedType) {
                 ParameterizedType pt = (ParameterizedType)returnType;
-                if (Cons.class.equals(pt.getRawType())) {//Cons<Cons<Cons ...
+                if (TxCons.class.equals(pt.getRawType())) {//Cons<Cons<Cons ...
                     Type t = pt;
-                    while (Nil.class.isAssignableFrom((Class<?>)pt.getRawType())) {
+                    while (TxNil.class.isAssignableFrom((Class<?>)pt.getRawType())) {
                         pt = (ParameterizedType)t;
                         Type head = pt.getActualTypeArguments()[0];
                         outputVariables.add(((TypeVariable<?>)head).getName());
@@ -157,7 +157,7 @@ public class PrologInvocationContext {
     
     public Object dispatch(alice.tuprologx.pj.engine.PJProlog _engine, Object[] args) throws NoSolutionException {
 	try {                            
-            Term<?> theGoal = buildGoal(args);  
+            TxTerm<?> theGoal = buildGoal(args);  
             if (trace) {
                 System.out.println("theory = "+_engine.getTheory());
                 System.out.println("goal = "+theGoal.marshal());
@@ -251,12 +251,12 @@ public class PrologInvocationContext {
     }
     */
     
-    private Object buildSolution(Term<?> theGoal, PJProlog _engine) throws NoSolutionException {
+    private Object buildSolution(TxTerm<?> theGoal, PJProlog _engine) throws NoSolutionException {
         try {                    
             if (multipleResult) {
-                final Iterable<? extends PrologSolution<?,Cons<?,?>>> answer = _engine.solveAll(theGoal);                            
+                final Iterable<? extends PrologSolution<?,TxCons<?,?>>> answer = _engine.solveAll(theGoal);                            
                 //Vector<Object> resultList = new Vector<Object>();
-                final Iterator<? extends PrologSolution<?,Cons<?,?>>> _result = answer.iterator();
+                final Iterator<? extends PrologSolution<?,TxCons<?,?>>> _result = answer.iterator();
                 if (!_result.hasNext() && exceptionOnFailure) {
                     throw new NoSolutionException();
                 }
@@ -269,8 +269,8 @@ public class PrologInvocationContext {
 					public void remove() {throw new UnsupportedOperationException();}
                     @Override
 					public Object next() {
-                        PrologSolution<?,Cons<?,?>> si = _result.next(); 
-                        Cons<?,?> res = null;
+                        PrologSolution<?,TxCons<?,?>> si = _result.next(); 
+                        TxCons<?,?> res = null;
                         try {
                              res = si.getSolution();
                         }
@@ -282,17 +282,17 @@ public class PrologInvocationContext {
                             return si.isSuccess() ? Boolean.TRUE : Boolean.FALSE;   
                         }
                         else {
-                            Term<?>[] termList = new Term<?>[size];
+                            TxTerm<?>[] termList = new TxTerm<?>[size];
                             int i = 0;
                             int pos;
-                            for (Term<?> t : res) {
+                            for (TxTerm<?> t : res) {
                                 if ((pos = outputVariables.indexOf(variableNames.get(i)))!=-1) {
                                     termList[pos] = formatTerm(t);
                                 }
                                 i++;
                             }
                             if (termList.length > 1) {
-                                return Cons.make(res.getName(),termList);                              
+                                return TxCons.make(res.getName(),termList);                              
                             }
                             else {
                                 return termList[0];                              
@@ -310,7 +310,7 @@ public class PrologInvocationContext {
                 };                
             }        
             else { //single solution
-                PrologSolution<?,? extends Cons<?,?>> si = _engine.solve(theGoal);                            
+                PrologSolution<?,? extends TxCons<?,?>> si = _engine.solve(theGoal);                            
                 if (!si.isSuccess() && exceptionOnFailure) {
                     throw new NoSolutionException();
                 }
@@ -321,23 +321,23 @@ public class PrologInvocationContext {
                 if (!si.isSuccess() && exceptionOnFailure) {
                     throw new NoSolutionException();
                 }                                
-                Cons<?,?> res = si.getSolution();
+                TxCons<?,?> res = si.getSolution();
                 int size = outputVariables.size();                
                 if (size == 0) {
                     result = si.isSuccess() ? Boolean.TRUE : Boolean.FALSE;
                 }
                 else {
-                    Term<?>[] termList = new Term<?>[size];
+                    TxTerm<?>[] termList = new TxTerm<?>[size];
                     int i = 0;
                     int pos = 0;
-                    for (Term<?> t : res) {
+                    for (TxTerm<?> t : res) {
                         if ((pos = outputVariables.indexOf(variableNames.get(i)))!=-1) {
                             termList[pos] = formatTerm(t);
                         }
                         i++;
                     }
                     if (termList.length > 1) {
-                            result = Cons.make(res.getName(),termList);                              
+                            result = TxCons.make(res.getName(),termList);                              
                         }
                         else {
                             result = termList[0];                              
@@ -351,9 +351,9 @@ public class PrologInvocationContext {
         }
     }
     
-    private Term<?> formatTerm(Term<?> t) {
-        if (t instanceof Var<?> && !keepSubstitutions)
-            return ((Var<?>)t).getValue();
+    private TxTerm<?> formatTerm(TxTerm<?> t) {
+        if (t instanceof TxVar<?> && !keepSubstitutions)
+            return ((TxVar<?>)t).getValue();
         else
             return t;
     }

@@ -26,9 +26,9 @@ public class Server_Socket extends AbstractSocket{
 	}
 	
 	@Override
-	boolean unify(List<Var> varsUnifiedArg1, List<Var> varsUnifiedArg2, Term t, boolean isOccursCheckEnabled) {
+	public boolean unify(List<TuVar> varsUnifiedArg1, List<TuVar> varsUnifiedArg2, Term t, boolean isOccursCheckEnabled) {
 		t = t.getTerm();
-        if (t instanceof Var) {
+        if (t instanceof TuVar) {
             return t.unify(varsUnifiedArg1, varsUnifiedArg2, this,  isOccursCheckEnabled);
         } else if (t instanceof AbstractSocket && ((AbstractSocket) t).isServerSocket()) {
         	InetAddress addr= ((AbstractSocket) t).getAddress();
@@ -54,7 +54,7 @@ public class Server_Socket extends AbstractSocket{
 		return socket.toString();
 	}
 	@Override
-	boolean unify(List<Var> varsUnifiedArg1, List<Var> varsUnifiedArg2, Term t) {
+	public  boolean unify(List<TuVar> varsUnifiedArg1, List<TuVar> varsUnifiedArg2, Term t) {
 		return unify(varsUnifiedArg1, varsUnifiedArg2, t, true);
 	}
 

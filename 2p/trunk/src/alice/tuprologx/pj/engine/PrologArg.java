@@ -5,13 +5,13 @@ import alice.tuprologx.pj.model.*;
  *
  * @author maurizio
  */
-public class PrologArg<X extends Term<X>> {
+public class PrologArg<X extends TxTerm<X>> {
     
-    private Term<X> _theArg;
+    private TxTerm<X> _theArg;
     private TermKind[] _annotations;    
     
     /** Creates a new instance of PrologArg */
-    public PrologArg(Term<X> arg, TermKind[] annotations) {        
+    public PrologArg(TxTerm<X> arg, TermKind[] annotations) {        
         this(annotations);
         _theArg = arg;      
     }
@@ -60,11 +60,11 @@ public class PrologArg<X extends Term<X>> {
         return false;
     }
     
-    public Term<X> getTerm() {
+    public TxTerm<X> getTerm() {
         return _theArg;
     }
     
-    protected void setTerm(Term<X> o) {
+    protected void setTerm(TxTerm<X> o) {
         _theArg = o;
     }
 }

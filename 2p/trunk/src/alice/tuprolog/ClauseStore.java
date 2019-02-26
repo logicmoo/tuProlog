@@ -13,10 +13,10 @@ public class ClauseStore {
     
     private OneWayList<ClauseInfo> clauses;
     private Term goal;
-    private List<Var> vars;
+    private List<TuVar> vars;
     private boolean haveAlternatives;
     
-    private ClauseStore(Term goal, List<Var> vars) {
+    private ClauseStore(Term goal, List<TuVar> vars) {
         this.goal = goal;
         this.vars = vars;
         clauses = null;
@@ -30,7 +30,7 @@ public class ClauseStore {
          * 
      * @param familyClauses
      */
-    public static ClauseStore build(Term goal, List<Var> vars, List<ClauseInfo> familyClauses) {
+    public static ClauseStore build(Term goal, List<TuVar> vars, List<ClauseInfo> familyClauses) {
         ClauseStore clauseStore = new ClauseStore(goal, vars);
                 clauseStore.clauses = OneWayList.transform2(familyClauses);
                 if (clauseStore.clauses == null || !clauseStore.existCompatibleClause())
@@ -78,13 +78,13 @@ public class ClauseStore {
      * @param varsToDeunify
      * @return unificazioni delle variabili
      */
-    private List<Term> deunify(List<Var> varsToDeunify) {
+    private List<Term> deunify(List<TuVar> varsToDeunify) {
         List<Term> saveUnifications = new ArrayList<Term>();
         //List saveUnifications = new LinkedList();
         //deunifico le variabili termporaneamente
-        Iterator<Var> it = varsToDeunify.iterator();
+        Iterator<TuVar> it = varsToDeunify.iterator();
         while (it.hasNext()) {
-            Var v = (it.next());
+            TuVar v = (it.next());
             saveUnifications.add(v.getLink());
             v.free();
         }
@@ -97,9 +97,9 @@ public class ClauseStore {
      * @param varsToReunify
      * @param saveUnifications
      */
-    private void reunify(List<Var> varsToReunify, List<Term> saveUnifications) {
+    private void reunify(List<TuVar> varsToReunify, List<Term> saveUnifications) {
         int size = varsToReunify.size();
-        ListIterator<Var> it1 = varsToReunify.listIterator(size);
+        ListIterator<TuVar> it1 = varsToReunify.listIterator(size);
         ListIterator<Term> it2 = saveUnifications.listIterator(size);
         // Only the first occurrence of a variable gets its binding saved;
         // following occurrences get a null instead. So, to avoid clashes
@@ -155,7 +155,7 @@ public class ClauseStore {
         return goal;
     }
     
-    public List<Var> getVarsForMatch() {
+    public List<TuVar> getVarsForMatch() {
         return vars;
     }
     

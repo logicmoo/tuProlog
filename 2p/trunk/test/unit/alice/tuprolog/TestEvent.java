@@ -45,7 +45,7 @@ public class TestEvent {
 
     public static void main(String[] args) throws Exception {
     
-        Prolog engine = new Prolog(new String[]{});
+        TuProlog engine = new TuProlog(new String[]{});
         
         MyListener l = new MyListener();
         engine.addTheoryListener(l);
@@ -56,7 +56,7 @@ public class TestEvent {
         engine.loadLibrary("alice.tuprolog.lib.OOLibrary");
         engine.loadLibrary("alice.tuprolog.lib.IOLibrary");
         
-        Theory th = new Theory(
+        TuTheory th = new TuTheory(
                 	"a(1).\n"+
                 	"a(2).\n");
         
@@ -70,7 +70,7 @@ public class TestEvent {
         
         engine.unloadLibrary("alice.tuprolog.lib.IOLibrary");
         
-        th = new Theory(
+        th = new TuTheory(
             	"a(3).\n"+
             	"a(4).\n");
     

@@ -16,7 +16,7 @@ public class ConsoleManager
 {
     private ConsoleDialog dialog;
     private InputField inputField;
-   private Prolog engine;
+   private TuProlog engine;
     //private PJProlog pjengine;
     private IDE ide;
     private ArrayList<QueryEvent> queryEventList;
@@ -41,7 +41,7 @@ public class ConsoleManager
 
     public int getSolveType(){return solveType;}
 
-    public void setEngine(Prolog engine){this.engine = engine;}
+    public void setEngine(TuProlog engine){this.engine = engine;}
 
     public void setInputField(InputField inputField){this.inputField = inputField;}
 
@@ -58,7 +58,7 @@ public class ConsoleManager
             {
                 try
                 {
-                    engine.setTheory(new Theory(ide.getEditorContent()));
+                    engine.setTheory(new TuTheory(ide.getEditorContent()));
                     ide.setFeededTheory(true);
                 }
                 catch (InvalidTheoryException e)

@@ -45,8 +45,8 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
     private boolean isSuccess;
     
     private Term query;
-    private Struct goal;
-    private List<Var> bindings;
+    private TuStruct goal;
+    private List<TuVar> bindings;
     
     /**
      * 
@@ -63,7 +63,7 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
      * @param resultDemo
      * @param resultVars
      */
-    SolveInfo(Term initGoal, Struct resultGoal, int resultDemo, List<Var> resultVars) {
+    SolveInfo(Term initGoal, TuStruct resultGoal, int resultDemo, List<TuVar> resultVars) {
         query = initGoal;
         goal = resultGoal;
         bindings = resultVars;
@@ -132,7 +132,7 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
      * @throws NoSolutionException if current solve information
      * does not concern a successful 
      */
-    public List<Var> getBindingVars() throws NoSolutionException {
+    public List<TuVar> getBindingVars() throws NoSolutionException {
         if (isSuccess){
             return bindings;
         }else {
@@ -158,9 +158,9 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
      */
     public Term getVarValue(String varName) throws NoSolutionException {
         if (isSuccess) {
-            Iterator<Var> it = bindings.iterator();
+            Iterator<TuVar> it = bindings.iterator();
             while (it.hasNext()) {
-                Var v = it.next();
+                TuVar v = it.next();
                 if (v!=null && v.getName().equals(varName)) {
                     return v.getTerm();
                 }
@@ -186,11 +186,11 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/  {
             } else {
                 st.append(". ");
             }
-            Iterator<Var> it = bindings.iterator();
+            Iterator<TuVar> it = bindings.iterator();
             while(it.hasNext()) {
-                Var v = it.next();
+                TuVar v = it.next();
                 if (v != null && !v.isAnonymous() && v.isBound() && 
-                        (!(v.getTerm() instanceof Var) || (!((Var) (v.getTerm())).getName().startsWith("_")))) {
+                        (!(v.getTerm() instanceof TuVar) || (!((TuVar) (v.getTerm())).getName().startsWith("_")))) {
                     st.append(v);
                     st.append("  ");
                 }

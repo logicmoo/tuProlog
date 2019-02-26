@@ -3,7 +3,7 @@ package alice.tuprolog.interfaces;
 import java.util.HashMap;
 
 import alice.tuprolog.OperatorManager;
-import alice.tuprolog.Parser;
+import alice.tuprolog.TuParser;
 import alice.tuprolog.Term;
 
 public class ParserFactory {
@@ -12,14 +12,14 @@ public class ParserFactory {
      * Creating a parser with default operator interpretation
      */
 	public static IParser createParser(String theory) {
-		return new Parser(theory);
+		return new TuParser(theory);
 	}
 	
 	/**
      * creating a parser with default operator interpretation
      */
     public static IParser createParser(String theory, HashMap<Term, Integer> mapping) {
-    	return new Parser(theory, mapping);
+    	return new TuParser(theory, mapping);
     }    
 	
 	/**
@@ -27,7 +27,7 @@ public class ParserFactory {
      * and what text to parse
      */
     public static IParser createParser(IOperatorManager op, String theory) {
-    	return new Parser((OperatorManager)op, theory);
+    	return new TuParser((OperatorManager)op, theory);
     }
     
     /**
@@ -35,7 +35,7 @@ public class ParserFactory {
      * and what text to parse
      */
     public static IParser createParser(IOperatorManager op, String theory, HashMap<Term, Integer> mapping) {
-    	return new Parser((OperatorManager)op, theory, mapping);
+    	return new TuParser((OperatorManager)op, theory, mapping);
     }
 
 }

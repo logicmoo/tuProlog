@@ -1,6 +1,6 @@
 package alice.tuprologx.ide;
 
-import alice.tuprolog.Prolog;
+import alice.tuprolog.TuProlog;
 import alice.tuprolog.SolveInfo;
 import alice.tuprolog.event.PrologEvent;
 import alice.tuprolog.event.QueryEvent;
@@ -20,7 +20,7 @@ public class InformationToDisplayEvent extends PrologEvent {
     private ArrayList<String> queryEventListString;
     private int solveType;
 
-    public InformationToDisplayEvent(Prolog source, ArrayList<QueryEvent> queryEventList,ArrayList<String> queryEventListString, int solveType){
+    public InformationToDisplayEvent(TuProlog source, ArrayList<QueryEvent> queryEventList,ArrayList<String> queryEventListString, int solveType){
         super(source);
         this.queryEventList=queryEventList;
         this.queryEventListString=queryEventListString;

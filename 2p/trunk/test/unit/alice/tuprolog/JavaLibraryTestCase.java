@@ -11,13 +11,13 @@ import junit.framework.TestCase;
 
 public class JavaLibraryTestCase extends TestCase {
 	String theory = null;
-	Prolog engine = new Prolog();
+	TuProlog engine = new TuProlog();
 	SolveInfo info = null;
 	String result = null;
 	String paths = null;
 	
 	public void testGetPrimitives() {
-		Library library = new OOLibrary();
+		TuLibrary library = new OOLibrary();
 		Map<Integer, List<PrimitiveInfo>> primitives = library.getPrimitives();
 		assertEquals(3, primitives.size());
 		assertEquals(0, primitives.get(PrimitiveInfo.DIRECTIVE).size());
@@ -28,28 +28,28 @@ public class JavaLibraryTestCase extends TestCase {
 	public void testAnonymousObjectRegistration() throws InvalidTheoryException, InvalidObjectIdException {	
 		OOLibrary lib = (OOLibrary) engine.getLibrary("alice.tuprolog.lib.OOLibrary");
 		String theory = "demo(X) :- X <- update. \n";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		TestCounter counter = new TestCounter();
 		// check registering behaviour
-		Struct t = lib.register(counter);
-		engine.solve(new Struct("demo", t));
+		TuStruct t = lib.register(counter);
+		engine.solve(new TuStruct("demo", t));
 		assertEquals(1, counter.getValue());
 		// check unregistering behaviour
 		lib.unregister(t);
-		SolveInfo goal = engine.solve(new Struct("demo", t));
+		SolveInfo goal = engine.solve(new TuStruct("demo", t));
 		assertFalse(goal.isSuccess());
 	}
 
 	public void testDynamicObjectsRetrival() throws PrologException {
-		Prolog engine = new Prolog();
+		TuProlog engine = new TuProlog();
 		OOLibrary lib = (OOLibrary) engine.getLibrary("alice.tuprolog.lib.OOLibrary");
 		String theory = "demo(C) :- \n" +
 				"java_object('alice.tuprolog.TestCounter', [], C), \n" +
 				"C <- update, \n" +
 				"C <- update. \n";			
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		SolveInfo info = engine.solve("demo(Obj).");
-		Struct id = (Struct) info.getVarValue("Obj");
+		TuStruct id = (TuStruct) info.getVarValue("Obj");
 		TestCounter counter = (TestCounter) lib.getRegisteredDynamicObject(id);
 		assertEquals(2, counter.getValue());
 	}
@@ -65,17 +65,17 @@ public class JavaLibraryTestCase extends TestCase {
 				"Obj <- inc, \n" +
 				"Obj <- inc, \n" +
 				"Obj <- getValue returns C.";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isSuccess());
-		alice.tuprolog.Number result2 = (alice.tuprolog.Number) info.getVarValue("Value");
+		alice.tuprolog.TuNumber result2 = (alice.tuprolog.TuNumber) info.getVarValue("Value");
 		assertEquals(2, result2.intValue());
 
 		// Testing URLClassLoader with java.lang.String class
 		theory = 	"demo_string(S) :- \n" +
 				"java_object('java.lang.String', ['MyString'], Obj_str), \n" +
 				"Obj_str <- toString returns S.";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo_string(StringValue).");
 		assertEquals(true, info.isSuccess());
 		result = info.getVarValue("StringValue").toString().replace("'", "");
@@ -91,10 +91,10 @@ public class JavaLibraryTestCase extends TestCase {
 					+ "java_object('Bicycle', [3, 4, 5], MyBicycle), \n"
 					+ "java_object('MountainBike', [5, 6, 7, 8], MyMountainBike), \n"
 					+ "MyMountainBike <- getGear returns Gear.";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo_hierarchy(Res).");
 		assertEquals(false, info.isHalted());
-		alice.tuprolog.Number result2 = (alice.tuprolog.Number) info.getVarValue("Res");
+		alice.tuprolog.TuNumber result2 = (alice.tuprolog.TuNumber) info.getVarValue("Res");
 		assertEquals(8, result2.intValue());
 	}
 	
@@ -108,7 +108,7 @@ public class JavaLibraryTestCase extends TestCase {
 				"Obj_inc <- inc, \n" +
 				"Obj_inc <- inc, \n" +
 				"Obj_inc <- getValue returns Res.";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isHalted());
 	}
@@ -118,7 +118,7 @@ public class JavaLibraryTestCase extends TestCase {
 		//Testing java_call_3 using URLClassLoader 
 		setPath(true); 
 		theory = "demo(Value) :- set_classpath([" + paths + "]), class('TestStaticClass') <- echo('Message') returns Value.";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo(StringValue).");
 		assertEquals(true, info.isSuccess());
 		result = info.getVarValue("StringValue").toString().replace("'", "");
@@ -127,14 +127,14 @@ public class JavaLibraryTestCase extends TestCase {
 		//Testing get/set static Field 
 		setPath(true);
 		theory = "demo_2(Value) :- set_classpath([" + paths + "]), class('TestStaticClass').'id' <- get(Value).";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo_2(Res).");
 		assertEquals(true, info.isSuccess());		
 		assertEquals(0, Integer.parseInt(info.getVarValue("Res").toString()));
 		
 		theory = "demo_2(Value, NewValue) :- set_classpath([" + paths + "]), class('TestStaticClass').'id' <- set(Value), \n" +
 				"class('TestStaticClass').'id' <- get(NewValue).";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo_2(5, Val).");
 		assertEquals(true, info.isSuccess());		
 		assertEquals(5, Integer.parseInt(info.getVarValue("Val").toString()));
@@ -146,7 +146,7 @@ public class JavaLibraryTestCase extends TestCase {
 		//Testing java_call_4 with invalid path
 		setPath(false);
 		theory = "demo(Value) :- set_classpath([" + paths + "]), class('TestStaticClass') <- echo('Message') returns Value.";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo(StringValue).");
 		assertEquals(true, info.isHalted());
 	}
@@ -159,10 +159,10 @@ public class JavaLibraryTestCase extends TestCase {
 				+ "java_object('Counter[]', [10], ArrayCounters), \n"
 				+ "java_array_length(ArrayCounters, Size).";
 
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isSuccess());
-		alice.tuprolog.Number resultInt = (alice.tuprolog.Number) info.getVarValue("Value");
+		alice.tuprolog.TuNumber resultInt = (alice.tuprolog.TuNumber) info.getVarValue("Value");
 		assertEquals(10, resultInt.intValue());
 
 		//Testing java_array_set and java_array_get
@@ -174,10 +174,10 @@ public class JavaLibraryTestCase extends TestCase {
 				+ "java_array_get(ArrayCounters, 0, C), \n"
 				+ "C <- getValue returns Res.";
 
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isSuccess());
-		alice.tuprolog.Number resultInt2 = (alice.tuprolog.Number) info.getVarValue("Value");
+		alice.tuprolog.TuNumber resultInt2 = (alice.tuprolog.TuNumber) info.getVarValue("Value");
 		assertEquals(1, resultInt2.intValue());
 	}
 
@@ -191,10 +191,10 @@ public class JavaLibraryTestCase extends TestCase {
 				+ "java_object('Counter[]', [10], ArrayCounters), \n"
 				+ "java_array_length(ArrayCounters, Size).";
 
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isSuccess());
-		alice.tuprolog.Number resultInt = (alice.tuprolog.Number) info.getVarValue("Value");
+		alice.tuprolog.TuNumber resultInt = (alice.tuprolog.TuNumber) info.getVarValue("Value");
 		assertEquals(10, resultInt.intValue());
 	}
 	
@@ -202,7 +202,7 @@ public class JavaLibraryTestCase extends TestCase {
 	{
 		//Testing get_classpath using DynamicURLClassLoader with not URLs added
 		theory =  "demo(P) :- get_classpath(P).";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isSuccess());
 		assertEquals(true, info.getTerm("Value").isList());
@@ -213,7 +213,7 @@ public class JavaLibraryTestCase extends TestCase {
 
 		theory =  "demo(P) :- set_classpath([" + paths + "]), get_classpath(P).";
 
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isSuccess());
 		assertEquals(true, info.getTerm("Value").isList());
@@ -236,14 +236,14 @@ public class JavaLibraryTestCase extends TestCase {
 				"Obj <- inc, \n" +
 				"Obj <- inc, \n" +
 				"register(Obj).";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo(R).");
 		assertEquals(true, info.isSuccess());
 		
 		theory = "demo2(Obj, Val) :- \n"
 				+ "Obj <- inc, \n"
 				+ "Obj <- getValue returns Val.";
-		engine.addTheory(new Theory(theory));
+		engine.addTheory(new TuTheory(theory));
 		String obj =  info.getTerm("R").toString();
 		SolveInfo info2 = engine.solve("demo2(" + obj + ", V).");
 		assertEquals(true, info2.isSuccess());
@@ -251,7 +251,7 @@ public class JavaLibraryTestCase extends TestCase {
 	
 		// Test invalid object_id registration
 		theory = "demo(Obj1) :- register(Obj1).";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo(Res).");
 		assertEquals(true, info.isHalted());		
 	}
@@ -261,7 +261,7 @@ public class JavaLibraryTestCase extends TestCase {
 	{
 		// Test invalid object_id unregistration
 		theory = "demo(Obj1) :- unregister(Obj1).";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo(Res).");
 		assertEquals(true, info.isHalted());	
 		
@@ -272,11 +272,11 @@ public class JavaLibraryTestCase extends TestCase {
 				"Obj <- inc, \n" +
 				"Obj <- inc, \n" +
 				"register(Obj), unregister(Obj).";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo(Res).");
 		assertEquals(true, info.isSuccess());
 		OOLibrary lib = (OOLibrary) engine.getLibrary("alice.tuprolog.lib.OOLibrary");
-		Struct id = (Struct) info.getTerm("Res");
+		TuStruct id = (TuStruct) info.getTerm("Res");
 		Object obj = lib.getRegisteredObject(id);
 		assertNull(obj);
 	}
@@ -289,7 +289,7 @@ public class JavaLibraryTestCase extends TestCase {
 						+ "Cause, Msg, StackTrace),write(Msg))], \n"
 						+ "true).";
 				
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo(S).");
 		assertEquals(true, info.isSuccess());
 	}
@@ -300,20 +300,20 @@ public class JavaLibraryTestCase extends TestCase {
 		theory = "goal1 :- set_classpath([" + paths + "])," +
 				"java_object('Pippo', [], Obj), class('Pluto') <- method(Obj).";
 				
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("goal1.");
 		assertEquals(true, info.isSuccess());
 		
 		theory = "goal2 :- set_classpath([" + paths + "])," +
 				"java_object('Pippo', [], Obj), class('Pluto') <- method2(Obj).";
 				
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("goal2.");
 		assertEquals(true, info.isSuccess());
 		
 		theory = "goal3 :- java_object('Pippo', [], Obj), set_classpath([" + paths + "]), class('Pluto') <- method(Obj).";
 				
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("goal3.");
 		assertEquals(true, info.isSuccess());
 		
@@ -324,7 +324,7 @@ public class JavaLibraryTestCase extends TestCase {
 					"java_array_get(Array, 0, Obj2)," +
 					"Obj2 <- met.";
 		
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("goal4.");
 		assertEquals(true, info.isSuccess());
 		
@@ -332,7 +332,7 @@ public class JavaLibraryTestCase extends TestCase {
 				"java_object('Pippo', [], Obj)," +
 				"class('Pluto') <- method(Obj as 'IPippo').";
 		
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("goal5.");
 		assertEquals(true, info.isSuccess());
 		

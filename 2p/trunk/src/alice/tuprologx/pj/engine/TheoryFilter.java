@@ -10,8 +10,8 @@ import java.util.Vector;
  */
 public class TheoryFilter {
     
-	protected Theory _theory;
-    protected Theory _filter;
+	protected TxTheory _theory;
+    protected TxTheory _filter;
     protected PJProlog _engine;
     
     private static String base_filter_string = "filter(L,R):-filter(L,[],R).\n"+
@@ -19,23 +19,23 @@ public class TheoryFilter {
                                  "filter([H|T],F,R):-call(H),append(F,[H],Z),filter(T,Z,R).\n"+
                                  "filter([H|T],F,R):-not call(H),filter(T,F,R).\n";
     
-    private static Theory base_filter = new Theory(base_filter_string);
+    private static TxTheory base_filter = new TxTheory(base_filter_string);
     
     
     /** Creates a new instance of TheoryFilter */
-    public TheoryFilter(Theory theory, Theory filter) {
+    public TheoryFilter(TxTheory theory, TxTheory filter) {
         _theory = theory;
         _filter = filter;
     }
     
-    public TheoryFilter(Theory theory, String filter) {
-        this(theory,new Theory(filter));
+    public TheoryFilter(TxTheory theory, String filter) {
+        this(theory,new TxTheory(filter));
     }
     
     @SuppressWarnings("unchecked")
-	public Theory apply() {                
-        Var<List<Clause<?,?>>> filtered_list = new Var<List<Clause<?,?>>>("X");
-        Compound2<List<Clause<?,?>>,Var<List<Clause<?,?>>>> goal = new Compound2<List<Clause<?,?>>,Var<List<Clause<?,?>>>>("filter",_theory,filtered_list);
+	public TxTheory apply() {                
+        TxVar<TxList<TxClause<?,?>>> filtered_list = new TxVar<TxList<TxClause<?,?>>>("X");
+        TxCompound2<TxList<TxClause<?,?>>,TxVar<TxList<TxClause<?,?>>>> goal = new TxCompound2<TxList<TxClause<?,?>>,TxVar<TxList<TxClause<?,?>>>>("filter",_theory,filtered_list);
         try {
             PJProlog p = new PJProlog();        
             p.setTheory(_filter);
@@ -44,18 +44,18 @@ public class TheoryFilter {
             //p.setTheory(p.getTheory());
             //System.out.println(goal.marshal());
             PrologSolution<?,?> sol = p.solve(goal);
-            List<Term<?>> res = sol.getTerm("X");            
+            TxList<TxTerm<?>> res = sol.getTerm("X");            
             //System.out.println("PIPPO="+res);            
-            Vector<Clause<?,?>> filtered_clauses = new Vector<Clause<?,?>>();
-            for (Term<?> t : res) {
-                if (t instanceof Compound2 && ((Compound2<Term<?>,Term<?>>)t).getName().equals(":-")) {
-                    filtered_clauses.add(new Clause<Term<?>,Term<?>>(((Compound2<Term<?>,Term<?>>)t).get0(),((Compound2<Term<?>,Term<?>>)t).get1()));
+            Vector<TxClause<?,?>> filtered_clauses = new Vector<TxClause<?,?>>();
+            for (TxTerm<?> t : res) {
+                if (t instanceof TxCompound2 && ((TxCompound2<TxTerm<?>,TxTerm<?>>)t).getName().equals(":-")) {
+                    filtered_clauses.add(new TxClause<TxTerm<?>,TxTerm<?>>(((TxCompound2<TxTerm<?>,TxTerm<?>>)t).get0(),((TxCompound2<TxTerm<?>,TxTerm<?>>)t).get1()));
                 }
                 else {
-                    filtered_clauses.add(new Clause<Term<?>,Term<?>>(t,null));
+                    filtered_clauses.add(new TxClause<TxTerm<?>,TxTerm<?>>(t,null));
                 }
             }
-            return new Theory(filtered_clauses);
+            return new TxTheory(filtered_clauses);
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -1,9 +1,9 @@
 package alice.tuprolog.interfaces;
 
-import alice.tuprolog.Library;
+import alice.tuprolog.TuLibrary;
 import alice.tuprolog.SolveInfo;
 import alice.tuprolog.Term;
-import alice.tuprolog.Theory;
+import alice.tuprolog.TuTheory;
 import alice.tuprolog.event.ExceptionListener;
 import alice.tuprolog.event.OutputListener;
 import alice.tuprolog.event.SpyListener;
@@ -27,7 +27,7 @@ public interface IProlog {
 	 * Gets current theory
 	 * @return   current(dynamic) theory
 	 */
-	Theory getTheory();
+	TuTheory getTheory();
 	
 	/**
 	 * Adds (appends) a theory
@@ -35,7 +35,7 @@ public interface IProlog {
 	 * @param th is the theory to be added
 	 * @throws InvalidTheoryException if the new theory is not valid
 	 */
-	void addTheory(Theory th) throws Exception;
+	void addTheory(TuTheory th) throws Exception;
 	
 	/**
 	 * Clears current theory
@@ -56,7 +56,7 @@ public interface IProlog {
 	 * @return the reference to the library loaded, null if the library is
 	 *         not found
 	 */
-	Library getLibrary(String name);
+	TuLibrary getLibrary(String name);
 	
 	/**
 	 * Loads a library.
@@ -68,7 +68,7 @@ public interface IProlog {
 	 * @return the reference to the Library just loaded
 	 * @throws InvalidLibraryException if name is not a valid library
 	 */
-	Library loadLibrary(String className) throws Exception;
+	TuLibrary loadLibrary(String className) throws Exception;
 	
 	/**
 	 * Unloads a previously loaded library

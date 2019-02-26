@@ -42,7 +42,7 @@ public final class LibraryManager
     /**
 	 * The Prolog engine referenced by the Library Manager. 
 	 */
-    private Prolog engine;
+    private TuProlog engine;
     /**
 	 * Stores classnames for managed libraries.
 	 */
@@ -57,7 +57,7 @@ public final class LibraryManager
 	 * Set the engine to be referenced by the library manager.
 	 * @param engine  The engine to be referenced by the library manager.
 	 */
-    public void setEngine(Prolog engine) {
+    public void setEngine(TuProlog engine) {
         this.engine = engine;
         initialize();
     }
@@ -76,7 +76,7 @@ public final class LibraryManager
 	 * Get the engine referenced by the library manager.
 	 * @return  the engine referenced by the library manager.
 	 */
-    public Prolog getEngine() {
+    public TuProlog getEngine() {
         return engine;
     }
 
@@ -116,10 +116,10 @@ public final class LibraryManager
 //        else
 //            throw new InvalidLibraryException(libraryClassname,-1,-1);
         
-        Library lib = null;
+        TuLibrary lib = null;
         try
         {
-        	lib = (Library) Class.forName(libraryClassname).newInstance();
+        	lib = (TuLibrary) Class.forName(libraryClassname).newInstance();
         	libraries.add(lib.getName());
         }
         catch(Exception ex)
@@ -142,7 +142,7 @@ public final class LibraryManager
 	        /** 
 	         * check for classpath without uppercase at the first char of the last word
 	         */
-	        Library lib = null;
+	        TuLibrary lib = null;
 	        try
 	        {
 	        	String path = file.getPath();
@@ -169,7 +169,7 @@ public final class LibraryManager
 	        				getClass().getClassLoader());
 	        	}	
 	        	
-				lib = (Library) Class.forName(libraryClassname, true, loader).newInstance();
+				lib = (TuLibrary) Class.forName(libraryClassname, true, loader).newInstance();
 				libraries.add(lib.getName());
 				externalLibraries.put(libraryClassname, getClassResource(lib.getClass()));
 	        }

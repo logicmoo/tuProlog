@@ -17,7 +17,7 @@
  */
 package alice.tuprolog.event;
 
-import alice.tuprolog.Prolog;
+import alice.tuprolog.TuProlog;
 
 /**
  * 
@@ -30,7 +30,7 @@ public class LibraryEvent extends PrologEvent {
 	private static final long serialVersionUID = 1L;
     private String libName;
     
-    public LibraryEvent(Prolog source, String libName){
+    public LibraryEvent(TuProlog source, String libName){
         super(source);
         this.libName = libName; 
     }

@@ -57,7 +57,7 @@ public class ClauseDatabase extends HashMap<String,FamilyClausesList> implements
 	 * @return  The list of matching-compatible predicates
 	 */
 	List<ClauseInfo> getPredicates(Term headt) {
-		FamilyClausesList family = get(((Struct) headt).getPredicateIndicator());
+		FamilyClausesList family = get(((TuStruct) headt).getPredicateIndicator());
 		if (family == null){
 			return new ReadOnlyLinkedList<ClauseInfo>();
 		}

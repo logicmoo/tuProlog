@@ -19,7 +19,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
 	
 	private static final long serialVersionUID = 1L;
     
-	private Prolog mediator;
+	private TuProlog mediator;
     private TheoryManager theoryManager;
     private PrimitiveManager primitiveManager;
     private LibraryManager libraryManager;
@@ -38,13 +38,13 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     private Object semaphore;
     
     /* Current environment */
-    Engine env;
+    TuEngine env;
     
     /* Last environment used */
-    private Engine last_env;
+    private TuEngine last_env;
     
     /* Stack environments of nidicate solving */
-    private LinkedList<Engine> stackEnv = new LinkedList<Engine>();
+    private LinkedList<TuEngine> stackEnv = new LinkedList<TuEngine>();
     
     private SolveInfo sinfo;
     
@@ -83,7 +83,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     /**
      * Config this Manager
      */
-    void initialize(Prolog vm) {
+    void initialize(TuProlog vm) {
         mediator = vm;
         theoryManager    = vm.getTheoryManager();
         primitiveManager = vm.getPrimitiveManager();
@@ -101,7 +101,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
         semaphore = new Object();
     }
     
-    void spy(String action, Engine env) {
+    void spy(String action, TuEngine env) {
         mediator.spy(action,env);
     }
     
@@ -162,7 +162,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
             primitiveManager.identifyPredicate(query);
             
             freeze();
-            env = new Engine(this, query);
+            env = new TuEngine(this, query);
             StateEnd result = env.run();
             defreeze();
             
@@ -439,7 +439,7 @@ public class EngineRunner implements java.io.Serializable, Runnable{
     	}
         
         //Alberto
-        Prolog getMediator(){
+        TuProlog getMediator(){
     		return this.mediator;
     	}
         

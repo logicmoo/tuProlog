@@ -9,7 +9,7 @@ import junit.framework.TestCase;
 public class IOLibraryTestCase extends TestCase {
 	
 	public void testGetPrimitives() {
-		Library library = new IOLibrary();
+		TuLibrary library = new IOLibrary();
 		Map<Integer, List<PrimitiveInfo>> primitives = library.getPrimitives();
 		assertEquals(3, primitives.size());
 		assertEquals(0, primitives.get(PrimitiveInfo.DIRECTIVE).size());
@@ -18,7 +18,7 @@ public class IOLibraryTestCase extends TestCase {
 	}
 	
 	public void testTab1() throws MalformedGoalException {
-		Prolog engine = new Prolog();
+		TuProlog engine = new TuProlog();
 		TestOutputListener l = new TestOutputListener();
 		engine.addOutputListener(l);
 		engine.solve("tab(5).");

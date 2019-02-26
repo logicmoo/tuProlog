@@ -21,11 +21,11 @@ import java.io.*;
 public class CUIConsole extends Automaton implements Serializable, OutputListener, SpyListener, WarningListener/*Castagna 06/2011*/, ExceptionListener/**/{
 
 	BufferedReader  stdin;
-    Prolog          engine;
+    TuProlog          engine;
 
 
     static final String incipit =
-        "tuProlog system - release " + Prolog.getVersion() + "\n";
+        "tuProlog system - release " + TuProlog.getVersion() + "\n";
     
     static String sol = ""; //to do -> correct output of CUI console in order to show multiple results
        
@@ -37,7 +37,7 @@ public class CUIConsole extends Automaton implements Serializable, OutputListene
         }
         
 
-        engine = new Prolog();
+        engine = new TuProlog();
         /**
          * Added the method setExecution to conform
          * the operation of CUIConsole as that of JavaIDE
@@ -54,7 +54,7 @@ public class CUIConsole extends Automaton implements Serializable, OutputListene
         /**/
         if (args.length>0) {
             try {
-                engine.setTheory(new Theory(new FileInputStream(args[0])));
+                engine.setTheory(new TuTheory(new FileInputStream(args[0])));
             } catch (InvalidTheoryException ex){
                 System.err.println("invalid theory - line: "+ex.line);
                 System.exit(-1);
@@ -124,8 +124,8 @@ public class CUIConsole extends Automaton implements Serializable, OutputListene
     private String solveInfoToString(SolveInfo result) {
         String s = "";
         try {
-            for (Var v: result.getBindingVars()) {
-                if ( !v.isAnonymous() && v.isBound() && (!(v.getTerm() instanceof Var) || (!((Var) (v.getTerm())).getName().startsWith("_")))) {
+            for (TuVar v: result.getBindingVars()) {
+                if ( !v.isAnonymous() && v.isBound() && (!(v.getTerm() instanceof TuVar) || (!((TuVar) (v.getTerm())).getName().startsWith("_")))) {
                     s += v.getName() + " / " + v.getTerm() + "\n";
                 }
             }

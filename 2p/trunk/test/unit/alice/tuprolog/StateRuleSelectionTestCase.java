@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 public class StateRuleSelectionTestCase extends TestCase {
 	
 	public void testUnknownPredicateInQuery() throws MalformedGoalException {
-		Prolog engine = new Prolog();
+		TuProlog engine = new TuProlog();
 		TestWarningListener warningListener = new TestWarningListener();
 		engine.addWarningListener(warningListener);
 		String query = "p(X).";
@@ -15,11 +15,11 @@ public class StateRuleSelectionTestCase extends TestCase {
 	}
 	
 	public void testUnknownPredicateInTheory() throws InvalidTheoryException, MalformedGoalException {
-		Prolog engine = new Prolog();
+		TuProlog engine = new TuProlog();
 		TestWarningListener warningListener = new TestWarningListener();
 		engine.addWarningListener(warningListener);
 		String theory = "p(X) :- a, b. \nb.";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		String query = "p(X).";
 		engine.solve(query);
 		assertTrue(warningListener.warning.indexOf("a/0") > 0);

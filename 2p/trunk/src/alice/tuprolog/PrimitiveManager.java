@@ -44,7 +44,7 @@ public class PrimitiveManager /*Castagna 06/2011*/implements IPrimitiveManager/*
     /**
      * Config this Manager
      */
-    void initialize(Prolog vm) {
+    void initialize(TuProlog vm) {
         createPrimitiveInfo(new BuiltIn(vm)); 
     }
     
@@ -97,8 +97,8 @@ public class PrimitiveManager /*Castagna 06/2011*/implements IPrimitiveManager/*
         return term;
     }
     
-    public boolean evalAsDirective(Struct d) throws Throwable {
-        PrimitiveInfo pd = ((Struct) identifyDirective(d)).getPrimitive();
+    public boolean evalAsDirective(TuStruct d) throws Throwable {
+        PrimitiveInfo pd = ((TuStruct) identifyDirective(d)).getPrimitive();
         if (pd != null) {
             try {
                 pd.evalAsDirective(d);
@@ -123,10 +123,10 @@ public class PrimitiveManager /*Castagna 06/2011*/implements IPrimitiveManager/*
             return;
         }
         term = term.getTerm();
-        if (!(term instanceof Struct)) {
+        if (!(term instanceof TuStruct)) {
             return;
         }
-        Struct t = (Struct) term;
+        TuStruct t = (TuStruct) term;
         
         int arity = t.getArity();
         String name = t.getName();
@@ -163,25 +163,25 @@ public class PrimitiveManager /*Castagna 06/2011*/implements IPrimitiveManager/*
     }
     
     
-    Library getLibraryDirective(String name, int nArgs) {
+    TuLibrary getLibraryDirective(String name, int nArgs) {
         try {
-            return (Library)directiveHashMap.get(name + "/" + nArgs).getSource();            
+            return (TuLibrary)directiveHashMap.get(name + "/" + nArgs).getSource();            
         } catch(NullPointerException e) {
             return null;
         }
     }
     
-    Library getLibraryPredicate(String name, int nArgs) {
+    TuLibrary getLibraryPredicate(String name, int nArgs) {
         try {
-            return (Library)predicateHashMap.get(name + "/" + nArgs).getSource();            
+            return (TuLibrary)predicateHashMap.get(name + "/" + nArgs).getSource();            
         } catch(NullPointerException e) {
             return null;
         }
     }
     
-    Library getLibraryFunctor(String name, int nArgs) {
+    TuLibrary getLibraryFunctor(String name, int nArgs) {
         try {
-            return (Library)functorHashMap.get(name + "/" + nArgs).getSource();
+            return (TuLibrary)functorHashMap.get(name + "/" + nArgs).getSource();
         } catch(NullPointerException e) {
             return null;
         }

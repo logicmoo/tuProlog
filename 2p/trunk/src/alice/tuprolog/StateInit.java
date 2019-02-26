@@ -17,7 +17,7 @@
  */
 package alice.tuprolog;
 
-import alice.tuprolog.Struct;
+import alice.tuprolog.TuStruct;
 
 /**
  * @author Alex Benini
@@ -35,7 +35,7 @@ public class StateInit extends State {
      * @see alice.tuprolog.AbstractRunState#doJob()
      */
     @Override
-	void doJob(Engine e) {
+	void doJob(TuEngine e) {
     	
         e.prepareGoal();
         
@@ -43,7 +43,7 @@ public class StateInit extends State {
         ExecutionContext eCtx = new ExecutionContext(0);
         eCtx.goalsToEval = new SubGoalStore();
         eCtx.goalsToEval.load(ClauseInfo.extractBody(e.startGoal));
-        eCtx.clause = (Struct)e.query;
+        eCtx.clause = (TuStruct)e.query;
         eCtx.depth = 0;
         eCtx.fatherCtx = null;
        	eCtx.haveAlternatives = false;

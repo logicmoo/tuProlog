@@ -20,11 +20,11 @@
  */
 package alice.tuprolog;
 
-public class StringLibrary extends Library {
+public class StringLibrary extends TuLibrary {
 	private static final long serialVersionUID = 1L;
 
 	public boolean to_lower_case_2(Term arg0, Term arg1){
 		String dest = arg0.toString().toLowerCase();
-		return unify(arg1, new Struct(dest));
+		return unify(arg1, new TuStruct(dest));
 	} 
 }

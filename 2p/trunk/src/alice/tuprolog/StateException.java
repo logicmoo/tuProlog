@@ -17,7 +17,7 @@ public class StateException extends State {
     }
 
     @Override
-	void doJob(Engine e) {
+	void doJob(TuEngine e) {
         String errorType = e.currentContext.currentGoal.getName();
         if (errorType.equals("throw"))
             prologError(e);
@@ -25,7 +25,7 @@ public class StateException extends State {
             javaException(e);
     }
 
-    private void prologError(Engine e) {
+    private void prologError(TuEngine e) {
         Term errorTerm = e.currentContext.currentGoal.getArg(0);
         e.currentContext = e.currentContext.fatherCtx;
         if (e.currentContext == null) {
@@ -48,7 +48,7 @@ public class StateException extends State {
 
                 // unifico l'argomento di throw/1 con il secondo argomento di
                 // catch/3
-                List<Var> unifiedVars = e.currentContext.trailingVars
+                List<TuVar> unifiedVars = e.currentContext.trailingVars
                         .getHead();
                 e.currentContext.currentGoal.getArg(1).unify(unifiedVars,
                         unifiedVars, errorTerm, c.getMediator().getFlagManager().isOccursCheckEnabled());
@@ -61,7 +61,7 @@ public class StateException extends State {
                 // secondo argomento di catch/3
                 Term handlerTerm = e.currentContext.currentGoal.getArg(2);
                 Term curHandlerTerm = handlerTerm.getTerm();
-                if (!(curHandlerTerm instanceof Struct)) {
+                if (!(curHandlerTerm instanceof TuStruct)) {
                     e.nextState = c.END_FALSE;
                     return;
                 }
@@ -71,8 +71,8 @@ public class StateException extends State {
                 // This enables the dynamic linking of built-ins for
                 // terms coming from outside the demonstration context.
                 if (handlerTerm != curHandlerTerm)
-                    handlerTerm = new Struct("call", curHandlerTerm);
-                Struct handler = (Struct) handlerTerm;
+                    handlerTerm = new TuStruct("call", curHandlerTerm);
+                TuStruct handler = (TuStruct) handlerTerm;
                 c.identify(handler);
                 SubGoalTree sgt = new SubGoalTree();
                 sgt.addChild(handler);
@@ -95,7 +95,7 @@ public class StateException extends State {
         }
     }
 
-    private void javaException(Engine e) {
+    private void javaException(TuEngine e) {
         Term exceptionTerm = e.currentContext.currentGoal.getArg(0);
         e.currentContext = e.currentContext.fatherCtx;
         if (e.currentContext == null) {
@@ -119,7 +119,7 @@ public class StateException extends State {
 
                 // unifico l'argomento di java_throw/1 con il catcher
                 // appropriato e recupero l'handler corrispondente
-                List<Var> unifiedVars = e.currentContext.trailingVars
+                List<TuVar> unifiedVars = e.currentContext.trailingVars
                         .getHead();
                 Term handlerTerm = javaUnify(e.currentContext.currentGoal
                         .getArg(1), exceptionTerm, unifiedVars);
@@ -134,7 +134,7 @@ public class StateException extends State {
                 // effettuate durante il processo di unificazione tra
                 // l'eccezione e il catcher
                 Term curHandlerTerm = handlerTerm.getTerm();
-                if (!(curHandlerTerm instanceof Struct)) {
+                if (!(curHandlerTerm instanceof TuStruct)) {
                     e.nextState = c.END_FALSE;
                     return;
                 }
@@ -142,8 +142,8 @@ public class StateException extends State {
                 Term curFinallyTerm = finallyTerm.getTerm();
                 // verifico se c'? il blocco finally
                 boolean isFinally = true;
-                if (curFinallyTerm instanceof Int) {
-                    Int finallyInt = (Int) curFinallyTerm;
+                if (curFinallyTerm instanceof TuInt) {
+                    TuInt finallyInt = (TuInt) curFinallyTerm;
                     if (finallyInt.intValue() == 0)
                         isFinally = false;
                     else {
@@ -151,7 +151,7 @@ public class StateException extends State {
                         e.nextState = c.END_FALSE;
                         return;
                     }
-                } else if (!(curFinallyTerm instanceof Struct)) {
+                } else if (!(curFinallyTerm instanceof TuStruct)) {
                     e.nextState = c.END_FALSE;
                     return;
                 }
@@ -161,16 +161,16 @@ public class StateException extends State {
                 // This enables the dynamic linking of built-ins for
                 // terms coming from outside the demonstration context.
                 if (handlerTerm != curHandlerTerm)
-                    handlerTerm = new Struct("call", curHandlerTerm);
+                    handlerTerm = new TuStruct("call", curHandlerTerm);
                 if (finallyTerm != curFinallyTerm)
-                    finallyTerm = new Struct("call", curFinallyTerm);
+                    finallyTerm = new TuStruct("call", curFinallyTerm);
 
-                Struct handler = (Struct) handlerTerm;
+                TuStruct handler = (TuStruct) handlerTerm;
                 c.identify(handler);
                 SubGoalTree sgt = new SubGoalTree();
                 sgt.addChild(handler);
                 if (isFinally) {
-                    Struct finallyStruct = (Struct) finallyTerm;
+                    TuStruct finallyStruct = (TuStruct) finallyTerm;
                     c.identify(finallyStruct);
                     sgt.addChild(finallyStruct);
                 }
@@ -199,7 +199,7 @@ public class StateException extends State {
     private boolean javaMatch(Term arg1, Term exceptionTerm) {
         if (!arg1.isList())
             return false;
-        Struct list = (Struct) arg1;
+        TuStruct list = (TuStruct) arg1;
         if (list.isEmptyList())
             return false;
         Iterator<? extends Term> it = list.listIterator();
@@ -207,7 +207,7 @@ public class StateException extends State {
             Term nextTerm = it.next();
             if (!nextTerm.isCompound())
                 continue;
-            Struct element = (Struct) nextTerm;
+            TuStruct element = (TuStruct) nextTerm;
             if (!element.getName().equals(","))
                 continue;
             if (element.getArity() != 2)
@@ -221,14 +221,14 @@ public class StateException extends State {
 
     // unifica l'argomento di java_throw/1 con il giusto catcher e restituisce
     // l'handler corrispondente
-    private Term javaUnify(Term arg1, Term exceptionTerm, List<Var> unifiedVars) {
-        Struct list = (Struct) arg1;
+    private Term javaUnify(Term arg1, Term exceptionTerm, List<TuVar> unifiedVars) {
+        TuStruct list = (TuStruct) arg1;
         Iterator<? extends Term> it = list.listIterator();
         while (it.hasNext()) {
             Term nextTerm = it.next();
             if (!nextTerm.isCompound())
                 continue;
-            Struct element = (Struct) nextTerm;
+            TuStruct element = (TuStruct) nextTerm;
             if (!element.getName().equals(","))
                 continue;
             if (element.getArity() != 2)

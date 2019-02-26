@@ -14,7 +14,7 @@ public class EngineManager implements java.io.Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private Prolog vm;
+	private TuProlog vm;
 	private Hashtable<Integer, EngineRunner> runners;	//key: id;  obj: runner
 	private Hashtable<Integer, Integer> threads;	    //key: pid; obj: id
 	private int rootID = 0;
@@ -24,7 +24,7 @@ public class EngineManager implements java.io.Serializable {
 	private Hashtable<String, TermQueue> queues;
 	private Hashtable<String, ReentrantLock> locks;
 
-	public void initialize(Prolog vm) {
+	public void initialize(TuProlog vm) {
 		this.vm=vm;
 		runners=new Hashtable<Integer,EngineRunner>();
 		threads = new Hashtable<Integer,Integer>();
@@ -38,13 +38,13 @@ public class EngineManager implements java.io.Serializable {
 		id = id+1;
 		
 		if (goal == null) return false;
-		if (goal instanceof Var) 
+		if (goal instanceof TuVar) 
 			goal = goal.getTerm();
 		
 		EngineRunner er = new EngineRunner(id);
 		er.initialize(vm);
 		
-		if (!vm.unify(threadID, new Int(id))) return false;
+		if (!vm.unify(threadID, new TuInt(id))) return false;
 		
 		er.setGoal(goal);
 		addRunner(er, id);
@@ -92,7 +92,7 @@ public class EngineManager implements java.io.Serializable {
 	public boolean sendMsg (int dest, Term msg){
 		EngineRunner er = findRunner(dest);
 		if (er==null) return false;
-		Term msgcopy = msg.copy(new LinkedHashMap<Var,Var>(), 0);
+		Term msgcopy = msg.copy(0, new LinkedHashMap<TuVar,TuVar>());
 		er.sendMsg(msgcopy);
 		return true;
 	}
@@ -100,7 +100,7 @@ public class EngineManager implements java.io.Serializable {
 	public boolean sendMsg(String name, Term msg) {
 		TermQueue queue = queues.get(name);
 		if (queue==null) return false;
-		Term msgcopy = msg.copy(new LinkedHashMap<Var,Var>(), 0);
+		Term msgcopy = msg.copy(0, new LinkedHashMap<TuVar,TuVar>());
 		queue.store(msgcopy);
 		return true;
 	}
@@ -243,7 +243,7 @@ public class EngineManager implements java.io.Serializable {
 		return er1.solveNext();
 	}
 	
-	void spy(String action, Engine env) {
+	void spy(String action, TuEngine env) {
 		EngineRunner runner = findRunner();
 		runner.spy(action, env);
 	}
@@ -375,7 +375,7 @@ public class EngineManager implements java.io.Serializable {
 		}
 	}
 
-	public Engine getEnv() {
+	public TuEngine getEnv() {
 		EngineRunner er=findRunner();
 		return er.env;
 	}

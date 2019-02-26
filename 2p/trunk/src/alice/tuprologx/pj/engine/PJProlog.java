@@ -20,10 +20,10 @@ import java.util.*;
  */
 public class PJProlog /*extends alice.tuprolog.Prolog*/ {
     
-    protected alice.tuprolog.Prolog engine;
+    protected alice.tuprolog.TuProlog engine;
     
     public PJProlog() {
-        engine = new alice.tuprolog.Prolog();        
+        engine = new alice.tuprolog.TuProlog();        
         try {
             engine.unloadLibrary("alice.tuprolog.lib.OOLibrary");
             engine.loadLibrary("alice.tuprologx.pj.lib.PJLibraryNew");
@@ -34,7 +34,7 @@ public class PJProlog /*extends alice.tuprolog.Prolog*/ {
         }
     }
     
-    public <G extends Term<?>, S extends Term<?>> Iterable<PrologSolution<G,S>>  solveAll(final G query) {            
+    public <G extends TxTerm<?>, S extends TxTerm<?>> Iterable<PrologSolution<G,S>>  solveAll(final G query) {            
             class SolutionProxy implements Iterable<PrologSolution<G,S>> {
                 @Override
 				public Iterator<PrologSolution<G,S>> iterator() {                
@@ -45,13 +45,13 @@ public class PJProlog /*extends alice.tuprolog.Prolog*/ {
             return new SolutionProxy();
         }
 
-    public <G extends Term<?>, S extends Term<?>> PrologSolution<G,S> solve(G g) {
+    public <G extends TxTerm<?>, S extends TxTerm<?>> PrologSolution<G,S> solve(G g) {
         alice.tuprolog.SolveInfo retValue;        
         retValue = engine.solve(g.marshal());        
         return new PrologSolution<G,S>(retValue);
     }
     
-    public <G extends Term<?>, S extends Term<?>> PrologSolution<G,S> solveNext() throws NoSolutionException {
+    public <G extends TxTerm<?>, S extends TxTerm<?>> PrologSolution<G,S> solveNext() throws NoSolutionException {
         alice.tuprolog.SolveInfo retValue;        
         try {
             retValue = engine.solveNext();
@@ -62,22 +62,22 @@ public class PJProlog /*extends alice.tuprolog.Prolog*/ {
         return new PrologSolution<G,S>(retValue);
     }
 
-    public void setTheory(Theory theory) throws alice.tuprolog.InvalidTheoryException {
-        engine.setTheory(new alice.tuprolog.Theory(theory.marshal()));
+    public void setTheory(TxTheory theory) throws alice.tuprolog.InvalidTheoryException {
+        engine.setTheory(new alice.tuprolog.TuTheory(theory.marshal()));
     }
 
-    public void addTheory(Theory theory) throws alice.tuprolog.InvalidTheoryException {
-        engine.addTheory(new alice.tuprolog.Theory(theory.marshal()));
+    public void addTheory(TxTheory theory) throws alice.tuprolog.InvalidTheoryException {
+        engine.addTheory(new alice.tuprolog.TuTheory(theory.marshal()));
     }
     
-    public Theory getTheory() throws alice.tuprolog.InvalidTheoryException {
-        return Theory.unmarshal(engine.getTheory());
+    public TxTheory getTheory() throws alice.tuprolog.InvalidTheoryException {
+        return TxTheory.unmarshal(engine.getTheory());
     }
         
     /**
 	 * @author  ale
 	 */
-    class SolutionIterator<G extends Term<?>, S extends Term<?>> implements Iterator<PrologSolution<G,S>> {
+    class SolutionIterator<G extends TxTerm<?>, S extends TxTerm<?>> implements Iterator<PrologSolution<G,S>> {
 
         PrologSolution<G,S> current = null;
         PrologSolution<G,S> next = null;
@@ -119,11 +119,11 @@ public class PJProlog /*extends alice.tuprolog.Prolog*/ {
         }
     }
     
-     public alice.tuprolog.Struct registerJavaObject(Object o) {
+     public alice.tuprolog.TuStruct registerJavaObject(Object o) {
         return ((alice.tuprolog.lib.OOLibrary)engine.getLibrary("alice.tuprologx.pj.lib.PJLibraryNew")).register(o);
      }
      
-     public Object getJavaObject(alice.tuprolog.Struct t) { 
+     public Object getJavaObject(alice.tuprolog.TuStruct t) { 
         try {
             return ((alice.tuprolog.lib.OOLibrary)engine.getLibrary("alice.tuprologx.pj.lib.PJLibraryNew")).getRegisteredObject(t);
         }
@@ -132,7 +132,7 @@ public class PJProlog /*extends alice.tuprolog.Prolog*/ {
         }        
      }
      
-     public void loadLibrary(alice.tuprolog.Library library) {
+     public void loadLibrary(alice.tuprolog.TuLibrary library) {
          try {
             engine.loadLibrary(library);
          }

@@ -22,7 +22,7 @@ package alice.tuprolog;
 
 import java.util.*;
 
-public class HashLibrary extends Library {
+public class HashLibrary extends TuLibrary {
 	private static final long serialVersionUID = 1L;
 
 	private HashMap<String, Term> dict;

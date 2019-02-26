@@ -28,7 +28,7 @@ abstract class State {
     protected EngineRunner c;
     protected String stateName;
     
-    abstract void doJob(Engine e);
+    abstract void doJob(TuEngine e);
     
     @Override
 	public String toString() {

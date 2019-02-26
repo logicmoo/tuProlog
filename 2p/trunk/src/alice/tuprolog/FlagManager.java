@@ -31,43 +31,43 @@ import alice.tuprolog.json.JSONSerializerManager;
 class FlagManager {
 	
     /* flag list */
-    private ArrayList<Flag> flags;
+    private ArrayList<TuFlag> flags;
 
     /**
 	 * mediator owner of the manager
 	 */
-    protected Prolog mediator;
+    protected TuProlog mediator;
 
     FlagManager() { //Alberto
-        flags = new ArrayList<Flag>();
+        flags = new ArrayList<TuFlag>();
         
         //occursCheck flag -> a default è on!
-        Struct s = new Struct();
-        s.append(new Struct("on"));
-        s.append(new Struct("off"));
-        this.defineFlag("occursCheck", s, new Struct("on"), true, "BuiltIn");
+        TuStruct s = new TuStruct();
+        s.append(new TuStruct("on"));
+        s.append(new TuStruct("off"));
+        this.defineFlag("occursCheck", s, new TuStruct("on"), true, "BuiltIn");
     }
 
     /**
      * Config this Manager
      */
-    public void initialize(Prolog vm) {
+    public void initialize(TuProlog vm) {
         mediator = vm;
     }
 
     /**
      * Defines a new flag
      */
-    public synchronized boolean defineFlag(String name, Struct valueList, Term defValue,
+    public synchronized boolean defineFlag(String name, TuStruct valueList, Term defValue,
             boolean modifiable, String libName) {
-        flags.add(new Flag(name, valueList, defValue, modifiable, libName));
+        flags.add(new TuFlag(name, valueList, defValue, modifiable, libName));
         return true;
     }
 
     public synchronized boolean setFlag(String name, Term value) {
-        java.util.Iterator<Flag> it = flags.iterator();
+        java.util.Iterator<TuFlag> it = flags.iterator();
         while (it.hasNext()) {
-            Flag flag = it.next();
+            TuFlag flag = it.next();
             if (flag.getName().equals(name)) {
                 if (flag.isModifiable() && flag.isValidValue(value)) {
                     flag.setValue(value);
@@ -80,21 +80,21 @@ class FlagManager {
         return false;
     }
 
-    public synchronized Struct getPrologFlagList() {
-        Struct flist = new Struct();
-        java.util.Iterator<Flag> it = flags.iterator();
+    public synchronized TuStruct getPrologFlagList() {
+        TuStruct flist = new TuStruct();
+        java.util.Iterator<TuFlag> it = flags.iterator();
         while (it.hasNext()) {
-            Flag fl = it.next();
-            flist = new Struct(new Struct("flag", new Struct(fl.getName()), fl
+            TuFlag fl = it.next();
+            flist = new TuStruct(new TuStruct("flag", new TuStruct(fl.getName()), fl
                     .getValue()), flist);
         }
         return flist;
     }
 
     public synchronized Term getFlag(String name) {
-        java.util.Iterator<Flag> it = flags.iterator();
+        java.util.Iterator<TuFlag> it = flags.iterator();
         while (it.hasNext()) {
-            Flag fl = it.next();
+            TuFlag fl = it.next();
             if (fl.getName().equals(name)) {
                 return fl.getValue();
             }
@@ -105,9 +105,9 @@ class FlagManager {
     // restituisce true se esiste un flag di nome name, e tale flag ?
     // modificabile
     public boolean isModifiable(String name) {
-        java.util.Iterator<Flag> it = flags.iterator();
+        java.util.Iterator<TuFlag> it = flags.iterator();
         while (it.hasNext()) {
-            Flag flag = it.next();
+            TuFlag flag = it.next();
             if (flag.getName().equals(name)) {
                 return flag.isModifiable();
             }
@@ -118,9 +118,9 @@ class FlagManager {
     // restituisce true se esiste un flag di nome name, e Value ? un valore
     // ammissibile per tale flag
     public boolean isValidValue(String name, Term value) {
-        java.util.Iterator<Flag> it = flags.iterator();
+        java.util.Iterator<TuFlag> it = flags.iterator();
         while (it.hasNext()) {
-            Flag flag = it.next();
+            TuFlag flag = it.next();
             if (flag.getName().equals(name)) {
                 return flag.isValidValue(value);
             }
@@ -130,7 +130,7 @@ class FlagManager {
 
     //Alberto
 	public synchronized boolean isOccursCheckEnabled() {
-		for(Flag f : flags){
+		for(TuFlag f : flags){
 			if(f.getName().equals("occursCheck")){
 				if(f.getValue().toString().equals("on"))
 					return true;
@@ -144,7 +144,7 @@ class FlagManager {
 	public void serializeFlags(AbstractEngineState brain) {
 		if(brain instanceof FullEngineState){
 			ArrayList<String> a = new ArrayList<String>();
-			for(Flag f : flags){
+			for(TuFlag f : flags){
 				a.add(JSONSerializerManager.toJSON(f));
 			}
 			((FullEngineState) brain).setFlags(a);
@@ -154,9 +154,9 @@ class FlagManager {
 	//Alberto
 	public void reloadFlags(FullEngineState brain) {
 		ArrayList<String> a = brain.getFlags();
-		ArrayList<Flag> f = new ArrayList<Flag>();
+		ArrayList<TuFlag> f = new ArrayList<TuFlag>();
 		for(String s : a){
-			Flag fl = JSONSerializerManager.fromJSON(s, Flag.class);
+			TuFlag fl = JSONSerializerManager.fromJSON(s, TuFlag.class);
 			f.add(fl);
 		}
 		flags = f;

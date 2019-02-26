@@ -16,6 +16,6 @@ import alice.tuprologx.pj.model.*;
  */
 public interface PrologObject {    
     PrologMetaClass getMetaPrologClass();
-    Theory getTheory();
-    void setTheory(Theory t);
+    TxTheory getTheory();
+    void setTheory(TxTheory t);
 }

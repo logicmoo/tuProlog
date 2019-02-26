@@ -11,14 +11,14 @@ import java.io.IOException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import alice.tuprolog.Prolog;
+import alice.tuprolog.TuProlog;
 import alice.tuprolog.event.OutputEvent;
 import alice.tuprolog.event.OutputListener;
 
 // Based on the work of Sara Sabioni
 public class ISOIOLibraryTestCase {
 
-	static Prolog engine = null;
+	static TuProlog engine = null;
 	String theory = null;
 	SolveInfo info = null;
 	static String writePath = null;
@@ -30,7 +30,7 @@ public class ISOIOLibraryTestCase {
 	{
 		try
 		{	
-			engine = new Prolog(new String[] {
+			engine = new TuProlog(new String[] {
 					"alice.tuprolog.lib.BasicLibrary",
 					//"alice.tuprolog.lib.IOLibrary",
 			"alice.tuprolog.lib.ISOIOLibrary"});
@@ -80,7 +80,7 @@ public class ISOIOLibraryTestCase {
 
 		// CLOSE (in questo modo teso anche la close e la flush e poi anche le funzioni ausiliarie)
 		String theoryText = "test:- open('" + writePath + "','write',X),close(X,force(true)).\n";
-		engine.setTheory(new Theory(theoryText));
+		engine.setTheory(new TuTheory(theoryText));
 		info = engine.solve("test.");
 		assertFalse(info.isSuccess());
 	}
@@ -93,7 +93,7 @@ public class ISOIOLibraryTestCase {
 				"open('" + writePath + "','write',X,[alias(ciao),type(text),eof_action(reset),reposition(true)])," +
 				"write_term('ciao','" + dataToWrite + "',[quoted(true)])," +
 				"close(X).";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("test2.");
 		assertTrue(info.isSuccess());
 		assertEquals("", dataToWrite, getStringDataWritten(writePath));
@@ -111,7 +111,7 @@ public class ISOIOLibraryTestCase {
 				"write_term('auto','" + dataToWrite2 + "',[quoted(true)])," +
 				"close(X)," +
 				"close(Y).";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("test3.");
 		assertTrue(info.isSuccess());
 		assertEquals("", dataToWrite1, getStringDataWritten(writePath));
@@ -127,7 +127,7 @@ public class ISOIOLibraryTestCase {
 				"write_term('telefono','" + dataToWrite + "',[quoted(true)])," +
 				"flush_output('casa')," +
 				"close(Y).";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("test4.");
 		assertTrue(info.isSuccess());
 		assertEquals("", dataToWrite, getStringDataWritten(writePath));
@@ -155,7 +155,7 @@ public class ISOIOLibraryTestCase {
 				"read_term(X,I,[])," +
 				"write('user_output', I)," +
 				"close('reading').";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("test5.");
 		assertTrue(info.isSuccess());
 
@@ -190,7 +190,7 @@ public class ISOIOLibraryTestCase {
 				"nl('user_output')," +
 				"write(J)," +
 				"close(X).";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("test6.");
 		assertTrue(info.isSuccess());
 
@@ -215,7 +215,7 @@ public class ISOIOLibraryTestCase {
 		engine.addOutputListener(listener);
 
 		theory = "test7:- put_char('user_output',c).";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("test7.");
 		assertTrue(info.isSuccess());
 
@@ -244,7 +244,7 @@ public class ISOIOLibraryTestCase {
 				"peek_byte('nome', PB)," +
 				"write(PB)," +
 				"close(X).";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("test8.");
 		assertTrue(info.isSuccess());
 
@@ -261,7 +261,7 @@ public class ISOIOLibraryTestCase {
 				"put_byte('nome'," + dataToWrite + ")," +
 				"flush_output('nome')," +
 				"close(X).";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("test9.");
 		assertTrue(info.isSuccess());
 		assertEquals(dataToWrite, getByteDataWritten(binPath));
@@ -297,7 +297,7 @@ public class ISOIOLibraryTestCase {
 				"write(N)," +
 				"write(O)," +
 				"close(X).";
-		engine.setTheory(new Theory(theory));
+		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("test10.");
 		assertTrue(info.isSuccess());
 

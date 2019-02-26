@@ -12,11 +12,11 @@ public class TermQueue {
 		queue=new LinkedList<Term>();
 	}
 	
-	public synchronized boolean get(Term t, Prolog engine, EngineRunner er){
+	public synchronized boolean get(Term t, TuProlog engine, EngineRunner er){
 		return searchLoop(t,engine,true, true, er);
 	}
 	
-	private synchronized boolean searchLoop(Term t, Prolog engine, boolean block, boolean remove, EngineRunner er){
+	private synchronized boolean searchLoop(Term t, TuProlog engine, boolean block, boolean remove, EngineRunner er){
 		boolean found=false;
 		do{
 			found=search(t,engine,remove);
@@ -30,7 +30,7 @@ public class TermQueue {
 	}
 	
 	
-	private synchronized boolean search(Term t, Prolog engine, boolean remove){
+	private synchronized boolean search(Term t, TuProlog engine, boolean remove){
 		boolean found=false;
 		Term msg=null;
 		ListIterator<Term> it=queue.listIterator();
@@ -50,15 +50,15 @@ public class TermQueue {
 	}
 	
 	
-	public synchronized boolean peek(Term t, Prolog engine){
+	public synchronized boolean peek(Term t, TuProlog engine){
 		return search(t,engine,false);
 	}
 	
-	public synchronized boolean remove (Term t, Prolog engine){
+	public synchronized boolean remove (Term t, TuProlog engine){
 		return search(t, engine, true);
 	}
 	
-	public synchronized boolean wait (Term t, Prolog engine, EngineRunner er){
+	public synchronized boolean wait (Term t, TuProlog engine, EngineRunner er){
 		return searchLoop(t,engine, true, false, er);
 	}
 	

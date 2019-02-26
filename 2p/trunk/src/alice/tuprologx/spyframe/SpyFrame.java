@@ -42,8 +42,8 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
       for(int i=0; i<levels; i++){
         ExecutionContext ec=eclist.get(i);
         Term c=ec.getClause();
-        if(c instanceof Struct){
-          Struct s=(Struct)c;
+        if(c instanceof TuStruct){
+          TuStruct s=(TuStruct)c;
           String name=s.getName();
           ArrayList<Term> sub=new ArrayList<Term>();
           for(AbstractSubGoalTree sgt: ec.getSubGoalStore().getSubGoals())
@@ -72,7 +72,7 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
           if(name==null) bottom=sub.get(0);
           else{
             Term[] subt=new Term[sub.size()];
-            bottom=new Struct(name, sub.toArray(subt));
+            bottom=new TuStruct(name, sub.toArray(subt));
           }
         } else bottom=c;
       }
@@ -97,7 +97,7 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
 		
 	}
   };
-  Prolog prolog;
+  TuProlog prolog;
   Thread pprocess;
   JTextField number;
   JTextArea results;
@@ -110,7 +110,7 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
    * @param goal the prolog term to be tested.
    * @throws InvalidTheoryException if we have no valid prolog theory.
    */
-  public SpyFrame(Theory theory, final Term goal) throws InvalidTheoryException{
+  public SpyFrame(TuTheory theory, final Term goal) throws InvalidTheoryException{
     //START of visible stuff
     super("SpyFrame");
     Container c=getContentPane();
@@ -151,7 +151,7 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
     setVisible(true);
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     //END of the visible stuff
-    prolog=new Prolog();
+    prolog=new TuProlog();
     prolog.setTheory(theory);
     prolog.addSpyListener(this);
     prolog.setSpy(true);
@@ -207,7 +207,7 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
    */
   @Override
   public synchronized void onSpy(SpyEvent e){
-    Engine engine=e.getSnapshot();
+    TuEngine engine=e.getSnapshot();
     if(engine==null || !"Call".equals(engine.getNextStateName())) return;
     if(--steps>0) return;
     tree.setStructure(engine.getExecutionStack());
@@ -222,7 +222,7 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
    * @throws Exception if the theory or the goal are nonsense.
    */
   public static void main(String[] args) throws Exception{
-    Theory theory=new Theory(new FileInputStream(args[0]));
+    TuTheory theory=new TuTheory(new FileInputStream(args[0]));
     Term goal=Term.createTerm(args[1]);
     System.out.println("goal:"+goal);
     System.out.println("in given theory\n---------------\n"+theory);

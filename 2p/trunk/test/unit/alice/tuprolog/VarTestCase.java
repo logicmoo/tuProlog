@@ -5,15 +5,15 @@ import junit.framework.TestCase;
 public class VarTestCase extends TestCase {
 	
 	public void testIsAtomic() {
-		assertFalse(new Var("X").isAtomic());
+		assertFalse(new TuVar("X").isAtomic());
 	}
 	
 	public void testIsAtom() {
-		assertFalse(new Var("X").isAtom());
+		assertFalse(new TuVar("X").isAtom());
 	}
 	
 	public void testIsCompound() {
-		assertFalse(new Var("X").isCompound());
+		assertFalse(new TuVar("X").isCompound());
 	}
 
 }

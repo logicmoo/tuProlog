@@ -29,7 +29,7 @@ import alice.tuprolog.interfaces.IOperatorManager;
 /**
  * This class manages Prolog operators.
  *
- * @see Operator
+ * @see TuOperator
  */
 @SuppressWarnings("serial")
 /*Castagna 06/2911*/public/**/ class OperatorManager implements /*Castagna 06/2011*/IOperatorManager,/**/Serializable {
@@ -51,7 +51,7 @@ import alice.tuprolog.interfaces.IOperatorManager;
      */
     @Override
 	public synchronized void opNew(String name,String type,int prio) {
-        final Operator op = new Operator(name, type, prio);
+        final TuOperator op = new TuOperator(name, type, prio);
         if (prio >= OP_LOW && prio <= OP_HIGH)
             operatorList.addOperator(op);
     }
@@ -60,7 +60,7 @@ import alice.tuprolog.interfaces.IOperatorManager;
      * Returns the priority of an operator (0 if the operator is not defined).
      */
     public synchronized int opPrio(String name,String type) {
-        Operator o = operatorList.getOperator(name, type);
+        TuOperator o = operatorList.getOperator(name, type);
         return (o == null) ? 0 : o.prio;
     }
     
@@ -69,7 +69,7 @@ import alice.tuprolog.interfaces.IOperatorManager;
      */
     public synchronized int opNext(int prio) {
         int n = 0;
-        for (Operator opFromList:operatorList){
+        for (TuOperator opFromList:operatorList){
             if (opFromList.prio > n && opFromList.prio < prio)
                 n = opFromList.prio;
         }
@@ -81,8 +81,8 @@ import alice.tuprolog.interfaces.IOperatorManager;
      *
      *  @return the list of the operators
      */
-    public synchronized List<Operator> getOperators() {
-        return new LinkedList<Operator>(operatorList);
+    public synchronized List<TuOperator> getOperators() {
+        return new LinkedList<TuOperator>(operatorList);
     }
     
 /*Castagna 06/2011*/     
@@ -107,22 +107,22 @@ import alice.tuprolog.interfaces.IOperatorManager;
      *
      * @author ivar.orstavik@hist.no
      */
-    private static class OperatorRegister extends LinkedHashSet<Operator> /*Castagna 06/2011*/implements Cloneable/**/
+    private static class OperatorRegister extends LinkedHashSet<TuOperator> /*Castagna 06/2011*/implements Cloneable/**/
     {
         //map of operators by name and type
         //key is the nameType of an operator (for example ":-xfx") - value is an Operator
-        private HashMap<String,Operator> nameTypeToKey = new HashMap<String, Operator>();
+        private HashMap<String,TuOperator> nameTypeToKey = new HashMap<String, TuOperator>();
         
-        public boolean addOperator(Operator op) {
+        public boolean addOperator(TuOperator op) {
             final String nameTypeKey = op.name + op.type;
-            Operator matchingOp = nameTypeToKey.get(nameTypeKey);
+            TuOperator matchingOp = nameTypeToKey.get(nameTypeKey);
             if (matchingOp != null)
                 super.remove(matchingOp);       //removes found match from the main list
             nameTypeToKey.put(nameTypeKey, op); //writes over found match in nameTypeToKey map
             return super.add(op);               //adds new operator to the main list
         }
         
-        public Operator getOperator(String name, String type) {
+        public TuOperator getOperator(String name, String type) {
             return nameTypeToKey.get(name + type);
         }
 
@@ -130,10 +130,10 @@ import alice.tuprolog.interfaces.IOperatorManager;
         @Override		 
         public Object clone() {		 
         	OperatorRegister or = (OperatorRegister)super.clone();		 
-        	Iterator<Operator> ior = or.iterator();		 
-        	or.nameTypeToKey = new HashMap<String, Operator>();		 
+        	Iterator<TuOperator> ior = or.iterator();		 
+        	or.nameTypeToKey = new HashMap<String, TuOperator>();		 
         	while(ior.hasNext()) {		 
-        		Operator o = ior.next();		 
+        		TuOperator o = ior.next();		 
         		or.nameTypeToKey.put(o.name + o.type, o);		 
         	}		 
         	return or;

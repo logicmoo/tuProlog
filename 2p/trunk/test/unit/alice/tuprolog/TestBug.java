@@ -26,7 +26,7 @@ public class TestBug {
 			"can_do(Y).\n"+
 		"').";
 		
-		new Prolog().solve(goal);
+		new TuProlog().solve(goal);
 		
 		String st =
 		"p(X).				\n"+
@@ -35,7 +35,7 @@ public class TestBug {
 		"	append([a,b],L1,L2).	\n";
 		
 		
-		Prolog engine = new Prolog();
+		TuProlog engine = new TuProlog();
 		engine.addSpyListener(new SpyListener(){ 
 			@Override
 			public void onSpy(SpyEvent e){
@@ -43,7 +43,7 @@ public class TestBug {
 			}
 		});
 		//engine.setSpy(true);
-		engine.setTheory(new Theory(st));
+		engine.setTheory(new TuTheory(st));
 		SolveInfo info = engine.solve("test(L1,L2).");
 		System.out.println(info);
 		

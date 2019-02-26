@@ -12,14 +12,14 @@ import alice.tuprolog.event.OutputListener;
  */
 public class TestVarIsEqual extends TestCase {
   
-  Prolog core;
+  TuProlog core;
   String yes = "yes.\n";
   private SysoutListener sysoutListener = new SysoutListener();
   
   @Override
 protected void setUp() throws Exception {
     super.setUp();
-    core = new Prolog();
+    core = new TuProlog();
     core.addOutputListener(sysoutListener);
   }
   
@@ -106,7 +106,7 @@ protected void setUp() throws Exception {
         + "\n" +    "                                                                 "
         ;
     
-    core.setTheory(new Theory(theory));
+    core.setTheory(new TuTheory(theory));
     
     SolveInfo info = core.solve("test. ");
     assertTrue("Test should complete normally",info.isSuccess());

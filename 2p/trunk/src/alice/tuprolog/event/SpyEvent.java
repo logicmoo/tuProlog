@@ -19,7 +19,7 @@ package alice.tuprolog.event;
 
 import java.util.*;
 
-import alice.tuprolog.Engine;
+import alice.tuprolog.TuEngine;
 
 /**
  *  This class defines an internal event
@@ -36,7 +36,7 @@ public class SpyEvent extends EventObject {
 	 * @uml.property  name="env"
 	 * @uml.associationEnd  
 	 */
-    private Engine env;
+    private TuEngine env;
 
     public SpyEvent(Object source, String msg_) {
         super(source);
@@ -44,7 +44,7 @@ public class SpyEvent extends EventObject {
         msg = msg_;
     }
 
-    public SpyEvent(Object source, Engine env_, String msg_) {
+    public SpyEvent(Object source, TuEngine env_, String msg_) {
         super(source);
         env = env_;
         msg = msg_;
@@ -54,7 +54,7 @@ public class SpyEvent extends EventObject {
         return msg;
     }
 
-    public Engine getSnapshot() {
+    public TuEngine getSnapshot() {
         return env;
     }
 

@@ -14,7 +14,7 @@ public class PrologMetaField {
     private Field _theField;
     private PrologMetaClass _enclosing;
     private PrologField _annotation;
-    private Theory _template;
+    private TxTheory _template;
     
     /** Creates a new instance of MetaPrologClass */
     public PrologMetaField(PrologMetaClass cl, Field f) {
@@ -28,7 +28,7 @@ public class PrologMetaField {
         return _enclosing;
     }
     
-    public <T extends Term<?>> void setValue(PrologObject o, T t) {        
+    public <T extends TxTerm<?>> void setValue(PrologObject o, T t) {        
         try {
             _theField.set(o,t);
         }
@@ -38,7 +38,7 @@ public class PrologMetaField {
     }
     
     @SuppressWarnings("unchecked")
-	public <T extends Term<?>> T getValue(PrologObject o) {        
+	public <T extends TxTerm<?>> T getValue(PrologObject o) {        
         try {
             return (T)_theField.get(o);
         }
@@ -53,11 +53,11 @@ public class PrologMetaField {
         String pname =_annotation.predicate();
         if (pname.length() == 0)
             pname = fname;
-        _template = new Theory(pname + "(X):-this(Z), Z."+ fname + " <- get(X).\n" +
+        _template = new TxTheory(pname + "(X):-this(Z), Z."+ fname + " <- get(X).\n" +
                              pname + " := V:-this(Z), Z."+ fname + " <- set(V).\n");
     }
 
-    public Theory getTheory() {
+    public TxTheory getTheory() {
         return _template;
     }
     
@@ -69,7 +69,7 @@ public class PrologMetaField {
         String init = _annotation.init();
         if (init != "") {
             try {
-                Term<?> t = Term.unmarshal(alice.tuprolog.Parser.parseSingleTerm(init));
+                TxTerm<?> t = TxTerm.unmarshal(alice.tuprolog.TuParser.parseSingleTerm(init));
                 System.out.println("init field = "+t);
                 setValue(o, t);
             }

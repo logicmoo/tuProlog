@@ -1,9 +1,9 @@
 package alice.tuprolog;
 
 class PrologThread extends Thread {
-	Prolog core;
+	TuProlog core;
 	String goal;
-	PrologThread(Prolog core, String goal){
+	PrologThread(TuProlog core, String goal){
 		this.core = core;
 		this.goal = goal;
 	}
@@ -25,9 +25,9 @@ public class TestStop {
 
 	public static void main(String[] args) throws Exception {
 		
-		Prolog core = new Prolog();
+		TuProlog core = new TuProlog();
 		
-		Theory th = new Theory(
+		TuTheory th = new TuTheory(
 			"rec(X):- current_thread <- sleep(X), X1 is X + 100, rec(X1).\n"
 		);
 		core.setTheory(th);
