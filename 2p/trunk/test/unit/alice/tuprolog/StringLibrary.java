@@ -25,6 +25,6 @@ public class StringLibrary extends TuLibrary {
 
 	public boolean to_lower_case_2(Term arg0, Term arg1){
 		String dest = arg0.toString().toLowerCase();
-		return unify(arg1, new TuStruct(dest));
+		return unify(arg1, TuTerm.createAtomTerm(dest));
 	} 
 }

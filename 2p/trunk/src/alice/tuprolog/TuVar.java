@@ -31,7 +31,7 @@ import nu.xom.xslt.XSLException;
  * @see Term
  *
  */
-public class TuVar extends TuTerm {
+final public class TuVar extends TuTerm {
 
     private static final long serialVersionUID = 1L;
 
@@ -71,7 +71,7 @@ public class TuVar extends TuTerm {
      * @param n is the name
      * @throws InvalidTermException if n is not a valid Prolog variable name
      */
-    public TuVar(String n) {
+    TuVar(String n) {
         link = null;
         ctxid = TuVar.ORIGINAL; //no execCtx owners
         internalTimestamp = 0;
@@ -92,7 +92,7 @@ public class TuVar extends TuTerm {
      *
      *  This is equivalent to build a variable with name _
      */
-    public TuVar() {
+    TuVar() {
         name = null;
         completeName = new StringBuilder();
         link = null;
@@ -199,7 +199,7 @@ public class TuVar extends TuTerm {
         //	return v;
 
         Term t = getTerm();
-        if (t instanceof TuVar) {
+        if (t .isVar()) {
             Object tt = substMap.get(t);
             if (tt == null) {
                 substMap.put(t, v);
@@ -208,10 +208,10 @@ public class TuVar extends TuTerm {
                 v.link = (tt != v) ? (TuVar) tt : null;
             }
         }
-        if (t instanceof TuStruct) {
+        if (t .isCallable()) {
             v.link = t.copy(vMap, substMap);
         }
-        if (t instanceof TuNumber)
+        if (t .isNumber())
             v.link = t;
         return v;
     }
@@ -267,7 +267,7 @@ public class TuVar extends TuTerm {
         Term t = link;
         while (t != null) {
             tt = t;
-            if (t instanceof TuVar) {
+            if (t .isVar()) {
                 t = ((TuVar) t).link;
             } else {
                 break;
@@ -303,7 +303,7 @@ public class TuVar extends TuTerm {
     }
 
     @Override
-    public boolean isStruct() {
+    public boolean isCallable() {
         return false;
     }
 
@@ -343,12 +343,12 @@ public class TuVar extends TuTerm {
     }
 
     @Override
-    public boolean isAtom() {
+    public boolean isAtomSymbol() {
         Term t = getTerm();
         if (t == this) {
             return false;
         } else {
-            return t.isAtom();
+            return t.isAtomSymbol();
         }
     }
 
@@ -396,11 +396,11 @@ public class TuVar extends TuTerm {
         int arity = t.getArity();
         for (int c = 0; c < arity; c++) {
             Term at = t.getTerm(c);
-            if (at instanceof TuStruct) {
+            if (at .isCallable()) {
                 if (occurCheck(vl, (TuStruct) at)) {
                     return true;
                 }
-            } else if (at instanceof TuVar) {
+            } else if (at .isVar()) {
                 TuVar v = (TuVar) at;
                 if (v.link == null) {
                     vl.add(v);
@@ -459,7 +459,7 @@ public class TuVar extends TuTerm {
         Term tt = getTerm();
         if (tt == this) {
             t = t.getTerm();
-            if (t instanceof TuVar) {
+            if (t .isVar()) {
                 ((TuVar) t).fingerPrint = this.fingerPrint; //Alberto
                 if (this == t) {
                     try {
@@ -468,7 +468,7 @@ public class TuVar extends TuTerm {
                     }
                     return true;
                 }
-            } else if (t instanceof TuStruct) {
+            } else if (t .isCallable()) {
                 if (isOccursCheckEnabled) {
                     if (occurCheck(vl2, (TuStruct) t)) {
                         //this.isCyclic = true;  //Alberto -> da usare quando si supporteranno i termini ciclici
@@ -477,7 +477,7 @@ public class TuVar extends TuTerm {
                 } else {
                     checkVar(vl2, t); //Alberto
                 }
-            } else if (!(t instanceof TuNumber)) {
+            } else if (!(t .isNumber())) {
                 return false;
             }
             link = t;
@@ -497,12 +497,12 @@ public class TuVar extends TuTerm {
         int arity = st.getArity();
         for (int c = 0; c < arity; c++) {
             Term at = st.getTerm(c);
-            if (at instanceof TuVar) {
+            if (at .isVar()) {
                 TuVar v = (TuVar) at;
                 if (v.link == null) {
                     vl.add(v);
                 }
-            } else if (at instanceof TuStruct) {
+            } else if (at .isCallable()) {
                 checkVar(vl, at);
             }
         }
@@ -513,7 +513,7 @@ public class TuVar extends TuTerm {
         Term tt = getTerm();
         if (tt == this) {
             t = t.getTerm();
-            if (!(t instanceof TuVar))
+            if (!(t .isVar()))
                 return false;
             return fingerPrint > ((TuVar) t).fingerPrint; //Alberto
         } else {

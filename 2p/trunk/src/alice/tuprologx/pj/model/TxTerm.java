@@ -1,12 +1,13 @@
 package alice.tuprologx.pj.model;
 
+import alice.tuprolog.TuStruct;
 import alice.tuprologx.pj.annotations.*;
 
 /**
  *
  * @author maurizio
  */
-public abstract class TxTerm<X extends TxTerm<?>> {
+public abstract class TxTerm<X extends TxTerm> {
 
     // Added by ED 2013-05-21 following MC suggestion
     @SuppressWarnings("unchecked")
@@ -17,7 +18,7 @@ public abstract class TxTerm<X extends TxTerm<?>> {
 
     public abstract <Z> Z toJava(); // {return null;}
 
-    public static <Z extends TxTerm<?>> Z fromJava(Object o) {
+    public static <Z extends TxTerm> Z fromJava(Object o) {
         if (o instanceof Integer) {
             //return (Z)new Int((Integer)o);
             return uncheckedCast(new TxInt((Integer) o));
@@ -30,13 +31,13 @@ public abstract class TxTerm<X extends TxTerm<?>> {
         } else if (o instanceof Boolean) {
             //return (Z)new Bool((Boolean)o);
             return uncheckedCast(new TxBool((Boolean) o));
-        } else if (o instanceof java.util.Collection<?>) {
-            // return (Z)new List<Term<?>>((java.util.Collection<?>)o);
-            return uncheckedCast(new TxList<TxTerm<?>>((java.util.Collection<?>) o));
-        } else if (o instanceof TxTerm<?>[]) {
-            // return (Z)new Cons<Term<?>, Compound<?>>("_",(Term<?>[])o);
-            return uncheckedCast(new TxCons<TxTerm<?>, TxCompound<?>>("_", (TxTerm<?>[]) o));
-        } else if (o instanceof TxTerm<?>) {
+        } else if (o instanceof java.util.Collection) {
+            // return (Z)new List<Term>((java.util.Collection)o);
+            return uncheckedCast(new TxList<TxTerm>((java.util.Collection) o));
+        } else if (o instanceof TxTerm[]) {
+            // return (Z)new Cons<Term, Compound>("_",(Term[])o);
+            return uncheckedCast(new TxCons<TxTerm, TxCompound>("_", (TxTerm[]) o));
+        } else if (o instanceof TxTerm) {
             //return (Z)o;
             return uncheckedCast(o);
         } else if (o.getClass().isAnnotationPresent(Termifiable.class)) {
@@ -65,22 +66,22 @@ public abstract class TxTerm<X extends TxTerm<?>> {
             return uncheckedCast(TxDouble.unmarshal((alice.tuprolog.TuDouble) t));
         } else if (TxJavaObject.matches(t)) {
             //return (Z)JavaObject.unmarshalObject((alice.tuprolog.Struct)t);
-            return uncheckedCast(TxJavaObject.unmarshalObject((alice.tuprolog.TuStruct) t));
+            return uncheckedCast(TxJavaObject.unmarshalObject(asCallable(t)));
         } else if (TxAtom.matches(t)) {
             //return (Z)Atom.unmarshal((alice.tuprolog.Struct)t);
-            return uncheckedCast(TxAtom.unmarshal((alice.tuprolog.TuStruct) t));
+            return uncheckedCast(TxAtom.unmarshal(asCallable(t)));
         } else if (TxBool.matches(t)) {
             //return (Z)Bool.unmarshal((alice.tuprolog.Struct)t);
-            return uncheckedCast(TxBool.unmarshal((alice.tuprolog.TuStruct) t));
+            return uncheckedCast(TxBool.unmarshal(asCallable(t)));
         } else if (TxList.matches(t)) {
             //return (Z)List.unmarshal((alice.tuprolog.Struct)t);
-            return uncheckedCast(TxList.unmarshal((alice.tuprolog.TuStruct) t));
+            return uncheckedCast(TxList.unmarshal(asCallable(t)));
         } else if (TxJavaTerm.matches(t)) {
             //return (Z)JavaTerm.unmarshalObject((alice.tuprolog.Struct)t.getTerm());
             return uncheckedCast(TxJavaTerm.unmarshalObject((alice.tuprolog.TuStruct) t.getTerm()));
         } else if (TxCons.matches(t)) {
             //return (Z)Cons.unmarshal((alice.tuprolog.Struct)t);
-            return uncheckedCast(TxCons.unmarshal((alice.tuprolog.TuStruct) t));
+            return uncheckedCast(TxCons.unmarshal(asCallable(t)));
         } else if (TxVar.matches(t)) {
             //return (Z)Var.unmarshal((alice.tuprolog.Var)t);
             return uncheckedCast(TxVar.unmarshal((alice.tuprolog.TuVar) t));
@@ -88,5 +89,13 @@ public abstract class TxTerm<X extends TxTerm<?>> {
             System.out.println(t);
             throw new UnsupportedOperationException();
         }
+    }
+
+    /**
+     * @param t
+     * @return
+     */
+    public static TuStruct asCallable(alice.tuprolog.Term t) {
+        return (alice.tuprolog.TuStruct) t;
     }
 }

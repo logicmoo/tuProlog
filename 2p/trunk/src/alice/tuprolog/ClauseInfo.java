@@ -81,9 +81,9 @@ public class ClauseInfo {
     }
     
     private static void extractBody(SubGoalTree parent, Term body) {
-        while (body instanceof TuStruct && ((TuStruct)body).getName().equals(",")) {
+        while (body .isCallable() && ((TuStruct)body).getName().equals(",")) {
             Term t = ((TuStruct)body).getArg(0);
-            if (t instanceof TuStruct && ((TuStruct)t).getName().equals(",")) {
+            if (t .isCallable() && ((TuStruct)t).getName().equals(",")) {
                 extractBody(parent.addChild(),t);
             } else {
                 parent.addChild(t);
@@ -212,7 +212,7 @@ public class ClauseInfo {
     }
     
     static private String indentPredicates(Term t) {
-        if (t instanceof TuStruct) {
+        if (t .isCallable()) {
             TuStruct co=(TuStruct)t;
             if (co.getName().equals(",")){
                 return co.getArg(0).toString()+",\n\t"+indentPredicates(co.getArg(1));
@@ -226,7 +226,7 @@ public class ClauseInfo {
     
     /*commented by Roberta Calegari fixed following issue 20 Christian Lemke suggestion
      * static private String indentPredicatesAsArgX(Term t,OperatorManager op,int p) {
-        if (t instanceof Struct) {
+        if (t .isCallable()) {
             Struct co=(Struct)t;
             if (co.getName().equals(",")) {
                 return co.getArg(0).toStringAsArgX(op,p)+",\n\t"+
@@ -241,7 +241,7 @@ public class ClauseInfo {
     }
     
     static private String indentPredicatesAsArgY(Term t,OperatorManager op,int p) {
-        if (t instanceof Struct) {
+        if (t .isCallable()) {
             Struct co=(Struct)t;
             if (co.getName().equals(",")) {
                 return co.getArg(0).toStringAsArgY(op,p)+",\n\t"+
@@ -255,7 +255,7 @@ public class ClauseInfo {
     }*/
     
     static private String indentPredicatesAsArgX(Term t,OperatorManager op,int p) {
-        if (t instanceof TuStruct) {
+        if (t .isCallable()) {
             TuStruct co=(TuStruct)t;
             if (co.getName().equals(",")) {
                int prio = op.opPrio(",","xfy");
@@ -276,7 +276,7 @@ public class ClauseInfo {
     }
 
     static private String indentPredicatesAsArgY(Term t,OperatorManager op,int p) {
-        if (t instanceof TuStruct) {
+        if (t .isCallable()) {
             TuStruct co=(TuStruct)t;
             if (co.getName().equals(",")) {
                int prio = op.opPrio(",","xfy");

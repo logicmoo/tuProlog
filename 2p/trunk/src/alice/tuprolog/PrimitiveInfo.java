@@ -123,7 +123,8 @@ public class PrimitiveInfo {
             return ((Boolean)method.invoke(source,primitive_args)).booleanValue();
         } catch (InvocationTargetException e) {
             // throw new Exception(e.getCause());
-            throw e.getCause();
+            final Throwable cause = e.getCause();
+            throw cause;
         }
     }
     

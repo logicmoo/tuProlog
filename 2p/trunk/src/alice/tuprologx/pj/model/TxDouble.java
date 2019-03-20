@@ -9,6 +9,8 @@
 
 package alice.tuprologx.pj.model;
 
+import alice.tuprolog.TuTerm;
+
 /**
  *
  * @author maurizio
@@ -26,7 +28,7 @@ public class TxDouble extends TxTerm<TxDouble> {
            
         @Override
 		public alice.tuprolog.TuDouble marshal() {
-            return new alice.tuprolog.TuDouble(_theDouble);
+            return TuTerm.f64(_theDouble);
         }
         
         static TxDouble unmarshal(alice.tuprolog.TuDouble d) {
@@ -36,7 +38,7 @@ public class TxDouble extends TxTerm<TxDouble> {
         }
         
         static boolean matches(alice.tuprolog.Term t) {
-            return (t instanceof alice.tuprolog.TuDouble);
+            return (t .isDouble());
         }
         
 	@Override

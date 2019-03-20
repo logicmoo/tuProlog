@@ -8,7 +8,9 @@
  */
 
 package alice.tuprologx.pj.model;
-        
+
+import alice.tuprolog.TuTerm;
+
 /**
  *
  * @author maurizio
@@ -46,7 +48,7 @@ public class TxVar<X extends TxTerm<?>> extends TxTerm<X> {
     @Override
 	public alice.tuprolog.TuVar marshal() {
         try {
-            alice.tuprolog.TuVar v= new alice.tuprolog.TuVar(_theName);                 
+            alice.tuprolog.TuVar v= TuTerm.createTuVar(_theName);                 
             if (_theValue != null) {
                 setLink(v, _theValue.marshal());
             }
@@ -66,7 +68,7 @@ public class TxVar<X extends TxTerm<?>> extends TxTerm<X> {
     }
     
     static boolean matches(alice.tuprolog.Term t) {
-        return (t instanceof alice.tuprolog.TuVar);
+        return (t .isVar());
     }
     
     public String getName() {

@@ -36,6 +36,7 @@ import alice.tuprolog.TuInt;
 import alice.tuprolog.TuLibrary;
 import alice.tuprolog.TuNumber;
 import alice.tuprolog.TuStruct;
+import alice.tuprolog.TuTerm;
 import alice.tuprolog.Term;
 import alice.tuprolog.TuVar;
 
@@ -147,10 +148,10 @@ public class PJLibrary extends TuLibrary {
      */
     protected void preregisterObjects() {
         try {
-            bindDynamicObject(new TuStruct("stdout"), System.out);
-            bindDynamicObject(new TuStruct("stderr"), System.err);
-            bindDynamicObject(new TuStruct("runtime"), Runtime.getRuntime());
-            bindDynamicObject(new TuStruct("current_thread"), Thread.currentThread());
+            bindDynamicObject(TuTerm.createAtomTerm("stdout"), System.out);
+            bindDynamicObject(TuTerm.createAtomTerm("stderr"), System.err);
+            bindDynamicObject(TuTerm.createAtomTerm("runtime"), Runtime.getRuntime());
+            bindDynamicObject(TuTerm.createAtomTerm("current_thread"), Thread.currentThread());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -166,7 +167,7 @@ public class PJLibrary extends TuLibrary {
         TuStruct arg = (TuStruct) argl.getTerm();
         id = id.getTerm();
         try {
-            if (!className.isAtom()) {
+            if (!className.isAtomSymbol()) {
                 return false;
             }
             String clName = ((TuStruct) className).getName();
@@ -319,8 +320,8 @@ public class PJLibrary extends TuLibrary {
             // check for accessing field   Obj.Field <- set/get(X)
             //  in that case: objId is '.'(Obj, Field)
 
-            if (!objId.isAtom()) {
-                if (objId instanceof TuVar) {
+            if (!objId.isAtomSymbol()) {
+                if (objId .isVar()) {
                     return false;
                 }
                 TuStruct sel = (TuStruct) objId;
@@ -335,7 +336,7 @@ public class PJLibrary extends TuLibrary {
             args = parseArg(method);
 
             // object and argument must be instantiated
-            if (objId instanceof TuVar || args == null)
+            if (objId .isVar() || args == null)
                 return false;
 
             //System.out.println(args);
@@ -434,7 +435,7 @@ public class PJLibrary extends TuLibrary {
     private boolean java_set(Term objId, Term fieldTerm, Term what) {
         //System.out.println("SET "+objId+" "+fieldTerm+" "+what);
         what = what.getTerm();
-        if (!fieldTerm.isAtom() || what instanceof TuVar)
+        if (!fieldTerm.isAtomSymbol() || what .isVar())
             return false;
         String fieldName = ((TuStruct) fieldTerm).getName();
         Object obj = null;
@@ -469,15 +470,15 @@ public class PJLibrary extends TuLibrary {
                 field.set(obj, t);
                 return true;
             }
-            if (what instanceof TuNumber) {
+            if (what .isNumber()) {
                 TuNumber wn = (TuNumber) what;
-                if (wn instanceof TuInt) {
+                if (wn .isInt()) {
                     field.setInt(obj, wn.intValue());
-                } else if (wn instanceof alice.tuprolog.TuDouble) {
+                } else if (wn .isDouble()) {
                     field.setDouble(obj, wn.doubleValue());
-                } else if (wn instanceof alice.tuprolog.TuLong) {
+                } else if (wn .isLong()) {
                     field.setLong(obj, wn.longValue());
-                } else if (wn instanceof alice.tuprolog.TuFloat) {
+                } else if (wn .isFloat()) {
                     field.setFloat(obj, wn.floatValue());
                 } else {
                     return false;
@@ -508,7 +509,7 @@ public class PJLibrary extends TuLibrary {
      */
     private boolean java_get(Term objId, Term fieldTerm, Term what) {
         //System.out.println("GET "+objId+" "+fieldTerm+" "+what);
-        if (!fieldTerm.isAtom()) {
+        if (!fieldTerm.isAtomSymbol()) {
             return false;
         }
         String fieldName = ((TuStruct) fieldTerm).getName();
@@ -544,16 +545,16 @@ public class PJLibrary extends TuLibrary {
             // first check for primitive types
             if (fc.equals(Integer.TYPE) || fc.equals(Byte.TYPE)) {
                 int value = field.getInt(obj);
-                return unify(what, new alice.tuprolog.TuInt(value));
+                return unify(what, TuTerm.i32(value));
             } else if (fc.equals(java.lang.Long.TYPE)) {
                 long value = field.getLong(obj);
-                return unify(what, new alice.tuprolog.TuLong(value));
+                return unify(what, TuTerm.i64(value));
             } else if (fc.equals(java.lang.Float.TYPE)) {
                 float value = field.getFloat(obj);
-                return unify(what, new alice.tuprolog.TuFloat(value));
+                return unify(what, TuTerm.f32(value));
             } else if (fc.equals(java.lang.Double.TYPE)) {
                 double value = field.getDouble(obj);
-                return unify(what, new alice.tuprolog.TuDouble(value));
+                return unify(what, TuTerm.f64(value));
             } else {
                 // the field value is an object
                 Object res = field.get(obj);
@@ -597,25 +598,25 @@ public class PJLibrary extends TuLibrary {
             }
             String name = cl.toString();
             if (name.equals("class [I")) {
-                if (!(what instanceof TuNumber)) {
+                if (!(what .isNumber())) {
                     return false;
                 }
                 byte v = (byte) ((TuNumber) what).intValue();
                 Array.setInt(obj, index.intValue(), v);
             } else if (name.equals("class [D")) {
-                if (!(what instanceof TuNumber)) {
+                if (!(what .isNumber())) {
                     return false;
                 }
                 double v = ((TuNumber) what).doubleValue();
                 Array.setDouble(obj, index.intValue(), v);
             } else if (name.equals("class [F")) {
-                if (!(what instanceof TuNumber)) {
+                if (!(what .isNumber())) {
                     return false;
                 }
                 float v = ((TuNumber) what).floatValue();
                 Array.setFloat(obj, index.intValue(), v);
             } else if (name.equals("class [L")) {
-                if (!(what instanceof TuNumber)) {
+                if (!(what .isNumber())) {
                     return false;
                 }
                 long v = ((TuNumber) what).longValue();
@@ -633,13 +634,13 @@ public class PJLibrary extends TuLibrary {
                     return false;
                 }
             } else if (name.equals("class [B")) {
-                if (!(what instanceof TuNumber)) {
+                if (!(what .isNumber())) {
                     return false;
                 }
                 int v = ((TuNumber) what).intValue();
                 Array.setByte(obj, index.intValue(), (byte) v);
             } else if (name.equals("class [S")) {
-                if (!(what instanceof TuNumber)) {
+                if (!(what .isNumber())) {
                     return false;
                 }
                 short v = (short) ((TuNumber) what).intValue();
@@ -678,19 +679,19 @@ public class PJLibrary extends TuLibrary {
             }
             String name = cl.toString();
             if (name.equals("class [I")) {
-                Term value = new alice.tuprolog.TuInt(Array.getInt(obj, index.intValue()));
+                Term value = TuTerm.i32(Array.getInt(obj, index.intValue()));
                 return unify(what, value);
             } else if (name.equals("class [D")) {
-                Term value = new alice.tuprolog.TuDouble(Array.getDouble(obj, index.intValue()));
+                Term value = TuTerm.f64(Array.getDouble(obj, index.intValue()));
                 return unify(what, value);
             } else if (name.equals("class [F")) {
-                Term value = new alice.tuprolog.TuFloat(Array.getFloat(obj, index.intValue()));
+                Term value = TuTerm.f32(Array.getFloat(obj, index.intValue()));
                 return unify(what, value);
             } else if (name.equals("class [L")) {
-                Term value = new alice.tuprolog.TuLong(Array.getLong(obj, index.intValue()));
+                Term value = TuTerm.i64(Array.getLong(obj, index.intValue()));
                 return unify(what, value);
             } else if (name.equals("class [C")) {
-                Term value = new alice.tuprolog.TuStruct("" + Array.getChar(obj, index.intValue()));
+                Term value = TuTerm.createAtomTerm("" + Array.getChar(obj, index.intValue()));
                 return unify(what, value);
             } else if (name.equals("class [Z")) {
                 boolean b = Array.getBoolean(obj, index.intValue());
@@ -700,10 +701,10 @@ public class PJLibrary extends TuLibrary {
                     return unify(what, alice.tuprolog.Term.FALSE);
                 }
             } else if (name.equals("class [B")) {
-                Term value = new alice.tuprolog.TuInt(Array.getByte(obj, index.intValue()));
+                Term value = TuTerm.i32(Array.getByte(obj, index.intValue()));
                 return unify(what, value);
             } else if (name.equals("class [S")) {
-                Term value = new alice.tuprolog.TuInt(Array.getInt(obj, index.intValue()));
+                Term value = TuTerm.i32(Array.getInt(obj, index.intValue()));
                 return unify(what, value);
             } else {
                 return false;
@@ -774,7 +775,7 @@ public class PJLibrary extends TuLibrary {
             if (term == null) {
                 values[i] = null;
                 types[i] = null;
-            } else if (term.isAtom()) {
+            } else if (term.isAtomSymbol()) {
                 String name = alice.util.Tools.removeApices(term.toString());
                 if (name.equals("true")) {
                     values[i] = Boolean.TRUE;
@@ -791,22 +792,22 @@ public class PJLibrary extends TuLibrary {
                     }
                     types[i] = values[i].getClass();
                 }
-            } else if (term instanceof TuNumber) {
+            } else if (term .isNumber()) {
                 TuNumber t = (TuNumber) term;
-                if (t instanceof TuInt) {
+                if (t .isInt()) {
                     values[i] = new java.lang.Integer(t.intValue());
                     types[i] = java.lang.Integer.TYPE;
-                } else if (t instanceof alice.tuprolog.TuDouble) {
+                } else if (t .isDouble()) {
                     values[i] = new java.lang.Double(t.doubleValue());
                     types[i] = java.lang.Double.TYPE;
-                } else if (t instanceof alice.tuprolog.TuLong) {
+                } else if (t .isLong()) {
                     values[i] = new java.lang.Long(t.longValue());
                     types[i] = java.lang.Long.TYPE;
-                } else if (t instanceof alice.tuprolog.TuFloat) {
+                } else if (t .isFloat()) {
                     values[i] = new java.lang.Float(t.floatValue());
                     types[i] = java.lang.Float.TYPE;
                 }
-            } else if (term instanceof TuStruct) {
+            } else if (term .isCallable()) {
                 // argument descriptors
                 TuStruct tc = (TuStruct) term;
                 if (tc.getName().equals("as")) {
@@ -820,7 +821,7 @@ public class PJLibrary extends TuLibrary {
                     }
                     types[i] = values[i].getClass();
                 }
-            } else if (term instanceof TuVar && !((TuVar) term).isBound()) {
+            } else if (term .isVar() && !((TuVar) term).isBound()) {
                 values[i] = null;
                 types[i] = Object.class;
             } else {
@@ -840,7 +841,7 @@ public class PJLibrary extends TuLibrary {
      */
     private boolean parse_as(Object[] values, Class<?>[] types, int i, Term castWhat, Term castTo) {
         try {
-            if (!(castWhat instanceof TuNumber)) {
+            if (!(castWhat .isNumber())) {
                 String castTo_name = alice.util.Tools.removeApices(((TuStruct) castTo).getName());
                 String castWhat_name = alice.util.Tools.removeApices(castWhat.getTerm().toString());
                 //System.out.println(castWhat_name+" "+castTo_name);
@@ -964,7 +965,7 @@ public class PJLibrary extends TuLibrary {
     private boolean parseResult(Term id, Object obj) {
         if (obj == null) {
             //return unify(id,Term.TRUE);
-            return unify(id, new TuVar());
+            return unify(id, TuTerm.createTuVar());
         }
         try {
             if (Boolean.class.isInstance(obj)) {
@@ -974,21 +975,21 @@ public class PJLibrary extends TuLibrary {
                     return unify(id, Term.FALSE);
                 }
             } else if (Byte.class.isInstance(obj)) {
-                return unify(id, new TuInt(((Byte) obj).intValue()));
+                return unify(id, TuTerm.i32(((Byte) obj).intValue()));
             } else if (Short.class.isInstance(obj)) {
-                return unify(id, new TuInt(((Short) obj).intValue()));
+                return unify(id, TuTerm.i32(((Short) obj).intValue()));
             } else if (Integer.class.isInstance(obj)) {
-                return unify(id, new TuInt(((Integer) obj).intValue()));
+                return unify(id, TuTerm.i32(((Integer) obj).intValue()));
             } else if (java.lang.Long.class.isInstance(obj)) {
-                return unify(id, new alice.tuprolog.TuLong(((java.lang.Long) obj).longValue()));
+                return unify(id, TuTerm.i64(((java.lang.Long) obj).longValue()));
             } else if (java.lang.Float.class.isInstance(obj)) {
-                return unify(id, new alice.tuprolog.TuFloat(((java.lang.Float) obj).floatValue()));
+                return unify(id, TuTerm.f32(((java.lang.Float) obj).floatValue()));
             } else if (java.lang.Double.class.isInstance(obj)) {
-                return unify(id, new alice.tuprolog.TuDouble(((java.lang.Double) obj).doubleValue()));
+                return unify(id, TuTerm.f64(((java.lang.Double) obj).doubleValue()));
             } else if (String.class.isInstance(obj)) {
-                return unify(id, new TuStruct((String) obj));
+                return unify(id, TuTerm.createAtomTerm((String) obj));
             } else if (Character.class.isInstance(obj)) {
-                return unify(id, new TuStruct(((Character) obj).toString()));
+                return unify(id, TuTerm.createAtomTerm(((Character) obj).toString()));
             } else {
                 return bindDynamicObject(id, obj);
             }
@@ -1197,7 +1198,7 @@ public class PJLibrary extends TuLibrary {
     protected boolean bindDynamicObject(Term id, Object obj) {
         // null object are considered to _ variable
         if (obj == null) {
-            return unify(id, new TuVar());
+            return unify(id, TuTerm.createTuVar());
         }
         /*if (obj instanceof alice.tuprologx.pj.model.Term<?>) {
             alice.tuprologx.pj.model.Term<?> t = (alice.tuprologx.pj.model.Term<?>)obj;
@@ -1213,7 +1214,7 @@ public class PJLibrary extends TuLibrary {
                 return unify(id, (Term) aKey);
             } else {
                 // object not previously referenced
-                if (id instanceof TuVar) {
+                if (id .isVar()) {
                     // get a ground term
                     TuStruct idTerm = generateFreshId();
                     unify(id, idTerm);
@@ -1243,7 +1244,7 @@ public class PJLibrary extends TuLibrary {
      * @return
      */
     protected TuStruct generateFreshId() {
-        return new TuStruct("$obj_" + id++);
+        return TuTerm.createAtomTerm("$obj_" + id++);
     }
 
     /**

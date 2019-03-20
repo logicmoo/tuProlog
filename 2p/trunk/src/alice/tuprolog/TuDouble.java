@@ -31,7 +31,7 @@ public class TuDouble extends TuNumber {
     @SuppressWarnings("unused")
     private String type = "Double";
 
-    public TuDouble(double v) {
+    TuDouble(double v) {
         value = v;
     }
 
@@ -144,11 +144,11 @@ public class TuDouble extends TuNumber {
     @Override
     public boolean isGreater(Term t) {
         t = t.getTerm();
-        if (t instanceof TuNumber) {
+        if (t .isNumber()) {
             return value > ((TuNumber) t).doubleValue();
-        } else if (t instanceof TuStruct) {
+        } else if (t .isCallable()) {
             return false;
-        } else if (t instanceof TuVar) {
+        } else if (t .isVar()) {
             return true;
         } else {
             return false;
@@ -162,9 +162,9 @@ public class TuDouble extends TuNumber {
     @Override
     public boolean unify(List<TuVar> vl1, List<TuVar> vl2, Term t, boolean isOccursCheckEnabled) {
         t = t.getTerm();
-        if (t instanceof TuVar) {
+        if (t .isVar()) {
             return t.unify(vl2, vl1, this, isOccursCheckEnabled);
-        } else if (t instanceof TuNumber && ((TuNumber) t).isReal()) {
+        } else if (t .isNumber() && ((TuNumber) t).isReal()) {
             return value == ((TuNumber) t).doubleValue();
         } else {
             return false;

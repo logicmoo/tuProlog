@@ -35,6 +35,26 @@ public class TuStruct extends TuTerm {
 
     private static final long serialVersionUID = 1L;
 
+    public static TuStruct createTuList(Term[] argList) {
+        return new TuStruct(argList);
+    }
+
+    public static TuStruct createTuStruct2(String f, Term at0, Term at1) {
+        return new TuStruct(f, at0, at1);
+    }
+
+    public static TuStruct createTuStruct1(String f, Term at0) {
+        return new TuStruct(f, at0);
+    }
+
+    public static TuStruct createTuStructA(String f, Term[] argList) {
+        return new TuStruct(f, argList, argList.length);
+    }
+
+    public static TuStruct createSTRUCT(String f, Term... argList) {
+        return new TuStruct(f, argList);
+    }
+
     @SuppressWarnings("unused")
     private String type = "Struct";
 
@@ -66,65 +86,76 @@ public class TuStruct extends TuTerm {
     /**
      * Builds a Struct representing an atom
      */
-    public TuStruct(String f) {
+    TuStruct(String f) {
         this(f, 0);
     }
 
     /**
      * Builds a compound, with one argument
      */
-    public TuStruct(String f, Term at0) {
-        this(f, new Term[] { at0 });
+    private TuStruct(String f, Term at0) {
+        this(f, new Term[] { at0 }, 1);
     }
 
     /**
      * Builds a compound, with two arguments
      */
-    public TuStruct(String f, Term at0, Term at1) {
-        this(f, new Term[] { at0, at1 });
+    private TuStruct(String f, Term at0, Term at1) {
+        this(f, new Term[] { at0, at1 }, 2);
     }
 
-    /**
-     * Builds a compound, with three arguments
-     */
-    public TuStruct(String f, Term at0, Term at1, Term at2) {
-        this(f, new Term[] { at0, at1, at2 });
-    }
+    //    /**
+    //     * Builds a compound, with three arguments
+    //     */
+    //    public TuStruct(String f, Term... ar) {
+    //        this(f, new Term[] { at0, at1, at2 });
+    //    }
+    //
+    //    /**
+    //     * Builds a compound, with four arguments
+    //     */
+    //    public TuStruct(String f, Term at0, Term at1, Term at2, Term at3) {
+    //        this(f, new Term[] { at0, at1, at2, at3 });
+    //    }
+    //
+    //    /**
+    //     * Builds a compound, with five arguments
+    //     */
+    //    public TuStruct(String f, Term at0, Term at1, Term at2, Term at3, Term at4) {
+    //        this(f, new Term[] { at0, at1, at2, at3, at4 });
+    //    }
+    //
+    //    /**
+    //     * Builds a compound, with six arguments
+    //     */
+    //    public TuStruct(String f, Term at0, Term at1, Term at2, Term at3, Term at4, Term at5) {
+    //        this(f, new Term[] { at0, at1, at2, at3, at4, at5 });
+    //    }
+    //
+    //    /**
+    //     * Builds a compound, with seven arguments
+    //     */
+    //    public TuStruct(String f, Term at0, Term at1, Term at2, Term at3, Term at4, Term at5, Term at6) {
+    //        this(f, new Term[] { at0, at1, at2, at3, at4, at5, at6 });
+    //    }
 
     /**
-     * Builds a compound, with four arguments
+     * Builds a compound, with an array of arguments
      */
-    public TuStruct(String f, Term at0, Term at1, Term at2, Term at3) {
-        this(f, new Term[] { at0, at1, at2, at3 });
-    }
-
-    /**
-     * Builds a compound, with five arguments
-     */
-    public TuStruct(String f, Term at0, Term at1, Term at2, Term at3, Term at4) {
-        this(f, new Term[] { at0, at1, at2, at3, at4 });
-    }
-
-    /**
-     * Builds a compound, with six arguments
-     */
-    public TuStruct(String f, Term at0, Term at1, Term at2, Term at3, Term at4, Term at5) {
-        this(f, new Term[] { at0, at1, at2, at3, at4, at5 });
-    }
-
-    /**
-     * Builds a compound, with seven arguments
-     */
-    public TuStruct(String f, Term at0, Term at1, Term at2, Term at3, Term at4, Term at5, Term at6) {
-        this(f, new Term[] { at0, at1, at2, at3, at4, at5, at6 });
+    private TuStruct(String f, Term... argList) {
+        name = f;
+        arg = argList;
+        arity = argList.length;
+        predicateIndicator = name + "/" + arity;
+        resolved = false;
     }
 
     /**
      * Builds a compound, with an array of arguments
      */
-    public TuStruct(String f, Term[] argList) {
-        this(f, argList.length);
-        for (int i = 0; i < argList.length; i++)
+    protected TuStruct(String f, Term[] argList, int len) {
+        this(f, len);
+        for (int i = 0; i < len; i++)
             if (argList[i] == null)
                 throw new InvalidTermException("Arguments of a Struct cannot be null");
             else
@@ -134,7 +165,7 @@ public class TuStruct extends TuTerm {
     /**
      * Builds a structure representing an empty list
      */
-    public TuStruct() {
+    TuStruct() {
         this("[]", 0);
         resolved = true;
     }
@@ -142,7 +173,7 @@ public class TuStruct extends TuTerm {
     /**
      * Builds a list providing head and tail
      */
-    public TuStruct(Term h, Term t) {
+    TuStruct(Term h, Term t) {
         this(".", 2);
         arg[0] = h;
         arg[1] = t;
@@ -151,7 +182,7 @@ public class TuStruct extends TuTerm {
     /**
      * Builds a list specifying the elements
      */
-    public TuStruct(Term[] argList) {
+    private TuStruct(Term[] argList) {
         this(argList, 0);
     }
 
@@ -253,7 +284,7 @@ public class TuStruct extends TuTerm {
      * <code>getArg(index).getTerm()</code>
      */
     public Term getTerm(int index) {
-        if (!(arg[index] instanceof TuVar))
+        if (!(arg[index].isVar()))
             return arg[index];
         return arg[index].getTerm();
     }
@@ -268,7 +299,7 @@ public class TuStruct extends TuTerm {
 
     /** is this term a struct  */
     @Override
-    public boolean isStruct() {
+    public boolean isCallable() {
         return true;
     }
 
@@ -291,7 +322,7 @@ public class TuStruct extends TuTerm {
     }
 
     @Override
-    public boolean isAtom() {
+    public boolean isAtomSymbol() {
         return (arity == 0 || isEmptyList());
     }
 
@@ -314,7 +345,7 @@ public class TuStruct extends TuTerm {
      * Check is this struct is clause or directive
      */
     public boolean isClause() {
-        return (name.equals(":-") && arity > 1 && arg[0].getTerm() instanceof TuStruct);
+        return (name.equals(":-") && arity > 1 && arg[0].getTerm().isCallable());
     }
 
     @Override
@@ -333,7 +364,7 @@ public class TuStruct extends TuTerm {
             return null;
         }
         for (int i = 0; i < arg.length; i++) {
-            if (arg[i] instanceof TuStruct) {
+            if (arg[i].isCallable()) {
                 TuStruct s = (TuStruct) arg[i];
                 if (s.getName().equals(name)) {
                     return s;
@@ -341,7 +372,7 @@ public class TuStruct extends TuTerm {
             }
         }
         for (int i = 0; i < arg.length; i++) {
-            if (arg[i] instanceof TuStruct) {
+            if (arg[i].isCallable()) {
                 TuStruct s = (TuStruct) arg[i];
                 TuStruct sol = s.getArg(name);
                 if (sol != null) {
@@ -358,7 +389,7 @@ public class TuStruct extends TuTerm {
     @Override
     public boolean isGreater(Term t) {
         t = t.getTerm();
-        if (!(t instanceof TuStruct)) {
+        if (!(t.isCallable())) {
             return true;
         } else {
             TuStruct ts = (TuStruct) t;
@@ -387,7 +418,7 @@ public class TuStruct extends TuTerm {
      * @param vMap is needed for register occurence of same variables
      */
     @Override
-    public Term copy(int idExecCtx, AbstractMap<TuVar, TuVar> vMap)  {
+    public Term copy(int idExecCtx, AbstractMap<TuVar, TuVar> vMap) {
         TuStruct t = new TuStruct(arity);
         t.resolved = resolved;
         t.name = name;
@@ -468,7 +499,7 @@ public class TuStruct extends TuTerm {
                 // so linked variables must get the linked term
                 term = term.getTerm();
                 //--------------------------------
-                if (term instanceof TuVar) {
+                if (term.isVar()) {
                     TuVar t = (TuVar) term;
                     t.setInternalTimestamp(newcount++);
                     if (!t.isAnonymous()) {
@@ -489,7 +520,7 @@ public class TuStruct extends TuTerm {
                             vl.add(t);
                         }
                     }
-                } else if (term instanceof TuStruct) {
+                } else if (term.isCallable()) {
                     newcount = ((TuStruct) term).resolveTerm(vl, newcount);
                 }
             }
@@ -505,6 +536,10 @@ public class TuStruct extends TuTerm {
      */
     @Override
     public boolean isEmptyList() {
+        if (name == null) {
+            return name.equals("[]") && arity == 0;
+
+        }
         return name.equals("[]") && arity == 0;
     }
 
@@ -576,11 +611,11 @@ public class TuStruct extends TuTerm {
      * Gets a list Struct representation, with the functor as first element.
      */
     TuStruct toList() {
-        TuStruct t = new TuStruct();
+        Term t = TuTerm.createNilStruct();
         for (int c = arity - 1; c >= 0; c--) {
-            t = new TuStruct(arg[c].getTerm(), t);
+            t = TuTerm.createTuCons(arg[c].getTerm(), t);
         }
-        return new TuStruct(new TuStruct(name), t);
+        return TuTerm.createTuCons(TuTerm.createAtomTerm(name), t);
     }
 
     /**
@@ -590,7 +625,7 @@ public class TuStruct extends TuTerm {
      */
     TuStruct fromList() {
         Term ft = arg[0].getTerm();
-        if (!ft.isAtom()) {
+        if (!ft.isAtomSymbol()) {
             return null;
         }
         TuStruct at = (TuStruct) arg[1].getTerm();
@@ -615,7 +650,7 @@ public class TuStruct extends TuTerm {
             predicateIndicator = name + "/" + arity; /* Added by Paolo Contessi */
             arg = new Term[arity];
             arg[0] = t;
-            arg[1] = new TuStruct();
+            arg[1] = TuTerm.createNilStruct();
         } else if (arg[1].isList()) {
             ((TuStruct) arg[1]).append(t);
         } else {
@@ -627,7 +662,7 @@ public class TuStruct extends TuTerm {
      * Inserts (at the head) an element to this structure supposed to be a list
      */
     void insert(Term t) {
-        TuStruct co = new TuStruct();
+        TuStruct co = TuTerm.createAppendableStruct();
         co.arg[0] = arg[0];
         co.arg[1] = arg[1];
         arg[0] = t;
@@ -645,7 +680,7 @@ public class TuStruct extends TuTerm {
     public boolean unify(List<TuVar> vl1, List<TuVar> vl2, Term t, boolean isOccursCheckEnabled) {
         // In fase di unificazione bisogna annotare tutte le variabili della struct completa.
         t = t.getTerm();
-        if (t instanceof TuStruct) {
+        if (t.isCallable()) {
             TuStruct ts = (TuStruct) t;
             if (arity == ts.arity && name.equals(ts.name)) {
                 for (int c = 0; c < arity; c++) {
@@ -655,7 +690,7 @@ public class TuStruct extends TuTerm {
                 }
                 return true;
             }
-        } else if (t instanceof TuVar) {
+        } else if (t.isVar()) {
             return t.unify(vl2, vl1, this, isOccursCheckEnabled);
         }
         return false;
@@ -704,17 +739,17 @@ public class TuStruct extends TuTerm {
         } else if (name.equals("{}")) {
             return ("{" + toString0_bracket() + "}");
         } else {
-            String s = (TuParser.isAtom(name) ? name : "'" + name + "'");
+            String s = (TuParser.isAtomSymbol(name) ? name : "'" + name + "'");
             if (arity > 0) {
                 s = s + "(";
                 for (int c = 1; c < arity; c++) {
-                    if (!(arg[c - 1] instanceof TuVar)) {
+                    if (!(arg[c - 1].isVar())) {
                         s = s + arg[c - 1].toString() + ",";
                     } else {
                         s = s + ((TuVar) arg[c - 1]).toStringFlattened() + ",";
                     }
                 }
-                if (!(arg[arity - 1] instanceof TuVar)) {
+                if (!(arg[arity - 1].isVar())) {
                     s = s + arg[arity - 1].toString() + ")";
                 } else {
                     s = s + ((TuVar) arg[arity - 1]).toStringFlattened() + ")";
@@ -732,7 +767,7 @@ public class TuStruct extends TuTerm {
             if (tl.isEmptyList()) {
                 return h.toString();
             }
-            if (h instanceof TuVar) {
+            if (h.isVar()) {
                 return (((TuVar) h).toStringFlattened() + "," + tl.toString0());
             } else {
                 return (h.toString() + "," + tl.toString0());
@@ -740,12 +775,12 @@ public class TuStruct extends TuTerm {
         } else {
             String h0;
             String t0;
-            if (h instanceof TuVar) {
+            if (h.isVar()) {
                 h0 = ((TuVar) h).toStringFlattened();
             } else {
                 h0 = h.toString();
             }
-            if (t instanceof TuVar) {
+            if (t.isVar()) {
                 t0 = ((TuVar) t).toStringFlattened();
             } else {
                 t0 = t.toString();
@@ -757,14 +792,14 @@ public class TuStruct extends TuTerm {
     private String toString0_bracket() {
         if (arity == 0) {
             return "";
-        } else if (arity == 1 && !((arg[0] instanceof TuStruct) && ((TuStruct) arg[0]).getName().equals(","))) {
+        } else if (arity == 1 && !((arg[0].isCallable()) && ((TuStruct) arg[0]).getName().equals(","))) {
             return arg[0].getTerm().toString();
         } else {
             // comma case 
             Term head = ((TuStruct) arg[0]).getTerm(0);
             Term tail = ((TuStruct) arg[0]).getTerm(1);
             StringBuffer buf = new StringBuffer(head.toString());
-            while (tail instanceof TuStruct && ((TuStruct) tail).getName().equals(",")) {
+            while (tail.isCallable() && ((TuStruct) tail).getName().equals(",")) {
                 head = ((TuStruct) tail).getTerm(0);
                 buf.append("," + head.toString());
                 tail = ((TuStruct) tail).getTerm(1);
@@ -841,7 +876,7 @@ public class TuStruct extends TuTerm {
                         + " " + (((x && p >= prio) || (!x && p > prio)) ? ")" : ""));
             }
         }
-        v = (TuParser.isAtom(name) ? name : "'" + name + "'");
+        v = (TuParser.isAtomSymbol(name) ? name : "'" + name + "'");
         if (arity == 0) {
             return v;
         }

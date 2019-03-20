@@ -20,7 +20,7 @@ public class JavaThrowCatchTestCase extends TestCase {
 		TuInt cause = (TuInt) info.getTerm("Cause");
 		assertTrue(cause.intValue() == 0);
 		TuStruct message = (TuStruct) info.getTerm("Message");
-		assertTrue(message.isEqual(new TuStruct("Counter")));
+		assertTrue(message.isEqual(TuTerm.createAtomTerm("Counter")));
 		TuStruct stackTrace = (TuStruct) info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 		TuInt x = (TuInt) info.getTerm("X");
@@ -42,7 +42,7 @@ public class JavaThrowCatchTestCase extends TestCase {
 		TuInt cause = (TuInt) info.getTerm("Cause");
 		assertTrue(cause.intValue() == 0);
 		TuStruct message = (TuStruct) info.getTerm("Message");
-		assertTrue(message.isEqual(new TuStruct("Counter")));
+		assertTrue(message.isEqual(TuTerm.createAtomTerm("Counter")));
 		TuStruct stackTrace = (TuStruct) info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 		TuInt x = (TuInt) info.getTerm("X");
@@ -75,7 +75,7 @@ public class JavaThrowCatchTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term e = info.getTerm("E");
-		assertTrue(e instanceof TuVar);
+		assertTrue(e .isVar());
 		TuInt x = (TuInt) info.getTerm("X");
 		assertTrue(x.intValue() == 5);
 		TuInt y = (TuInt) info.getTerm("Y");
@@ -99,9 +99,9 @@ public class JavaThrowCatchTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term x = info.getTerm("X");
-		assertTrue(x instanceof TuVar);
+		assertTrue(x .isVar());
 		Term y = info.getTerm("Y");
-		assertTrue(y instanceof TuInt);
+		assertTrue(y .isInt());
 		assertTrue(((TuInt) y).intValue() == 8);
 	}
 

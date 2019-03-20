@@ -6,43 +6,43 @@ public class StructTestCase extends TestCase {
 	
 	public void testStructWithNullArgument() {
 		try {
-			new TuStruct("p", (Term) null);
+			TuStruct.createTuStruct1("p", (Term) null);
 			fail();
 		} catch (InvalidTermException expected) {}
 		try {
-			new TuStruct("p", new TuInt(1), null);
+			TuStruct.createTuStruct2("p", TuTerm.i32(1), null);
 			fail();
 		} catch (InvalidTermException expected) {}
 		try {
-			new TuStruct("p", new TuInt(1), new TuInt(2), null);
+			TuStruct.createSTRUCT("p", TuTerm.i32(1), TuTerm.i32(2), null);
 			fail();
 		} catch (InvalidTermException expected) {}
 		try {
-			new TuStruct("p", new TuInt(1), new TuInt(2), new TuInt(3), null);
+			TuStruct.createSTRUCT("p", TuTerm.i32(1), TuTerm.i32(2), TuTerm.i32(3), null);
 			fail();
 		} catch (InvalidTermException expected) {}
 		try {
-			new TuStruct("p", new TuInt(1), new TuInt(2), new TuInt(3), new TuInt(4), null);
+			TuStruct.createSTRUCT("p", TuTerm.i32(1), TuTerm.i32(2), TuTerm.i32(3), TuTerm.i32(4), null);
 			fail();
 		} catch (InvalidTermException expected) {}
 		try {
-			new TuStruct("p", new TuInt(1), new TuInt(2), new TuInt(3), new TuInt(4), new TuInt(5), null);
+			TuStruct.createSTRUCT("p", TuTerm.i32(1), TuTerm.i32(2), TuTerm.i32(3), TuTerm.i32(4), TuTerm.i32(5), null);
 			fail();
 		} catch (InvalidTermException expected) {}
 		try {
-			new TuStruct("p", new TuInt(1), new TuInt(2), new TuInt(3), new TuInt(4), new TuInt(5), new TuInt(6), null);
+			TuStruct.createSTRUCT("p", TuTerm.i32(1), TuTerm.i32(2), TuTerm.i32(3), TuTerm.i32(4), TuTerm.i32(5), TuTerm.i32(6), null);
 			fail();
 		} catch (InvalidTermException expected) {}
 		try {
-			Term[] args = new Term[] {new TuStruct("a"), null, new TuVar("P")};
-			new TuStruct("p", args);
+			Term[] args = new Term[] {TuTerm.createAtomTerm("a"), null, TuTerm.createTuVar("P")};
+			TuStruct.createTuStructA("p", args);
 			fail();
 		} catch (InvalidTermException expected) {}
 	}
 	
 	public void testStructWithNullName() {
 		try {
-			new TuStruct(null, new TuInt(1), new TuInt(2));
+			TuStruct.createTuStruct2(null, TuTerm.i32(1), TuTerm.i32(2));
 			fail();
 		} catch (InvalidTermException expected) {}
 	}
@@ -50,14 +50,14 @@ public class StructTestCase extends TestCase {
 	/** Structs with an empty name can only be atoms. */
 	public void testStructWithEmptyName() {
 		try {
-			new TuStruct("", new TuInt(1), new TuInt(2));
+			TuStruct.createTuStruct2("", TuTerm.i32(1), TuTerm.i32(2));
 			fail();
 		} catch (InvalidTermException expected) {}
-		assertEquals(0, new TuStruct("").getName().length());
+		assertEquals(0, TuTerm.createAtomTerm("").getName().length());
 	}
 	
 	public void testEmptyList() {
-		TuStruct list = new TuStruct();
+		TuStruct list = TuTerm.createAppendableStruct();
 		assertTrue(list.isList());
 		assertTrue(list.isEmptyList());
 		assertEquals(0, list.listSize());
@@ -67,7 +67,7 @@ public class StructTestCase extends TestCase {
 
 	/** Another correct method of building an empty list */
 	public void testEmptyListAsSquaredStruct() {
-		TuStruct emptyList = new TuStruct("[]");
+		TuStruct emptyList = TuTerm.createAtomTerm("[]");
 		assertTrue(emptyList.isList());
 		assertTrue(emptyList.isEmptyList());
 		assertEquals("[]", emptyList.getName());
@@ -77,7 +77,7 @@ public class StructTestCase extends TestCase {
 	
 	/** A wrong method of building an empty list */
 	public void testEmptyListAsDottedStruct() {
-		TuStruct notAnEmptyList = new TuStruct(".");
+		TuStruct notAnEmptyList = TuTerm.createAtomTerm(".");
 		assertFalse(notAnEmptyList.isList());
 		assertFalse(notAnEmptyList.isEmptyList());
 		assertEquals(".", notAnEmptyList.getName());
@@ -86,7 +86,7 @@ public class StructTestCase extends TestCase {
 	
 	/** Use dotted structs to build lists with content */
 	public void testListAsDottedStruct() {
-		TuStruct notAnEmptyList = new TuStruct(".", new TuStruct("a"), new TuStruct(".", new TuStruct("b"), new TuStruct()));
+		TuStruct notAnEmptyList = TuStruct.createTuStruct2(".", TuTerm.createAtomTerm("a"), TuStruct.createTuStruct2(".", TuTerm.createAtomTerm("b"), TuTerm.createAppendableStruct()));
 		assertTrue(notAnEmptyList.isList());
 		assertFalse(notAnEmptyList.isEmptyList());
 		assertEquals(".", notAnEmptyList.getName());
@@ -94,26 +94,24 @@ public class StructTestCase extends TestCase {
 	}
 	
 	public void testListFromArgumentArray() {
-		assertEquals(new TuStruct(), new TuStruct(new Term[0]));
+		assertEquals(TuTerm.createAppendableStruct(), TuStruct.createTuList(new Term[0]));
 		
 		Term[] args = new Term[2];
-		args[0] = new TuStruct("a");
-		args[1] = new TuStruct("b");
-		TuStruct list = new TuStruct(args);
-		assertEquals(new TuStruct(), list.listTail().listTail());
+		args[0] = TuTerm.createAtomTerm("a");
+		args[1] = TuTerm.createAtomTerm("b");
+		TuStruct list = TuStruct.createTuList(args);
+		assertEquals(TuTerm.createAppendableStruct(), list.listTail().listTail());
 	}
 	
 	public void testListSize() {
-		TuStruct list = new TuStruct(new TuStruct("a"),
-				       new TuStruct(new TuStruct("b"),
-				           new TuStruct(new TuStruct("c"), new TuStruct())));
+		TuStruct list = TuTerm.createTuCons(TuTerm.createAtomTerm("a"), TuTerm.createTuCons(TuTerm.createAtomTerm("b"), TuTerm.createTuCons(TuTerm.createAtomTerm("c"), TuTerm.createAppendableStruct())));
 		assertTrue(list.isList());
 		assertFalse(list.isEmptyList());
 		assertEquals(3, list.listSize());
 	}
 	
 	public void testNonListHead() throws InvalidTermException {
-		TuStruct s = new TuStruct("f", new TuVar("X"));
+		TuStruct s = TuStruct.createTuStruct1("f", TuTerm.createTuVar("X"));
 		try {
 			assertNotNull(s.listHead()); // just to make an assertion...
 			fail();
@@ -123,7 +121,7 @@ public class StructTestCase extends TestCase {
 	}
 	
 	public void testNonListTail() {
-		TuStruct s = new TuStruct("h", new TuInt(1));
+		TuStruct s = TuStruct.createTuStruct1("h", TuTerm.i32(1));
 		try {
 			assertNotNull(s.listTail()); // just to make an assertion...
 			fail();
@@ -133,7 +131,7 @@ public class StructTestCase extends TestCase {
 	}
 	
 	public void testNonListSize() throws InvalidTermException {
-		TuStruct s = new TuStruct("f", new TuVar("X"));
+		TuStruct s = TuStruct.createTuStruct1("f", TuTerm.createTuVar("X"));
 		try {
 			assertEquals(0, s.listSize()); // just to make an assertion...
 			fail();
@@ -143,7 +141,7 @@ public class StructTestCase extends TestCase {
 	}
 	
 	public void testNonListIterator() {
-		TuStruct s = new TuStruct("f", new TuInt(2));
+		TuStruct s = TuStruct.createTuStruct1("f", TuTerm.i32(2));
 		try {
 			assertNotNull(s.listIterator()); // just to make an assertion...
 			fail();
@@ -153,104 +151,98 @@ public class StructTestCase extends TestCase {
 	}
 	
 	public void testToList() {
-		TuStruct emptyList = new TuStruct();
-		TuStruct emptyListToList = new TuStruct(new TuStruct("[]"), new TuStruct());
+		TuStruct emptyList = TuTerm.createAppendableStruct();
+		TuStruct emptyListToList = TuTerm.createTuCons(TuTerm.createAtomTerm("[]"), TuTerm.createAppendableStruct());
 		assertEquals(emptyListToList, emptyList.toList());
 	}
 	
 	public void testToString() throws InvalidTermException {
-		TuStruct emptyList = new TuStruct();
+		TuStruct emptyList = TuTerm.createAppendableStruct();
 		assertEquals("[]", emptyList.toString());
-		TuStruct s = new TuStruct("f", new TuVar("X"));
+		TuStruct s = TuStruct.createTuStruct1("f", TuTerm.createTuVar("X"));
 		assertEquals("f(X)", s.toString());
-		TuStruct list = new TuStruct(new TuStruct("a"),
-		          new TuStruct(new TuStruct("b"),
-		        	  new TuStruct(new TuStruct("c"), new TuStruct())));
+		TuStruct list = TuTerm.createTuCons(TuTerm.createAtomTerm("a"), TuTerm.createTuCons(TuTerm.createAtomTerm("b"), TuTerm.createTuCons(TuTerm.createAtomTerm("c"), TuTerm.createAppendableStruct())));
 		assertEquals("[a,b,c]", list.toString());
 	}
 	
 	public void testAppend() {
-		TuStruct emptyList = new TuStruct();
-		TuStruct list = new TuStruct(new TuStruct("a"),
-				          new TuStruct(new TuStruct("b"),
-				        	  new TuStruct(new TuStruct("c"), new TuStruct())));
-		emptyList.append(new TuStruct("a"));
-		emptyList.append(new TuStruct("b"));
-		emptyList.append(new TuStruct("c"));
+		TuStruct emptyList = TuTerm.createAppendableStruct();
+		TuStruct list = TuTerm.createTuCons(TuTerm.createAtomTerm("a"), TuTerm.createTuCons(TuTerm.createAtomTerm("b"), TuTerm.createTuCons(TuTerm.createAtomTerm("c"), TuTerm.createAppendableStruct())));
+		emptyList.append(TuTerm.createAtomTerm("a"));
+		emptyList.append(TuTerm.createAtomTerm("b"));
+		emptyList.append(TuTerm.createAtomTerm("c"));
 		assertEquals(list, emptyList);
-		TuStruct tail = new TuStruct(new TuStruct("b"),
-                          new TuStruct(new TuStruct("c"), new TuStruct()));
+		TuStruct tail = TuTerm.createTuCons(TuTerm.createAtomTerm("b"), TuTerm.createTuCons(TuTerm.createAtomTerm("c"), TuTerm.createAppendableStruct()));
 		assertEquals(tail, emptyList.listTail());
 		
-		emptyList = new TuStruct();
-		emptyList.append(new TuStruct());
-		assertEquals(new TuStruct(new TuStruct(), new TuStruct()), emptyList);
+		emptyList = TuTerm.createAppendableStruct();
+		emptyList.append(TuTerm.createAppendableStruct());
+		assertEquals(TuTerm.createTuCons(TuTerm.createAppendableStruct(), TuTerm.createAppendableStruct()), emptyList);
 		
-		TuStruct anotherList = new TuStruct(new TuStruct("d"),
-				                 new TuStruct(new TuStruct("e"), new TuStruct()));
+		TuStruct anotherList = TuTerm.createTuCons(TuTerm.createAtomTerm("d"), TuTerm.createTuCons(TuTerm.createAtomTerm("e"), TuTerm.createAppendableStruct()));
 		list.append(anotherList);
 		assertEquals(anotherList, list.listTail().listTail().listTail().listHead());
 	}
 	
 	public void testIteratedGoalTerm() throws Exception {
-		TuVar x = new TuVar("X");
-		TuStruct foo = new TuStruct("foo", x);
-		TuStruct term = new TuStruct("^", x, foo);
+		TuVar x = TuTerm.createTuVar("X");
+		TuStruct foo = TuStruct.createTuStruct1("foo", x);
+		TuStruct term = TuStruct.createTuStruct2("^", x, foo);
 		assertEquals(foo, term.iteratedGoalTerm());
 	}
 	
 	public void testIsList() {
-		TuStruct notList = new TuStruct(".", new TuStruct("a"), new TuStruct("b"));
+		TuStruct notList = TuStruct.createTuStruct2(".", TuTerm.createAtomTerm("a"), TuTerm.createAtomTerm("b"));
 		assertFalse(notList.isList());
 	}
 	
 	public void testIsAtomic() {
-		TuStruct emptyList = new TuStruct();
+		TuStruct emptyList = TuTerm.createAppendableStruct();
 		assertTrue(emptyList.isAtomic());
-		TuStruct atom = new TuStruct("atom");
+		TuStruct atom = TuTerm.createAtomTerm("atom");
 		assertTrue(atom.isAtomic());
-		TuStruct list = new TuStruct(new Term[] {new TuInt(0), new TuInt(1)});
+		TuStruct list = TuStruct.createTuList(new Term[] {TuTerm.i32(0), TuTerm.i32(1)});
 		assertFalse(list.isAtomic());
-		TuStruct compound = new TuStruct("f", new TuStruct("a"), new TuStruct("b"));
+		TuStruct compound = TuStruct.createTuStruct2("f", TuTerm.createAtomTerm("a"), TuTerm.createAtomTerm("b"));
 		assertFalse(compound.isAtomic());
-		TuStruct singleQuoted = new TuStruct("'atom'");
+		TuStruct singleQuoted = TuTerm.createAtomTerm("'atom'");
 		assertTrue(singleQuoted.isAtomic());
-		TuStruct doubleQuoted = new TuStruct("\"atom\"");
+		TuStruct doubleQuoted = TuTerm.createAtomTerm("\"atom\"");
 		assertTrue(doubleQuoted.isAtomic());
 	}
 	
 	public void testIsAtom() {
-		TuStruct emptyList = new TuStruct();
-		assertTrue(emptyList.isAtom());
-		TuStruct atom = new TuStruct("atom");
-		assertTrue(atom.isAtom());
-		TuStruct list = new TuStruct(new Term[] {new TuInt(0), new TuInt(1)});
-		assertFalse(list.isAtom());
-		TuStruct compound = new TuStruct("f", new TuStruct("a"), new TuStruct("b"));
-		assertFalse(compound.isAtom());
-		TuStruct singleQuoted = new TuStruct("'atom'");
-		assertTrue(singleQuoted.isAtom());
-		TuStruct doubleQuoted = new TuStruct("\"atom\"");
-		assertTrue(doubleQuoted.isAtom());
+		TuStruct emptyList = TuTerm.createAppendableStruct();
+		assertTrue(emptyList.isAtomSymbol());
+		TuStruct atom = TuTerm.createAtomTerm("atom");
+		assertTrue(atom.isAtomSymbol());
+		TuStruct list = TuStruct.createTuList(new Term[] {TuTerm.i32(0), TuTerm.i32(1)});
+		assertFalse(list.isAtomSymbol());
+		TuStruct compound = TuStruct.createTuStruct2("f", TuTerm.createAtomTerm("a"), TuTerm.createAtomTerm("b"));
+		assertFalse(compound.isAtomSymbol());
+		TuStruct singleQuoted = TuTerm.createAtomTerm("'atom'");
+		assertTrue(singleQuoted.isAtomSymbol());
+		TuStruct doubleQuoted = TuTerm.createAtomTerm("\"atom\"");
+		assertTrue(doubleQuoted.isAtomSymbol());
 	}
 	
 	public void testIsCompound() {
-		TuStruct emptyList = new TuStruct();
+		TuStruct emptyList = TuTerm.createAppendableStruct();
 		assertFalse(emptyList.isCompound());
-		TuStruct atom = new TuStruct("atom");
+		TuStruct atom = TuTerm.createAtomTerm("atom");
 		assertFalse(atom.isCompound());
-		TuStruct list = new TuStruct(new Term[] {new TuInt(0), new TuInt(1)});
+		TuStruct list = TuStruct.createTuList(new Term[] {TuTerm.i32(0), TuTerm.i32(1)});
 		assertTrue(list.isCompound());
-		TuStruct compound = new TuStruct("f", new TuStruct("a"), new TuStruct("b"));
+		TuStruct compound = TuStruct.createTuStruct2("f", TuTerm.createAtomTerm("a"), TuTerm.createAtomTerm("b"));
 		assertTrue(compound.isCompound());
-		TuStruct singleQuoted = new TuStruct("'atom'");
+		TuStruct singleQuoted = TuTerm.createAtomTerm("'atom'");
 		assertFalse(singleQuoted.isCompound());
-		TuStruct doubleQuoted = new TuStruct("\"atom\"");
+		TuStruct doubleQuoted = TuTerm.createAtomTerm("\"atom\"");
 		assertFalse(doubleQuoted.isCompound());
 	}
 	
 	public void testEqualsToObject() {
-		TuStruct s = new TuStruct("id");
+		TuStruct s = TuTerm.createAtomTerm("id");
 		assertFalse(s.equals(new Object()));
 	}
 

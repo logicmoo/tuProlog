@@ -36,7 +36,7 @@ public class TxJavaObject<O> extends TxTerm<TxJavaObject<O>> {
     }
     
     static boolean matches(alice.tuprolog.Term t) {        
-        return (t instanceof alice.tuprolog.TuStruct && PJ.getRegisteredJavaObject((alice.tuprolog.TuStruct)t) != null);        
+        return (t .isCallable() && PJ.getRegisteredJavaObject((alice.tuprolog.TuStruct)t) != null);        
     }
     
     static <Z> TxJavaObject<Z> unmarshalObject(alice.tuprolog.TuStruct s) {

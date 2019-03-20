@@ -17,7 +17,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("asserta", new TuVar("X"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("asserta", TuTerm.createTuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -29,11 +29,11 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("asserta", new TuInt(1))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("asserta", TuTerm.i32(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("clause")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("clause")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -45,7 +45,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("assertz", new TuVar("X"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("assertz", TuTerm.createTuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -57,11 +57,11 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("assertz", new TuInt(1))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("assertz", TuTerm.i32(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("clause")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("clause")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -73,7 +73,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$retract", new TuVar("X"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("$retract", TuTerm.createTuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -85,11 +85,11 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$retract", new TuInt(1))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("$retract", TuTerm.i32(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("clause")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("clause")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -101,7 +101,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("abolish", new TuVar("X"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("abolish", TuTerm.createTuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -113,11 +113,11 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("abolish", new TuInt(1))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("abolish", TuTerm.i32(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("predicate_indicator")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("predicate_indicator")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -129,14 +129,13 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("abolish",
-				new TuStruct("p", new TuVar("X")))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("abolish", TuStruct.createTuStruct1("p", TuTerm.createTuVar("X")))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("predicate_indicator")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("predicate_indicator")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(new TuStruct("p", new TuVar("X"))));
+		assertTrue(culprit.isEqual(TuStruct.createTuStruct1("p", TuTerm.createTuVar("X"))));
 	}
 
 	// verifico che halt(X) lancia un errore di instanziazione
@@ -146,7 +145,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("halt", new TuVar("X"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("halt", TuTerm.createTuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -158,11 +157,11 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("halt", new TuDouble(1.5))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("halt", TuTerm.f64(1.5))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("integer")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("integer")));
 		TuDouble culprit = (TuDouble) info.getTerm("Culprit");
 		assertTrue(culprit.doubleValue() == 1.5);
 	}
@@ -174,7 +173,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("load_library", new TuVar("X"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("load_library", TuTerm.createTuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -186,11 +185,11 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("load_library", new TuInt(1))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("load_library", TuTerm.i32(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("atom")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("atom")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -203,15 +202,15 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("load_library", new TuStruct("a"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("load_library", TuTerm.createAtomTerm("a"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ObjectType");
-		assertTrue(validType.isEqual(new TuStruct("class")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("class")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(new TuStruct("a")));
+		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("a")));
 		Term message = info.getTerm("Message");
-		assertTrue(message.isEqual(new TuStruct("InvalidLibraryException: a at -1:-1")));
+		assertTrue(message.isEqual(TuTerm.createAtomTerm("InvalidLibraryException: a at -1:-1")));
 	}
 
 	// verifico che unload_library(X) lancia un errore di instanziazione
@@ -221,7 +220,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("unload_library", new TuVar("X"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("unload_library", TuTerm.createTuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -233,11 +232,11 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("unload_library", new TuInt(1))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("unload_library", TuTerm.i32(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("atom")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("atom")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -250,15 +249,15 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("unload_library", new TuStruct("a"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("unload_library", TuTerm.createAtomTerm("a"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ObjectType");
-		assertTrue(validType.isEqual(new TuStruct("class")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("class")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(new TuStruct("a")));
+		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("a")));
 		Term message = info.getTerm("Message");
-		assertTrue(message.isEqual(new TuStruct("InvalidLibraryException: null at 0:0")));
+		assertTrue(message.isEqual(TuTerm.createAtomTerm("InvalidLibraryException: null at 0:0")));
 	}
 
 	// verifico che '$call'(X) lancia un errore di instanziazione
@@ -268,7 +267,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$call", new TuVar("X"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("$call", TuTerm.createTuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -280,11 +279,11 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$call", new TuInt(1))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct1("$call", TuTerm.i32(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("callable")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("callable")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -296,7 +295,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("is", new TuVar("X"), new TuVar("Y"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("is", TuTerm.createTuVar("X"), TuTerm.createTuVar("Y"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -308,13 +307,13 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("is", new TuVar("X"), new TuStruct("a"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("is", TuTerm.createTuVar("X"), TuTerm.createAtomTerm("a"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("evaluable")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("evaluable")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(new TuStruct("a")));
+		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("a")));
 	}
 	
 	// verifico che is(X, 1/0) lancia l'errore di valutazione "zero_divisor"
@@ -324,11 +323,11 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("is", new TuVar("X"), new TuStruct("/", new TuInt(1), new TuInt(0)))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("is", TuTerm.createTuVar("X"), TuStruct.createTuStruct2("/", TuTerm.i32(1), TuTerm.i32(0)))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 		TuStruct error = (TuStruct) info.getTerm("Error");
-		assertTrue(error.isEqual(new TuStruct("zero_divisor")));
+		assertTrue(error.isEqual(TuTerm.createAtomTerm("zero_divisor")));
 	}
 	
 	// verifico che is(X, 1//0) lancia l'errore di valutazione "zero_divisor"
@@ -338,11 +337,11 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("is", new TuVar("X"), new TuStruct("//", new TuInt(1), new TuInt(0)))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("is", TuTerm.createTuVar("X"), TuStruct.createTuStruct2("//", TuTerm.i32(1), TuTerm.i32(0)))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 		TuStruct error = (TuStruct) info.getTerm("Error");
-		assertTrue(error.isEqual(new TuStruct("zero_divisor")));
+		assertTrue(error.isEqual(TuTerm.createAtomTerm("zero_divisor")));
 	}
 	
 	// verifico che is(X, 1 div 0) lancia l'errore di valutazione "zero_divisor"
@@ -352,11 +351,11 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("is", new TuVar("X"), new TuStruct("div", new TuInt(1), new TuInt(0)))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("is", TuTerm.createTuVar("X"), TuStruct.createTuStruct2("div", TuTerm.i32(1), TuTerm.i32(0)))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 		TuStruct error = (TuStruct) info.getTerm("Error");
-		assertTrue(error.isEqual(new TuStruct("zero_divisor")));
+		assertTrue(error.isEqual(TuTerm.createAtomTerm("zero_divisor")));
 	}
 	
 	// verifico che '$tolist'(X, List) lancia un errore di instanziazione
@@ -366,8 +365,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$tolist", new TuVar("X"),
-				new TuVar("List"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("$tolist", TuTerm.createTuVar("X"), TuTerm.createTuVar("List"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -380,11 +378,11 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
 		assertTrue(g
-				.isEqual(new TuStruct("$tolist", new TuInt(1), new TuVar("List"))));
+				.isEqual(TuStruct.createTuStruct2("$tolist", TuTerm.i32(1), TuTerm.createTuVar("List"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("struct")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("struct")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -396,8 +394,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$fromlist", new TuVar("Struct"),
-				new TuVar("X"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("$fromlist", TuTerm.createTuVar("Struct"), TuTerm.createTuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -409,14 +406,13 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$fromlist", new TuVar("Struct"),
-				new TuStruct("a"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("$fromlist", TuTerm.createTuVar("Struct"), TuTerm.createAtomTerm("a"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("list")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("list")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(new TuStruct("a")));
+		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("a")));
 	}
 
 	// verifico che '$append'(a, X) lancia un errore di instanziazione
@@ -426,8 +422,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$append", new TuStruct("a"),
-				new TuVar("X"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("$append", TuTerm.createAtomTerm("a"), TuTerm.createTuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -439,14 +434,13 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$append", new TuStruct("a"), new TuStruct(
-				"b"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("$append", TuTerm.createAtomTerm("a"), TuTerm.createAtomTerm("b"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("list")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("list")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(new TuStruct("b")));
+		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("b")));
 	}
 
 	// verifico che '$find'(X, []) lancia un errore di instanziazione
@@ -456,7 +450,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$find", new TuVar("X"), new TuStruct())));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("$find", TuTerm.createTuVar("X"), TuTerm.createNilStruct())));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -468,14 +462,13 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$find", new TuStruct("p", new TuVar("X")),
-				new TuStruct("a"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("$find", TuStruct.createTuStruct1("p", TuTerm.createTuVar("X")), TuTerm.createAtomTerm("a"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("list")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("list")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(new TuStruct("a")));
+		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("a")));
 	}
 
 	// verifico che set_prolog_flag(X, 1) lancia un errore di instanziazione
@@ -485,8 +478,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("set_prolog_flag", new TuVar("X"),
-				new TuInt(1))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("set_prolog_flag", TuTerm.createTuVar("X"), TuTerm.i32(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -498,8 +490,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("set_prolog_flag", new TuStruct("a"),
-				new TuVar("X"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("set_prolog_flag", TuTerm.createAtomTerm("a"), TuTerm.createTuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -511,12 +502,11 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("set_prolog_flag", new TuInt(1), new TuInt(
-				1))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("set_prolog_flag", TuTerm.i32(1), TuTerm.i32(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("struct")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("struct")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -528,14 +518,13 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("set_prolog_flag", new TuStruct("a"),
-				new TuStruct("p", new TuVar("X")))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("set_prolog_flag", TuTerm.createAtomTerm("a"), TuStruct.createTuStruct1("p", TuTerm.createTuVar("X")))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("ground")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("ground")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(new TuStruct("p", new TuVar("X"))));
+		assertTrue(culprit.isEqual(TuStruct.createTuStruct1("p", TuTerm.createTuVar("X"))));
 	}
 
 	// verifico che set_prolog_flag(Flag, Value) lancia un errore di dominio se
@@ -546,14 +535,13 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("set_prolog_flag", new TuStruct("a"),
-				new TuInt(1))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("set_prolog_flag", TuTerm.createAtomTerm("a"), TuTerm.i32(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validDomain = (TuStruct) info.getTerm("ValidDomain");
-		assertTrue(validDomain.isEqual(new TuStruct("prolog_flag")));
+		assertTrue(validDomain.isEqual(TuTerm.createAtomTerm("prolog_flag")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(new TuStruct("a")));
+		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("a")));
 	}
 
 	// verifico che set_prolog_flag(bounded, a) lancia un errore di dominio
@@ -563,14 +551,13 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("set_prolog_flag",
-				new TuStruct("bounded"), new TuStruct("a"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("set_prolog_flag", TuTerm.createAtomTerm("bounded"), TuTerm.createAtomTerm("a"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 		TuStruct validDomain = (TuStruct) info.getTerm("ValidDomain");
-		assertTrue(validDomain.isEqual(new TuStruct("flag_value")));
+		assertTrue(validDomain.isEqual(TuTerm.createAtomTerm("flag_value")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(new TuStruct("a")));
+		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("a")));
 	}
 
 	// verifico che set_prolog_flag(bounded, false) lancia un errore di permesso
@@ -580,16 +567,15 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("set_prolog_flag",
-				new TuStruct("bounded"), new TuStruct("false"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("set_prolog_flag", TuTerm.createAtomTerm("bounded"), TuTerm.createAtomTerm("false"))));
 		TuStruct operation = (TuStruct) info.getTerm("Operation");
-		assertTrue(operation.isEqual(new TuStruct("modify")));
+		assertTrue(operation.isEqual(TuTerm.createAtomTerm("modify")));
 		TuStruct objectType = (TuStruct) info.getTerm("ObjectType");
-		assertTrue(objectType.isEqual(new TuStruct("flag")));
+		assertTrue(objectType.isEqual(TuTerm.createAtomTerm("flag")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(new TuStruct("bounded")));
+		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("bounded")));
 		Term message = info.getTerm("Message");
-		assertTrue(message.isEqual(new TuInt(0)));
+		assertTrue(message.isEqual(TuTerm.i32(0)));
 	}
 
 	// verifico che get_prolog_flag(X, Value) lancia un errore di instanziazione
@@ -599,8 +585,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("get_prolog_flag", new TuVar("X"),
-				new TuVar("Value"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("get_prolog_flag", TuTerm.createTuVar("X"), TuTerm.createTuVar("Value"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -612,12 +597,11 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("get_prolog_flag", new TuInt(1), new TuVar(
-				"Value"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("get_prolog_flag", TuTerm.i32(1), TuTerm.createTuVar("Value"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("struct")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("struct")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -630,14 +614,13 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("get_prolog_flag", new TuStruct("a"),
-				new TuVar("Value"))));
+		assertTrue(g.isEqual(TuStruct.createTuStruct2("get_prolog_flag", TuTerm.createAtomTerm("a"), TuTerm.createTuVar("Value"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validDomain = (TuStruct) info.getTerm("ValidDomain");
-		assertTrue(validDomain.isEqual(new TuStruct("prolog_flag")));
+		assertTrue(validDomain.isEqual(TuTerm.createAtomTerm("prolog_flag")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(new TuStruct("a")));
+		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("a")));
 	}
 
 	// verifico che '$op'(Priority, yfx, '+') lancia un errore di instanziazione
@@ -647,8 +630,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$op", new TuVar("Priority"), new TuStruct(
-				"yfx"), new TuStruct("+"))));
+		assertTrue(g.isEqual(TuStruct.createSTRUCT("$op", TuTerm.createTuVar("Priority"), TuTerm.createAtomTerm("yfx"), TuTerm.createAtomTerm("+"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -661,8 +643,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$op", new TuInt(600), new TuVar(
-				"Specifier"), new TuStruct("+"))));
+		assertTrue(g.isEqual(TuStruct.createSTRUCT("$op", TuTerm.i32(600), TuTerm.createTuVar("Specifier"), TuTerm.createAtomTerm("+"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -674,8 +655,7 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$op", new TuInt(600), new TuStruct("yfx"),
-				new TuVar("Operator"))));
+		assertTrue(g.isEqual(TuStruct.createSTRUCT("$op", TuTerm.i32(600), TuTerm.createAtomTerm("yfx"), TuTerm.createTuVar("Operator"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 3);
 	}
@@ -687,14 +667,13 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$op", new TuStruct("a"), new TuStruct(
-				"yfx"), new TuStruct("+"))));
+		assertTrue(g.isEqual(TuStruct.createSTRUCT("$op", TuTerm.createAtomTerm("a"), TuTerm.createAtomTerm("yfx"), TuTerm.createAtomTerm("+"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("integer")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("integer")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(new TuStruct("a")));
+		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("a")));
 	}
 
 	// verifico che '$op'(600, 1, '+') lancia un errore di tipo
@@ -704,12 +683,11 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$op", new TuInt(600), new TuInt(1),
-				new TuStruct("+"))));
+		assertTrue(g.isEqual(TuStruct.createSTRUCT("$op", TuTerm.i32(600), TuTerm.i32(1), TuTerm.createAtomTerm("+"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("atom")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("atom")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -721,12 +699,11 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$op", new TuInt(600), new TuStruct("yfx"),
-				new TuInt(1))));
+		assertTrue(g.isEqual(TuStruct.createSTRUCT("$op", TuTerm.i32(600), TuTerm.createAtomTerm("yfx"), TuTerm.i32(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 3);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(new TuStruct("atom_or_atom_list")));
+		assertTrue(validType.isEqual(TuTerm.createAtomTerm("atom_or_atom_list")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -738,12 +715,11 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$op", new TuInt(1300),
-				new TuStruct("yfx"), new TuStruct("+"))));
+		assertTrue(g.isEqual(TuStruct.createSTRUCT("$op", TuTerm.i32(1300), TuTerm.createAtomTerm("yfx"), TuTerm.createAtomTerm("+"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validDomain = (TuStruct) info.getTerm("ValidDomain");
-		assertTrue(validDomain.isEqual(new TuStruct("operator_priority")));
+		assertTrue(validDomain.isEqual(TuTerm.createAtomTerm("operator_priority")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1300);
 	}
@@ -755,14 +731,13 @@ public class BuiltInExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(new TuStruct("$op", new TuInt(600), new TuStruct("a"),
-				new TuStruct("+"))));
+		assertTrue(g.isEqual(TuStruct.createSTRUCT("$op", TuTerm.i32(600), TuTerm.createAtomTerm("a"), TuTerm.createAtomTerm("+"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 		TuStruct validDomain = (TuStruct) info.getTerm("ValidDomain");
-		assertTrue(validDomain.isEqual(new TuStruct("operator_specifier")));
+		assertTrue(validDomain.isEqual(TuTerm.createAtomTerm("operator_specifier")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(new TuStruct("a")));
+		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("a")));
 	}
 
 }

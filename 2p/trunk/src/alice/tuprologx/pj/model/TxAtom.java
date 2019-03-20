@@ -9,6 +9,8 @@
 
 package alice.tuprologx.pj.model;
 
+import alice.tuprolog.TuTerm;
+
 /**
  *
  * @author maurizio
@@ -31,7 +33,7 @@ public class TxAtom extends TxTerm<TxAtom> {
         
         @Override
 		public alice.tuprolog.TuStruct marshal() {
-            return new alice.tuprolog.TuStruct(_theAtom); 
+            return TuTerm.createAtomTerm(_theAtom); 
         }
         
         static TxAtom unmarshal(alice.tuprolog.TuStruct a) {
@@ -41,7 +43,7 @@ public class TxAtom extends TxTerm<TxAtom> {
         }
         
         static boolean matches(alice.tuprolog.Term t) {
-            return (!(t instanceof alice.tuprolog.TuVar) && t.isAtom() && !t.isList() && !TxBool.matches(t));
+            return (!(t .isVar()) && t.isAtomSymbol() && !t.isList() && !TxBool.matches(t));
         }
         
         public TxList<TxAtom> toCharList() {

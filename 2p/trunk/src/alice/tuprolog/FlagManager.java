@@ -42,10 +42,10 @@ class FlagManager {
         flags = new ArrayList<TuFlag>();
         
         //occursCheck flag -> a default è on!
-        TuStruct s = new TuStruct();
-        s.append(new TuStruct("on"));
-        s.append(new TuStruct("off"));
-        this.defineFlag("occursCheck", s, new TuStruct("on"), true, "BuiltIn");
+        TuStruct s = TuTerm.createAppendableStruct();
+        s.append(TuTerm.createAtomTerm("on"));
+        s.append(TuTerm.createAtomTerm("off"));
+        this.defineFlag("occursCheck", s, TuTerm.createAtomTerm("on"), true, "BuiltIn");
     }
 
     /**
@@ -81,14 +81,14 @@ class FlagManager {
     }
 
     public synchronized TuStruct getPrologFlagList() {
-        TuStruct flist = new TuStruct();
+        Term flist = TuTerm.createNilStruct();
         java.util.Iterator<TuFlag> it = flags.iterator();
         while (it.hasNext()) {
             TuFlag fl = it.next();
-            flist = new TuStruct(new TuStruct("flag", new TuStruct(fl.getName()), fl
+            flist = TuTerm.createTuCons(TuStruct.createTuStruct2("flag", TuTerm.createAtomTerm(fl.getName()), fl
                     .getValue()), flist);
         }
-        return flist;
+        return (TuStruct) flist;
     }
 
     public synchronized Term getFlag(String name) {

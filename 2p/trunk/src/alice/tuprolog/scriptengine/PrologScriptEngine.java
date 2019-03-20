@@ -26,6 +26,7 @@ import alice.tuprolog.NoSolutionException;
 import alice.tuprolog.TuProlog;
 import alice.tuprolog.SolveInfo;
 import alice.tuprolog.TuStruct;
+import alice.tuprolog.TuTerm;
 import alice.tuprolog.TuTheory;
 import alice.tuprolog.TuVar;
 import alice.tuprolog.event.ExceptionEvent;
@@ -37,53 +38,52 @@ import alice.tuprolog.lib.InvalidObjectIdException;
 import alice.tuprolog.lib.OOLibrary;
 import alice.util.InputStreamAdapter;
 
-
 /**
  * Implementation of the interface ScriptEngine for tuProlog
  *
  * @author Andrea Bucaletti
  */
 public class PrologScriptEngine implements ScriptEngine, ExceptionListener, OutputListener {
-	
-	/*
-	 * Engine context keys-
-	 */
+
+    /*
+     * Engine context keys-
+     */
     public static final String CONTEXT = "context";
     public static final String THEORY = "theory";
-    public static final String IS_SUCCESS =  "isSuccess";
+    public static final String IS_SUCCESS = "isSuccess";
     public static final String IS_HALTED = "isHalted";
     public static final String HAS_OPEN_ALTERNATIVES = "hasOpenAlternatives";
-    
+
     // Solution variables bound during the last call of eval(..)
     protected List<TuVar> solveVars;
-    
+
     // The last evaluated script
     protected String previousScript;
-    
+
     /* 	This is used to decide if the text call of eval(..) is going to use Prolog.solve()
     	or Prolog.solveNext() */
     protected boolean useSolveNext;
-   
+
     /* The default script context */
     protected ScriptContext defaultContext;
-    
+
     /* And instance of prolog used to solve the given scripts */
     protected TuProlog prolog;
-    
+
     /* Current Standard Output and Error */
     protected Writer outputWriter, errorWriter;
-    
+
     public PrologScriptEngine() {
         prolog = new TuProlog();
         prolog.addExceptionListener(this);
         prolog.addOutputListener(this);
 
-        defaultContext = new SimpleScriptContext();     
-        
+        defaultContext = new SimpleScriptContext();
+
         useSolveNext = false;
         previousScript = null;
         solveVars = null;
-    } 
+    }
 
     @Override
     public Object eval(String string) throws ScriptException {
@@ -94,39 +94,39 @@ public class PrologScriptEngine implements ScriptEngine, ExceptionListener, Outp
     public Object eval(Reader reader) throws ScriptException {
         return eval(reader, getContext());
     }
-    
+
     @Override
     public Object eval(String script, ScriptContext sc) throws ScriptException {
-    	
-    	setupStandardIO(sc);
-    	
-    	/*
+
+        setupStandardIO(sc);
+
+        /*
         As the jsr-223 part SCR.4.3.4.1.2 Script Execution :
         "In all cases, the ScriptContext used during a script execution must be
         a value in the Engine Scope of the ScriptEngine whose key is the
         String "context"     
          */
-        
 
         sc.getBindings(ScriptContext.ENGINE_SCOPE).put(CONTEXT, sc);
         return eval(script, sc.getBindings(ScriptContext.ENGINE_SCOPE));
     }
 
     @Override
-    public Object eval(Reader reader, ScriptContext sc) throws ScriptException {           
-    	
-    	setupStandardIO(sc);
-    	
-    	/*
+    public Object eval(Reader reader, ScriptContext sc) throws ScriptException {
+
+        setupStandardIO(sc);
+
+        /*
         As the jsr-223 part SCR.4.3.4.1.2 Script Execution :
         "In all cases, the ScriptContext used during a script execution must be
         a value in the Engine Scope of the ScriptEngine whose key is the
         String "context"     
-         */        
-        
+         */
+
         sc.getBindings(ScriptContext.ENGINE_SCOPE).put(CONTEXT, sc);
         return eval(reader, sc.getBindings(ScriptContext.ENGINE_SCOPE));
-    }    
+    }
+
     /**
      * Evaluates a script. After the evaluation, informations
      * about the found solution are put in the Bindings passed as parameter. The key pair values
@@ -145,9 +145,9 @@ public class PrologScriptEngine implements ScriptEngine, ExceptionListener, Outp
      */
     @Override
     public Object eval(String script, Bindings bindings) throws ScriptException {
-    	String theory = (String)bindings.get(THEORY);
+        String theory = (String) bindings.get(THEORY);
         SolveInfo info = null;
-        
+
         /*
         As the jsr-223 part SCR.4.2.6 Bindings :
         "Each Java Script Engine has a Bindings known as its Engine Scope
@@ -164,55 +164,53 @@ public class PrologScriptEngine implements ScriptEngine, ExceptionListener, Outp
         of the JavaLibrary class. Any exception raised by this method will be
         forwarded, and the Object won't be registered.
          */
-        
+
         OOLibrary ooLib = (OOLibrary) prolog.getLibrary("alice.tuprolog.lib.OOLibrary");
-        
-        if(ooLib != null) {
-            for(Map.Entry<String, Object> keyPair: bindings.entrySet()) {
+
+        if (ooLib != null) {
+            for (Map.Entry<String, Object> keyPair : ((Map<String, Object>) bindings).entrySet()) {
                 try {
-                    ooLib.register(new TuStruct(keyPair.getKey()), keyPair.getValue());
-                }
-                catch(InvalidObjectIdException ex) {
-                    throw new ScriptException("Could not register object(" + keyPair.getKey() + "): " + ex.getMessage());
+                    ooLib.register(TuTerm.createAtomTerm(keyPair.getKey()), keyPair.getValue());
+                } catch (InvalidObjectIdException ex) {
+                    throw new ScriptException(
+                            "Could not register object(" + keyPair.getKey() + "): " + ex.getMessage());
                 }
             }
         }
-        
+
         try {
-            
-            if(!script.equals(previousScript))
+
+            if (!script.equals(previousScript))
                 useSolveNext = false;
-            
-            if(theory != null)
+
+            if (theory != null)
                 prolog.setTheory(new TuTheory(theory));
-            
-            if(useSolveNext)
+
+            if (useSolveNext)
                 info = prolog.solveNext();
             else
                 info = prolog.solve(script);
-           
+
             previousScript = script;
-            
-            if(solveVars != null)
-	            for(TuVar v : solveVars) 
-	                bindings.remove(v.getName());
+
+            if (solveVars != null)
+                for (TuVar v : solveVars)
+                    bindings.remove(v.getName());
 
             bindings.put(IS_SUCCESS, info.isSuccess());
             bindings.put(IS_HALTED, info.isHalted());
             bindings.put(HAS_OPEN_ALTERNATIVES, info.hasOpenAlternatives());
-            
-            if(info.isSuccess()) {
+
+            if (info.isSuccess()) {
                 solveVars = info.getBindingVars();
-                for(TuVar v : solveVars)            
-                    bindings.put(v.getName(), v.getTerm().toString());             
+                for (TuVar v : solveVars)
+                    bindings.put(v.getName(), v.getTerm().toString());
             }
-            
+
             useSolveNext = info.hasOpenAlternatives();
-            
+
             return true;
-        }
-        catch(NoSolutionException | InvalidTheoryException | 
-                MalformedGoalException | NoMoreSolutionException ex) {
+        } catch (NoSolutionException | InvalidTheoryException | MalformedGoalException | NoMoreSolutionException ex) {
             throw new ScriptException(ex);
         }
     }
@@ -222,11 +220,10 @@ public class PrologScriptEngine implements ScriptEngine, ExceptionListener, Outp
         BufferedReader bReader = new BufferedReader(reader);
         String script = new String();
         try {
-            while(bReader.ready()) {
+            while (bReader.ready()) {
                 script += bReader.readLine();
             }
-        }
-        catch(IOException ex) {
+        } catch (IOException ex) {
             throw new ScriptException(ex);
         }
         return eval(script, bndngs);
@@ -244,7 +241,7 @@ public class PrologScriptEngine implements ScriptEngine, ExceptionListener, Outp
 
     @Override
     public void put(String key, Object o) {
-       getBindings(ScriptContext.ENGINE_SCOPE).put(key, o);
+        getBindings(ScriptContext.ENGINE_SCOPE).put(key, o);
     }
 
     @Override
@@ -269,44 +266,44 @@ public class PrologScriptEngine implements ScriptEngine, ExceptionListener, Outp
 
     @Override
     public void setContext(ScriptContext sc) {
-    	if(sc == null)
-    		throw new NullPointerException("Given ScriptContext is null");
+        if (sc == null)
+            throw new NullPointerException("Given ScriptContext is null");
         defaultContext = sc;
     }
-    
+
     /**
      * Sets the IOLibray's standard input/output with the streams specified in the ScriptContext
      * @param sc the ScriptContext to use for the next evaluation
      */
     private void setupStandardIO(ScriptContext sc) {
         IOLibrary ioLib = (IOLibrary) prolog.getLibrary("alice.tuprolog.lib.IOLibrary");
-        
-        if(ioLib != null) {
-        	ioLib.setStandardInput(new InputStreamAdapter(sc.getReader()));
-        	outputWriter = sc.getWriter();
-        	errorWriter = sc.getErrorWriter();
-        }    	
+
+        if (ioLib != null) {
+            ioLib.setStandardInput(new InputStreamAdapter(sc.getReader()));
+            outputWriter = sc.getWriter();
+            errorWriter = sc.getErrorWriter();
+        }
     }
 
-	@Override
-	public void onException(ExceptionEvent e) {
-		try {
-			if(errorWriter != null) {
-				errorWriter.write(e.getMsg() + "\n");
-				errorWriter.flush();
-			}
-		}
-		catch(IOException ex) {}
-	}
+    @Override
+    public void onException(ExceptionEvent e) {
+        try {
+            if (errorWriter != null) {
+                errorWriter.write(e.getMsg() + "\n");
+                errorWriter.flush();
+            }
+        } catch (IOException ex) {
+        }
+    }
 
-	@Override
-	public void onOutput(OutputEvent e) {
-		try {
-			if(outputWriter != null) {
-				outputWriter.write(e.getMsg());
-			}
-		}
-		catch(IOException ex) {}
-	}
-    
+    @Override
+    public void onOutput(OutputEvent e) {
+        try {
+            if (outputWriter != null) {
+                outputWriter.write(e.getMsg());
+            }
+        } catch (IOException ex) {
+        }
+    }
+
 }

@@ -23,39 +23,40 @@ package alice.tuprolog;
  * @see TuLibrary
  */
 public class InvalidLibraryException extends TuPrologException {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     private String libraryName;
     private int line;
     private int pos;
-    
-    public InvalidLibraryException() {}
-    
+
+    public InvalidLibraryException() {
+    }
+
     public InvalidLibraryException(String libName, int line, int pos) {
         libraryName = libName;
         this.pos = pos;
         this.line = line;
     }
-    
+
     public String getLibraryName() {
         return libraryName;
     }
-    
+
     public int getLine() {
         return line;
     }
-    
+
     public int getPos() {
         return pos;
     }
-    
+
     @Override
-	public String getMessage() {
+    public String getMessage() {
         return toString();
     }
-    
+
     @Override
-	public String toString() {
+    public String toString() {
         return "InvalidLibraryException: " + libraryName + " at " + line + ":" + pos;
     }
-    
+
 }

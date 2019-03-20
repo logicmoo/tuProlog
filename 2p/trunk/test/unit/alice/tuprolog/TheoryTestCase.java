@@ -12,10 +12,10 @@ public class TheoryTestCase extends TestCase {
 	}
 	
 	public void testAppendClauseLists() throws InvalidTheoryException, MalformedGoalException {
-		Term[] clauseList = new Term[] {new TuStruct("p"), new TuStruct("q"), new TuStruct("r")};
-		Term[] otherClauseList = new Term[] {new TuStruct("a"), new TuStruct("b"), new TuStruct("c")};
-		TuTheory theory = new TuTheory(new TuStruct(clauseList));
-		theory.append(new TuTheory(new TuStruct(otherClauseList)));
+		Term[] clauseList = new Term[] {TuTerm.createAtomTerm("p"), TuTerm.createAtomTerm("q"), TuTerm.createAtomTerm("r")};
+		Term[] otherClauseList = new Term[] {TuTerm.createAtomTerm("a"), TuTerm.createAtomTerm("b"), TuTerm.createAtomTerm("c")};
+		TuTheory theory = new TuTheory(TuStruct.createTuList(clauseList));
+		theory.append(new TuTheory(TuStruct.createTuList(otherClauseList)));
 		TuProlog engine = new TuProlog();
 		engine.setTheory(theory);
 		assertTrue((engine.solve("p.")).isSuccess());

@@ -1,5 +1,6 @@
 package alice.tuprologx.pj.engine;
 
+import alice.tuprolog.TuStruct;
 import alice.tuprologx.pj.annotations.PrologMethod;
 import alice.tuprologx.pj.annotations.WithTermifiable;
 import alice.tuprologx.pj.annotations.Termifiable;
@@ -259,7 +260,7 @@ public class PJ implements MethodHandler {
         try {
             pushEngine();
             engine().setTheory(po.getTheory());
-            alice.tuprolog.TuStruct goal = new alice.tuprolog.TuStruct("retractall", clause);
+            alice.tuprolog.TuStruct goal = TuStruct.createTuStruct1("retractall", clause);
             System.out.println(goal);
             engine().engine.solve(goal);
             po.setTheory(engine().getTheory());
