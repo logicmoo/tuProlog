@@ -16,6 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package alice.tuprolog;
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 
 /**
  * @author Alex Benini
@@ -51,7 +53,7 @@ public class StateGoalEvaluation extends TuState {
 					TuPrologError error = (TuPrologError) t;
 					// sostituisco il gol in cui si ? verificato l'errore con il
 					// subgoal throw/1
-					e.currentContext.currentGoal = new TuStruct("throw", error.getError());
+					e.currentContext.currentGoal = S("throw", error.getError());
 					/*Castagna 06/2011*/					
 					e.manager.exception(error.toString());
 					/**/
@@ -61,7 +63,7 @@ public class StateGoalEvaluation extends TuState {
 
 					// sostituisco il gol in cui si ? verificato l'errore con il
 					// subgoal java_throw/1
-					e.currentContext.currentGoal = new TuStruct("java_throw", exception.getException());
+					e.currentContext.currentGoal = S("java_throw", exception.getException());
 					/*Castagna 06/2011*/					
 					e.manager.exception(exception.getException().toString());
 					/**/

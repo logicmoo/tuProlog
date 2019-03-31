@@ -1,5 +1,6 @@
 package alice.tuprologx.pj.engine;
 
+import alice.tuprolog.TuFactory;
 import alice.tuprologx.pj.annotations.PrologMethod;
 import alice.tuprologx.pj.annotations.WithTermifiable;
 import alice.tuprologx.pj.annotations.Termifiable;
@@ -10,6 +11,8 @@ import alice.tuprologx.pj.model.TxClause;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import javassist.util.proxy.*;
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 
 public class PJ implements MethodHandler {
     static int reentrant = 0;
@@ -199,7 +202,7 @@ public class PJ implements MethodHandler {
         }            
     }
     
-    public static alice.tuprolog.TuStruct registerJavaObject(Object o) {
+    public static alice.tuprolog.TuTerm registerJavaObject(Object o) {
         //return engine.registerJavaObject(o);        
         try {
             return engine().getPJLibrary().register(o);
@@ -259,7 +262,7 @@ public class PJ implements MethodHandler {
         try {
             pushEngine();
             engine().setTheory(po.getTheory());
-            alice.tuprolog.TuStruct goal = new alice.tuprolog.TuStruct("retractall", clause);
+            alice.tuprolog.TuStruct goal = S("retractall", clause);
             System.out.println(goal);
             engine().engine.solve(goal);
             po.setTheory(engine().getTheory());

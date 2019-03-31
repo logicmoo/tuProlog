@@ -25,6 +25,7 @@ import alice.tuprolog.NoMoreSolutionException;
 import alice.tuprolog.NoSolutionException;
 import alice.tuprolog.TuProlog;
 import alice.tuprolog.SolveInfo;
+import alice.tuprolog.TuFactory;
 import alice.tuprolog.TuStruct;
 import alice.tuprolog.TuTheory;
 import alice.tuprolog.TuVar;
@@ -170,7 +171,7 @@ public class PrologScriptEngine implements ScriptEngine, ExceptionListener, Outp
         if(ooLib != null) {
             for(Map.Entry<String, Object> keyPair: bindings.entrySet()) {
                 try {
-                    ooLib.register(new TuStruct(keyPair.getKey()), keyPair.getValue());
+                    ooLib.register(TuFactory.createTuAtom(keyPair.getKey()), keyPair.getValue());
                 }
                 catch(InvalidObjectIdException ex) {
                     throw new ScriptException("Could not register object(" + keyPair.getKey() + "): " + ex.getMessage());

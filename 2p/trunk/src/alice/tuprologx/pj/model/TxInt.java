@@ -8,6 +8,9 @@
  */
 
 package alice.tuprologx.pj.model;
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
+import alice.tuprolog.TuFactory;
 
 /**
  *
@@ -26,7 +29,7 @@ public class TxInt extends TxTerm<TxInt> {
         
         @Override
 		public alice.tuprolog.TuInt marshal() {
-            return new alice.tuprolog.TuInt(_theInt);
+            return createTuInt(_theInt);
         }
         
         static TxInt unmarshal(alice.tuprolog.TuInt i) {

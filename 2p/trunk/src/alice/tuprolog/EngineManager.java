@@ -1,5 +1,7 @@
 package alice.tuprolog;
 
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -44,7 +46,7 @@ public class EngineManager implements java.io.Serializable {
 		EngineRunner er = new EngineRunner(id);
 		er.initialize(vm);
 		
-		if (!vm.unify(threadID, new TuInt(id))) return false;
+		if (!vm.unify(threadID, createTuInt(id))) return false;
 		
 		er.setGoal(goal);
 		addRunner(er, id);

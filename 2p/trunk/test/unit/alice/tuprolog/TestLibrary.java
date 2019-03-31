@@ -21,7 +21,8 @@
 package alice.tuprolog;
 
 import alice.tuprolog.TuNumber;
-
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 public class TestLibrary extends StringLibrary {
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +34,7 @@ public class TestLibrary extends StringLibrary {
 	public Term sum_2(TuNumber arg0, TuNumber arg1){
 		int a0 = arg0.intValue();
 		int a1 = arg1.intValue();
-		return new TuInt(a0+a1);
+		return createTuInt(a0+a1);
 	}
 	
 	public boolean println_1(Term arg0){

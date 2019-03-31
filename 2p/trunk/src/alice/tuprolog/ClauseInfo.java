@@ -31,7 +31,7 @@ public class ClauseInfo {
     /**
      * referring clause
      */
-    private TuStruct clause;
+    private TuTerm clause;
 
     /**
      * head of clause
@@ -56,7 +56,7 @@ public class ClauseInfo {
     /**
      * building a valid clause with a time stamp = original time stamp + NumVar in clause
      */
-    ClauseInfo(TuStruct clause_, String lib) {
+    ClauseInfo(TuTerm clause_, String lib) {
         clause = clause_;
         head = extractHead(clause);
         body = extractBody(clause.getPlainArg(1));
@@ -66,7 +66,7 @@ public class ClauseInfo {
     /**
      * Gets a clause from a generic Term
      */
-    private TuStruct extractHead(TuStruct clause) {
+    private TuStruct extractHead(TuTerm clause) {
         return (TuStruct) clause.getPlainArg(0);
     }
 
@@ -131,7 +131,7 @@ public class ClauseInfo {
         return (clause.toString());
     }
 
-    TuStruct getClause() {
+    TuTerm getClause() {
         return clause;
     }
 

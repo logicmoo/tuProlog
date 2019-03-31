@@ -17,16 +17,21 @@
  */
 
 package alice.tuprolog;
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 
 import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.IdentityHashMap;
+import java.util.Iterator;
 //import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import alice.tuprolog.json.JSONSerializerManager;
 import alice.util.OneWayList;
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 
 /**
  * Term class is the root abstract class for prolog data type
@@ -58,8 +63,8 @@ public abstract class TuTerm implements Term {
     private static final long serialVersionUID = 1L;
 
     // true and false constants
-    public static final Term TRUE = new TuStruct("true");
-    public static final Term FALSE = new TuStruct("false");
+    public static final Term TRUE = createTuAtom("true");
+    public static final Term FALSE = createTuAtom("false");
 
     //boolean isCyclic = false; //Alberto -> da usare quando si supporteranno i termini ciclici
 
@@ -95,7 +100,7 @@ public abstract class TuTerm implements Term {
     public abstract boolean isAtomSymbol();
 
     /** is this term a prolog list? */
-    public abstract boolean isConsList();
+    public abstract boolean isPlList();
 
     /** is this term a ground term? */
     public abstract boolean isGround();
@@ -421,5 +426,71 @@ public abstract class TuTerm implements Term {
             return JSONSerializerManager.fromJSON(jsonString, TuFloat.class);
         } else
             return null;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public String fname() {
+        // TODO Auto-generated method stub
+        if (true) throw new AbstractMethodError("TuTerm.fname");
+        return null;
+    }
+
+    /**
+     * @return
+     */
+    public int listSize() {
+        // TODO Auto-generated method stub
+        if (true) throw new AbstractMethodError("TuTerm.listSize");
+        return Integer.MIN_VALUE;
+    }
+
+    /**
+     * @return
+     */
+    public int getArity() {
+        // TODO Auto-generated method stub
+        if (true) throw new AbstractMethodError("TuTerm.getArity");
+        return -1;
+    }
+
+    /**
+     * @return
+     */
+    public Iterator<? extends Term> listIterator() {
+        // TODO Auto-generated method stub
+        if (true) throw new AbstractMethodError("TuTerm.listIterator");
+        return null;
+    }
+
+    /**
+     * @return
+     */
+    Object toList() {
+        // TODO Auto-generated method stub
+        if (true) throw new AbstractMethodError("TuTerm.toList");
+        return null;
+    }
+
+    /**
+     * @param i
+     * @return
+     */
+    public Term getDerefArg(int i) {
+        // TODO Auto-generated method stub
+        if (true) throw new AbstractMethodError("TuTerm.getTerm");
+        return null;
+    }
+
+    /**
+     * @param i
+     * @return
+     */
+    public Term getPlainArg(int i) {
+        // TODO Auto-generated method stub
+        if (true) throw new AbstractMethodError("TuTerm.getPlainArg");
+        return null;
     }
 }

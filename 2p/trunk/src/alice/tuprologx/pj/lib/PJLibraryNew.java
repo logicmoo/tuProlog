@@ -26,11 +26,14 @@ import alice.tuprolog.TuInt;
 import alice.tuprolog.TuNumber;
 import alice.tuprolog.TuStruct;
 import alice.tuprolog.Term;
+import alice.tuprolog.TuFactory;
 import alice.tuprolog.TuVar;
 
 import alice.tuprologx.pj.annotations.*;
 
 import alice.tuprolog.lib.*;
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 
 
 /**
@@ -249,9 +252,9 @@ public class PJLibraryNew extends OOLibrary {
         TuStruct methodInfo = (TuStruct)term.dref();
         Term[] terms = new Term[methodInfo.getArity()];
         for (int i = 0 ; i < methodInfo.getArity() ; i ++) {
-            terms[i] = registerDynamic(alice.tuprologx.pj.model.TxTerm.unmarshal(methodInfo.getTerm(i).dref()));
+            terms[i] = registerDynamic(alice.tuprologx.pj.model.TxTerm.unmarshal(methodInfo.getDerefArg(i).dref()));
         }
-        return unify(unmarshalledTerm, new TuStruct(methodInfo.fname(), terms));
+        return unify(unmarshalledTerm, createTuStructA(methodInfo.fname(), terms));
     }
 
     
@@ -318,7 +321,7 @@ public class PJLibraryNew extends OOLibrary {
 
 
     public boolean java_object_std_3(Term className, Term args, Term id) {
-        if (!className.isAtomSymbol() && !args.isConsList())
+        if (!className.isAtomSymbol() && !args.isPlList())
             return false;
         String clazz = ((TuStruct)className.dref()).fname();
         Signature sig = parseArg(getArrayFromList((TuStruct)args.dref()));
@@ -335,7 +338,7 @@ public class PJLibraryNew extends OOLibrary {
     }
 
     public boolean java_object_prolog_3(Term className, Term args, Term id) {
-        if (!className.isAtomSymbol() && !args.isConsList())
+        if (!className.isAtomSymbol() && !args.isPlList())
             return false;
         Signature sig = parseArg(getArrayFromList((TuStruct)args.dref()));
         assert sig.types.length == 0;
@@ -559,16 +562,16 @@ public class PJLibraryNew extends OOLibrary {
 			// first check for primitive types
 			if (fc.equals(Integer.TYPE) || fc.equals(Byte.TYPE)) {
 				int value = field.getInt(obj);
-				return unify(what, new alice.tuprolog.TuInt(value));
+				return unify(what, createTuInt(value));
 			} else if (fc.equals(java.lang.Long.TYPE)) {
 				long value = field.getLong(obj);
-				return unify(what, new alice.tuprolog.TuLong(value));
+				return unify(what, createTuLong(value));
 			} else if (fc.equals(java.lang.Float.TYPE)) {
 				float value = field.getFloat(obj);
 				return unify(what, new alice.tuprolog.TuFloat(value));
 			} else if (fc.equals(java.lang.Double.TYPE)) {
 				double value = field.getDouble(obj);
-				return unify(what, new alice.tuprolog.TuDouble(value));
+				return unify(what, createTuDouble(value));
 			} else {
 				// the field value is an object
 				Object res = field.get(obj);
@@ -595,7 +598,7 @@ public class PJLibraryNew extends OOLibrary {
 		Object[] values = new Object[method.getArity()];
 		Class<?>[] types = new Class[method.getArity()];
 		for (int i = 0; i < method.getArity(); i++) {
-			if (!parse_arg(values, types, i, method.getTerm(i)))
+			if (!parse_arg(values, types, i, method.getDerefArg(i)))
 				return null;
 		}
 		return new Signature(values, types);
@@ -652,7 +655,7 @@ public class PJLibraryNew extends OOLibrary {
 				// argument descriptors
 				TuStruct tc = (TuStruct) term;
 				if (tc.fname().equals("as")) {
-					return parse_as(values, types, i, tc.getTerm(0), tc.getTerm(1));
+					return parse_as(values, types, i, tc.getDerefArg(0), tc.getDerefArg(1));
 				} else {
 					Object obj = getRegisteredDynamicObject((TuStruct)tc.dref());
 					if (obj == null) {
@@ -691,21 +694,21 @@ public class PJLibraryNew extends OOLibrary {
 					return unify(id, Term.FALSE);
 				}
 			} else if (Byte.class.isInstance(obj)) {
-				return unify(id, new TuInt(((Byte) obj).intValue()));
+				return unify(id, createTuInt(((Byte) obj).intValue()));
 			} else if (Short.class.isInstance(obj)) {
-				return unify(id, new TuInt(((Short) obj).intValue()));
+				return unify(id, createTuInt(((Short) obj).intValue()));
 			} else if (Integer.class.isInstance(obj)) {
-				return unify(id, new TuInt(((Integer) obj).intValue()));
+				return unify(id, createTuInt(((Integer) obj).intValue()));
 			} else if (java.lang.Long.class.isInstance(obj)) {
-				return unify(id, new alice.tuprolog.TuLong(((java.lang.Long) obj).longValue()));
+				return unify(id, createTuLong(((java.lang.Long) obj).longValue()));
 			} else if (java.lang.Float.class.isInstance(obj)) {
 				return unify(id, new alice.tuprolog.TuFloat(((java.lang.Float) obj).floatValue()));
 			} else if (java.lang.Double.class.isInstance(obj)) {
-				return unify(id, new alice.tuprolog.TuDouble(((java.lang.Double) obj).doubleValue()));
+				return unify(id, createTuDouble(((java.lang.Double) obj).doubleValue()));
 			} else if (String.class.isInstance(obj)) {
-				return unify(id, new TuStruct((String) obj));
+				return unify(id, createTuAtom((String) obj));
 			} else if (Character.class.isInstance(obj)) {
-				return unify(id, new TuStruct(((Character) obj).toString()));
+				return unify(id, createTuAtom(((Character) obj).toString()));
 			} else {
 				return bindDynamicObject(id, obj);
 			}

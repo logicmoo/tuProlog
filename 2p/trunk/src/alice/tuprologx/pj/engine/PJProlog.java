@@ -119,7 +119,7 @@ public class PJProlog /*extends alice.tuprolog.Prolog*/ {
         }
     }
     
-     public alice.tuprolog.TuStruct registerJavaObject(Object o) {
+     public alice.tuprolog.TuTerm registerJavaObject(Object o) {
         return ((alice.tuprolog.lib.OOLibrary)engine.getLibrary("alice.tuprologx.pj.lib.PJLibraryNew")).register(o);
      }
      

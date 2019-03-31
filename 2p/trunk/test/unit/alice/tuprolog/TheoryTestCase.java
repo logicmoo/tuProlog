@@ -1,5 +1,7 @@
 package alice.tuprolog;
 
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 import junit.framework.TestCase;
 
 public class TheoryTestCase extends TestCase {
@@ -12,10 +14,10 @@ public class TheoryTestCase extends TestCase {
 	}
 	
 	public void testAppendClauseLists() throws InvalidTheoryException, MalformedGoalException {
-		Term[] clauseList = new Term[] {new TuStruct("p"), new TuStruct("q"), new TuStruct("r")};
-		Term[] otherClauseList = new Term[] {new TuStruct("a"), new TuStruct("b"), new TuStruct("c")};
-		TuTheory theory = new TuTheory(new TuStruct(clauseList));
-		theory.append(new TuTheory(new TuStruct(otherClauseList)));
+		Term[] clauseList = new Term[] {TuFactory.createTuAtom("p"), createTuAtom("q"), createTuAtom("r")};
+		Term[] otherClauseList = new Term[] {TuFactory.createTuAtom("a"), createTuAtom("b"), createTuAtom("c")};
+		TuTheory theory = new TuTheory(TuFactory.createTuListStruct(clauseList));
+		theory.append(new TuTheory(TuFactory.createTuListStruct(otherClauseList)));
 		TuProlog engine = new TuProlog();
 		engine.setTheory(theory);
 		assertTrue((engine.solve("p.")).isSuccess());

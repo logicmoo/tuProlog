@@ -18,10 +18,10 @@
 package alice.tuprolog.lib;
 
 import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 import java.util.IdentityHashMap;
 
 import alice.tuprolog.*;
-import alice.tuprolog.TuNumber;
 
 /**
  * This class defines a set of basic built-in predicates for the tuProlog engine
@@ -58,7 +58,7 @@ public class BasicLibrary extends TuLibrary {
             getEngine().setTheory(new TuTheory(theory.fname()));
             return true;
         } catch (InvalidTheoryException ex) {
-			throw syntax_error(engine.getEngineManager(), ex.clause, ex.line, ex.pos, new TuStruct(ex.getMessage()));
+			throw syntax_error(engine.getEngineManager(), ex.clause, ex.line, ex.pos, createTuAtom(ex.getMessage()));
         }
     }
 
@@ -80,7 +80,7 @@ public class BasicLibrary extends TuLibrary {
             getEngine().addTheory(new TuTheory(theory.fname()));
             return true;
         } catch (InvalidTheoryException ex) {
-        	throw syntax_error(engine.getEngineManager(), ex.clause, ex.line, ex.pos, new TuStruct(ex.getMessage()));
+        	throw syntax_error(engine.getEngineManager(), ex.clause, ex.line, ex.pos, createTuAtom(ex.getMessage()));
         }
     }
 
@@ -88,7 +88,7 @@ public class BasicLibrary extends TuLibrary {
     public boolean get_theory_1(Term arg) {
         arg = arg.dref();
         try {
-            Term theory = new TuStruct(getEngine().getTheory().toString());
+            Term theory = createTuAtom(getEngine().getTheory().toString());
             return (unify(arg, theory));
         } catch (Exception ex) {
             return false;
@@ -125,12 +125,11 @@ public class BasicLibrary extends TuLibrary {
 
     public boolean get_operators_list_1(Term argument) {
         Term arg = argument.dref();
-        TuStruct list = new TuStruct();
+        Term list = createTuEmpty();
         java.util.Iterator<TuOperator> it = getEngine().getCurrentOperatorList().iterator();
         while (it.hasNext()) {
             TuOperator o = it.next();
-            list = new TuStruct(new TuStruct("op", new alice.tuprolog.TuInt(o.prio),
-                    new TuStruct(o.type), new TuStruct(o.name)), list);
+            list = createTuCons(TuFactory.S("op", createTuInt(o.prio), createTuAtom(o.type), createTuAtom(o.name)), list);
         }
         return unify(arg, list);
     }
@@ -256,7 +255,7 @@ public class BasicLibrary extends TuLibrary {
 
     public boolean list_1(Term t) {
         t = t.dref();
-        return (t.isConsList());
+        return (t.isPlList());
     }
 
     public boolean var_1(Term t) {
@@ -501,11 +500,11 @@ public class BasicLibrary extends TuLibrary {
         if (val0 != null && val0 .isNumber()) {
             alice.tuprolog.TuNumber val0n = (alice.tuprolog.TuNumber) val0;
             if (val0n .isInt()) {
-                return new TuInt(val0n.intValue() * -1);
+                return createTuInt(val0n.intValue() * -1);
             } else if (val0n instanceof alice.tuprolog.TuDouble) {
-                return new alice.tuprolog.TuDouble(val0n.doubleValue() * -1);
+                return createTuDouble(val0n.doubleValue() * -1);
             } else if (val0n instanceof alice.tuprolog.TuLong) {
-                return new alice.tuprolog.TuLong(val0n.longValue() * -1);
+                return createTuLong(val0n.longValue() * -1);
             } else if (val0n instanceof alice.tuprolog.TuFloat) {
                 return new alice.tuprolog.TuFloat(val0n.floatValue() * -1);
             } else {
@@ -524,7 +523,7 @@ public class BasicLibrary extends TuLibrary {
 
         }
         if (val0 != null && val0 .isNumber()) {
-            return new alice.tuprolog.TuLong(~((alice.tuprolog.TuNumber) val0).longValue());
+            return createTuLong(~((alice.tuprolog.TuNumber) val0).longValue());
         } else {
             return null;
         }
@@ -532,9 +531,9 @@ public class BasicLibrary extends TuLibrary {
 
     alice.tuprolog.TuNumber getIntegerNumber(long num) {
         if (num > Integer.MIN_VALUE && num < Integer.MAX_VALUE)
-            return new TuInt((int) num);
+            return createTuInt((int) num);
         else
-            return new alice.tuprolog.TuLong(num);
+            return createTuLong(num);
     }
 
     public Term expression_plus_2(Term arg0, Term arg1) {
@@ -553,7 +552,7 @@ public class BasicLibrary extends TuLibrary {
             if (val0n.isInteger() && (val1n.isInteger()))
                 return getIntegerNumber(val0n.longValue() + val1n.longValue());
             else
-                return new alice.tuprolog.TuDouble(val0n.doubleValue()
+                return createTuDouble(val0n.doubleValue()
                         + val1n.doubleValue());
         } else
             return null;
@@ -575,7 +574,7 @@ public class BasicLibrary extends TuLibrary {
             if (val0n.isInteger() && (val1n.isInteger()))
                 return getIntegerNumber(val0n.longValue() - val1n.longValue());
             else
-                return new alice.tuprolog.TuDouble(val0n.doubleValue()
+                return createTuDouble(val0n.doubleValue()
                         - val1n.doubleValue());
         } else
             return null;
@@ -597,7 +596,7 @@ public class BasicLibrary extends TuLibrary {
             if (val0n.isInteger() && (val1n.isInteger()))
                 return getIntegerNumber(val0n.longValue() * val1n.longValue());
             else
-                return new alice.tuprolog.TuDouble(val0n.doubleValue()
+                return createTuDouble(val0n.doubleValue()
                         * val1n.doubleValue());
         } else
             return null;
@@ -619,7 +618,7 @@ public class BasicLibrary extends TuLibrary {
             if (val0n.isInteger() && val1n.isInteger())
                 return getIntegerNumber(val0n.longValue() / val1n.longValue());
             else
-                return new alice.tuprolog.TuDouble(val0n.doubleValue()
+                return createTuDouble(val0n.doubleValue()
                         / val1n.doubleValue());
         } else
             return null;
@@ -657,7 +656,7 @@ public class BasicLibrary extends TuLibrary {
                 && (val1 .isNumber())) {
             alice.tuprolog.TuNumber val0n = (alice.tuprolog.TuNumber) val0;
             alice.tuprolog.TuNumber val1n = (alice.tuprolog.TuNumber) val1;
-            return new alice.tuprolog.TuDouble(Math.pow(val0n.doubleValue(),
+            return createTuDouble(Math.pow(val0n.doubleValue(),
                     val1n.doubleValue()));
         } else {
             return null;
@@ -677,7 +676,7 @@ public class BasicLibrary extends TuLibrary {
                 && val1 .isNumber()) {
             alice.tuprolog.TuNumber val0n = (alice.tuprolog.TuNumber) val0;
             alice.tuprolog.TuNumber val1n = (alice.tuprolog.TuNumber) val1;
-            return new alice.tuprolog.TuLong(val0n.longValue() >> val1n.longValue());
+            return createTuLong(val0n.longValue() >> val1n.longValue());
         } else {
             return null;
         }
@@ -696,7 +695,7 @@ public class BasicLibrary extends TuLibrary {
                 && val1 .isNumber()) {
             alice.tuprolog.TuNumber val0n = (alice.tuprolog.TuNumber) val0;
             alice.tuprolog.TuNumber val1n = (alice.tuprolog.TuNumber) val1;
-            return new alice.tuprolog.TuLong(val0n.longValue() << val1n.longValue());
+            return createTuLong(val0n.longValue() << val1n.longValue());
         } else {
             return null;
         }
@@ -715,7 +714,7 @@ public class BasicLibrary extends TuLibrary {
                 && val1 .isNumber()) {
             alice.tuprolog.TuNumber val0n = (alice.tuprolog.TuNumber) val0;
             alice.tuprolog.TuNumber val1n = (alice.tuprolog.TuNumber) val1;
-            return new alice.tuprolog.TuLong(val0n.longValue() & val1n.longValue());
+            return createTuLong(val0n.longValue() & val1n.longValue());
         } else {
             return null;
         }
@@ -734,7 +733,7 @@ public class BasicLibrary extends TuLibrary {
                 && val1 .isNumber()) {
             alice.tuprolog.TuNumber val0n = (alice.tuprolog.TuNumber) val0;
             alice.tuprolog.TuNumber val1n = (alice.tuprolog.TuNumber) val1;
-            return new alice.tuprolog.TuLong(val0n.longValue() | val1n.longValue());
+            return createTuLong(val0n.longValue() | val1n.longValue());
         } else {
             return null;
         }
@@ -753,7 +752,7 @@ public class BasicLibrary extends TuLibrary {
         getEngine().stdOutput(arg0.toString() + 
         "\n" + arg1.toString());
         if (!arg0.isGround()) {
-            return unify(arg0, new TuStruct(arg1.toString()));
+            return unify(arg0, createTuAtom(arg1.toString()));
         } else {
             try {
                 String text = alice.util.Tools.removeApices(arg0.toString());
@@ -779,7 +778,7 @@ public class BasicLibrary extends TuLibrary {
         if (!source2.isAtomSymbol())
             throw type_error(engine.getEngineManager(), 2, "atom",
                     source2);
-        return unify(dest, new TuStruct(((TuStruct) source1).fname()
+        return unify(dest, createTuAtom(((TuStruct) source1).fname()
                 + ((TuStruct) source2).fname()));
     }
 
@@ -799,7 +798,7 @@ public class BasicLibrary extends TuLibrary {
             else {
                 st = new java.lang.Double(n0.doubleValue()).toString();
             }
-            return (unify(arg1, new TuStruct(st)));
+            return (unify(arg1, createTuAtom(st)));
         } else {
             if (!arg1.isAtomSymbol()) {
                 throw type_error(engine.getEngineManager(), 2,
@@ -900,12 +899,12 @@ public class BasicLibrary extends TuLibrary {
             ;
             Term term = null;
             try {
-                term = new alice.tuprolog.TuInt(java.lang.Integer.parseInt(st2));
+                term = createTuInt(java.lang.Integer.parseInt(st2));
             } catch (Exception ex) {
             }
             if (term == null) {
                 try {
-                    term = new alice.tuprolog.TuDouble(java.lang.Double
+                    term = createTuDouble(java.lang.Double
                             .parseDouble(st2));
                 } catch (Exception ex) {
                 }
@@ -1297,7 +1296,7 @@ public class BasicLibrary extends TuLibrary {
 
     public boolean member_guard_2(Term arg0, Term arg1) throws TuPrologError {
         arg1 = arg1.dref();
-        if (!(arg1 .isVar()) && !(arg1.isConsList()))
+        if (!(arg1 .isVar()) && !(arg1.isPlList()))
             throw type_error(engine.getEngineManager(), 2, "list",
                     arg1);
         return true;
@@ -1305,7 +1304,7 @@ public class BasicLibrary extends TuLibrary {
 
     public boolean reverse_guard_2(Term arg0, Term arg1) throws TuPrologError {
         arg0 = arg0.dref();
-        if (!(arg0 .isVar()) && !(arg0.isConsList()))
+        if (!(arg0 .isVar()) && !(arg0.isPlList()))
             throw type_error(engine.getEngineManager(), 1, "list",
                     arg0);
         return true;
@@ -1314,7 +1313,7 @@ public class BasicLibrary extends TuLibrary {
     public boolean delete_guard_3(Term arg0, Term arg1, Term arg2)
             throws TuPrologError {
         arg1 = arg1.dref();
-        if (!(arg1 .isVar()) && !(arg1.isConsList()))
+        if (!(arg1 .isVar()) && !(arg1.isPlList()))
             throw type_error(engine.getEngineManager(), 2, "list",
                     arg1);
         return true;
@@ -1323,7 +1322,7 @@ public class BasicLibrary extends TuLibrary {
     public boolean element_guard_3(Term arg0, Term arg1, Term arg2)
             throws TuPrologError {
         arg1 = arg1.dref();
-        if (!(arg1 .isVar()) && !(arg1.isConsList()))
+        if (!(arg1 .isVar()) && !(arg1.isPlList()))
             throw type_error(engine.getEngineManager(), 2, "list",
                     arg1);
         return true;
@@ -1342,7 +1341,7 @@ public class BasicLibrary extends TuLibrary {
 
     public boolean $wt_unify_3(Term witness, Term wtList, Term tList) {
         TuStruct list = (TuStruct) wtList.dref();
-        TuStruct result = new TuStruct();
+        TuStruct result = createStructEmpty();
         for (java.util.Iterator<? extends Term> it = list.listIterator(); it.hasNext();) {
             TuStruct element = (TuStruct) it.next();
             Term w = element.getPlainArg(0);
@@ -1355,7 +1354,7 @@ public class BasicLibrary extends TuLibrary {
    
     public boolean $s_next0_3(Term witness, Term wtList, Term sNext) {
         TuStruct list = (TuStruct) wtList.dref();
-        TuStruct result = new TuStruct();
+        TuStruct result = createStructEmpty();
         for (java.util.Iterator<? extends Term> it = list.listIterator(); it.hasNext();) {
             TuStruct element = (TuStruct) it.next();
             Term w = element.getPlainArg(0);

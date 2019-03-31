@@ -22,6 +22,8 @@ import java.util.*;
 import alice.tuprolog.json.AbstractEngineState;
 import alice.tuprolog.json.FullEngineState;
 import alice.tuprolog.json.JSONSerializerManager;
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 
 /**
  * Administrator of flags declared
@@ -42,10 +44,10 @@ class FlagManager {
         flags = new ArrayList<TuFlag>();
         
         //occursCheck flag -> a default è on!
-        TuStruct s = new TuStruct();
-        s.appendDestructive(new TuStruct("on"));
-        s.appendDestructive(new TuStruct("off"));
-        this.defineFlag("occursCheck", s, new TuStruct("on"), true, "BuiltIn");
+        TuStruct s = createStructEmpty();
+        s.appendDestructive(TuFactory.createTuAtom("on"));
+        s.appendDestructive(TuFactory.createTuAtom("off"));
+        this.defineFlag("occursCheck", s, createTuAtom("on"), true, "BuiltIn");
     }
 
     /**
@@ -80,12 +82,12 @@ class FlagManager {
         return false;
     }
 
-    public synchronized TuStruct getPrologFlagList() {
-        TuStruct flist = new TuStruct();
+    public synchronized Term getPrologFlagList() {
+        Term flist = createTuEmpty();
         java.util.Iterator<TuFlag> it = flags.iterator();
         while (it.hasNext()) {
             TuFlag fl = it.next();
-            flist = new TuStruct(new TuStruct("flag", new TuStruct(fl.getName()), fl
+            flist = createTuCons(TuFactory.createTuStruct2("flag", createTuAtom(fl.getName()), fl
                     .getValue()), flist);
         }
         return flist;

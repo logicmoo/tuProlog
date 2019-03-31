@@ -1,5 +1,5 @@
 /*
- * tuProlog - Copyright (C) 2001-2007 aliCE team at deis.unibo.it
+  * tuProlog - Copyright (C) 2001-2007 aliCE team at deis.unibo.it
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,6 +22,8 @@ import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 
 /**
  * Struct class represents both compound prolog term
@@ -62,63 +64,63 @@ public class TuStruct extends TuTerm {
     /**
      * Builds a Struct representing an atom
      */
-    public TuStruct(String f) {
+    TuStruct(String f) {
         this(f, 0);
     }
 
-    /**
-     * Builds a compound, with one argument
-     */
-    public TuStruct(String f, Term at0) {
-        this(f, new Term[] { at0 });
-    }
+    //    /**
+    //     * Builds a compound, with one argument
+    //     */
+    //    public TuStruct(String f, Term at0) {
+    //        this(true, f, new Term[] { at0 });
+    //    }
+    //
+    //    /**
+    //     * Builds a compound, with two arguments
+    //     */
+    //    private TuStruct(String f, Term at0, Term at1) {
+    //        this(true, f, new Term[] { at0, at1 });
+    //    }
 
-    /**
-     * Builds a compound, with two arguments
-     */
-    public TuStruct(String f, Term at0, Term at1) {
-        this(f, new Term[] { at0, at1 });
-    }
+    //    /**
+    //     * Builds a compound, with three arguments
+    //     */
+    //    TuStruct(String f, Term... args) {
+    //        this(true, f, args.clone());
+    //    }
 
-    /**
-     * Builds a compound, with three arguments
-     */
-    public TuStruct(String f, Term at0, Term at1, Term at2) {
-        this(f, new Term[] { at0, at1, at2 });
-    }
-
-    /**
-     * Builds a compound, with four arguments
-     */
-    public TuStruct(String f, Term at0, Term at1, Term at2, Term at3) {
-        this(f, new Term[] { at0, at1, at2, at3 });
-    }
-
-    /**
-     * Builds a compound, with five arguments
-     */
-    public TuStruct(String f, Term at0, Term at1, Term at2, Term at3, Term at4) {
-        this(f, new Term[] { at0, at1, at2, at3, at4 });
-    }
-
-    /**
-     * Builds a compound, with six arguments
-     */
-    public TuStruct(String f, Term at0, Term at1, Term at2, Term at3, Term at4, Term at5) {
-        this(f, new Term[] { at0, at1, at2, at3, at4, at5 });
-    }
-
-    /**
-     * Builds a compound, with seven arguments
-     */
-    public TuStruct(String f, Term at0, Term at1, Term at2, Term at3, Term at4, Term at5, Term at6) {
-        this(f, new Term[] { at0, at1, at2, at3, at4, at5, at6 });
-    }
+    //    /**
+    //     * Builds a compound, with four arguments
+    //     */
+    //    public TuStruct(String f, Term at0, Term at1, Term at2, Term at3) {
+    //        this(true, f, new Term[] { at0, at1, at2, at3 });
+    //    }
+    //
+    //    /**
+    //     * Builds a compound, with five arguments
+    //     */
+    //    public TuStruct(String f, Term at0, Term at1, Term at2, Term at3, Term at4) {
+    //        this(true, f, new Term[] { at0, at1, at2, at3, at4 });
+    //    }
+    //
+    //    /**
+    //     * Builds a compound, with six arguments
+    //     */
+    //    public TuStruct(String f, Term at0, Term at1, Term at2, Term at3, Term at4, Term at5) {
+    //        this(true, f, new Term[] { at0, at1, at2, at3, at4, at5 });
+    //    }
+    //
+    //    /**
+    //     * Builds a compound, with seven arguments
+    //     */
+    //    public TuStruct(String f, Term at0, Term at1, Term at2, Term at3, Term at4, Term at5, Term at6) {
+    //        this(true, f, new Term[] { at0, at1, at2, at3, at4, at5, at6 });
+    //    }
 
     /**
      * Builds a compound, with an array of arguments
      */
-    public TuStruct(String f, Term[] argList) {
+    protected TuStruct(String f, Term[] argList) {
         this(f, argList.length);
         for (int i = 0; i < argList.length; i++)
             if (argList[i] == null)
@@ -130,7 +132,7 @@ public class TuStruct extends TuTerm {
     /**
      * Builds a structure representing an empty list
      */
-    public TuStruct() {
+    TuStruct() {
         this("[]", 0);
         resolved = true;
     }
@@ -138,7 +140,7 @@ public class TuStruct extends TuTerm {
     /**
      * Builds a list providing head and tail
      */
-    public TuStruct(Term h, Term t) {
+    TuStruct(Term h, Term t) {
         this(".", 2);
         arg[0] = h;
         arg[1] = t;
@@ -147,7 +149,7 @@ public class TuStruct extends TuTerm {
     /**
      * Builds a list specifying the elements
      */
-    public TuStruct(Term[] argList) {
+    TuStruct(Term[] argList) {
         this(argList, 0);
     }
 
@@ -248,7 +250,7 @@ public class TuStruct extends TuTerm {
      * No bound check is done. It is equivalent to
      * <code>getArg(index).getTerm()</code>
      */
-    public Term getTerm(int index) {
+    public Term getDerefArg(int index) {
         final Term term = arg[index];
         if (!(term.isVar()))
             return term;
@@ -268,7 +270,6 @@ public class TuStruct extends TuTerm {
     public boolean isTuStruct() {
         return true;
     }
-
 
     /** is this term a variable  */
     @Override
@@ -294,8 +295,8 @@ public class TuStruct extends TuTerm {
     }
 
     @Override
-    public boolean isConsList() {
-        return (name.equals(".") && arity == 2 && arg[1].isConsList()) || isEmptyList();
+    public boolean isPlList() {
+        return (name.equals(".") && arity == 2 && arg[1].isPlList()) || isEmptyList();
     }
 
     @Override
@@ -515,7 +516,7 @@ public class TuStruct extends TuTerm {
      * </p>
      */
     public Term listHead() {
-        if (!isConsList())
+        if (!isPlList())
             throw new UnsupportedOperationException("The structure " + this + " is not a list.");
         return arg[0].dref();
     }
@@ -529,7 +530,7 @@ public class TuStruct extends TuTerm {
      * </p>
      */
     public TuStruct listTail() {
-        if (!isConsList())
+        if (!isPlList())
             throw new UnsupportedOperationException("The structure " + this + " is not a list.");
         return (TuStruct) arg[1].dref();
     }
@@ -543,7 +544,7 @@ public class TuStruct extends TuTerm {
      * </p>
      */
     public int listSize() {
-        if (!isConsList())
+        if (!isPlList())
             throw new UnsupportedOperationException("The structure " + this + " is not a list.");
         TuStruct t = this;
         int count = 0;
@@ -563,7 +564,7 @@ public class TuStruct extends TuTerm {
      * </p>
      */
     public Iterator<? extends Term> listIterator() {
-        if (!isConsList())
+        if (!isPlList())
             throw new UnsupportedOperationException("The structure " + this + " is not a list.");
         return new StructIterator(this);
     }
@@ -574,11 +575,11 @@ public class TuStruct extends TuTerm {
      * Gets a list Struct representation, with the functor as first element.
      */
     TuStruct toList() {
-        TuStruct t = new TuStruct();
+        Term t = createTuEmpty();
         for (int c = arity - 1; c >= 0; c--) {
-            t = new TuStruct(arg[c].dref(), t);
+            t = createTuCons(arg[c].dref(), t);
         }
-        return new TuStruct(new TuStruct(name), t);
+        return createTuCons(TuFactory.createTuAtom(name), t);
     }
 
     /**
@@ -594,11 +595,11 @@ public class TuStruct extends TuTerm {
         TuStruct at = (TuStruct) arg[1].dref();
         LinkedList<Term> al = new LinkedList<Term>();
         while (!at.isEmptyList()) {
-            if (!at.isConsList()) {
+            if (!at.isPlList()) {
                 return null;
             }
-            al.addLast(at.getTerm(0));
-            at = (TuStruct) at.getTerm(1);
+            al.addLast(at.getDerefArg(0));
+            at = (TuStruct) at.getDerefArg(1);
         }
         return new TuStruct(((TuStruct) ft).name, al);
     }
@@ -613,8 +614,8 @@ public class TuStruct extends TuTerm {
             predicateIndicator = name + "/" + arity; /* Added by Paolo Contessi */
             arg = new Term[arity];
             arg[0] = t;
-            arg[1] = new TuStruct();
-        } else if (arg[1].isConsList()) {
+            arg[1] = createTuEmpty();
+        } else if (arg[1].isPlList()) {
             ((TuStruct) arg[1]).appendDestructive(t);
         } else {
             arg[1] = t;
@@ -625,7 +626,7 @@ public class TuStruct extends TuTerm {
      * Inserts (at the head) an element to this structure supposed to be a list
      */
     void insertDestructive(Term t) {
-        TuStruct co = new TuStruct();
+        TuStruct co = createStructEmpty();
         co.arg[0] = arg[0];
         co.arg[1] = arg[1];
         arg[0] = t;
@@ -725,7 +726,7 @@ public class TuStruct extends TuTerm {
     private String toString0() {
         Term h = arg[0].dref();
         Term t = arg[1].dref();
-        if (t.isConsList()) {
+        if (t.isPlList()) {
             TuStruct tl = (TuStruct) t;
             if (tl.isEmptyList()) {
                 return h.toString();
@@ -759,13 +760,13 @@ public class TuStruct extends TuTerm {
             return arg[0].dref().toString();
         } else {
             // comma case 
-            Term head = ((TuStruct) arg[0]).getTerm(0);
-            Term tail = ((TuStruct) arg[0]).getTerm(1);
+            Term head = ((TuStruct) arg[0]).getDerefArg(0);
+            Term tail = ((TuStruct) arg[0]).getDerefArg(1);
             StringBuffer buf = new StringBuffer(head.toString());
             while (tail.isTuStruct() && ((TuStruct) tail).fname().equals(",")) {
-                head = ((TuStruct) tail).getTerm(0);
+                head = ((TuStruct) tail).getDerefArg(0);
                 buf.append("," + head.toString());
-                tail = ((TuStruct) tail).getTerm(1);
+                tail = ((TuStruct) tail).getDerefArg(1);
             }
             buf.append("," + tail.toString());
             return buf.toString();
@@ -775,7 +776,7 @@ public class TuStruct extends TuTerm {
     private String toStringAsList(OperatorManager op) {
         Term h = arg[0];
         Term t = arg[1].dref();
-        if (t.isConsList()) {
+        if (t.isPlList()) {
             TuStruct tl = (TuStruct) t;
             if (tl.isEmptyList()) {
                 return h.toStringAsArgY(op, 0);
@@ -855,7 +856,7 @@ public class TuStruct extends TuTerm {
     @Override
     public Term iteratedGoalTerm() {
         if (name.equals("^") && arity == 2) {
-            Term goal = getTerm(1);
+            Term goal = getDerefArg(1);
             return goal.iteratedGoalTerm();
         } else
             return super.iteratedGoalTerm();

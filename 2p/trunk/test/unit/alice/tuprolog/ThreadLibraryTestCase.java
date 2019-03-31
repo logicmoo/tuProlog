@@ -49,7 +49,7 @@ public class ThreadLibraryTestCase {
 		SolveInfo sinfo = engine.solve("thread_id(ID).");	//unifica ad ID l'identificativo del thread corrente (Root)
 		assertTrue(sinfo.isSuccess());
 		Term id = sinfo.getVarValue("ID");
-		assertEquals(new TuInt(0), id);
+		assertEquals(TuFactory.createTuInt(0), id);
 	}
 
 	/**
@@ -230,7 +230,7 @@ public class ThreadLibraryTestCase {
 		assertTrue(sinfo.isSuccess());
 		
 		Term X = sinfo.getVarValue("X");
-		assertEquals(new TuStruct("messaggio molto importante"), X);
+		assertEquals(TuFactory.createTuAtom("messaggio molto importante"), X);
 		
 		theory = "start(X) :- msg_queue_create('CODA'), thread_create(ID, thread1(X)), invio(ID, 'messaggio molto importante'), lettura(ID,X), thread_get_msg('CODA', a(X)).\n" +	//Posso nuovamente prelevare, in quanto il msg non stato eliminato
 		"thread1(X) :- thread_wait_msg('CODA', a(X)). \n " +
@@ -242,7 +242,7 @@ public class ThreadLibraryTestCase {
 		assertTrue(sinfo.isSuccess());
 		
 		Term X1 = sinfo.getVarValue("X");
-		assertEquals(new TuStruct("messaggio molto importante"), X1);
+		assertEquals(TuFactory.createTuAtom("messaggio molto importante"), X1);
 	}
 
 	/**
@@ -263,7 +263,7 @@ public class ThreadLibraryTestCase {
 		assertTrue(sinfo.isSuccess());
 		
 		Term X = sinfo.getVarValue("X");
-		assertEquals(new TuStruct("messaggio molto importante"), X);
+		assertEquals(TuFactory.createTuAtom("messaggio molto importante"), X);
 	}
 
 	/**
@@ -293,7 +293,7 @@ public class ThreadLibraryTestCase {
 		assertTrue(sinfo.isSuccess());
 		
 		Term X = sinfo.getVarValue("X");
-		assertEquals(new TuStruct("messaggio molto importante"), X);
+		assertEquals(TuFactory.createTuAtom("messaggio molto importante"), X);
 		
 		theory = "start(X) :- msg_queue_create('CODA'), thread_create(ID, thread1(X)), lettura(ID,X).\n" +	
 		"thread1(X) :- thread_peek_msg('CODA', a(X)). \n " +
@@ -331,7 +331,7 @@ public class ThreadLibraryTestCase {
 		assertTrue(sinfo.isSuccess());
 		
 		Term X = sinfo.getVarValue("X");
-		assertEquals(new TuStruct("messaggio molto importante"), X);
+		assertEquals(TuFactory.createTuAtom("messaggio molto importante"), X);
 		
 		//SI BLOCCA IN ATTESA DEL MESSAGGIO
 		/*theory = "start(X) :- message_queue_create('CODA'), thread_create(ID, thread1(X)), lettura(ID,X).\n" +	
@@ -406,7 +406,7 @@ public class ThreadLibraryTestCase {
 		assertTrue(sinfo.isSuccess());
 		
 		Term X = sinfo.getVarValue("S");
-		assertEquals(new TuInt(5), X);
+		assertEquals(TuFactory.createTuInt(5), X);
 	}
 
 	/**
@@ -487,10 +487,10 @@ public class ThreadLibraryTestCase {
             assertTrue(sinfo.isSuccess());
             
             Term X = sinfo.getVarValue("X");
-            assertEquals(new TuInt(5040), X);
+            assertEquals(TuFactory.createTuInt(5040), X);
             
             Term Y = sinfo.getVarValue("Y");
-            assertEquals(new TuInt(40320), Y);
+            assertEquals(TuFactory.createTuInt(40320), Y);
     }
 	
 	@Test 

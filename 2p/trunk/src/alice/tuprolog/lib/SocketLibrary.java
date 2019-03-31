@@ -19,6 +19,7 @@ import java.util.concurrent.Semaphore;
 import java.util.regex.Pattern;
 
 import alice.tuprolog.TuAbstractSocket;
+import alice.tuprolog.TuFactory;
 import alice.tuprolog.Client_Socket;
 import alice.tuprolog.Datagram_Socket;
 import alice.tuprolog.TuInt;
@@ -301,7 +302,7 @@ public boolean tcp_socket_server_accept_3(Term ServerSock, Term Client_Addr, Ter
 	Socket client;
 	try {
 		client = s.accept();
-		Client_Addr.unify(this.getEngine(), new TuStruct(client.getInetAddress().getHostAddress() + ":" + client.getPort()));
+		Client_Addr.unify(this.getEngine(), createTuAtom(client.getInetAddress().getHostAddress() + ":" + client.getPort()));
 		Client_Slave_Socket.unify(this.getEngine(), new Client_Socket(client));
 		addClientSocket(client);
 	} catch (IOException e) {
@@ -609,17 +610,17 @@ public boolean getAddress_2(Term sock, Term addr) throws TuPrologError {
 	TuAbstractSocket abs = (TuAbstractSocket) sock.dref();
 	if (abs.isClientSocket()) {
 		Socket s = (((Client_Socket) sock.dref()).getSocket());
-		addr.unify(this.getEngine(), new TuStruct(s.getInetAddress().toString(), new TuStruct(new TuInt(s.getLocalPort()).toString())));
+		addr.unify(this.getEngine(), S(s.getInetAddress().toString(), createTuAtom(TuFactory.createTuInt(s.getLocalPort()).toString())));
 		return true;
 	}
 	if (abs.isServerSocket()) {
 		ServerSocket s = ((Server_Socket) sock.dref()).getSocket();
-		addr.unify(this.getEngine(), new TuStruct(s.getInetAddress().toString(), new TuStruct(new TuInt(s.getLocalPort()).toString())));
+		addr.unify(this.getEngine(), S(s.getInetAddress().toString(), createTuAtom(TuFactory.createTuInt(s.getLocalPort()).toString())));
 		return true;
 	}
 	if (abs.isDatagramSocket()) {
 		DatagramSocket s = (((Datagram_Socket) sock.dref()).getSocket());
-		addr.unify(this.getEngine(), new TuStruct(s.getInetAddress().toString(), new TuStruct(new TuInt(s.getLocalPort()).toString())));
+		addr.unify(this.getEngine(), S(s.getInetAddress().toString(), createTuAtom(TuFactory.createTuInt(s.getLocalPort()).toString())));
 		return true;
 	}
 

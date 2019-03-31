@@ -73,7 +73,7 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
           if(name==null) bottom=sub.get(0);
           else{
             Term[] subt=new Term[sub.size()];
-            bottom=new TuStruct(name, sub.toArray(subt));
+            bottom=TuFactory.createTuStructA(name, sub.toArray(subt));
           }
         } else bottom=c;
       }

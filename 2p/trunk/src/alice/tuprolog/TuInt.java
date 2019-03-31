@@ -32,7 +32,7 @@ public class TuInt extends TuNumber {
     @SuppressWarnings("unused")
     private String type = "Int";
 
-    public TuInt(int v) {
+    TuInt(int v) {
         value = v;
     }
 

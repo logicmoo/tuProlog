@@ -7,6 +7,7 @@ package alice.tuprolog.lib;
 
 
 import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 
 import alice.tuprolog.EngineManager;
 import alice.tuprolog.TuInt;
@@ -17,6 +18,7 @@ import alice.tuprolog.TuProlog;
 import alice.tuprolog.TuPrologError;
 import alice.tuprolog.SolveInfo;
 import alice.tuprolog.Term;
+import alice.tuprolog.TuFactory;
 
 
 
@@ -34,7 +36,7 @@ public class ThreadLibrary extends TuLibrary {
 	//Tenta di unificare a t l'identificativo del thread corrente
 	public boolean thread_id_1 (Term t) throws TuPrologError{
         int id = engineManager.runnerId();
-        unify(t,new TuInt(id));
+        unify(t,TuFactory.createTuInt(id));
 		return true;
 	}
 	
@@ -209,7 +211,7 @@ public class ThreadLibrary extends TuLibrary {
 			size=engineManager.queueSize(id.toString());
 		}
 		if (size<0) return false;
-		return unify(n, new TuInt(size));
+		return unify(n, createTuInt(size));
 	}	
 	
 	public boolean mutex_create_1(Term mutex) throws TuPrologError{

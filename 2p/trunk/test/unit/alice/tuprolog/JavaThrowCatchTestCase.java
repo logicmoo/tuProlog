@@ -20,9 +20,9 @@ public class JavaThrowCatchTestCase extends TestCase {
 		TuInt cause = (TuInt) info.getTerm("Cause");
 		assertTrue(cause.intValue() == 0);
 		TuStruct message = (TuStruct) info.getTerm("Message");
-		assertTrue(message.isEqual(new TuStruct("Counter")));
+		assertTrue(message.isEqual(TuFactory.createTuAtom("Counter")));
 		TuStruct stackTrace = (TuStruct) info.getTerm("StackTrace");
-		assertTrue(stackTrace.isConsList());
+		assertTrue(stackTrace.isPlList());
 		TuInt x = (TuInt) info.getTerm("X");
 		assertTrue(x.intValue() == 2);
 		TuInt y = (TuInt) info.getTerm("Y");
@@ -42,9 +42,9 @@ public class JavaThrowCatchTestCase extends TestCase {
 		TuInt cause = (TuInt) info.getTerm("Cause");
 		assertTrue(cause.intValue() == 0);
 		TuStruct message = (TuStruct) info.getTerm("Message");
-		assertTrue(message.isEqual(new TuStruct("Counter")));
+		assertTrue(message.isEqual(TuFactory.createTuAtom("Counter")));
 		TuStruct stackTrace = (TuStruct) info.getTerm("StackTrace");
-		assertTrue(stackTrace.isConsList());
+		assertTrue(stackTrace.isPlList());
 		TuInt x = (TuInt) info.getTerm("X");
 		assertTrue(x.intValue() == 2);
 	}

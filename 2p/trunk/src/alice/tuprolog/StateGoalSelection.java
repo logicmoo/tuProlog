@@ -17,6 +17,8 @@
  */
 package alice.tuprolog;
 
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 /**
  * @author Alex Benini
  *
@@ -59,7 +61,7 @@ public class StateGoalSelection extends TuState {
                 // This enables the dynamic linking of built-ins for
                 // terms coming from outside the demonstration context.
                 if (curGoal != goal_app)
-                    curGoal = new TuStruct("call", goal_app);
+                    curGoal = S("call", goal_app);
                 
                 e.currentContext.currentGoal = (TuStruct) curGoal;
                 e.nextState = c.GOAL_EVALUATION;

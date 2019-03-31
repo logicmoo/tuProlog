@@ -43,7 +43,7 @@ public class TermIteratorTestCase extends TestCase {
 		assertTrue(i.hasNext());
 		assertTrue(i.hasNext());
 		assertTrue(i.hasNext());
-		assertEquals(new TuStruct("p"), i.next());
+		assertEquals(TuFactory.createTuAtom("p"), i.next());
 	}
 	
 	public void testMultipleNext() {
@@ -56,11 +56,11 @@ public class TermIteratorTestCase extends TestCase {
 		Iterator<Term> i = getIterator(theory);
 		assertTrue(i.hasNext());
 		i.next(); // skip the first term
-		assertEquals(new TuStruct("q", new TuInt(1)), i.next());
-		assertEquals(new TuStruct("q", new TuInt(2)), i.next());
-		assertEquals(new TuStruct("q", new TuInt(3)), i.next());
-		assertEquals(new TuStruct("q", new TuInt(5)), i.next());
-		assertEquals(new TuStruct("q", new TuInt(7)), i.next());
+		assertEquals(TuFactory.S("q", createTuInt(1)), i.next());
+		assertEquals(TuFactory.S("q", createTuInt(2)), i.next());
+		assertEquals(TuFactory.S("q", createTuInt(3)), i.next());
+		assertEquals(TuFactory.S("q", createTuInt(5)), i.next());
+		assertEquals(TuFactory.S("q", createTuInt(7)), i.next());
 		// no more terms
 		assertFalse(i.hasNext());
 		try {
@@ -83,8 +83,8 @@ public class TermIteratorTestCase extends TestCase {
 						"q(3) " + "\n" + // missing the End-Of-Clause!
 						"q(5)." + "\n" +
 						"q(7).";
-		TuStruct firstTerm = new TuStruct("q", new TuInt(1));
-		TuStruct secondTerm = new TuStruct("q", new TuInt(2));
+		TuStruct firstTerm = S("q", createTuInt(1));
+		TuStruct secondTerm = S("q", createTuInt(2));
 		Iterator<Term> i1 = getIterator(theory);
 		assertTrue(i1.hasNext());
 		assertEquals(firstTerm, i1.next());

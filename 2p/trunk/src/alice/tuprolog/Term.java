@@ -18,6 +18,8 @@
 
 package alice.tuprolog;
 
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.Collection;
@@ -34,8 +36,8 @@ import alice.tuprolog.json.JSONSerializerManager;
 public abstract interface Term extends Serializable {
 
     // true and false constants
-    public static final Term TRUE = new TuStruct("true");
-    public static final Term FALSE = new TuStruct("false");
+    public static final Term TRUE = createTuAtom("true");
+    public static final Term FALSE = createTuAtom("false");
 
     //boolean isCyclic = false; //Alberto -> da usare quando si supporteranno i termini ciclici
 
@@ -71,7 +73,7 @@ public abstract interface Term extends Serializable {
     public abstract boolean isAtomSymbol();
 
     /** is this term a prolog list? */
-    public abstract boolean isConsList();
+    public abstract boolean isPlList();
 
     /** is this term a ground term? */
     public abstract boolean isGround();
@@ -280,5 +282,10 @@ public abstract interface Term extends Serializable {
      * @return
      */
     public abstract int intValue();
+
+    /**
+     * @return
+     */
+    String fname();
 
 }

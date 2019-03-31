@@ -9,7 +9,7 @@ public class LibraryTestCase extends TestCase {
 		engine.loadLibrary(new TestLibrary());
 		SolveInfo goal = engine.solve("N is sum(1, 3).");
 		assertTrue(goal.isSuccess());
-		assertEquals(new TuInt(4), goal.getVarValue("N"));
+		assertEquals(TuFactory.createTuInt(4), goal.getVarValue("N"));
 	}
 	
 	public void testLibraryPredicate() throws TuPrologException {

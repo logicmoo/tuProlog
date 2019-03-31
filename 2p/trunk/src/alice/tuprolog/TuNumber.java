@@ -156,7 +156,7 @@ public abstract class TuNumber extends TuTerm implements Comparable<TuNumber> {
 
     /** is this term a prolog list? */
     @Override
-    final public boolean isConsList() {
+    final public boolean isPlList() {
         return false;
     }
 

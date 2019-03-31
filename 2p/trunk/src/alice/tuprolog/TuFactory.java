@@ -54,4 +54,48 @@ public class TuFactory {
         return new TuParser(text).iterator();
     }
 
+    public static TuTerm createTuEmpty() {
+        return new TuStruct();
+    }
+    
+    public static TuStruct createStructEmpty() {
+        return new TuStruct();
+    }
+
+    public static TuTerm createTuAtom(String f) {
+        return new TuStruct(f);
+    }
+
+    public static TuStruct S(String f, Term... args) {
+        return new TuStruct(f, args.clone());
+    }
+
+    public static TuStruct createTuCons(Term h, Term t) {
+        return new TuStruct(h, t);
+    }
+
+    public static TuDouble createTuDouble(double v) {
+        return new TuDouble(v);
+    }
+
+    public static TuInt createTuInt(int v) {
+        return new TuInt(v);
+    }
+
+    public static TuLong createTuLong(long v) {
+        return new TuLong(v);
+    }
+
+    public static TuStruct createTuStructA(String f, Term[] argList) {
+        return new TuStruct(f, argList);
+    }
+
+    public static TuStruct createTuStruct2(String f, Term at0, Term at1) {
+        return S(f, at0, at1);
+    }
+
+    public static TuStruct createTuListStruct(Term[] argList) {
+        return new TuStruct(argList);
+    }
+
 }

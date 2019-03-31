@@ -16,6 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package alice.tuprologx.pj.lib;
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -35,8 +37,10 @@ import java.util.Vector;
 import alice.tuprolog.TuInt;
 import alice.tuprolog.TuLibrary;
 import alice.tuprolog.TuNumber;
-import alice.tuprolog.TuStruct;
+import alice.tuprolog.TuTerm;
+import alice.tuprolog.TuTerm;
 import alice.tuprolog.Term;
+import alice.tuprolog.TuFactory;
 import alice.tuprolog.TuVar;
 
 import alice.tuprolog.lib.*;
@@ -70,10 +74,10 @@ public class PJLibrary extends TuLibrary {
     /**
      * inverse map useful for implementation issue
      */
-    private IdentityHashMap<Object, TuStruct> currentObjects_inverse = new IdentityHashMap<Object, TuStruct>();
+    private IdentityHashMap<Object, TuTerm> currentObjects_inverse = new IdentityHashMap<Object, TuTerm>();
 
     private HashMap<String, Object> staticObjects = new HashMap<String, Object>();
-    private IdentityHashMap<Object, TuStruct> staticObjects_inverse = new IdentityHashMap<Object, TuStruct>();
+    private IdentityHashMap<Object, TuTerm> staticObjects_inverse = new IdentityHashMap<Object, TuTerm>();
 
     /**
      * progressive conter used to identify registered objects
@@ -131,7 +135,7 @@ public class PJLibrary extends TuLibrary {
         //id = 0;
         currentObjects.clear();
         currentObjects_inverse.clear();
-        for (Map.Entry<Object, TuStruct> en : staticObjects_inverse.entrySet()) {
+        for (Map.Entry<Object, TuTerm> en : staticObjects_inverse.entrySet()) {
             bindDynamicObject(en.getValue(), en.getKey());
         }
         preregisterObjects();
@@ -147,10 +151,10 @@ public class PJLibrary extends TuLibrary {
      */
     protected void preregisterObjects() {
         try {
-            bindDynamicObject(new TuStruct("stdout"), System.out);
-            bindDynamicObject(new TuStruct("stderr"), System.err);
-            bindDynamicObject(new TuStruct("runtime"), Runtime.getRuntime());
-            bindDynamicObject(new TuStruct("current_thread"), Thread.currentThread());
+            bindDynamicObject(TuFactory.createTuAtom("stdout"), System.out);
+            bindDynamicObject(TuFactory.createTuAtom("stderr"), System.err);
+            bindDynamicObject(TuFactory.createTuAtom("runtime"), Runtime.getRuntime());
+            bindDynamicObject(TuFactory.createTuAtom("current_thread"), Thread.currentThread());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -163,13 +167,13 @@ public class PJLibrary extends TuLibrary {
      */
     public boolean java_object_3(Term className, Term argl, Term id) {
         className = className.dref();
-        TuStruct arg = (TuStruct) argl.dref();
+        TuTerm arg = (TuTerm) argl.dref();
         id = id.dref();
         try {
             if (!className.isAtomSymbol()) {
                 return false;
             }
-            String clName = ((TuStruct) className).fname();
+            String clName = ((TuTerm) className).fname();
             // check for array type
             if (clName.endsWith("[]")) {
                 Object[] list = getArrayFromList(arg);
@@ -226,7 +230,7 @@ public class PJLibrary extends TuLibrary {
         id = id.dref();
         try {
             if (id.isGround()) {
-                unregisterDynamic((TuStruct) id);
+                unregisterDynamic((TuTerm) id);
             }
             return true;
         } catch (Exception ex) {
@@ -239,9 +243,9 @@ public class PJLibrary extends TuLibrary {
      * Creates of a java class
      */
     public boolean java_class_4(Term clSource, Term clName, Term clPathes, Term id) {
-        TuStruct classSource = (TuStruct) clSource.dref();
-        TuStruct className = (TuStruct) clName.dref();
-        TuStruct classPathes = (TuStruct) clPathes.dref();
+        TuTerm classSource = (TuTerm) clSource.dref();
+        TuTerm className = (TuTerm) clName.dref();
+        TuTerm classPathes = (TuTerm) clPathes.dref();
         id = id.dref();
         try {
             String fullClassName = alice.util.Tools.removeApices(className.toString());
@@ -310,7 +314,7 @@ public class PJLibrary extends TuLibrary {
     public boolean java_call_3(Term objId, Term method_name, Term idResult) {
         objId = objId.dref();
         idResult = idResult.dref();
-        TuStruct method = (TuStruct) method_name.dref();
+        TuTerm method = (TuTerm) method_name.dref();
         Object obj = null;
         Signature args = null;
         String methodName = null;
@@ -323,12 +327,12 @@ public class PJLibrary extends TuLibrary {
                 if (objId .isVar()) {
                     return false;
                 }
-                TuStruct sel = (TuStruct) objId;
+                TuTerm sel = (TuTerm) objId;
                 if (sel.fname().equals(".") && sel.getArity() == 2 && method.getArity() == 1) {
                     if (methodName.equals("set"))
-                        return java_set(sel.getTerm(0), sel.getTerm(1), method.getTerm(0));
+                        return java_set(sel.getDerefArg(0), sel.getDerefArg(1), method.getDerefArg(0));
                     else if (methodName.equals("get"))
-                        return java_get(sel.getTerm(0), sel.getTerm(1), method.getTerm(0));
+                        return java_get(sel.getDerefArg(0), sel.getDerefArg(1), method.getDerefArg(0));
                 }
             }
 
@@ -380,7 +384,7 @@ public class PJLibrary extends TuLibrary {
                 }
             } else {
                 if (objId.isCompound()) {
-                    TuStruct id = (TuStruct) objId;
+                    TuTerm id = (TuTerm) objId;
                     if (id.getArity() == 1 && id.fname().equals("class")) {
                         try {
                             Class<?> cl = Class.forName(alice.util.Tools.removeApices(id.getPlainArg(0).toString()));
@@ -436,12 +440,12 @@ public class PJLibrary extends TuLibrary {
         what = what.dref();
         if (!fieldTerm.isAtomSymbol() || what .isVar())
             return false;
-        String fieldName = ((TuStruct) fieldTerm).fname();
+        String fieldName = ((TuTerm) fieldTerm).fname();
         Object obj = null;
         try {
             Class<?> cl = null;
-            if (objId.isCompound() && ((TuStruct) objId).getArity() == 1 && ((TuStruct) objId).fname().equals("class")) {
-                String clName = alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString());
+            if (objId.isCompound() && ((TuTerm) objId).getArity() == 1 && ((TuTerm) objId).fname().equals("class")) {
+                String clName = alice.util.Tools.removeApices(((TuTerm) objId).getPlainArg(0).toString());
                 try {
                     cl = Class.forName(clName);
                 } catch (ClassNotFoundException ex) {
@@ -449,7 +453,7 @@ public class PJLibrary extends TuLibrary {
                     return false;
                 } catch (Exception ex) {
                     getEngine().warn("Static field " + fieldName + " not found in class "
-                            + alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString()));
+                            + alice.util.Tools.removeApices(((TuTerm) objId).getPlainArg(0).toString()));
                     return false;
                 }
             } else {
@@ -511,12 +515,12 @@ public class PJLibrary extends TuLibrary {
         if (!fieldTerm.isAtomSymbol()) {
             return false;
         }
-        String fieldName = ((TuStruct) fieldTerm).fname();
+        String fieldName = ((TuTerm) fieldTerm).fname();
         Object obj = null;
         try {
             Class<?> cl = null;
-            if (objId.isCompound() && ((TuStruct) objId).getArity() == 1 && ((TuStruct) objId).fname().equals("class")) {
-                String clName = alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString());
+            if (objId.isCompound() && ((TuTerm) objId).getArity() == 1 && ((TuTerm) objId).fname().equals("class")) {
+                String clName = alice.util.Tools.removeApices(((TuTerm) objId).getPlainArg(0).toString());
                 try {
                     cl = Class.forName(clName);
                 } catch (ClassNotFoundException ex) {
@@ -524,7 +528,7 @@ public class PJLibrary extends TuLibrary {
                     return false;
                 } catch (Exception ex) {
                     getEngine().warn("Static field " + fieldName + " not found in class "
-                            + alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString()));
+                            + alice.util.Tools.removeApices(((TuTerm) objId).getPlainArg(0).toString()));
                     return false;
                 }
             } else {
@@ -544,16 +548,16 @@ public class PJLibrary extends TuLibrary {
             // first check for primitive types
             if (fc.equals(Integer.TYPE) || fc.equals(Byte.TYPE)) {
                 int value = field.getInt(obj);
-                return unify(what, new alice.tuprolog.TuInt(value));
+                return unify(what, createTuInt(value));
             } else if (fc.equals(java.lang.Long.TYPE)) {
                 long value = field.getLong(obj);
-                return unify(what, new alice.tuprolog.TuLong(value));
+                return unify(what, createTuLong(value));
             } else if (fc.equals(java.lang.Float.TYPE)) {
                 float value = field.getFloat(obj);
                 return unify(what, new alice.tuprolog.TuFloat(value));
             } else if (fc.equals(java.lang.Double.TYPE)) {
                 double value = field.getDouble(obj);
-                return unify(what, new alice.tuprolog.TuDouble(value));
+                return unify(what, createTuDouble(value));
             } else {
                 // the field value is an object
                 Object res = field.get(obj);
@@ -574,7 +578,7 @@ public class PJLibrary extends TuLibrary {
     }
 
     public boolean java_array_set_primitive_3(Term obj_id, Term i, Term what) {
-        TuStruct objId = (TuStruct) obj_id.dref();
+        TuTerm objId = (TuTerm) obj_id.dref();
         TuNumber index = (TuNumber) i.dref();
         what = what.dref();
         //System.out.println("SET "+objId+" "+fieldTerm+" "+what);
@@ -655,7 +659,7 @@ public class PJLibrary extends TuLibrary {
     }
 
     public boolean java_array_get_primitive_3(Term obj_id, Term i, Term what) {
-        TuStruct objId = (TuStruct) obj_id.dref();
+        TuTerm objId = (TuTerm) obj_id.dref();
         TuNumber index = (TuNumber) i.dref();
         what = what.dref();
         //System.out.println("SET "+objId+" "+fieldTerm+" "+what);
@@ -678,19 +682,19 @@ public class PJLibrary extends TuLibrary {
             }
             String name = cl.toString();
             if (name.equals("class [I")) {
-                Term value = new alice.tuprolog.TuInt(Array.getInt(obj, index.intValue()));
+                Term value = createTuInt(Array.getInt(obj, index.intValue()));
                 return unify(what, value);
             } else if (name.equals("class [D")) {
-                Term value = new alice.tuprolog.TuDouble(Array.getDouble(obj, index.intValue()));
+                Term value = createTuDouble(Array.getDouble(obj, index.intValue()));
                 return unify(what, value);
             } else if (name.equals("class [F")) {
                 Term value = new alice.tuprolog.TuFloat(Array.getFloat(obj, index.intValue()));
                 return unify(what, value);
             } else if (name.equals("class [L")) {
-                Term value = new alice.tuprolog.TuLong(Array.getLong(obj, index.intValue()));
+                Term value = createTuLong(Array.getLong(obj, index.intValue()));
                 return unify(what, value);
             } else if (name.equals("class [C")) {
-                Term value = new alice.tuprolog.TuStruct("" + Array.getChar(obj, index.intValue()));
+                Term value = createTuAtom("" + Array.getChar(obj, index.intValue()));
                 return unify(what, value);
             } else if (name.equals("class [Z")) {
                 boolean b = Array.getBoolean(obj, index.intValue());
@@ -700,10 +704,10 @@ public class PJLibrary extends TuLibrary {
                     return unify(what, alice.tuprolog.Term.FALSE);
                 }
             } else if (name.equals("class [B")) {
-                Term value = new alice.tuprolog.TuInt(Array.getByte(obj, index.intValue()));
+                Term value = createTuInt(Array.getByte(obj, index.intValue()));
                 return unify(what, value);
             } else if (name.equals("class [S")) {
-                Term value = new alice.tuprolog.TuInt(Array.getInt(obj, index.intValue()));
+                Term value = createTuInt(Array.getInt(obj, index.intValue()));
                 return unify(what, value);
             } else {
                 return false;
@@ -749,11 +753,11 @@ public class PJLibrary extends TuLibrary {
     /**
      * creation of method signature from prolog data
      */
-    private Signature parseArg(TuStruct method) {
+    private Signature parseArg(TuTerm method) {
         Object[] values = new Object[method.getArity()];
         Class<?>[] types = new Class[method.getArity()];
         for (int i = 0; i < method.getArity(); i++) {
-            if (!parse_arg(values, types, i, method.getTerm(i)))
+            if (!parse_arg(values, types, i, method.getDerefArg(i)))
                 return null;
         }
         return new Signature(values, types);
@@ -808,9 +812,9 @@ public class PJLibrary extends TuLibrary {
                 }
             } else if (term .isTuStruct()) {
                 // argument descriptors
-                TuStruct tc = (TuStruct) term;
+                TuTerm tc = (TuTerm) term;
                 if (tc.fname().equals("as")) {
-                    return parse_as(values, types, i, tc.getTerm(0), tc.getTerm(1));
+                    return parse_as(values, types, i, tc.getDerefArg(0), tc.getDerefArg(1));
                 } else {
                     Object obj = currentObjects.get(alice.util.Tools.removeApices(tc.toString()));
                     if (obj == null) {
@@ -841,7 +845,7 @@ public class PJLibrary extends TuLibrary {
     private boolean parse_as(Object[] values, Class<?>[] types, int i, Term castWhat, Term castTo) {
         try {
             if (!(castWhat .isNumber())) {
-                String castTo_name = alice.util.Tools.removeApices(((TuStruct) castTo).fname());
+                String castTo_name = alice.util.Tools.removeApices(((TuTerm) castTo).fname());
                 String castWhat_name = alice.util.Tools.removeApices(castWhat.dref().toString());
                 //System.out.println(castWhat_name+" "+castTo_name);
                 if (castTo_name.equals("java.lang.String") && castWhat_name.equals("true")) {
@@ -927,7 +931,7 @@ public class PJLibrary extends TuLibrary {
                 }
             } else {
                 TuNumber num = (TuNumber) castWhat;
-                String castTo_name = ((TuStruct) castTo).fname();
+                String castTo_name = ((TuTerm) castTo).fname();
                 if (castTo_name.equals("byte")) {
                     values[i] = new Byte((byte) num.intValue());
                     types[i] = Byte.TYPE;
@@ -974,21 +978,21 @@ public class PJLibrary extends TuLibrary {
                     return unify(id, Term.FALSE);
                 }
             } else if (Byte.class.isInstance(obj)) {
-                return unify(id, new TuInt(((Byte) obj).intValue()));
+                return unify(id, createTuInt(((Byte) obj).intValue()));
             } else if (Short.class.isInstance(obj)) {
-                return unify(id, new TuInt(((Short) obj).intValue()));
+                return unify(id, createTuInt(((Short) obj).intValue()));
             } else if (Integer.class.isInstance(obj)) {
-                return unify(id, new TuInt(((Integer) obj).intValue()));
+                return unify(id, createTuInt(((Integer) obj).intValue()));
             } else if (java.lang.Long.class.isInstance(obj)) {
-                return unify(id, new alice.tuprolog.TuLong(((java.lang.Long) obj).longValue()));
+                return unify(id, createTuLong(((java.lang.Long) obj).longValue()));
             } else if (java.lang.Float.class.isInstance(obj)) {
                 return unify(id, new alice.tuprolog.TuFloat(((java.lang.Float) obj).floatValue()));
             } else if (java.lang.Double.class.isInstance(obj)) {
-                return unify(id, new alice.tuprolog.TuDouble(((java.lang.Double) obj).doubleValue()));
+                return unify(id, createTuDouble(((java.lang.Double) obj).doubleValue()));
             } else if (String.class.isInstance(obj)) {
-                return unify(id, new TuStruct((String) obj));
+                return unify(id, createTuAtom((String) obj));
             } else if (Character.class.isInstance(obj)) {
-                return unify(id, new TuStruct(((Character) obj).toString()));
+                return unify(id, createTuAtom(((Character) obj).toString()));
             } else {
                 return bindDynamicObject(id, obj);
             }
@@ -998,7 +1002,7 @@ public class PJLibrary extends TuLibrary {
         }
     }
 
-    private Object[] getArrayFromList(TuStruct list) {
+    private Object[] getArrayFromList(TuTerm list) {
         Object args[] = new Object[list.listSize()];
         Iterator<? extends Term> it = list.listIterator();
         int count = 0;
@@ -1020,7 +1024,7 @@ public class PJLibrary extends TuLibrary {
      * @return true if the operation is successful 
      * @throws InvalidObjectIdException if the object id is not valid
      */
-    public boolean register(TuStruct id, Object obj) throws InvalidObjectIdException {
+    public boolean register(TuTerm id, Object obj) throws InvalidObjectIdException {
         /*
          * note that this method act on the staticObject
          * and staticObject_inverse hashmaps
@@ -1053,7 +1057,7 @@ public class PJLibrary extends TuLibrary {
      * @param obj object to be registered. 
      * @return fresh id
      */
-    public TuStruct register(Object obj) {
+    public TuTerm register(Object obj) {
         //System.out.println("lib: "+this+" current id: "+this.id);
 
         // already registered object?
@@ -1063,9 +1067,9 @@ public class PJLibrary extends TuLibrary {
                 // object already referenced -> unifying terms
                 // referencing the object
                 //log("obj already registered: unify "+id+" "+aKey);
-                return (TuStruct) aKey;
+                return (TuTerm) aKey;
             } else {
-                TuStruct id = generateFreshId();
+                TuTerm id = generateFreshId();
                 staticObjects.put(id.fname(), obj);
                 staticObjects_inverse.put(obj, id);
                 return id;
@@ -1080,7 +1084,7 @@ public class PJLibrary extends TuLibrary {
      * @return the object, if present
      * @throws InvalidObjectIdException
      */
-    public Object getRegisteredObject(TuStruct id) throws InvalidObjectIdException {
+    public Object getRegisteredObject(TuTerm id) throws InvalidObjectIdException {
         if (!id.isGround()) {
             throw new InvalidObjectIdException();
         }
@@ -1097,7 +1101,7 @@ public class PJLibrary extends TuLibrary {
      * @return true if the operation is successful
      * @throws InvalidObjectIdException if the id is not valid (e.g. is not ground)
      */
-    public boolean unregister(TuStruct id) throws InvalidObjectIdException {
+    public boolean unregister(TuTerm id) throws InvalidObjectIdException {
         if (!id.isGround()) {
             throw new InvalidObjectIdException();
         }
@@ -1119,7 +1123,7 @@ public class PJLibrary extends TuLibrary {
      * @param id object identifier
      * @param obj object 
      */
-    public void registerDynamic(TuStruct id, Object obj) {
+    public void registerDynamic(TuTerm id, Object obj) {
         synchronized (currentObjects) {
             String raw_name = alice.util.Tools.removeApices(id.toString());
             currentObjects.put(raw_name, obj);
@@ -1137,7 +1141,7 @@ public class PJLibrary extends TuLibrary {
      * @param obj object to be registered
      * @return identifier
      */
-    public TuStruct registerDynamic(Object obj) {
+    public TuTerm registerDynamic(Object obj) {
         //System.out.println("lib: "+this+" current id: "+this.id);
 
         // already registered object?
@@ -1147,9 +1151,9 @@ public class PJLibrary extends TuLibrary {
                 // object already referenced -> unifying terms
                 // referencing the object
                 //log("obj already registered: unify "+id+" "+aKey);
-                return (TuStruct) aKey;
+                return (TuTerm) aKey;
             } else {
-                TuStruct id = generateFreshId();
+                TuTerm id = generateFreshId();
                 currentObjects.put(id.fname(), obj);
                 currentObjects_inverse.put(obj, id);
                 return id;
@@ -1161,7 +1165,7 @@ public class PJLibrary extends TuLibrary {
      * Gets a registered dynamic object
      * (returns null if not presents)
      */
-    public Object getRegisteredDynamicObject(TuStruct id) throws InvalidObjectIdException {
+    public Object getRegisteredDynamicObject(TuTerm id) throws InvalidObjectIdException {
         if (!id.isGround()) {
             throw new InvalidObjectIdException();
         }
@@ -1176,7 +1180,7 @@ public class PJLibrary extends TuLibrary {
      * @param id object identifier
      * @return true if the operation is successful
      */
-    public boolean unregisterDynamic(TuStruct id) {
+    public boolean unregisterDynamic(TuTerm id) {
         synchronized (currentObjects) {
             String raw_name = alice.util.Tools.removeApices(id.toString());
             Object obj = currentObjects.remove(raw_name);
@@ -1215,7 +1219,7 @@ public class PJLibrary extends TuLibrary {
                 // object not previously referenced
                 if (id .isVar()) {
                     // get a ground term
-                    TuStruct idTerm = generateFreshId();
+                    TuTerm idTerm = generateFreshId();
                     unify(id, idTerm);
                     registerDynamic(idTerm, obj);
                     //log("not ground id for a new obj: "+id+" as ref for "+obj);
@@ -1225,7 +1229,7 @@ public class PJLibrary extends TuLibrary {
                     String raw_name = alice.util.Tools.removeApices(id.dref().toString());
                     Object linkedobj = currentObjects.get(raw_name);
                     if (linkedobj == null) {
-                        registerDynamic((TuStruct) (id.dref()), obj);
+                        registerDynamic((TuTerm) (id.dref()), obj);
                         //log("ground id for a new obj: "+id+" as ref for "+obj);
                         return true;
                     } else {
@@ -1242,8 +1246,8 @@ public class PJLibrary extends TuLibrary {
      * Generates a fresh numeric identifier
      * @return
      */
-    protected TuStruct generateFreshId() {
-        return new TuStruct("$obj_" + id++);
+    protected TuTerm generateFreshId() {
+        return createTuAtom("$obj_" + id++);
     }
 
     /**
@@ -1253,7 +1257,7 @@ public class PJLibrary extends TuLibrary {
      */
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
         HashMap<String, Object> bak00 = currentObjects;
-        IdentityHashMap<Object, TuStruct> bak01 = currentObjects_inverse;
+        IdentityHashMap<Object, TuTerm> bak01 = currentObjects_inverse;
         try {
             currentObjects = null;
             currentObjects_inverse = null;
@@ -1274,7 +1278,7 @@ public class PJLibrary extends TuLibrary {
     private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         currentObjects = new HashMap<String, Object>();
-        currentObjects_inverse = new IdentityHashMap<Object, TuStruct>();
+        currentObjects_inverse = new IdentityHashMap<Object, TuTerm>();
         preregisterObjects();
     }
 

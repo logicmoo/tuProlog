@@ -105,7 +105,7 @@ public class PrimitiveInfo {
      */
     public synchronized void evalAsDirective(TuStruct g) throws IllegalAccessException, InvocationTargetException {
         for (int i=0; i<primitive_args.length; i++) {
-            primitive_args[i] = g.getTerm(i);
+            primitive_args[i] = g.getDerefArg(i);
         }
         method.invoke(source,primitive_args);
     }
@@ -136,7 +136,7 @@ public class PrimitiveInfo {
     public synchronized Term evalAsFunctor(TuStruct g) throws Throwable {
         try {
             for (int i=0; i<primitive_args.length; i++) {
-                primitive_args[i] = g.getTerm(i);
+                primitive_args[i] = g.getDerefArg(i);
             }
             return ((Term)method.invoke(source,primitive_args));
         } catch (Exception ex) {

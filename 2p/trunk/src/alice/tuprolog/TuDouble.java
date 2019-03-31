@@ -31,7 +31,7 @@ public class TuDouble extends TuNumber {
     @SuppressWarnings("unused")
     private String type = "Double";
 
-    public TuDouble(double v) {
+    TuDouble(double v) {
         value = v;
     }
 

@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 
 /**
  * <code>FamilyClausesList</code> is a common <code>LinkedList</code>
@@ -309,7 +311,7 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 					constantCompClausesIndex.delete(((TuStruct) t).fname(),ci);
 				}
 			} else if(t .isTuStruct()){
-				if(t.isConsList()){
+				if(t.isPlList()){
 					listCompClausesList.remove(ci);
 				} else {
 					structCompClausesIndex.delete(((TuStruct) t).getPredicateIndicator(),ci);
@@ -402,10 +404,10 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 		private static FamilyClausesList clauseList = new FamilyClausesList();
 
 		public static void main(String[] args) {
-			ClauseInfo first = new ClauseInfo(new TuStruct(new TuStruct("First"),new TuStruct("First")),"First Element");
-			ClauseInfo second = new ClauseInfo(new TuStruct(new TuStruct("Second"),new TuStruct("Second")),"Second Element");
-			ClauseInfo third = new ClauseInfo(new TuStruct(new TuStruct("Third"),new TuStruct("Third")),"Third Element");
-			ClauseInfo fourth = new ClauseInfo(new TuStruct(new TuStruct("Fourth"),new TuStruct("Fourth")),"Fourth Element");
+			ClauseInfo first = new ClauseInfo(TuFactory.createTuCons(TuFactory.createTuAtom("First"), createTuAtom("First")),"First Element");
+			ClauseInfo second = new ClauseInfo(TuFactory.createTuCons(TuFactory.createTuAtom("Second"), createTuAtom("Second")),"Second Element");
+			ClauseInfo third = new ClauseInfo(TuFactory.createTuCons(TuFactory.createTuAtom("Third"), createTuAtom("Third")),"Third Element");
+			ClauseInfo fourth = new ClauseInfo(TuFactory.createTuCons(TuFactory.createTuAtom("Fourth"), createTuAtom("Fourth")),"Fourth Element");
 
 			clauseList.add(first);
 			clauseList.add(second);

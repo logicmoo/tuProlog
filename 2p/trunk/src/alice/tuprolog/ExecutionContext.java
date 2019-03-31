@@ -36,7 +36,7 @@ public class ExecutionContext {
     TuStruct currentGoal;
     ExecutionContext fatherCtx;
     SubGoalId fatherGoalId;
-    TuStruct clause;
+    TuTerm clause;
     TuStruct headClause;
     SubGoalStore goalsToEval;
     OneWayList<List<TuVar>> trailingVars;
@@ -71,7 +71,7 @@ public class ExecutionContext {
         return fatherGoalId;
     }
     
-    public TuStruct getClause() {
+    public TuTerm getClause() {
         return clause;
     }
     

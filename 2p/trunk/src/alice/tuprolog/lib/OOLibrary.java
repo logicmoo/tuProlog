@@ -48,7 +48,9 @@ import alice.tuprolog.TuInt;
 import alice.tuprolog.TuLibrary;
 import alice.tuprolog.TuNumber;
 import alice.tuprolog.TuStruct;
+import alice.tuprolog.TuTerm;
 import alice.tuprolog.Term;
+import alice.tuprolog.TuFactory;
 import alice.tuprolog.TuVar;
 import alice.tuprolog.lib.annotations.OOLibraryEnableLambdas;
 import alice.tuprolog.TuJavaException;
@@ -81,10 +83,10 @@ public class OOLibrary extends TuLibrary {
     /**
          * inverse map useful for implementation issue
          */
-    private IdentityHashMap<Object,TuStruct> currentObjects_inverse = new IdentityHashMap<Object, TuStruct>();
+    private IdentityHashMap<Object,TuTerm> currentObjects_inverse = new IdentityHashMap<Object, TuTerm>();
 
     private HashMap<String,Object> staticObjects = new HashMap<String, Object>();
-    private IdentityHashMap<Object,TuStruct> staticObjects_inverse = new IdentityHashMap<Object, TuStruct>();
+    private IdentityHashMap<Object,TuTerm> staticObjects_inverse = new IdentityHashMap<Object, TuTerm>();
 
     /**
          * progressive counter used to identify registered objects
@@ -182,9 +184,9 @@ public class OOLibrary extends TuLibrary {
 	public void onSolveBegin(Term goal) {
         currentObjects.clear();
         currentObjects_inverse.clear();
-        Iterator<Map.Entry<Object,TuStruct>> it = staticObjects_inverse.entrySet().iterator();
+        Iterator<Map.Entry<Object,TuTerm>> it = staticObjects_inverse.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry<Object,TuStruct> en = it.next();
+            Map.Entry<Object,TuTerm> en = it.next();
             bindDynamicObject( en.getValue(), en.getKey());
         }
         preregisterObjects();
@@ -200,10 +202,10 @@ public class OOLibrary extends TuLibrary {
      */
     protected void preregisterObjects() {
         try {
-            bindDynamicObject(new TuStruct("stdout"), System.out);
-            bindDynamicObject(new TuStruct("stderr"), System.err);
-            bindDynamicObject(new TuStruct("runtime"), Runtime.getRuntime());
-            bindDynamicObject(new TuStruct("current_thread"), Thread
+            bindDynamicObject(TuFactory.createTuAtom("stdout"), System.out);
+            bindDynamicObject(TuFactory.createTuAtom("stderr"), System.err);
+            bindDynamicObject(TuFactory.createTuAtom("runtime"), Runtime.getRuntime());
+            bindDynamicObject(TuFactory.createTuAtom("current_thread"), Thread
                     .currentThread());
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -514,11 +516,11 @@ public class OOLibrary extends TuLibrary {
 				if (sel.fname().equals(".") && sel.getArity() == 2
 						&& method.getArity() == 1) {
 					if (methodName.equals("set")) {
-						return java_set(sel.getTerm(0), sel.getTerm(1), method
-								.getTerm(0));
+						return java_set(sel.getDerefArg(0), sel.getDerefArg(1), method
+								.getDerefArg(0));
 					} else if (methodName.equals("get")) {
-						return java_get(sel.getTerm(0), sel.getTerm(1), method
-								.getTerm(0));
+						return java_get(sel.getDerefArg(0), sel.getDerefArg(1), method
+								.getDerefArg(0));
 					}
 				}
 			}
@@ -623,7 +625,7 @@ public class OOLibrary extends TuLibrary {
     {
     	try {
     		paths = paths.dref();
-        	if(!paths.isConsList())
+        	if(!paths.isPlList())
         		throw new IllegalArgumentException();
         	String[] listOfPaths = getStringArrayFromStruct((TuStruct) paths);
         	dynamicLoader.removeAllURLs();
@@ -815,16 +817,16 @@ public class OOLibrary extends TuLibrary {
             field.setAccessible(true);
             if (fc.equals(Integer.TYPE) || fc.equals(Byte.TYPE)) {
                 int value = field.getInt(obj);
-                return unify(what, new alice.tuprolog.TuInt(value));
+                return unify(what, createTuInt(value));
             } else if (fc.equals(java.lang.Long.TYPE)) {
                 long value = field.getLong(obj);
-                return unify(what, new alice.tuprolog.TuLong(value));
+                return unify(what, createTuLong(value));
             } else if (fc.equals(java.lang.Float.TYPE)) {
                 float value = field.getFloat(obj);
                 return unify(what, new alice.tuprolog.TuFloat(value));
             } else if (fc.equals(java.lang.Double.TYPE)) {
                 double value = field.getDouble(obj);
-                return unify(what, new alice.tuprolog.TuDouble(value));
+                return unify(what, createTuDouble(value));
             } else {
                 // the field value is an object
                 Object res = field.get(obj);
@@ -963,13 +965,13 @@ public class OOLibrary extends TuLibrary {
             }
             String name = cl.toString();
             if (name.equals("class [I")) {
-                Term value = new alice.tuprolog.TuInt(Array.getInt(obj, index.intValue()));
+                Term value = createTuInt(Array.getInt(obj, index.intValue()));
                 if (unify(what, value))
                     return true;
                 else
                     throw new TuJavaException(new IllegalArgumentException(what.toString()));
             } else if (name.equals("class [D")) {
-                Term value = new alice.tuprolog.TuDouble(Array.getDouble(obj,index.intValue()));
+                Term value = createTuDouble(Array.getDouble(obj,index.intValue()));
                 if (unify(what, value))
                     return true;
                 else
@@ -984,7 +986,7 @@ public class OOLibrary extends TuLibrary {
                     throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
             } else if (name.equals("class [L")) {
-                Term value = new alice.tuprolog.TuLong(Array.getLong(obj, index
+                Term value = createTuLong(Array.getLong(obj, index
                         .intValue()));
                 if (unify(what, value))
                     return true;
@@ -992,7 +994,7 @@ public class OOLibrary extends TuLibrary {
                     throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
             } else if (name.equals("class [C")) {
-                Term value = new alice.tuprolog.TuStruct(""
+                Term value = createTuAtom(""
                         + Array.getChar(obj, index.intValue()));
                 if (unify(what, value))
                     return true;
@@ -1015,7 +1017,7 @@ public class OOLibrary extends TuLibrary {
                                 what.toString()));
                 }
             } else if (name.equals("class [B")) {
-                Term value = new alice.tuprolog.TuInt(Array.getByte(obj, index
+                Term value = createTuInt(Array.getByte(obj, index
                         .intValue()));
                 if (unify(what, value))
                     return true;
@@ -1023,7 +1025,7 @@ public class OOLibrary extends TuLibrary {
                     throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
             } else if (name.equals("class [S")) {
-                Term value = new alice.tuprolog.TuInt(Array.getInt(obj, index
+                Term value = createTuInt(Array.getInt(obj, index
                         .intValue()));
                 if (unify(what, value))
                     return true;
@@ -1124,7 +1126,7 @@ public class OOLibrary extends TuLibrary {
         Object[] values = new Object[method.getArity()];
         Class<?>[] types = new Class[method.getArity()];
         for (int i = 0; i < method.getArity(); i++) {
-            if (!parse_arg(values, types, i, method.getTerm(i)))
+            if (!parse_arg(values, types, i, method.getDerefArg(i)))
                 return null;
         }
         return new Signature(values, types);
@@ -1181,8 +1183,8 @@ public class OOLibrary extends TuLibrary {
                 // argument descriptors
                 TuStruct tc = (TuStruct) term;
                 if (tc.fname().equals("as")) {
-                    return parse_as(values, types, i, tc.getTerm(0), tc
-                            .getTerm(1));
+                    return parse_as(values, types, i, tc.getDerefArg(0), tc
+                            .getDerefArg(1));
                 } else {
                     Object obj = currentObjects.get(alice.util.Tools
                             .removeApices(tc.toString()));
@@ -1357,24 +1359,23 @@ public class OOLibrary extends TuLibrary {
                     return unify(id, Term.FALSE);
                 }
             } else if (Byte.class.isInstance(obj)) {
-                return unify(id, new TuInt(((Byte) obj).intValue()));
+                return unify(id, createTuInt(((Byte) obj).intValue()));
             } else if (Short.class.isInstance(obj)) {
-                return unify(id, new TuInt(((Short) obj).intValue()));
+                return unify(id, createTuInt(((Short) obj).intValue()));
             } else if (Integer.class.isInstance(obj)) {
-                return unify(id, new TuInt(((Integer) obj).intValue()));
+                return unify(id, createTuInt(((Integer) obj).intValue()));
             } else if (java.lang.Long.class.isInstance(obj)) {
-                return unify(id, new alice.tuprolog.TuLong(((java.lang.Long) obj)
+                return unify(id, createTuLong(((java.lang.Long) obj)
                         .longValue()));
             } else if (java.lang.Float.class.isInstance(obj)) {
                 return unify(id, new alice.tuprolog.TuFloat(
                         ((java.lang.Float) obj).floatValue()));
             } else if (java.lang.Double.class.isInstance(obj)) {
-                return unify(id, new alice.tuprolog.TuDouble(
-                        ((java.lang.Double) obj).doubleValue()));
+                return unify(id, createTuDouble(((java.lang.Double) obj).doubleValue()));
             } else if (String.class.isInstance(obj)) {
-                return unify(id, new TuStruct((String) obj));
+                return unify(id, createTuAtom((String) obj));
             } else if (Character.class.isInstance(obj)) {
-                return unify(id, new TuStruct(((Character) obj).toString()));
+                return unify(id, createTuAtom(((Character) obj).toString()));
             } else {
                 return bindDynamicObject(id, obj);
             }
@@ -1407,7 +1408,7 @@ public class OOLibrary extends TuLibrary {
      * @throws InvalidObjectIdException
      *             if the object id is not valid
      */
-    public boolean register(TuStruct id, Object obj)
+    public boolean register(TuTerm id, Object obj)
             throws InvalidObjectIdException {
         /*
          * note that this method act on the staticObject and
@@ -1495,7 +1496,7 @@ public class OOLibrary extends TuLibrary {
      *            object to be registered.
      * @return fresh id
      */
-    public TuStruct register(Object obj) {
+    public TuTerm register(Object obj) {
     	// already registered object?
         synchronized (staticObjects) {
             Object aKey = staticObjects_inverse.get(obj);
@@ -1505,7 +1506,7 @@ public class OOLibrary extends TuLibrary {
                 // log("obj already registered: unify "+id+" "+aKey);
                 return (TuStruct) aKey;
             } else {
-                TuStruct id = generateFreshId();
+                TuTerm id = generateFreshId();
                 staticObjects.put(id.fname(), obj);
                 staticObjects_inverse.put(obj, id);
                 return id;
@@ -1542,7 +1543,7 @@ public class OOLibrary extends TuLibrary {
      * @throws InvalidObjectIdException
      *             if the id is not valid (e.g. is not ground)
      */
-    public boolean unregister(TuStruct id) throws InvalidObjectIdException {
+    public boolean unregister(TuTerm id) throws InvalidObjectIdException {
         if (!id.isGround()) {
             throw new InvalidObjectIdException();
         }
@@ -1566,7 +1567,7 @@ public class OOLibrary extends TuLibrary {
      * @param obj
      *            object
      */
-    public void registerDynamic(TuStruct id, Object obj) {
+    public void registerDynamic(TuTerm id, Object obj) {
         synchronized (currentObjects) {
             String raw_name = alice.util.Tools.removeApices(id.toString());
             currentObjects.put(raw_name, obj);
@@ -1584,7 +1585,7 @@ public class OOLibrary extends TuLibrary {
      *            object to be registered
      * @return identifier
      */
-    public TuStruct registerDynamic(Object obj) {
+    public TuTerm registerDynamic(Object obj) {
         // System.out.println("lib: "+this+" current id: "+this.id);
 
         // already registered object?
@@ -1596,7 +1597,7 @@ public class OOLibrary extends TuLibrary {
                 // log("obj already registered: unify "+id+" "+aKey);
                 return (TuStruct) aKey;
             } else {
-                TuStruct id = generateFreshId();
+                TuTerm id = generateFreshId();
                 currentObjects.put(id.fname(), obj);
                 currentObjects_inverse.put(obj, id);
                 return id;
@@ -1660,7 +1661,7 @@ public class OOLibrary extends TuLibrary {
                 // object not previously referenced
                 if (id .isVar()) {
                     // get a ground term
-                    TuStruct idTerm = generateFreshId();
+                    TuTerm idTerm = generateFreshId();
                     unify(id, idTerm);
                     registerDynamic(idTerm, obj);
                     // log("not ground id for a new obj: "+id+" as ref for "+obj);
@@ -1689,8 +1690,8 @@ public class OOLibrary extends TuLibrary {
      * 
      * @return
      */
-    protected TuStruct generateFreshId() {
-        return new TuStruct("$obj_" + id++);
+    protected TuTerm generateFreshId() {
+        return createTuAtom("$obj_" + id++);
     }
 
     /**
@@ -1699,7 +1700,7 @@ public class OOLibrary extends TuLibrary {
      */
     private void writeObject(java.io.ObjectOutputStream out) throws IOException {
         HashMap<String,Object> bak00 = currentObjects;
-        IdentityHashMap<Object,TuStruct> bak01 = currentObjects_inverse;
+        IdentityHashMap<Object,TuTerm> bak01 = currentObjects_inverse;
         try {
             currentObjects = null;
             currentObjects_inverse = null;
@@ -1721,7 +1722,7 @@ public class OOLibrary extends TuLibrary {
             ClassNotFoundException {
         in.defaultReadObject();
         currentObjects = new HashMap<String, Object>();
-        currentObjects_inverse = new IdentityHashMap<Object, TuStruct>();
+        currentObjects_inverse = new IdentityHashMap<Object, TuTerm>();
         preregisterObjects();
     }
 

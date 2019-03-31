@@ -17,9 +17,9 @@
  */
 package alice.tuprolog.lib;
 
-import static alice.tuprolog.TuPrologError.*; 
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 import alice.tuprolog.*;
-import alice.tuprolog.TuNumber;
 
 import java.util.*;
 import java.io.*;
@@ -168,7 +168,7 @@ public class IOLibrary extends TuLibrary {
     }
 
     public boolean seeing_1(Term t) {
-        return unify(t, new TuStruct(inputStreamName));
+        return unify(t, createTuAtom(inputStreamName));
     }
 
     public boolean tell_1(Term arg) throws TuPrologError {
@@ -215,7 +215,7 @@ public class IOLibrary extends TuLibrary {
     }
 
     public boolean telling_1(Term arg0) {
-        return unify(arg0, new TuStruct(outputStreamName));
+        return unify(arg0, createTuAtom(outputStreamName));
     }
 
     public boolean put_1(Term arg) throws TuPrologError {
@@ -240,7 +240,7 @@ public class IOLibrary extends TuLibrary {
                     } catch (IOException e) {
                         throw permission_error(engine
                                 .getEngineManager(), "output", "stream",
-                                new TuStruct(outputStreamName), new TuStruct(e
+                                createTuAtom(outputStreamName), createTuAtom(e
                                         .getMessage()));
                     }
                 }
@@ -255,13 +255,12 @@ public class IOLibrary extends TuLibrary {
             ch = inputStream.read();
         } catch (IOException e) {
             throw permission_error(engine.getEngineManager(),
-                    "input", "stream", new TuStruct(inputStreamName), new TuStruct(
-                            e.getMessage()));
+                    "input", "stream", createTuAtom(inputStreamName), createTuAtom(e.getMessage()));
         }
         if (ch == -1) {
-            return unify(arg0, new TuInt(-1));
+            return unify(arg0, createTuInt(-1));
         } else {
-            return unify(arg0, new TuStruct(new Character((char) ch).toString()));
+            return unify(arg0, createTuAtom(new Character((char) ch).toString()));
         }
     }
 
@@ -272,15 +271,15 @@ public class IOLibrary extends TuLibrary {
                 ch = inputStream.read();
             } catch (IOException e) {
                 throw permission_error(engine.getEngineManager(),
-                        "input", "stream", new TuStruct(inputStreamName),
-                        new TuStruct(e.getMessage()));
+                        "input", "stream", createTuAtom(inputStreamName),
+                        createTuAtom(e.getMessage()));
             }
         } while (ch < 0x20 && ch >= 0);
         if (ch == -1) {
-            return unify(arg0, new TuInt(-1));
+            return unify(arg0, createTuInt(-1));
         } else {
             return unify(arg0,
-                    new TuStruct(new Character(((char) ch)).toString()));
+                    createTuAtom(new Character(((char) ch)).toString()));
         }
     }
 
@@ -304,7 +303,7 @@ public class IOLibrary extends TuLibrary {
                 } catch (IOException e) {
                     throw permission_error(engine
                             .getEngineManager(), "output", "stream",
-                            new TuStruct(outputStreamName), new TuStruct(e
+                            createTuAtom(outputStreamName), createTuAtom(e
                                     .getMessage()));
                 }
             }
@@ -327,8 +326,8 @@ public class IOLibrary extends TuLibrary {
                 ch = inputStream.read();
             } catch (IOException e) {
                 throw permission_error(engine.getEngineManager(),
-                        "input", "stream", new TuStruct(inputStreamName),
-                        new TuStruct(e.getMessage()));
+                        "input", "stream", createTuAtom(inputStreamName),
+                        createTuAtom(e.getMessage()));
             }
 
             if (ch == -1) {
@@ -365,7 +364,7 @@ public class IOLibrary extends TuLibrary {
         } catch (InvalidTermException e) {
             /*Castagna 06/2011*/
         	//throw PrologError.syntax_error(engine.getEngineManager(), -1, -1, new Struct(st));
-        	throw syntax_error(engine.getEngineManager(),-1, e.line, e.pos, new TuStruct(st));
+        	throw syntax_error(engine.getEngineManager(),-1, e.line, e.pos, createTuAtom(st));
         	/**/
         }
         return true;
@@ -382,8 +381,8 @@ public class IOLibrary extends TuLibrary {
                 outputStream.write(arg0.toString().getBytes());
             } catch (IOException e) {
                 throw permission_error(engine.getEngineManager(),
-                        "output", "stream", new TuStruct(outputStreamName),
-                        new TuStruct(e.getMessage()));
+                        "output", "stream", createTuAtom(outputStreamName),
+                        createTuAtom(e.getMessage()));
             }
         }
         return true;
@@ -402,8 +401,8 @@ public class IOLibrary extends TuLibrary {
                         arg0.toString()).getBytes());
             } catch (IOException e) {
                 throw permission_error(engine.getEngineManager(),
-                        "output", "stream", new TuStruct(outputStreamName),
-                        new TuStruct(e.getMessage()));
+                        "output", "stream", createTuAtom(outputStreamName),
+                        createTuAtom(e.getMessage()));
             }
         }
         return true;
@@ -418,8 +417,8 @@ public class IOLibrary extends TuLibrary {
                 outputStream.write('\n');
             } catch (IOException e) {
                 throw permission_error(engine.getEngineManager(),
-                        "output", "stream", new TuStruct(outputStreamName),
-                        new TuStruct(e.getMessage()));
+                        "output", "stream", createTuAtom(outputStreamName),
+                        createTuAtom(e.getMessage()));
             }
         }
         return true;
@@ -442,16 +441,16 @@ public class IOLibrary extends TuLibrary {
             throw type_error(engine.getEngineManager(), 1, "atom",
                     file_name);
         TuStruct fileName = (TuStruct) file_name.dref();
-        TuStruct goal = null;
+        TuTerm goal = null;
         String path = alice.util.Tools.removeApices(fileName.toString());
         if(! new File(path).isAbsolute()) {
             path = engine.getCurrentDirectory()  + File.separator + path;
         }
         try {
-            goal = new TuStruct(alice.util.Tools.loadText(path));
+            goal = createTuAtom(alice.util.Tools.loadText(path));
         } catch (IOException e) {
             throw existence_error(engine.getEngineManager(), 1,
-                    "stream", file_name, new TuStruct(e.getMessage()));
+                    "stream", file_name, createTuAtom(e.getMessage()));
         }
         engine.resetDirectoryList(new File(path).getParent());
         return unify(text, goal);
@@ -478,12 +477,12 @@ public class IOLibrary extends TuLibrary {
     }
 
     public boolean rand_float_1(Term t) {
-        return unify(t, new alice.tuprolog.TuDouble(gen.nextFloat()));
+        return unify(t, createTuDouble(gen.nextFloat()));
     }
 
     public boolean rand_int_2(Term argNum, Term num) {
         alice.tuprolog.TuNumber arg = (alice.tuprolog.TuNumber) argNum.dref();
-        return unify(num, new TuInt(gen.nextInt(arg.intValue())));
+        return unify(num, createTuInt(gen.nextInt(arg.intValue())));
     }
 
     @Override
@@ -551,8 +550,8 @@ public class IOLibrary extends TuLibrary {
                 outputStream.write(arg0.toString().getBytes());
             } catch (IOException e) {
                 throw permission_error(engine.getEngineManager(),
-                        "output", "stream", new TuStruct(outputStreamName),
-                        new TuStruct(e.getMessage()));
+                        "output", "stream", createTuAtom(outputStreamName),
+                        createTuAtom(e.getMessage()));
             }
         }
         return true;

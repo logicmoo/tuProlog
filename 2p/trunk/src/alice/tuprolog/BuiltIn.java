@@ -18,6 +18,7 @@
 package alice.tuprolog;
 
 import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -149,7 +150,7 @@ public class BuiltIn extends TuLibrary {
         if (c != null) {
             TuStruct clause = null;
             if (!sarg0.isClause()) {
-                clause = new TuStruct(":-", arg0, new TuStruct("true"));
+                clause = createTuStruct2(":-", arg0, createTuAtom("true"));
             } else {
                 clause = sarg0;
             }
@@ -168,7 +169,7 @@ public class BuiltIn extends TuLibrary {
 
         
         if (((Object)((TuStruct) arg0).getPlainArg(0)).toString().equals("abolish"))
-            throw permission_error(engineManager, "modify", "static_procedure", arg0, new TuStruct(""));
+            throw permission_error(engineManager, "modify", "static_procedure", arg0, createTuAtom(""));
 
         return theoryManager.abolish((TuStruct) arg0);
     }
@@ -212,7 +213,7 @@ public class BuiltIn extends TuLibrary {
             libraryManager.loadLibrary(((TuStruct) arg0).fname());
             return true;
         } catch (Exception ex) {
-            throw existence_error(engineManager, 1, "class", arg0, new TuStruct(ex.getMessage()));
+            throw existence_error(engineManager, 1, "class", arg0, createTuAtom(ex.getMessage()));
         }
     }
 
@@ -228,7 +229,7 @@ public class BuiltIn extends TuLibrary {
             else
                 throw type_error(engineManager, 1, "atom", arg0);
         }
-        if (!arg1.isConsList()) {
+        if (!arg1.isPlList()) {
             throw type_error(engineManager, 2, "list", arg1);
         }
 
@@ -236,12 +237,12 @@ public class BuiltIn extends TuLibrary {
             String[] paths = getStringArrayFromStruct((TuStruct) arg1);
             if (paths == null || paths.length == 0)
                 throw TuPrologError
-                        .existence_error(engineManager, 2, "paths", arg1, new TuStruct("Invalid paths' list."));
+                        .existence_error(engineManager, 2, "paths", arg1, createTuAtom("Invalid paths' list."));
             libraryManager.loadLibrary(((TuStruct) arg0).fname(), paths);
             return true;
 
         } catch (Exception ex) {
-            throw existence_error(engineManager, 1, "class", arg0, new TuStruct(ex.getMessage()));
+            throw existence_error(engineManager, 1, "class", arg0, createTuAtom(ex.getMessage()));
         }
     }
 
@@ -271,7 +272,7 @@ public class BuiltIn extends TuLibrary {
             libraryManager.unloadLibrary(((TuStruct) arg0).fname());
             return true;
         } catch (Exception ex) {
-            throw existence_error(engineManager, 1, "class", arg0, new TuStruct(ex.getMessage()));
+            throw existence_error(engineManager, 1, "class", arg0, createTuAtom(ex.getMessage()));
         }
     }
 
@@ -280,14 +281,14 @@ public class BuiltIn extends TuLibrary {
      */
     public boolean flag_list_1(Term arg0) {
         arg0 = arg0.dref();
-        TuStruct flist = flagManager.getPrologFlagList();
+        Term flist = flagManager.getPrologFlagList();
         return unify(arg0, flist);
     }
 
     public boolean comma_2(Term arg0, Term arg1) {
         arg0 = arg0.dref();
         arg1 = arg1.dref();
-        TuStruct s = new TuStruct(",", arg0, arg1);
+        TuStruct s = createTuStruct2(",", arg0, arg1);
         engineManager.pushSubGoal(ClauseInfo.extractBody(s));
         return true;
     }
@@ -337,7 +338,7 @@ public class BuiltIn extends TuLibrary {
         }
         term = term.dref();
         if (term.isVar())
-            return new TuStruct("call", term);
+            return S("call", term);
         if (term.isTuStruct()) {
             TuStruct s = (TuStruct) term;
             String pi = s.getPredicateIndicator();
@@ -418,7 +419,7 @@ public class BuiltIn extends TuLibrary {
         arg1 = arg1.dref();
         if (arg1.isVar())
             throw instantiation_error(engineManager, 2);
-        if (!arg1.isConsList()) {
+        if (!arg1.isPlList()) {
             throw type_error(engineManager, 2, "list", arg1);
         }
         Term val1 = ((TuStruct) arg1).fromList();
@@ -443,7 +444,7 @@ public class BuiltIn extends TuLibrary {
         arg1 = arg1.dref();
         if (arg1.isVar())
             throw instantiation_error(engineManager, 2);
-        if (!arg1.isConsList()) {
+        if (!arg1.isPlList()) {
             throw type_error(engineManager, 2, "list", arg1);
         }
         ((TuStruct) arg1).appendDestructive(arg0);
@@ -458,7 +459,7 @@ public class BuiltIn extends TuLibrary {
         arg1 = arg1.dref();
         if (arg0.isVar())
             throw instantiation_error(engineManager, 1);
-        if (/* !arg0 instanceof Struct || */!arg1.isConsList())
+        if (/* !arg0 instanceof Struct || */!arg1.isPlList())
             throw type_error(engineManager, 2, "list", arg1);
         List<ClauseInfo> l = null;
         try {
@@ -495,7 +496,7 @@ public class BuiltIn extends TuLibrary {
         if (!flagManager.isValidValue(name, arg1))
             throw domain_error(engineManager, 2, "flag_value", arg1);
         if (!flagManager.isModifiable(name))
-            throw permission_error(engineManager, "modify", "flag", arg0, new TuInt(0));
+            throw permission_error(engineManager, "modify", "flag", arg0, createTuInt(0));
         return flagManager.setFlag(name, arg1);
     }
 
@@ -529,7 +530,7 @@ public class BuiltIn extends TuLibrary {
             throw type_error(engineManager, 1, "integer", arg0);
         if (!arg1.isAtomSymbol())
             throw type_error(engineManager, 2, "atom", arg1);
-        if (!arg2.isAtomSymbol() && !arg2.isConsList())
+        if (!arg2.isAtomSymbol() && !arg2.isPlList())
             throw type_error(engineManager, 3, "atom_or_atom_list", arg2);
         int priority = ((TuInt) arg0).intValue();
         if (priority < OperatorManager.OP_LOW || priority > OperatorManager.OP_HIGH)
@@ -538,7 +539,7 @@ public class BuiltIn extends TuLibrary {
         if (!specifier.equals("fx") && !specifier.equals("fy") && !specifier.equals("xf") && !specifier.equals("yf")
                 && !specifier.equals("xfx") && !specifier.equals("yfx") && !specifier.equals("xfy"))
             throw domain_error(engineManager, 2, "operator_specifier", arg1);
-        if (arg2.isConsList()) {
+        if (arg2.isPlList()) {
             for (Iterator<? extends Term> operators = ((TuStruct) arg2).listIterator(); operators.hasNext();) {
                 TuStruct operator = (TuStruct) operators.next();
                 operatorManager.opNew(operator.fname(), specifier, priority);
@@ -561,7 +562,7 @@ public class BuiltIn extends TuLibrary {
         flagSet = flagSet.dref();
         flagDefault = flagDefault.dref();
         flagModifiable = flagModifiable.dref();
-        if (flagSet.isConsList() && (flagModifiable.equals(Term.TRUE) || flagModifiable.equals(Term.FALSE))) {
+        if (flagSet.isPlList() && (flagModifiable.equals(Term.TRUE) || flagModifiable.equals(Term.FALSE))) {
             // TODO libName che futuro deve avere?? --------------------
             String libName = "";
             // ------------

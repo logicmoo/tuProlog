@@ -18,9 +18,8 @@
 package alice.tuprolog.lib;
 
 import alice.tuprolog.*;
-import alice.tuprolog.TuNumber;
-
 import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 
 
 /**
@@ -45,24 +44,24 @@ public class ISOLibrary extends TuLibrary {
             throw type_error(engine.getEngineManager(), 1, "atom",
                     arg0);
         TuStruct atom = (TuStruct) arg0;
-        return unify(len, new TuInt(atom.fname().length()));
+        return unify(len, createTuInt(atom.fname().length()));
     }
 
     public boolean atom_chars_2(Term arg0, Term arg1) throws TuPrologError {
         arg0 = arg0.dref();
         arg1 = arg1.dref();
         if (arg0 .isVar()) {
-            if (!arg1.isConsList()) {
+            if (!arg1.isPlList()) {
                 throw type_error(engine.getEngineManager(), 2,
                         "list", arg1);
             }
             TuStruct list = (TuStruct) arg1;
             if (list.isEmptyList()) {
-                return unify(arg0, new TuStruct(""));
+                return unify(arg0, createTuAtom(""));
             }
             String st = "";
             while (!(list.isEmptyList())) {
-                String st1 = list.getTerm(0).toString();
+                String st1 = list.getDerefArg(0).toString();
                 try {
                     if (st1.startsWith("'") && st1.endsWith("'")) {
                         st1 = st1.substring(1, st1.length() - 1);
@@ -77,9 +76,9 @@ public class ISOLibrary extends TuLibrary {
                 }
                 ;
                 st = st.concat(st1);
-                list = (TuStruct) list.getTerm(1);
+                list = (TuStruct) list.getDerefArg(1);
             }
-            return unify(arg0, new TuStruct(st));
+            return unify(arg0, createTuAtom(st));
         } else {
             if (!arg0.isAtomSymbol()) {
                 throw type_error(engine.getEngineManager(), 1,
@@ -88,9 +87,9 @@ public class ISOLibrary extends TuLibrary {
             String st = ((TuStruct) arg0).fname();
             Term[] tlist = new Term[st.length()];
             for (int i = 0; i < st.length(); i++) {
-                tlist[i] = new TuStruct(new String(new char[] { st.charAt(i) }));
+                tlist[i] = createTuAtom(new String(new char[] { st.charAt(i) }));
             }
-            TuStruct list = new TuStruct(tlist);
+            TuStruct list = createTuListStruct(tlist);
             /*
              * for (int i=0; i<st.length(); i++){ Struct ch=new Struct(new
              * String(new char[]{ st.charAt(st.length()-i-1)} )); list=new
@@ -108,7 +107,7 @@ public class ISOLibrary extends TuLibrary {
             if (arg0.isAtomSymbol()) {
                 String st = ((TuStruct) arg0).fname();
                 if (st.length() <= 1)
-                    return unify(arg1, new TuInt(st.charAt(0)));
+                    return unify(arg1, createTuInt(st.charAt(0)));
                 else
                     throw type_error(engine.getEngineManager(), 1,
                             "character", arg0);
@@ -118,7 +117,7 @@ public class ISOLibrary extends TuLibrary {
         } else if ((arg1 .isInt())
                 || (arg1 instanceof alice.tuprolog.TuLong)) {
             char c = (char) ((TuNumber) arg1).intValue();
-            return unify(arg0, new TuStruct("" + c));
+            return unify(arg0, createTuAtom("" + c));
         } else
             throw type_error(engine.getEngineManager(), 2,
                     "integer", arg1);
@@ -136,7 +135,7 @@ public class ISOLibrary extends TuLibrary {
 
         }
         if (val0 .isNumber())
-            return new alice.tuprolog.TuDouble(Math.sin(((TuNumber) val0)
+            return createTuDouble(Math.sin(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -149,7 +148,7 @@ public class ISOLibrary extends TuLibrary {
 
         }
         if (val0 .isNumber())
-            return new alice.tuprolog.TuDouble(Math.cos(((TuNumber) val0)
+            return createTuDouble(Math.cos(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -162,7 +161,7 @@ public class ISOLibrary extends TuLibrary {
 
         }
         if (val0 .isNumber())
-            return new alice.tuprolog.TuDouble(Math.exp(((TuNumber) val0)
+            return createTuDouble(Math.exp(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -175,7 +174,7 @@ public class ISOLibrary extends TuLibrary {
 
         }
         if (val0 .isNumber())
-            return new alice.tuprolog.TuDouble(Math.atan(((TuNumber) val0)
+            return createTuDouble(Math.atan(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -188,7 +187,7 @@ public class ISOLibrary extends TuLibrary {
 
         }
         if (val0 .isNumber())
-            return new alice.tuprolog.TuDouble(Math.log(((TuNumber) val0)
+            return createTuDouble(Math.log(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -201,7 +200,7 @@ public class ISOLibrary extends TuLibrary {
 
         }
         if (val0 .isNumber())
-            return new alice.tuprolog.TuDouble(Math.sqrt(((TuNumber) val0)
+            return createTuDouble(Math.sqrt(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -214,10 +213,10 @@ public class ISOLibrary extends TuLibrary {
 
         }
         if (val0 .isInt() || val0 instanceof alice.tuprolog.TuLong)
-            return new alice.tuprolog.TuInt(Math.abs(((TuNumber) val0).intValue()));
+            return createTuInt(Math.abs(((TuNumber) val0).intValue()));
         if (val0 instanceof alice.tuprolog.TuDouble
                 || val0 instanceof alice.tuprolog.TuFloat)
-            return new alice.tuprolog.TuDouble(Math.abs(((TuNumber) val0)
+            return createTuDouble(Math.abs(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -230,12 +229,10 @@ public class ISOLibrary extends TuLibrary {
 
         }
         if (val0 .isInt() || val0 instanceof alice.tuprolog.TuLong)
-            return new alice.tuprolog.TuDouble(
-                    ((TuNumber) val0).intValue() > 0 ? 1.0 : -1.0);
+            return createTuDouble(((TuNumber) val0).intValue() > 0 ? 1.0 : -1.0);
         if (val0 instanceof alice.tuprolog.TuDouble
                 || val0 instanceof alice.tuprolog.TuFloat)
-            return new alice.tuprolog.TuDouble(
-                    ((TuNumber) val0).doubleValue() > 0 ? 1.0 : -1.0);
+            return createTuDouble(((TuNumber) val0).doubleValue() > 0 ? 1.0 : -1.0);
         return null;
     }
 
@@ -247,7 +244,7 @@ public class ISOLibrary extends TuLibrary {
 
         }
         if (val0 .isNumber())
-            return new alice.tuprolog.TuDouble((long) Math.rint(((TuNumber) val0)
+            return createTuDouble((long) Math.rint(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -261,7 +258,7 @@ public class ISOLibrary extends TuLibrary {
         }
         if (val0 .isNumber()) {
             double fl = ((TuNumber) val0).doubleValue();
-            return new alice.tuprolog.TuDouble(Math.abs(fl - Math.rint(fl)));
+            return createTuDouble(Math.abs(fl - Math.rint(fl)));
         }
         return null;
     }
@@ -274,7 +271,7 @@ public class ISOLibrary extends TuLibrary {
 
         }
         if (val0 .isNumber())
-            return new alice.tuprolog.TuDouble(((TuNumber) val0).doubleValue());
+            return createTuDouble(((TuNumber) val0).doubleValue());
         return null;
     }
 
@@ -286,7 +283,7 @@ public class ISOLibrary extends TuLibrary {
 
         }
         if (val0 .isNumber())
-            return new TuInt((int) Math.floor(((TuNumber) val0).doubleValue()));
+            return createTuInt((int) Math.floor(((TuNumber) val0).doubleValue()));
         return null;
     }
 
@@ -298,7 +295,7 @@ public class ISOLibrary extends TuLibrary {
 
         }
         if (val0 .isNumber())
-            return new alice.tuprolog.TuLong(Math.round(((TuNumber) val0)
+            return createTuLong(Math.round(((TuNumber) val0)
                     .doubleValue()));
         return null;
     }
@@ -311,7 +308,7 @@ public class ISOLibrary extends TuLibrary {
 
         }
         if (val0 .isNumber())
-            return new TuInt((int) Math.rint(((TuNumber) val0).doubleValue()));
+            return createTuInt((int) Math.rint(((TuNumber) val0).doubleValue()));
         return null;
     }
 
@@ -323,7 +320,7 @@ public class ISOLibrary extends TuLibrary {
 
         }
         if (val0 .isNumber())
-            return new TuInt((int) Math.ceil(((TuNumber) val0).doubleValue()));
+            return createTuInt((int) Math.ceil(((TuNumber) val0).doubleValue()));
         return null;
     }
 
@@ -337,7 +334,7 @@ public class ISOLibrary extends TuLibrary {
 
         }
         if (val0 .isNumber() && val1 .isNumber())
-            return new alice.tuprolog.TuInt(((TuNumber) val0).intValue()
+            return createTuInt(((TuNumber) val0).intValue()
                     / ((TuNumber) val1).intValue());
         return null;
     }
@@ -356,7 +353,7 @@ public class ISOLibrary extends TuLibrary {
             int y = ((TuNumber) val1).intValue();
             int f = new java.lang.Double(Math.floor((double) x / (double) y))
                     .intValue();
-            return new TuInt(x - (f * y));
+            return createTuInt(x - (f * y));
         }
         return null;
     }
@@ -371,7 +368,7 @@ public class ISOLibrary extends TuLibrary {
 
         }
         if (val0 .isNumber() && val1 .isNumber()) {
-            return new alice.tuprolog.TuDouble(Math.IEEEremainder(((TuNumber) val0)
+            return createTuDouble(Math.IEEEremainder(((TuNumber) val0)
                     .doubleValue(), ((TuNumber) val1).doubleValue()));
         }
         return null;

@@ -33,7 +33,7 @@ public class TuLong extends TuNumber {
     @SuppressWarnings("unused")
     private String type = "Long";
 
-    public TuLong(long v) {
+    TuLong(long v) {
         value = v;
     }
 

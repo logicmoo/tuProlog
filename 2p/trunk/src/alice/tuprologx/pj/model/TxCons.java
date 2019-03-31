@@ -2,6 +2,9 @@ package alice.tuprologx.pj.model;
 
 import java.util.*;
 
+import alice.tuprolog.TuFactory;
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 /**
  *
  * @author Maurizio
@@ -152,7 +155,7 @@ public class TxCons<H extends TxTerm<?>, R extends TxCompound<?>> extends TxComp
     }
 
     static boolean matches(alice.tuprolog.Term t) {
-        return (!(t instanceof alice.tuprolog.TuVar) && t.isCompound() && !t.isConsList());
+        return (!(t instanceof alice.tuprolog.TuVar) && t.isCompound() && !t.isPlList());
     }
     
     @Override
@@ -178,7 +181,7 @@ public class TxCons<H extends TxTerm<?>, R extends TxCompound<?>> extends TxComp
         for (TxTerm<?> t: this) {
             termArray[i++]=t.marshal();        
         }
-        return new alice.tuprolog.TuStruct(_theName,termArray);
+        return createTuStructA(_theName, termArray);
     }
     /*
     private Object toPrologObject() {            

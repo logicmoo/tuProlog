@@ -1,38 +1,40 @@
 package alice.tuprolog;
 
 import junit.framework.TestCase;
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 
 public class DoubleTestCase extends TestCase {
 	
 	public void testIsAtomic() {
-		assertTrue(new alice.tuprolog.TuDouble(0).isAtomic());
+		assertTrue(TuFactory.createTuDouble(0).isAtomic());
 	}
 	
 	public void testIsAtom() {
-		assertFalse(new alice.tuprolog.TuDouble(0).isAtomSymbol());
+		assertFalse(TuFactory.createTuDouble(0).isAtomSymbol());
 	}
 	
 	public void testIsCompound() {
-		assertFalse(new alice.tuprolog.TuDouble(0).isCompound());
+		assertFalse(TuFactory.createTuDouble(0).isCompound());
 	}
 	
 	public void testEqualsToStruct() {
-		alice.tuprolog.TuDouble zero = new alice.tuprolog.TuDouble(0);
-		TuStruct s = new TuStruct();
+		alice.tuprolog.TuDouble zero = createTuDouble(0);
+		Term s = createTuEmpty();
 		assertFalse(zero.equals(s));
 	}
 	
 	public void testEqualsToVar() throws InvalidTermException {
-		alice.tuprolog.TuDouble one = new alice.tuprolog.TuDouble(1);
+		alice.tuprolog.TuDouble one = createTuDouble(1);
 		TuVar x = new TuVar("X");
 		assertFalse(one.equals(x));
 	}
 	
 	public void testEqualsToDouble() {
-		alice.tuprolog.TuDouble zero = new alice.tuprolog.TuDouble(0);
-		alice.tuprolog.TuDouble one = new alice.tuprolog.TuDouble(1);
+		alice.tuprolog.TuDouble zero = createTuDouble(0);
+		alice.tuprolog.TuDouble one = createTuDouble(1);
 		assertFalse(zero.equals(one));
-		alice.tuprolog.TuDouble anotherZero = new alice.tuprolog.TuDouble(0.0);
+		alice.tuprolog.TuDouble anotherZero = createTuDouble(0.0);
 		assertTrue(anotherZero.equals(zero));
 	}
 	
@@ -41,8 +43,8 @@ public class DoubleTestCase extends TestCase {
 	}
 	
 	public void testEqualsToInt() {
-		alice.tuprolog.TuDouble doubleOne = new alice.tuprolog.TuDouble(1.0);
-		TuInt integerOne = new TuInt(1);
+		alice.tuprolog.TuDouble doubleOne = createTuDouble(1.0);
+		TuInt integerOne = createTuInt(1);
 		assertFalse(doubleOne.equals(integerOne));
 	}
 	

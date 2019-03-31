@@ -72,7 +72,7 @@ public class TuStateException extends TuState {
                 // This enables the dynamic linking of built-ins for
                 // terms coming from outside the demonstration context.
                 if (handlerTerm != curHandlerTerm)
-                    handlerTerm = new TuStruct("call", curHandlerTerm);
+                    handlerTerm = S("call", curHandlerTerm);
                 TuStruct handler = (TuStruct) handlerTerm;
                 c.identify(handler);
                 SubGoalTree sgt = new SubGoalTree();
@@ -162,9 +162,9 @@ public class TuStateException extends TuState {
                 // This enables the dynamic linking of built-ins for
                 // terms coming from outside the demonstration context.
                 if (handlerTerm != curHandlerTerm)
-                    handlerTerm = new TuStruct("call", curHandlerTerm);
+                    handlerTerm = S("call", curHandlerTerm);
                 if (finallyTerm != curFinallyTerm)
-                    finallyTerm = new TuStruct("call", curFinallyTerm);
+                    finallyTerm = S("call", curFinallyTerm);
 
                 TuStruct handler = (TuStruct) handlerTerm;
                 c.identify(handler);
@@ -198,7 +198,7 @@ public class TuStateException extends TuState {
     // verifica se c'? un catcher unificabile con l'argomento dell'eccezione
     // lanciata
     private boolean javaMatch(Term arg1, Term exceptionTerm) {
-        if (!arg1.isConsList())
+        if (!arg1.isPlList())
             return false;
         TuStruct list = (TuStruct) arg1;
         if (list.isEmptyList())

@@ -31,12 +31,12 @@ public class JavaLibraryTestCase extends TestCase {
 		engine.setTheory(new TuTheory(theory));
 		TestCounter counter = new TestCounter();
 		// check registering behaviour
-		TuStruct t = lib.register(counter);
-		engine.solve(new TuStruct("demo", t));
+		TuTerm t = lib.register(counter);
+		engine.solve(TuFactory.S("demo", t));
 		assertEquals(1, counter.getValue());
 		// check unregistering behaviour
 		lib.unregister(t);
-		SolveInfo goal = engine.solve(new TuStruct("demo", t));
+		SolveInfo goal = engine.solve(TuFactory.S("demo", t));
 		assertFalse(goal.isSuccess());
 	}
 
@@ -205,7 +205,7 @@ public class JavaLibraryTestCase extends TestCase {
 		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isSuccess());
-		assertEquals(true, info.getTerm("Value").isConsList());
+		assertEquals(true, info.getTerm("Value").isPlList());
 		assertEquals("[]", info.getTerm("Value").toString());
 
 		//Testing get_classpath using DynamicURLClassLoader with not URLs added
@@ -216,7 +216,7 @@ public class JavaLibraryTestCase extends TestCase {
 		engine.setTheory(new TuTheory(theory));
 		info = engine.solve("demo(Value).");
 		assertEquals(true, info.isSuccess());
-		assertEquals(true, info.getTerm("Value").isConsList());
+		assertEquals(true, info.getTerm("Value").isPlList());
 		assertEquals("[" + paths + "]", info.getTerm("Value").toString());
 		
 //		// Test if get_classpath(PathList) unifies with the DynamicURLClassLoader urls

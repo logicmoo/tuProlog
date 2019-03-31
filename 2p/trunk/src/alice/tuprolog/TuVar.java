@@ -352,12 +352,12 @@ public class TuVar extends TuTerm {
     }
 
     @Override
-    public boolean isConsList() {
+    public boolean isPlList() {
         Term t = dref();
         if (t == this)
             return false;
         else
-            return t.isConsList();
+            return t.isPlList();
     }
 
     @Override
@@ -394,7 +394,7 @@ public class TuVar extends TuTerm {
     private boolean occurCheck(List<TuVar> vl, TuStruct t) {
         int arity = t.getArity();
         for (int c = 0; c < arity; c++) {
-            Term at = t.getTerm(c);
+            Term at = t.getDerefArg(c);
             if (at .isTuStruct()) {
                 if (occurCheck(vl, (TuStruct) at)) {
                     return true;
@@ -495,7 +495,7 @@ public class TuVar extends TuTerm {
         TuStruct st = (TuStruct) t;
         int arity = st.getArity();
         for (int c = 0; c < arity; c++) {
-            Term at = st.getTerm(c);
+            Term at = st.getDerefArg(c);
             if (at .isVar()) {
                 TuVar v = (TuVar) at;
                 if (v.link == null) {

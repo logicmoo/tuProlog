@@ -1,5 +1,7 @@
 package alice.tuprolog;
 
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 /**
  * @author Matteo Iuliani
  */
@@ -19,24 +21,23 @@ public class TuJavaException extends Throwable {
         Term causeTerm = null;
         Throwable cause = e.getCause();
         if (cause != null)
-            causeTerm = new TuStruct(cause.toString());
+            causeTerm = createTuAtom(cause.toString());
         else
-            causeTerm = new TuInt(0);
+            causeTerm = createTuInt(0);
         // Message
         Term messageTerm = null;
         String message = e.getMessage();
         if (message != null)
-            messageTerm = new TuStruct(message);
+            messageTerm = createTuAtom(message);
         else
-            messageTerm = new TuInt(0);
+            messageTerm = createTuInt(0);
         // StackTrace
-        TuStruct stackTraceTerm = new TuStruct();
+        TuStruct stackTraceTerm = createStructEmpty();
         StackTraceElement[] elements = e.getStackTrace();
         for (StackTraceElement element : elements)
-            stackTraceTerm.appendDestructive(new TuStruct(element.toString()));
+            stackTraceTerm.appendDestructive(TuFactory.createTuAtom(element.toString()));
         // return
-        return new TuStruct(java_exception, causeTerm, messageTerm,
-                stackTraceTerm);
+        return S(java_exception, causeTerm, messageTerm, stackTraceTerm);
     }
 
 }

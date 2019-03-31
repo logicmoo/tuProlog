@@ -60,7 +60,7 @@ public abstract class TuAbstractSocket extends TuTerm {
     }
 
     @Override
-    public boolean isConsList() {
+    public boolean isPlList() {
         // TODO Auto-generated method stub
         return false;
     }

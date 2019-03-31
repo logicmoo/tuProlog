@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package alice.tuprolog;
+
 import static alice.tuprolog.TuFactory.*;
 
 import java.io.DataOutputStream;
@@ -51,323 +52,319 @@ import alice.util.Tools;
  * @see TuTheory
  */
 public class TuTheoryManager implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
-	
-	private TuClauseDatabase dynamicDBase;
-	private TuClauseDatabase staticDBase;
-	private TuClauseDatabase retractDBase;
-	private TuProlog engine;
-	private PrimitiveManager primitiveManager;
-	private Stack<Term> startGoalStack;
-	TuTheory lastConsultedTheory;
 
-	public void initialize(TuProlog vm) {
-		dynamicDBase = new TuClauseDatabase();
-		staticDBase = new TuClauseDatabase();
-		retractDBase = new TuClauseDatabase();
-		lastConsultedTheory = new TuTheory();
-		engine = vm;
-		primitiveManager = engine.getPrimitiveManager();
-	}
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * inserting of a clause at the head of the dbase
-	 */
-	public synchronized void assertA(TuStruct clause, boolean dyn, String libName, boolean backtrackable) {
-		ClauseInfo d = new ClauseInfo(toClause(clause), libName);
-		String key = d.getHead().getPredicateIndicator();
-		if (dyn) {
-			dynamicDBase.addFirst(key, d);
-			if (staticDBase.containsKey(key)) {
-				engine.warn("A static predicate with signature " + key + " has been overriden.");
-			}
-		} else
-			staticDBase.addFirst(key, d);
-		engine.spy("INSERTA: " + d.getClause() + "\n");
-	}
+    private TuClauseDatabase dynamicDBase;
+    private TuClauseDatabase staticDBase;
+    private TuClauseDatabase retractDBase;
+    private TuProlog engine;
+    private PrimitiveManager primitiveManager;
+    private Stack<Term> startGoalStack;
+    TuTheory lastConsultedTheory;
 
-	/**
-	 * inserting of a clause at the end of the dbase
-	 */
-	public synchronized void assertZ(TuStruct clause, boolean dyn, String libName, boolean backtrackable) {
-		ClauseInfo d = new ClauseInfo(toClause(clause), libName);
-		String key = d.getHead().getPredicateIndicator();
-		if (dyn) {
-			dynamicDBase.addLast(key, d);
-			if (staticDBase.containsKey(key)) {
-				engine.warn("A static predicate with signature " + key + " has been overriden.");
-			}
-		} else
-			staticDBase.addLast(key, d);
-		engine.spy("INSERTZ: " + d.getClause() + "\n");
-	}
+    public void initialize(TuProlog vm) {
+        dynamicDBase = new TuClauseDatabase();
+        staticDBase = new TuClauseDatabase();
+        retractDBase = new TuClauseDatabase();
+        lastConsultedTheory = new TuTheory();
+        engine = vm;
+        primitiveManager = engine.getPrimitiveManager();
+    }
 
-	/**
-	 * removing from dbase the first clause with head unifying with clause
-	 */
-	public synchronized ClauseInfo retract(TuStruct cl) {
-		TuStruct clause = toClause(cl);
-		TuStruct struct = ((TuStruct) clause.getPlainArg(0));
-		FamilyClausesList family = dynamicDBase.get(struct.getPredicateIndicator());
-		ExecutionContext ctx = engine.getEngineManager().getCurrentContext();
-		
-		/*creo un nuovo clause database x memorizzare la teoria all'atto della retract 
-		 * questo lo faccio solo al primo giro della stessa retract 
-		 * (e riconosco questo in base all'id del contesto)
-		 * sara' la retract da questo db a restituire il risultato
-		 */    
-		FamilyClausesList familyQuery;
-	    if(!retractDBase.containsKey("ctxId "+ctx.getId())){
-	    	familyQuery=new FamilyClausesList();
-	    	for (int i = 0; i < family.size(); i++) {
-	 	       familyQuery.add(family.get(i));
-	 	    }
-	    	retractDBase.put("ctxId "+ctx.getId(), familyQuery);
-	    }
-	   else {
-		   familyQuery=retractDBase.get("ctxId "+ctx.getId());
-	   }
-		
-	    if (familyQuery == null)
-			return null;
-		//fa la retract dalla teoria base
-		if (family != null){
-			for (Iterator<ClauseInfo> it = family.iterator(); it.hasNext();) {
-				ClauseInfo d = it.next();
-				if (clause.match(d.getClause())) {
-					it.remove();
-					break;
-				}
-			}
-		}
-		//fa la retract dal retract db
-		for (Iterator<ClauseInfo> i = familyQuery.iterator(); i.hasNext();) {
-			ClauseInfo d = i.next();
-			if (clause.match(d.getClause())) {
-				i.remove();
-				engine.spy("DELETE: " + d.getClause() + "\n");
-				return new ClauseInfo(d.getClause(), null);
-			}
-		}
-		return null;
-	}
+    /**
+     * inserting of a clause at the head of the dbase
+     */
+    public synchronized void assertA(TuStruct clause, boolean dyn, String libName, boolean backtrackable) {
+        ClauseInfo d = new ClauseInfo(toClause(clause), libName);
+        String key = d.getHead().getPredicateIndicator();
+        if (dyn) {
+            dynamicDBase.addFirst(key, d);
+            if (staticDBase.containsKey(key)) {
+                engine.warn("A static predicate with signature " + key + " has been overriden.");
+            }
+        } else
+            staticDBase.addFirst(key, d);
+        engine.spy("INSERTA: " + d.getClause() + "\n");
+    }
 
-	/**
-	 * removing from dbase all the clauses corresponding to the
-	 * predicate indicator passed as a parameter
-	 */
-	public synchronized boolean abolish(TuStruct pi) {		
-		if (!(pi .isTuStruct()) || !pi.isGround() || !(pi.getArity() == 2))
-			throw new IllegalArgumentException(pi + " is not a valid Struct");
-		if(!pi.fname().equals("/"))
-				throw new IllegalArgumentException(pi + " has not the valid predicate name. Espected '/' but was " + pi.fname());
-		
-		String arg0 = Tools.removeApices(pi.getPlainArg(0).toString());
-		String arg1 = Tools.removeApices(pi.getPlainArg(1).toString());
-		String key =  arg0 + "/" + arg1;
-		List<ClauseInfo> abolished = dynamicDBase.abolish(key); /* Reviewed by Paolo Contessi: LinkedList -> List */
-		if (abolished != null)
-			engine.spy("ABOLISHED: " + key + " number of clauses=" + abolished.size() + "\n");
-		return true;
-	}
+    /**
+     * inserting of a clause at the end of the dbase
+     */
+    public synchronized void assertZ(TuStruct clause, boolean dyn, String libName, boolean backtrackable) {
+        ClauseInfo d = new ClauseInfo(toClause(clause), libName);
+        String key = d.getHead().getPredicateIndicator();
+        if (dyn) {
+            dynamicDBase.addLast(key, d);
+            if (staticDBase.containsKey(key)) {
+                engine.warn("A static predicate with signature " + key + " has been overriden.");
+            }
+        } else
+            staticDBase.addLast(key, d);
+        engine.spy("INSERTZ: " + d.getClause() + "\n");
+    }
 
-	/**
-	 * Returns a family of clauses with functor and arity equals
-	 * to the functor and arity of the term passed as a parameter
-	 *
-	 * Reviewed by Paolo Contessi: modified according to new ClauseDatabase
-	 * implementation
-	 */
-	public synchronized List<ClauseInfo> find(Term headt) {
-		if (headt .isTuStruct()) {
-			List<ClauseInfo> list = dynamicDBase.getPredicates(headt);
-			if (list.isEmpty())
-				list = staticDBase.getPredicates(headt);
-			return list;
-		}
+    /**
+     * removing from dbase the first clause with head unifying with clause
+     */
+    public synchronized ClauseInfo retract(TuStruct cl) {
+        TuStruct clause = toClause(cl);
+        TuStruct struct = ((TuStruct) clause.getPlainArg(0));
+        FamilyClausesList family = dynamicDBase.get(struct.getPredicateIndicator());
+        ExecutionContext ctx = engine.getEngineManager().getCurrentContext();
 
-		if (headt .isVar()){
-			throw new RuntimeException();
-		}
-		return new LinkedList<ClauseInfo>();
-	}
+        /*creo un nuovo clause database x memorizzare la teoria all'atto della retract 
+         * questo lo faccio solo al primo giro della stessa retract 
+         * (e riconosco questo in base all'id del contesto)
+         * sara' la retract da questo db a restituire il risultato
+         */
+        FamilyClausesList familyQuery;
+        if (!retractDBase.containsKey("ctxId " + ctx.getId())) {
+            familyQuery = new FamilyClausesList();
+            for (int i = 0; i < family.size(); i++) {
+                familyQuery.add(family.get(i));
+            }
+            retractDBase.put("ctxId " + ctx.getId(), familyQuery);
+        } else {
+            familyQuery = retractDBase.get("ctxId " + ctx.getId());
+        }
 
-	/**
-	 * Consults a theory.
-	 *
-	 * @param theory        theory to add
-	 * @param dynamicTheory if it is true, then the clauses are marked as dynamic
-	 * @param libName       if it not null, then the clauses are marked to belong to the specified library
-	 */
-	public synchronized void consult(TuTheory theory, boolean dynamicTheory, String libName) throws InvalidTheoryException {
-		startGoalStack = new Stack<Term>();
-		int clause = 1;
-		try {
-			for (Iterator<? extends Term> it = theory.iterator(engine); it.hasNext();) {
-				clause++;	
-				TuStruct d = (TuStruct) it.next();
-				if (!runDirective(d))
-					assertZ(d, dynamicTheory, libName, true);
-			}
-		} catch (InvalidTermException e) {
-			throw new InvalidTheoryException(e.getMessage(), clause, e.line, e.pos);
-		}
+        if (familyQuery == null)
+            return null;
+        //fa la retract dalla teoria base
+        if (family != null) {
+            for (Iterator<ClauseInfo> it = family.iterator(); it.hasNext();) {
+                ClauseInfo d = it.next();
+                if (clause.match(d.getClause())) {
+                    it.remove();
+                    break;
+                }
+            }
+        }
+        //fa la retract dal retract db
+        for (Iterator<ClauseInfo> i = familyQuery.iterator(); i.hasNext();) {
+            ClauseInfo d = i.next();
+            if (clause.match(d.getClause())) {
+                i.remove();
+                engine.spy("DELETE: " + d.getClause() + "\n");
+                return new ClauseInfo(d.getClause(), null);
+            }
+        }
+        return null;
+    }
 
-		if (libName == null)
-			lastConsultedTheory = theory;
-	}
+    /**
+     * removing from dbase all the clauses corresponding to the
+     * predicate indicator passed as a parameter
+     */
+    public synchronized boolean abolish(TuStruct pi) {
+        if (!(pi.isTuStruct()) || !pi.isGround() || !(pi.getArity() == 2))
+            throw new IllegalArgumentException(pi + " is not a valid Struct");
+        if (!pi.fname().equals("/"))
+            throw new IllegalArgumentException(
+                    pi + " has not the valid predicate name. Espected '/' but was " + pi.fname());
 
-	/**
-	 * Binds clauses in the database with the corresponding
-	 * primitive predicate, if any
-	 */
-	public void rebindPrimitives() {
-		for (ClauseInfo d:dynamicDBase){
-			for(AbstractSubGoalTree sge:d.getBody()){
-				Term t = ((SubGoalElement)sge).getValue();
-				primitiveManager.identifyPredicate(t);
-			}
-		}
-	}
+        String arg0 = Tools.removeApices(pi.getPlainArg(0).toString());
+        String arg1 = Tools.removeApices(pi.getPlainArg(1).toString());
+        String key = arg0 + "/" + arg1;
+        List<ClauseInfo> abolished = dynamicDBase.abolish(key); /* Reviewed by Paolo Contessi: LinkedList -> List */
+        if (abolished != null)
+            engine.spy("ABOLISHED: " + key + " number of clauses=" + abolished.size() + "\n");
+        return true;
+    }
 
-	/**
-	 * Clears the clause dbase.
-	 */
-	public synchronized void clear() {
-		dynamicDBase = new TuClauseDatabase();
-	}
+    /**
+     * Returns a family of clauses with functor and arity equals
+     * to the functor and arity of the term passed as a parameter
+     *
+     * Reviewed by Paolo Contessi: modified according to new ClauseDatabase
+     * implementation
+     */
+    public synchronized List<ClauseInfo> find(Term headt) {
+        if (headt.isTuStruct()) {
+            List<ClauseInfo> list = dynamicDBase.getPredicates(headt);
+            if (list.isEmpty())
+                list = staticDBase.getPredicates(headt);
+            return list;
+        }
 
-	/**
-	 * remove all the clauses of lib theory
-	 */
-	public synchronized void removeLibraryTheory(String libName) {
-		for (Iterator<ClauseInfo> allClauses = staticDBase.iterator(); allClauses.hasNext();) {
-			ClauseInfo d = allClauses.next();
-			if (d.libName != null && libName.equals(d.libName))
-			{
-				try 
-				{
-					// Rimuovendolo da allClauses si elimina solo il valore e non la chiave
-					allClauses.remove();
-				}
-				catch (Exception e){}
-			}
-		}
-	}
+        if (headt.isVar()) {
+            throw new RuntimeException();
+        }
+        return new LinkedList<ClauseInfo>();
+    }
 
+    /**
+     * Consults a theory.
+     *
+     * @param theory        theory to add
+     * @param dynamicTheory if it is true, then the clauses are marked as dynamic
+     * @param libName       if it not null, then the clauses are marked to belong to the specified library
+     */
+    public synchronized void consult(TuTheory theory, boolean dynamicTheory, String libName)
+            throws InvalidTheoryException {
+        startGoalStack = new Stack<Term>();
+        int clause = 1;
+        try {
+            for (Iterator<? extends Term> it = theory.iterator(engine); it.hasNext();) {
+                clause++;
+                TuStruct d = (TuStruct) it.next();
+                if (!runDirective(d))
+                    assertZ(d, dynamicTheory, libName, true);
+            }
+        } catch (InvalidTermException e) {
+            throw new InvalidTheoryException(e.getMessage(), clause, e.line, e.pos);
+        }
 
-	private boolean runDirective(TuStruct c) {
-		if ("':-'".equals(c.fname()) || ":-".equals(c.fname()) && c.getArity() == 1 && c.getTerm(0) .isTuStruct()) {
-			TuStruct dir = (TuStruct) c.getTerm(0);
-			try {
-				if (!primitiveManager.evalAsDirective(dir))
-					engine.warn("The directive " + dir.getPredicateIndicator() + " is unknown.");
-			} catch (Throwable t) {
-				engine.warn("An exception has been thrown during the execution of the " +
-						dir.getPredicateIndicator() + " directive.\n" + t.getMessage());
-			}
-			return true;
-		}
-		return false;
-	}
+        if (libName == null)
+            lastConsultedTheory = theory;
+    }
 
-	/**
-	 * Gets a clause from a generic Term
-	 */
-	private TuStruct toClause(TuStruct t) {		//PRIMITIVE
-		// TODO bad, slow way of cloning. requires approx twice the time necessary
-		t = (TuStruct) createTerm(t.toString(), this.engine.getOperatorManager());
-		if (!t.isClause())
-			t = new TuStruct(":-", t, new TuStruct("true"));
-		primitiveManager.identifyPredicate(t);
-		return t;
-	}
+    /**
+     * Binds clauses in the database with the corresponding
+     * primitive predicate, if any
+     */
+    public void rebindPrimitives() {
+        for (ClauseInfo d : dynamicDBase) {
+            for (AbstractSubGoalTree sge : d.getBody()) {
+                Term t = ((SubGoalElement) sge).getValue();
+                primitiveManager.identifyPredicate(t);
+            }
+        }
+    }
 
-	public synchronized void solveTheoryGoal() {
-		TuStruct s = null;
-		while (!startGoalStack.empty()) {
-			s = (s == null) ?
-					(TuStruct) startGoalStack.pop() :
-						new TuStruct(",", startGoalStack.pop(), s);
-		}
-		if (s != null) {
-			try {
-				engine.solve(s);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		}
-	}
+    /**
+     * Clears the clause dbase.
+     */
+    public synchronized void clear() {
+        dynamicDBase = new TuClauseDatabase();
+    }
 
-	/**
-	 * add a goal eventually defined by last parsed theory.
-	 */
-	public synchronized void addStartGoal(TuStruct g) {
-		startGoalStack.push(g);
-	}
+    /**
+     * remove all the clauses of lib theory
+     */
+    public synchronized void removeLibraryTheory(String libName) {
+        for (Iterator<ClauseInfo> allClauses = staticDBase.iterator(); allClauses.hasNext();) {
+            ClauseInfo d = allClauses.next();
+            if (d.libName != null && libName.equals(d.libName)) {
+                try {
+                    // Rimuovendolo da allClauses si elimina solo il valore e non la chiave
+                    allClauses.remove();
+                } catch (Exception e) {
+                }
+            }
+        }
+    }
 
-	/**
-	 * saves the dbase on a output stream.
-	 */
-	synchronized boolean save(OutputStream os, boolean onlyDynamic) {
-		try {
-			new DataOutputStream(os).writeBytes(getTheory(onlyDynamic));
-			return true;
-		} catch (IOException e) {
-			return false;
-		}
-	}
+    private boolean runDirective(TuStruct c) {
+        if ("':-'".equals(c.fname()) || ":-".equals(c.fname()) && c.getArity() == 1 && c.getDerefArg(0).isTuStruct()) {
+            TuStruct dir = (TuStruct) c.getDerefArg(0);
+            try {
+                if (!primitiveManager.evalAsDirective(dir))
+                    engine.warn("The directive " + dir.getPredicateIndicator() + " is unknown.");
+            } catch (Throwable t) {
+                engine.warn("An exception has been thrown during the execution of the " + dir.getPredicateIndicator()
+                        + " directive.\n" + t.getMessage());
+            }
+            return true;
+        }
+        return false;
+    }
 
-	/**
-	 * Gets current theory
-	 *
-	 * @param onlyDynamic if true, fetches only dynamic clauses
-	 */
-	public synchronized String getTheory(boolean onlyDynamic) {
-		StringBuffer buffer = new StringBuffer();
-		for (Iterator<ClauseInfo> dynamicClauses = dynamicDBase.iterator(); dynamicClauses.hasNext();) {
-			ClauseInfo d = dynamicClauses.next();
-			buffer.append(d.toString(engine.getOperatorManager())).append("\n");
-		}
-		if (!onlyDynamic)
-			for (Iterator<ClauseInfo> staticClauses = staticDBase.iterator(); staticClauses.hasNext();) {
-				ClauseInfo d = staticClauses.next();
-				buffer.append(d.toString(engine.getOperatorManager())).append("\n");
-			}
-		return buffer.toString();
-	}
+    /**
+     * Gets a clause from a generic Term
+     */
+    private TuStruct toClause(TuStruct t) { //PRIMITIVE
+        // TODO bad, slow way of cloning. requires approx twice the time necessary
+        t = (TuStruct) createTerm(t.toString(), this.engine.getOperatorManager());
+        if (!t.isClause())
+            t = createTuStruct2(":-", t, createTuAtom("true"));
+        primitiveManager.identifyPredicate(t);
+        return t;
+    }
 
-	/**
-	 * Gets last consulted theory
-	 * @return  last theory
-	 */
-	public synchronized TuTheory getLastConsultedTheory() {
-		return lastConsultedTheory;
-	}
-	
-	public void clearRetractDB() {
-		this.retractDBase=new TuClauseDatabase();
-	}
+    public synchronized void solveTheoryGoal() {
+        TuStruct s = null;
+        while (!startGoalStack.empty()) {
+            s = (s == null) ? (TuStruct) startGoalStack.pop() : TuFactory.createTuStruct2(",", startGoalStack.pop(), s);
+        }
+        if (s != null) {
+            try {
+                engine.solve(s);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 
-	//Alberto
-	public boolean checkExistance(String predicateIndicator){
-		return (this.dynamicDBase.containsKey(predicateIndicator) || this.staticDBase.containsKey(predicateIndicator));
-	}
-	
-	//Alberto
-	public void serializeLibraries(FullEngineState brain){
-		brain.setLibraries(engine.getCurrentLibraries());
-	}
-	
-	//Alberto
-	public void serializeTimestamp(AbstractEngineState brain){
-		brain.setSerializationTimestamp(System.currentTimeMillis());
-	}
+    /**
+     * add a goal eventually defined by last parsed theory.
+     */
+    public synchronized void addStartGoal(TuStruct g) {
+        startGoalStack.push(g);
+    }
 
-	//Alberto
-	public void serializeDynDataBase(FullEngineState brain) {
-		brain.setDynTheory(getTheory(true));
-	}
-	
+    /**
+     * saves the dbase on a output stream.
+     */
+    synchronized boolean save(OutputStream os, boolean onlyDynamic) {
+        try {
+            new DataOutputStream(os).writeBytes(getTheory(onlyDynamic));
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Gets current theory
+     *
+     * @param onlyDynamic if true, fetches only dynamic clauses
+     */
+    public synchronized String getTheory(boolean onlyDynamic) {
+        StringBuffer buffer = new StringBuffer();
+        for (Iterator<ClauseInfo> dynamicClauses = dynamicDBase.iterator(); dynamicClauses.hasNext();) {
+            ClauseInfo d = dynamicClauses.next();
+            buffer.append(d.toString(engine.getOperatorManager())).append("\n");
+        }
+        if (!onlyDynamic)
+            for (Iterator<ClauseInfo> staticClauses = staticDBase.iterator(); staticClauses.hasNext();) {
+                ClauseInfo d = staticClauses.next();
+                buffer.append(d.toString(engine.getOperatorManager())).append("\n");
+            }
+        return buffer.toString();
+    }
+
+    /**
+     * Gets last consulted theory
+     * @return  last theory
+     */
+    public synchronized TuTheory getLastConsultedTheory() {
+        return lastConsultedTheory;
+    }
+
+    public void clearRetractDB() {
+        this.retractDBase = new TuClauseDatabase();
+    }
+
+    //Alberto
+    public boolean checkExistance(String predicateIndicator) {
+        return (this.dynamicDBase.containsKey(predicateIndicator) || this.staticDBase.containsKey(predicateIndicator));
+    }
+
+    //Alberto
+    public void serializeLibraries(FullEngineState brain) {
+        brain.setLibraries(engine.getCurrentLibraries());
+    }
+
+    //Alberto
+    public void serializeTimestamp(AbstractEngineState brain) {
+        brain.setSerializationTimestamp(System.currentTimeMillis());
+    }
+
+    //Alberto
+    public void serializeDynDataBase(FullEngineState brain) {
+        brain.setDynTheory(getTheory(true));
+    }
+
 }

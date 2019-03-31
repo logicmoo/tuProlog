@@ -19,12 +19,14 @@
  *
  */
 package alice.tuprolog;
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 
 public class StringLibrary extends TuLibrary {
 	private static final long serialVersionUID = 1L;
 
 	public boolean to_lower_case_2(Term arg0, Term arg1){
 		String dest = arg0.toString().toLowerCase();
-		return unify(arg1, new TuStruct(dest));
+		return unify(arg1, createTuAtom(dest));
 	} 
 }

@@ -1,29 +1,31 @@
 package alice.tuprolog;
 
 import junit.framework.TestCase;
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 
 public class BuiltInTestCase extends TestCase {
 	
 	public void testConvertTermToGoal() throws InvalidTermException {
 		Term t = new TuVar("T");
-		TuStruct result = new TuStruct("call", t);
+		TuStruct result = S("call", t);
 		assertEquals(result, BuiltIn.convertTermToGoal(t));
-		assertEquals(result, BuiltIn.convertTermToGoal(new TuStruct("call", t)));
+		assertEquals(result, BuiltIn.convertTermToGoal(TuFactory.S("call", t)));
 		
-		t = new TuInt(2);
+		t = createTuInt(2);
 		assertNull(BuiltIn.convertTermToGoal(t));
 		
-		t = new TuStruct("p", new TuStruct("a"), new TuVar("B"), new TuStruct("c"));
+		t = S("p", createTuAtom("a"), new TuVar("B"), createTuAtom("c"));
 		result = (TuStruct) t;
 		assertEquals(result, BuiltIn.convertTermToGoal(t));
 		
 		TuVar linked = new TuVar("X");
-		linked.setLink(new TuStruct("!"));
+		linked.setLink(TuFactory.createTuAtom("!"));
 		Term[] arguments = new Term[] { linked, new TuVar("Y") };
-		Term[] results = new Term[] { new TuStruct("!"), new TuStruct("call", new TuVar("Y")) };
-		assertEquals(new TuStruct(";", results), BuiltIn.convertTermToGoal(new TuStruct(";", arguments)));
-		assertEquals(new TuStruct(",", results), BuiltIn.convertTermToGoal(new TuStruct(",", arguments)));
-		assertEquals(new TuStruct("->", results), BuiltIn.convertTermToGoal(new TuStruct("->", arguments)));
+		Term[] results = new Term[] { createTuAtom("!"), S("call", new TuVar("Y")) };
+		assertEquals(TuFactory.createTuStructA(";", results), BuiltIn.convertTermToGoal(TuFactory.createTuStructA(";", arguments)));
+		assertEquals(TuFactory.createTuStructA(",", results), BuiltIn.convertTermToGoal(TuFactory.createTuStructA(",", arguments)));
+		assertEquals(TuFactory.createTuStructA("->", results), BuiltIn.convertTermToGoal(TuFactory.createTuStructA("->", arguments)));
 	}
 	
 	//Based on the bug #59 Grouping conjunctions in () changes result on sourceforge
