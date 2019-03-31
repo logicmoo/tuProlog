@@ -221,17 +221,17 @@ public class StructTestCase extends TestCase {
 	
 	public void testIsAtom() {
 		TuStruct emptyList = new TuStruct();
-		assertTrue(emptyList.isAtom());
+		assertTrue(emptyList.isAtomSymbol());
 		TuStruct atom = new TuStruct("atom");
-		assertTrue(atom.isAtom());
+		assertTrue(atom.isAtomSymbol());
 		TuStruct list = new TuStruct(new Term[] {new TuInt(0), new TuInt(1)});
-		assertFalse(list.isAtom());
+		assertFalse(list.isAtomSymbol());
 		TuStruct compound = new TuStruct("f", new TuStruct("a"), new TuStruct("b"));
-		assertFalse(compound.isAtom());
+		assertFalse(compound.isAtomSymbol());
 		TuStruct singleQuoted = new TuStruct("'atom'");
-		assertTrue(singleQuoted.isAtom());
+		assertTrue(singleQuoted.isAtomSymbol());
 		TuStruct doubleQuoted = new TuStruct("\"atom\"");
-		assertTrue(doubleQuoted.isAtom());
+		assertTrue(doubleQuoted.isAtomSymbol());
 	}
 	
 	public void testIsCompound() {

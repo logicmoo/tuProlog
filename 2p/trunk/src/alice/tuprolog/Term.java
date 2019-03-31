@@ -20,18 +20,10 @@ package alice.tuprolog;
 
 import java.io.Serializable;
 import java.util.AbstractMap;
-//import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Collection;
-import java.util.IdentityHashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
-import alice.tuprolog.InvalidTermException;
-import alice.tuprolog.TuTermVisitor;
 import alice.tuprolog.json.JSONSerializerManager;
-import alice.util.OneWayList;
-import nu.xom.xslt.XSLException;
 
 /**
  * Term class is the root abstract class for prolog data type
@@ -76,7 +68,7 @@ public abstract interface Term extends Serializable {
     public abstract boolean isCompound();
 
     /** is this term a prolog (alphanumeric) atom? */
-    public abstract boolean isAtom();
+    public abstract boolean isAtomSymbol();
 
     /** is this term a prolog list? */
     public abstract boolean isList();
@@ -323,5 +315,15 @@ public abstract interface Term extends Serializable {
         } else
             return null;
     }
+
+    /**
+     * @return
+     */
+    public abstract boolean isInt();
+
+    /**
+     * @return
+     */
+    public abstract int intValue();
 
 }

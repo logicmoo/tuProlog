@@ -17,9 +17,6 @@
  */
 package alice.tuprolog;
 
-import alice.tuprolog.TuStruct;
-import alice.tuprolog.Term;
-
 /**
  * @author Alex Benini
  *
@@ -51,7 +48,7 @@ public class StateGoalSelection extends TuState {
             } else {
                 // Caso di individuazione curGoal
                 Term goal_app = curGoal.getTerm();
-                if (!(goal_app instanceof TuStruct)) {
+                if (!(goal_app .isStruct())) {
                     e.nextState = c.END_FALSE;
                     return;
                 }

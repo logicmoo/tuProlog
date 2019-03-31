@@ -61,7 +61,7 @@ public class TuStateException extends TuState {
                 // secondo argomento di catch/3
                 Term handlerTerm = e.currentContext.currentGoal.getArg(2);
                 Term curHandlerTerm = handlerTerm.getTerm();
-                if (!(curHandlerTerm instanceof TuStruct)) {
+                if (!(curHandlerTerm .isStruct())) {
                     e.nextState = c.END_FALSE;
                     return;
                 }
@@ -134,7 +134,7 @@ public class TuStateException extends TuState {
                 // effettuate durante il processo di unificazione tra
                 // l'eccezione e il catcher
                 Term curHandlerTerm = handlerTerm.getTerm();
-                if (!(curHandlerTerm instanceof TuStruct)) {
+                if (!(curHandlerTerm .isStruct())) {
                     e.nextState = c.END_FALSE;
                     return;
                 }
@@ -142,8 +142,8 @@ public class TuStateException extends TuState {
                 Term curFinallyTerm = finallyTerm.getTerm();
                 // verifico se c'? il blocco finally
                 boolean isFinally = true;
-                if (curFinallyTerm instanceof TuInt) {
-                    TuInt finallyInt = (TuInt) curFinallyTerm;
+                if (curFinallyTerm .isInt()) {
+                    Term finallyInt = (TuInt) curFinallyTerm;
                     if (finallyInt.intValue() == 0)
                         isFinally = false;
                     else {
@@ -151,7 +151,7 @@ public class TuStateException extends TuState {
                         e.nextState = c.END_FALSE;
                         return;
                     }
-                } else if (!(curFinallyTerm instanceof TuStruct)) {
+                } else if (!(curFinallyTerm .isStruct())) {
                     e.nextState = c.END_FALSE;
                     return;
                 }

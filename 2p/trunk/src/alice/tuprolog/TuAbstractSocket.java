@@ -4,8 +4,6 @@ import java.net.InetAddress;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 
-import nu.xom.xslt.XSLException;
-
 public abstract class TuAbstractSocket extends TuTerm {
     private static final long serialVersionUID = 1L;
 
@@ -56,7 +54,7 @@ public abstract class TuAbstractSocket extends TuTerm {
     }
 
     @Override
-    public boolean isAtom() {
+    public boolean isAtomSymbol() {
         // TODO Auto-generated method stub
         return false;
     }

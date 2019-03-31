@@ -18,11 +18,11 @@
 package alice.tuprolog;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.HashMap;
 
 import alice.tuprolog.interfaces.IOperatorManager;
 

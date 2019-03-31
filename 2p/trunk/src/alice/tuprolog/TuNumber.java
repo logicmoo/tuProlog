@@ -17,9 +17,7 @@
  */
 package alice.tuprolog;
 
-import java.util.*;
-
-import nu.xom.xslt.XSLException;
+import java.util.AbstractMap;
 
 /**
  *
@@ -98,7 +96,7 @@ public abstract class TuNumber extends TuTerm implements Comparable<TuNumber> {
 
     public static TuNumber createNumber(String s) {
         Term t = Term.createTerm(s);
-        if (t instanceof TuNumber)
+        if (t .isNumber())
             return (TuNumber) t;
         throw new InvalidTermException("Term " + t + " is not a number.");
     }
@@ -152,7 +150,7 @@ public abstract class TuNumber extends TuTerm implements Comparable<TuNumber> {
 
     /** is this term a prolog (alphanumeric) atom? */
     @Override
-    final public boolean isAtom() {
+    final public boolean isAtomSymbol() {
         return false;
     }
 

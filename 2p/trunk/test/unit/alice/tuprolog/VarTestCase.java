@@ -9,7 +9,7 @@ public class VarTestCase extends TestCase {
 	}
 	
 	public void testIsAtom() {
-		assertFalse(new TuVar("X").isAtom());
+		assertFalse(new TuVar("X").isAtomSymbol());
 	}
 	
 	public void testIsCompound() {

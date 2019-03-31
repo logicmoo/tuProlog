@@ -17,11 +17,11 @@
  */
 package alice.tuprolog;
 
-import java.io.*;
+import java.io.InputStream;
 
-import alice.util.Tools;
 import alice.tuprolog.event.OutputEvent;
 import alice.tuprolog.event.OutputListener;
+import alice.util.Tools;
 
 /**
  * Provides a prolog virtual machine embedded in a separate thread.

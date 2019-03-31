@@ -17,9 +17,6 @@
  */
 package alice.tuprolog;
 
-import alice.tuprolog.TuHaltException;
-import alice.tuprolog.TuJavaException;
-
 /**
  * @author Alex Benini
  */
@@ -49,7 +46,7 @@ public class StateGoalEvaluation extends TuState {
 				e.nextState = c.END_HALT;
 			} catch (Throwable t) {
 
-				if (t instanceof TuPrologError) {
+				if (t  instanceof TuPrologError) {
 					// cast da Throwable a PrologError
 					TuPrologError error = (TuPrologError) t;
 					// sostituisco il gol in cui si ? verificato l'errore con il

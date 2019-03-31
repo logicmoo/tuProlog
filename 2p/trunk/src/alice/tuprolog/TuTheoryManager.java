@@ -157,7 +157,7 @@ public class TuTheoryManager implements Serializable {
 	 * predicate indicator passed as a parameter
 	 */
 	public synchronized boolean abolish(TuStruct pi) {		
-		if (!(pi instanceof TuStruct) || !pi.isGround() || !(pi.getArity() == 2))
+		if (!(pi .isStruct()) || !pi.isGround() || !(pi.getArity() == 2))
 			throw new IllegalArgumentException(pi + " is not a valid Struct");
 		if(!pi.getName().equals("/"))
 				throw new IllegalArgumentException(pi + " has not the valid predicate name. Espected '/' but was " + pi.getName());
@@ -179,14 +179,14 @@ public class TuTheoryManager implements Serializable {
 	 * implementation
 	 */
 	public synchronized List<ClauseInfo> find(Term headt) {
-		if (headt instanceof TuStruct) {
+		if (headt .isStruct()) {
 			List<ClauseInfo> list = dynamicDBase.getPredicates(headt);
 			if (list.isEmpty())
 				list = staticDBase.getPredicates(headt);
 			return list;
 		}
 
-		if (headt instanceof TuVar){
+		if (headt .isVar()){
 			throw new RuntimeException();
 		}
 		return new LinkedList<ClauseInfo>();
@@ -257,7 +257,7 @@ public class TuTheoryManager implements Serializable {
 
 
 	private boolean runDirective(TuStruct c) {
-		if ("':-'".equals(c.getName()) || ":-".equals(c.getName()) && c.getArity() == 1 && c.getTerm(0) instanceof TuStruct) {
+		if ("':-'".equals(c.getName()) || ":-".equals(c.getName()) && c.getArity() == 1 && c.getTerm(0) .isStruct()) {
 			TuStruct dir = (TuStruct) c.getTerm(0);
 			try {
 				if (!primitiveManager.evalAsDirective(dir))

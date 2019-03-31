@@ -49,7 +49,7 @@ public class Datagram_Socket extends TuAbstractSocket {
     @Override
     public boolean unify(List<TuVar> varsUnifiedArg1, List<TuVar> varsUnifiedArg2, Term t, boolean isOccursCheckEnabled) {
         t = t.getTerm();
-        if (t instanceof TuVar) {
+        if (t .isVar()) {
             return t.unify(varsUnifiedArg1, varsUnifiedArg2, this, isOccursCheckEnabled);
         } else if (t instanceof TuAbstractSocket && ((TuAbstractSocket) t).isDatagramSocket()) {
             InetAddress addr = ((TuAbstractSocket) t).getAddress();

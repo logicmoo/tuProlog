@@ -23,10 +23,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import alice.tuprolog.InvalidTermException;
-import alice.tuprolog.TuTermVisitor;
-import nu.xom.xslt.XSLException;
-
 /**
  * Struct class represents both compound prolog term
  * and atom term (considered as 0-arity compound).
@@ -253,7 +249,7 @@ public class TuStruct extends TuTerm {
      * <code>getArg(index).getTerm()</code>
      */
     public Term getTerm(int index) {
-        if (!(arg[index] instanceof TuVar))
+        if (!(arg[index] .isVar()))
             return arg[index];
         return arg[index].getTerm();
     }
@@ -291,7 +287,7 @@ public class TuStruct extends TuTerm {
     }
 
     @Override
-    public boolean isAtom() {
+    public boolean isAtomSymbol() {
         return (arity == 0 || isEmptyList());
     }
 
@@ -314,7 +310,7 @@ public class TuStruct extends TuTerm {
      * Check is this struct is clause or directive
      */
     public boolean isClause() {
-        return (name.equals(":-") && arity > 1 && arg[0].getTerm() instanceof TuStruct);
+        return (name.equals(":-") && arity > 1 && arg[0].getTerm() .isStruct());
     }
 
     @Override
@@ -333,7 +329,7 @@ public class TuStruct extends TuTerm {
             return null;
         }
         for (int i = 0; i < arg.length; i++) {
-            if (arg[i] instanceof TuStruct) {
+            if (arg[i] .isStruct()) {
                 TuStruct s = (TuStruct) arg[i];
                 if (s.getName().equals(name)) {
                     return s;
@@ -341,7 +337,7 @@ public class TuStruct extends TuTerm {
             }
         }
         for (int i = 0; i < arg.length; i++) {
-            if (arg[i] instanceof TuStruct) {
+            if (arg[i] .isStruct()) {
                 TuStruct s = (TuStruct) arg[i];
                 TuStruct sol = s.getArg(name);
                 if (sol != null) {
@@ -358,7 +354,7 @@ public class TuStruct extends TuTerm {
     @Override
     public boolean isGreater(Term t) {
         t = t.getTerm();
-        if (!(t instanceof TuStruct)) {
+        if (!(t .isStruct())) {
             return true;
         } else {
             TuStruct ts = (TuStruct) t;
@@ -468,7 +464,7 @@ public class TuStruct extends TuTerm {
                 // so linked variables must get the linked term
                 term = term.getTerm();
                 //--------------------------------
-                if (term instanceof TuVar) {
+                if (term .isVar()) {
                     TuVar t = (TuVar) term;
                     t.setInternalTimestamp(newcount++);
                     if (!t.isAnonymous()) {
@@ -489,7 +485,7 @@ public class TuStruct extends TuTerm {
                             vl.add(t);
                         }
                     }
-                } else if (term instanceof TuStruct) {
+                } else if (term .isStruct()) {
                     newcount = ((TuStruct) term).resolveTerm(vl, newcount);
                 }
             }
@@ -590,7 +586,7 @@ public class TuStruct extends TuTerm {
      */
     TuStruct fromList() {
         Term ft = arg[0].getTerm();
-        if (!ft.isAtom()) {
+        if (!ft.isAtomSymbol()) {
             return null;
         }
         TuStruct at = (TuStruct) arg[1].getTerm();
@@ -645,7 +641,7 @@ public class TuStruct extends TuTerm {
     public boolean unify(List<TuVar> vl1, List<TuVar> vl2, Term t, boolean isOccursCheckEnabled) {
         // In fase di unificazione bisogna annotare tutte le variabili della struct completa.
         t = t.getTerm();
-        if (t instanceof TuStruct) {
+        if (t .isStruct()) {
             TuStruct ts = (TuStruct) t;
             if (arity == ts.arity && name.equals(ts.name)) {
                 for (int c = 0; c < arity; c++) {
@@ -655,7 +651,7 @@ public class TuStruct extends TuTerm {
                 }
                 return true;
             }
-        } else if (t instanceof TuVar) {
+        } else if (t .isVar()) {
             return t.unify(vl2, vl1, this, isOccursCheckEnabled);
         }
         return false;
@@ -708,13 +704,13 @@ public class TuStruct extends TuTerm {
             if (arity > 0) {
                 s = s + "(";
                 for (int c = 1; c < arity; c++) {
-                    if (!(arg[c - 1] instanceof TuVar)) {
+                    if (!(arg[c - 1] .isVar())) {
                         s = s + arg[c - 1].toString() + ",";
                     } else {
                         s = s + ((TuVar) arg[c - 1]).toStringFlattened() + ",";
                     }
                 }
-                if (!(arg[arity - 1] instanceof TuVar)) {
+                if (!(arg[arity - 1] .isVar())) {
                     s = s + arg[arity - 1].toString() + ")";
                 } else {
                     s = s + ((TuVar) arg[arity - 1]).toStringFlattened() + ")";
@@ -732,7 +728,7 @@ public class TuStruct extends TuTerm {
             if (tl.isEmptyList()) {
                 return h.toString();
             }
-            if (h instanceof TuVar) {
+            if (h .isVar()) {
                 return (((TuVar) h).toStringFlattened() + "," + tl.toString0());
             } else {
                 return (h.toString() + "," + tl.toString0());
@@ -740,12 +736,12 @@ public class TuStruct extends TuTerm {
         } else {
             String h0;
             String t0;
-            if (h instanceof TuVar) {
+            if (h .isVar()) {
                 h0 = ((TuVar) h).toStringFlattened();
             } else {
                 h0 = h.toString();
             }
-            if (t instanceof TuVar) {
+            if (t .isVar()) {
                 t0 = ((TuVar) t).toStringFlattened();
             } else {
                 t0 = t.toString();
@@ -757,14 +753,14 @@ public class TuStruct extends TuTerm {
     private String toString0_bracket() {
         if (arity == 0) {
             return "";
-        } else if (arity == 1 && !((arg[0] instanceof TuStruct) && ((TuStruct) arg[0]).getName().equals(","))) {
+        } else if (arity == 1 && !((arg[0] .isStruct()) && ((TuStruct) arg[0]).getName().equals(","))) {
             return arg[0].getTerm().toString();
         } else {
             // comma case 
             Term head = ((TuStruct) arg[0]).getTerm(0);
             Term tail = ((TuStruct) arg[0]).getTerm(1);
             StringBuffer buf = new StringBuffer(head.toString());
-            while (tail instanceof TuStruct && ((TuStruct) tail).getName().equals(",")) {
+            while (tail .isStruct() && ((TuStruct) tail).getName().equals(",")) {
                 head = ((TuStruct) tail).getTerm(0);
                 buf.append("," + head.toString());
                 tail = ((TuStruct) tail).getTerm(1);

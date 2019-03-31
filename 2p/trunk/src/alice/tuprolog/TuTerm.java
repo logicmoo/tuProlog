@@ -18,19 +18,15 @@
 
 package alice.tuprolog;
 
-import java.io.Serializable;
 import java.util.AbstractMap;
-//import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Collection;
 import java.util.IdentityHashMap;
+//import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-import alice.tuprolog.InvalidTermException;
-import alice.tuprolog.TuTermVisitor;
 import alice.tuprolog.json.JSONSerializerManager;
 import alice.util.OneWayList;
-import nu.xom.xslt.XSLException;
 
 /**
  * Term class is the root abstract class for prolog data type
@@ -39,6 +35,25 @@ import nu.xom.xslt.XSLException;
  * @see  TuNumber
  */
 public abstract class TuTerm implements Term {
+
+
+    /* (non-Javadoc)
+     * @see alice.tuprolog.Term#intValue()
+     */
+    @Override
+    public int intValue() {
+        // TODO Auto-generated method stub
+        if (true) throw new AbstractMethodError("TuTerm.intValue");
+        return 0;
+    }
+    
+    /* (non-Javadoc)
+     * @see alice.tuprolog.Term#isInt()
+     */
+    @Override
+    public boolean isInt() {
+        return false;
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -77,7 +92,7 @@ public abstract class TuTerm implements Term {
     public abstract boolean isCompound();
 
     /** is this term a prolog (alphanumeric) atom? */
-    public abstract boolean isAtom();
+    public abstract boolean isAtomSymbol();
 
     /** is this term a prolog list? */
     public abstract boolean isList();

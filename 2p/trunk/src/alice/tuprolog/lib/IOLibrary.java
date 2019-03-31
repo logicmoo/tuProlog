@@ -124,9 +124,9 @@ public class IOLibrary extends TuLibrary {
     
     public boolean see_1(Term arg) throws TuPrologError {
         arg = arg.getTerm();
-        if (arg instanceof TuVar)
+        if (arg .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (!arg.isAtom()) {
+        if (!arg.isAtomSymbol()) {
             throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",
                     arg);
         }
@@ -172,9 +172,9 @@ public class IOLibrary extends TuLibrary {
 
     public boolean tell_1(Term arg) throws TuPrologError {
         arg = arg.getTerm();
-        if (arg instanceof TuVar)
+        if (arg .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (!arg.isAtom()) {
+        if (!arg.isAtomSymbol()) {
             throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",
                     arg);
         }
@@ -219,9 +219,9 @@ public class IOLibrary extends TuLibrary {
 
     public boolean put_1(Term arg) throws TuPrologError {
         arg = arg.getTerm();
-        if (arg instanceof TuVar)
+        if (arg .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (!arg.isAtom()) {
+        if (!arg.isAtomSymbol()) {
             throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "character", arg);
         } else {
@@ -285,9 +285,9 @@ public class IOLibrary extends TuLibrary {
 
     public boolean tab_1(Term arg) throws TuPrologError {
         arg = arg.getTerm();
-        if (arg instanceof TuVar)
+        if (arg .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (!(arg instanceof TuInt))
+        if (!(arg .isInt()))
             throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "integer", arg);
         // int n = ((Int)arg).intValue(); // OLD BUGGED  VERSION (signaled by MViroli) 
@@ -372,7 +372,7 @@ public class IOLibrary extends TuLibrary {
 
     public boolean write_1(Term arg0) throws TuPrologError {
         arg0 = arg0.getTerm();
-        if (arg0 instanceof TuVar)
+        if (arg0 .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (outputStreamName.equals(STDOUT_NAME)) { /* Changed from "stdout" to STDOUT_NAME */
             getEngine().stdOutput(arg0.toString());
@@ -390,7 +390,7 @@ public class IOLibrary extends TuLibrary {
 
     public boolean print_1(Term arg0) throws TuPrologError {
         arg0 = arg0.getTerm();
-        if (arg0 instanceof TuVar)
+        if (arg0 .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (outputStreamName.equals(STDOUT_NAME)) { /* Changed from "stdout" to STDOUT_NAME */
             getEngine().stdOutput(
@@ -435,9 +435,9 @@ public class IOLibrary extends TuLibrary {
     public boolean text_from_file_2(Term file_name, Term text)
             throws TuPrologError {
         file_name = file_name.getTerm();
-        if (file_name instanceof TuVar)
+        if (file_name .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (!file_name.isAtom())
+        if (!file_name.isAtomSymbol())
             throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",
                     file_name);
         TuStruct fileName = (TuStruct) file_name.getTerm();
@@ -465,7 +465,7 @@ public class IOLibrary extends TuLibrary {
      */
     public boolean set_seed_1(Term t) throws TuPrologError {
         t = t.getTerm();
-        if( !(t instanceof TuNumber) ) {
+        if( !(t .isNumber()) ) {
             throw TuPrologError.type_error(engine.getEngineManager(), 1, "Integer Number", t);
         }
         TuNumber seed = (TuNumber)t;
@@ -499,9 +499,9 @@ public class IOLibrary extends TuLibrary {
             throws TuPrologError {
         arg0 = arg0.getTerm();
         arg1 = arg1.getTerm();
-        if (arg1 instanceof TuVar)
+        if (arg1 .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
-        if (!arg1.isAtom() && !arg1.isCompound()) {
+        if (!arg1.isAtomSymbol() && !arg1.isCompound()) {
             throw TuPrologError.type_error(engine.getEngineManager(), 2,
                     "callable", arg1);
         }
@@ -541,7 +541,7 @@ public class IOLibrary extends TuLibrary {
     public boolean write_base_1(Term arg0) throws TuPrologError {
         arg0 = arg0.getTerm();
         
-        if (arg0 instanceof TuVar)
+        if (arg0 .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (outputStreamName.equals(STDOUT_NAME)) { /* Changed from "stdout" to STDOUT_NAME */
             getEngine().stdOutput(arg0.toString());

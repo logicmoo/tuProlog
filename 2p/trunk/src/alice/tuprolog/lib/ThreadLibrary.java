@@ -44,7 +44,7 @@ public class ThreadLibrary extends TuLibrary {
 	unificando il goal risolto a result. Il thread viene eliminato dal sistema*/
 	public boolean thread_join_2(Term id, Term result) throws TuPrologError{
 		id = id.getTerm();
-		if (!(id instanceof TuInt)) 
+		if (!(id .isInt())) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "integer", id);
 		SolveInfo res = engineManager.join(((TuInt)id).intValue());
@@ -66,7 +66,7 @@ public class ThreadLibrary extends TuLibrary {
 		
 	public boolean thread_read_2(Term id, Term result) throws TuPrologError{
 		id=id.getTerm();
-		if (!(id instanceof TuInt)) 
+		if (!(id .isInt())) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "integer", id);
 		SolveInfo res=engineManager.read( ((TuInt)id).intValue());
@@ -88,7 +88,7 @@ public class ThreadLibrary extends TuLibrary {
 	
 	public boolean thread_has_next_1(Term id) throws TuPrologError{
 		id=id.getTerm();
-		if (!(id instanceof TuInt)) 
+		if (!(id .isInt())) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "integer", id);
 		return engineManager.hasNext(((TuInt)id).intValue());
@@ -97,7 +97,7 @@ public class ThreadLibrary extends TuLibrary {
 	
 	public boolean thread_next_sol_1(Term id) throws TuPrologError{
 		id=id.getTerm();
-		if (!(id instanceof TuInt)) 
+		if (!(id .isInt())) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "integer", id);
 		return engineManager.nextSolution(((TuInt)id).intValue());
@@ -105,7 +105,7 @@ public class ThreadLibrary extends TuLibrary {
 	
 	public boolean thread_detach_1 (Term id) throws TuPrologError{
 		id=id.getTerm();
-		if (!(id instanceof TuInt)) 
+		if (!(id .isInt())) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "integer", id);
 		engineManager.detach(((TuInt)id).intValue());
@@ -114,7 +114,7 @@ public class ThreadLibrary extends TuLibrary {
 	
 	public boolean thread_sleep_1(Term millisecs) throws TuPrologError{
 		millisecs=millisecs.getTerm();
-		if (!(millisecs instanceof TuInt)) 
+		if (!(millisecs .isInt())) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "integer", millisecs);
 		long time=((TuInt)millisecs).intValue();
@@ -129,9 +129,9 @@ public class ThreadLibrary extends TuLibrary {
 	
 	public boolean thread_send_msg_2(Term id, Term msg) throws TuPrologError{
 		id=id.getTerm();
-		if (id instanceof TuInt) 
+		if (id .isInt()) 
 			return engineManager.sendMsg(((TuInt)id).intValue(), msg);	
-		if (!id.isAtomic() || !id.isAtom()) 
+		if (!id.isAtomic() || !id.isAtomSymbol()) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "atom, atomic or integer", id);
 		return engineManager.sendMsg(id.toString(), msg);
@@ -139,9 +139,9 @@ public class ThreadLibrary extends TuLibrary {
 	
 	public  boolean  thread_get_msg_2(Term id, Term msg) throws TuPrologError{
 		id=id.getTerm();
-		if (id instanceof TuInt) 
+		if (id .isInt()) 
 			return engineManager.getMsg(((TuInt)id).intValue(), msg);
-		if (!id.isAtom() || !id.isAtomic()) 
+		if (!id.isAtomSymbol() || !id.isAtomic()) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "atom, atomic or integer", id);
 		return engineManager.getMsg(id.toString(), msg);
@@ -149,9 +149,9 @@ public class ThreadLibrary extends TuLibrary {
 	
 	public  boolean  thread_peek_msg_2(Term id, Term msg) throws TuPrologError{
 		id=id.getTerm();
-		if (id instanceof TuInt) 
+		if (id .isInt()) 
 			return engineManager.peekMsg(((TuInt)id).intValue(), msg);
-		if (!id.isAtom() || !id.isAtomic()) 
+		if (!id.isAtomSymbol() || !id.isAtomic()) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "atom, atomic or integer", id);
 		return engineManager.peekMsg(id.toString(), msg);
@@ -159,9 +159,9 @@ public class ThreadLibrary extends TuLibrary {
 
 	public  boolean  thread_wait_msg_2(Term id, Term msg) throws TuPrologError{
 		id=id.getTerm();
-		if (id instanceof TuInt) 
+		if (id .isInt()) 
 			return engineManager.waitMsg(((TuInt)id).intValue(), msg);
-		if (!id.isAtom() || !id.isAtomic()) 
+		if (!id.isAtomSymbol() || !id.isAtomic()) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "atom, atomic or integer", id);
 		return engineManager.waitMsg(id.toString(), msg);
@@ -169,9 +169,9 @@ public class ThreadLibrary extends TuLibrary {
 
 	public  boolean  thread_remove_msg_2(Term id, Term msg) throws TuPrologError{
 		id=id.getTerm();
-		if (id instanceof TuInt) 
+		if (id .isInt()) 
 			return engineManager.removeMsg(((TuInt)id).intValue(), msg);
-		if (!id.isAtom() || !id.isAtomic()) 
+		if (!id.isAtomSymbol() || !id.isAtomic()) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "atom, atomic or integer", id);
 		return engineManager.removeMsg(id.toString(), msg);
@@ -179,7 +179,7 @@ public class ThreadLibrary extends TuLibrary {
 	
 	public boolean msg_queue_create_1(Term q) throws TuPrologError{
 		q= q.getTerm();
-		if (!q.isAtomic() || !q.isAtom()) 
+		if (!q.isAtomic() || !q.isAtomSymbol()) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "atom or atomic", q);
 		return engineManager.createQueue(q.toString());
@@ -187,7 +187,7 @@ public class ThreadLibrary extends TuLibrary {
 	
 	public boolean msg_queue_destroy_1 (Term q) throws TuPrologError{
 		q=q.getTerm();
-		if (!q.isAtomic() || !q.isAtom()) 
+		if (!q.isAtomic() || !q.isAtomSymbol()) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "atom or atomic", q);
 		engineManager.destroyQueue(q.toString());
@@ -197,10 +197,10 @@ public class ThreadLibrary extends TuLibrary {
 	public boolean msg_queue_size_2(Term id, Term n) throws TuPrologError{
 		id=id.getTerm();
 		int size;
-		if (id instanceof TuInt) 
+		if (id .isInt()) 
 			size=engineManager.queueSize(((TuInt)id).intValue());
 		else{
-			if (!id.isAtom() || !id.isAtomic())
+			if (!id.isAtomSymbol() || !id.isAtomic())
 				throw TuPrologError.type_error(engine.getEngineManager(), 1,
 	                    "atom, atomic or integer", id);
 			size=engineManager.queueSize(id.toString());
@@ -211,7 +211,7 @@ public class ThreadLibrary extends TuLibrary {
 	
 	public boolean mutex_create_1(Term mutex) throws TuPrologError{
 		mutex=mutex.getTerm();
-		if (!mutex.isAtom() || !mutex.isAtomic()) 
+		if (!mutex.isAtomSymbol() || !mutex.isAtomic()) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "atom or atomic", mutex);
 		return engineManager.createLock(mutex.toString());
@@ -219,7 +219,7 @@ public class ThreadLibrary extends TuLibrary {
 	
 	public boolean mutex_destroy_1(Term mutex) throws TuPrologError{
 		mutex=mutex.getTerm();
-		if (!mutex.isAtom() || !mutex.isAtomic()) 
+		if (!mutex.isAtomSymbol() || !mutex.isAtomic()) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "atom or atomic", mutex);
 		engineManager.destroyLock(mutex.toString());
@@ -228,7 +228,7 @@ public class ThreadLibrary extends TuLibrary {
 	
 	public boolean mutex_lock_1(Term mutex) throws TuPrologError{
 		mutex=mutex.getTerm();
-		if (!mutex.isAtom() || !mutex.isAtomic()) 
+		if (!mutex.isAtomSymbol() || !mutex.isAtomic()) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "atom or atomic", mutex);
 		return engineManager.mutexLock(mutex.toString());
@@ -236,7 +236,7 @@ public class ThreadLibrary extends TuLibrary {
 	
 	public boolean mutex_trylock_1(Term mutex) throws TuPrologError{
 		mutex=mutex.getTerm();
-		if (!mutex.isAtom() || !mutex.isAtomic()) 
+		if (!mutex.isAtomSymbol() || !mutex.isAtomic()) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "atom or atomic", mutex);
 		return engineManager.mutexTryLock(mutex.toString());
@@ -244,7 +244,7 @@ public class ThreadLibrary extends TuLibrary {
 	
 	public boolean mutex_unlock_1(Term mutex) throws TuPrologError{
 		mutex=mutex.getTerm();
-		if (!mutex.isAtom() || !mutex.isAtomic()) 
+		if (!mutex.isAtomSymbol() || !mutex.isAtomic()) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "atom or atomic", mutex);
 		return engineManager.mutexUnlock(mutex.toString());
@@ -252,7 +252,7 @@ public class ThreadLibrary extends TuLibrary {
 	
 	public boolean mutex_isLocked_1(Term mutex) throws TuPrologError{
 		mutex=mutex.getTerm();
-		if (!mutex.isAtom() || !mutex.isAtomic()) 
+		if (!mutex.isAtomSymbol() || !mutex.isAtomic()) 
 			throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "atom or atomic", mutex);
 		return engineManager.isLocked(mutex.toString());

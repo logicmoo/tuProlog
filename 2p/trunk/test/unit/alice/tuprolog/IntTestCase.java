@@ -9,7 +9,7 @@ public class IntTestCase extends TestCase {
 	}
 	
 	public void testIsAtom() {
-		assertFalse(new TuInt(0).isAtom());
+		assertFalse(new TuInt(0).isAtomSymbol());
 	}
 	
 	public void testIsCompound() {

@@ -8,12 +8,14 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.*;
-import cli.System.Reflection.Assembly;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
 
 import alice.tuprolog.event.LibraryEvent;
 import alice.tuprolog.event.WarningEvent;
 import alice.util.AssemblyCustomClassLoader;
+import cli.System.Reflection.Assembly;
 
 /**
  * @author Alex Benini

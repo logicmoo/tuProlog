@@ -27,7 +27,7 @@ public class TermFrame extends JFrame implements ActionListener{
       Node node=new Node(""+term);
       node.textcolor=node.bordercolor=Color.BLACK;
       //make it more specific if possible
-      if(term instanceof TuVar){
+      if(term .isVar()){
         TuVar var=(TuVar)term;
         node.text=var.getName();
         node.textcolor=node.bordercolor=Color.BLUE;
@@ -37,7 +37,7 @@ public class TermFrame extends JFrame implements ActionListener{
         }
       } else if(term instanceof alice.tuprolog.TuNumber){
         node.textcolor=node.bordercolor=Color.MAGENTA;
-      } else if(term instanceof TuStruct){
+      } else if(term .isStruct()){
         TuStruct struct=(TuStruct)term;
         node.text=struct.getName();
         int n=struct.getArity();

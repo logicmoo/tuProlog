@@ -229,7 +229,7 @@ public class OOLibrary extends TuLibrary {
         TuStruct arg = (TuStruct) argl.getTerm();
         id = id.getTerm();
         try {
-            if (!className.isAtom()) {
+            if (!className.isAtomSymbol()) {
                 throw new TuJavaException(new ClassNotFoundException(
                         "Java class not found: " + className));
             }
@@ -504,8 +504,8 @@ public class OOLibrary extends TuLibrary {
 		String methodName = null;
 		try {
 			methodName = method.getName();
-			if (!objId.isAtom()) {
-				if (objId instanceof TuVar) {
+			if (!objId.isAtomSymbol()) {
+				if (objId .isVar()) {
 					throw new TuJavaException(new IllegalArgumentException(objId
 							.toString()));
 				}
@@ -523,7 +523,7 @@ public class OOLibrary extends TuLibrary {
 			}
 			args = parseArg(method);
 			// object and argument must be instantiated
-			if (objId instanceof TuVar)
+			if (objId .isVar())
 				throw new TuJavaException(new IllegalArgumentException(objId
 						.toString()));
 			if (args == null) {
@@ -651,7 +651,7 @@ public class OOLibrary extends TuLibrary {
     {
     	try {
     		paths = paths.getTerm();
-    		if(!(paths instanceof TuVar))
+    		if(!(paths .isVar()))
     			throw new IllegalArgumentException();
     		URL[] urls = dynamicLoader.getURLs();
         	String stringURLs = null;
@@ -687,7 +687,7 @@ public class OOLibrary extends TuLibrary {
      */
     private boolean java_set(Term objId, Term fieldTerm, Term what) {
         what = what.getTerm();
-        if (!fieldTerm.isAtom() || what instanceof TuVar)
+        if (!fieldTerm.isAtomSymbol() || what .isVar())
             return false;
         String fieldName = ((TuStruct) fieldTerm).getName();
         Object obj = null;
@@ -731,9 +731,9 @@ public class OOLibrary extends TuLibrary {
 
             // first check for primitive data field
             Field field = cl.getField(fieldName);
-            if (what instanceof TuNumber) {
+            if (what .isNumber()) {
                 TuNumber wn = (TuNumber) what;
-                if (wn instanceof TuInt) {
+                if (wn .isInt()) {
                     field.setInt(obj, wn.intValue());
                 } else if (wn instanceof alice.tuprolog.TuDouble) {
                     field.setDouble(obj, wn.doubleValue());
@@ -769,7 +769,7 @@ public class OOLibrary extends TuLibrary {
      * get the value of the field
      */
     private boolean java_get(Term objId, Term fieldTerm, Term what) {
-        if (!fieldTerm.isAtom()) {
+        if (!fieldTerm.isAtomSymbol()) {
             return false;
         }
         String fieldName = ((TuStruct) fieldTerm).getName();
@@ -867,28 +867,28 @@ public class OOLibrary extends TuLibrary {
             }
             String name = cl.toString();
             if (name.equals("class [I")) {
-                if (!(what instanceof TuNumber)) {
+                if (!(what .isNumber())) {
                     throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
                 }
                 byte v = (byte) ((TuNumber) what).intValue();
                 Array.setInt(obj, index.intValue(), v);
             } else if (name.equals("class [D")) {
-                if (!(what instanceof TuNumber)) {
+                if (!(what .isNumber())) {
                     throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
                 }
                 double v = ((TuNumber) what).doubleValue();
                 Array.setDouble(obj, index.intValue(), v);
             } else if (name.equals("class [F")) {
-                if (!(what instanceof TuNumber)) {
+                if (!(what .isNumber())) {
                     throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
                 }
                 float v = ((TuNumber) what).floatValue();
                 Array.setFloat(obj, index.intValue(), v);
             } else if (name.equals("class [L")) {
-                if (!(what instanceof TuNumber)) {
+                if (!(what .isNumber())) {
                     throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
                 }
@@ -908,14 +908,14 @@ public class OOLibrary extends TuLibrary {
                             .toString()));
                 }
             } else if (name.equals("class [B")) {
-                if (!(what instanceof TuNumber)) {
+                if (!(what .isNumber())) {
                     throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
                 }
                 int v = ((TuNumber) what).intValue();
                 Array.setByte(obj, index.intValue(), (byte) v);
             } else if (name.equals("class [S")) {
-                if (!(what instanceof TuNumber)) {
+                if (!(what .isNumber())) {
                     throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
                 }
@@ -1144,7 +1144,7 @@ public class OOLibrary extends TuLibrary {
             if (term == null) {
                 values[i] = null;
                 types[i] = null;
-            } else if (term.isAtom()) {
+            } else if (term.isAtomSymbol()) {
                 String name = alice.util.Tools.removeApices(term.toString());
                 if (name.equals("true")) {
                     values[i] = Boolean.TRUE;
@@ -1161,9 +1161,9 @@ public class OOLibrary extends TuLibrary {
                     }
                     types[i] = values[i].getClass();
                 }
-            } else if (term instanceof TuNumber) {
+            } else if (term .isNumber()) {
                 TuNumber t = (TuNumber) term;
-                if (t instanceof TuInt) {
+                if (t .isInt()) {
                     values[i] = new java.lang.Integer(t.intValue());
                     types[i] = java.lang.Integer.TYPE;
                 } else if (t instanceof alice.tuprolog.TuDouble) {
@@ -1176,7 +1176,7 @@ public class OOLibrary extends TuLibrary {
                     values[i] = new java.lang.Float(t.floatValue());
                     types[i] = java.lang.Float.TYPE;
                 }
-            } else if (term instanceof TuStruct) {
+            } else if (term .isStruct()) {
                 // argument descriptors
                 TuStruct tc = (TuStruct) term;
                 if (tc.getName().equals("as")) {
@@ -1193,7 +1193,7 @@ public class OOLibrary extends TuLibrary {
                     }
                     types[i] = values[i].getClass();
                 }
-            } else if (term instanceof TuVar && !((TuVar) term).isBound()) {
+            } else if (term .isVar() && !((TuVar) term).isBound()) {
                 values[i] = null;
                 types[i] = Object.class;
             } else {
@@ -1214,7 +1214,7 @@ public class OOLibrary extends TuLibrary {
     private boolean parse_as(Object[] values, Class<?>[] types, int i,
             Term castWhat, Term castTo) {
         try {
-            if (!(castWhat instanceof TuNumber)) {
+            if (!(castWhat .isNumber())) {
                 String castTo_name = alice.util.Tools
                         .removeApices(((TuStruct) castTo).getName());
                 String castWhat_name = alice.util.Tools.removeApices(castWhat
@@ -1657,7 +1657,7 @@ public class OOLibrary extends TuLibrary {
                 return unify(id, (Term) aKey);
             } else {
                 // object not previously referenced
-                if (id instanceof TuVar) {
+                if (id .isVar()) {
                     // get a ground term
                     TuStruct idTerm = generateFreshId();
                     unify(id, idTerm);

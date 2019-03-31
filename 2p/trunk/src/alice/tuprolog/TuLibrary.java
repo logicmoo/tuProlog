@@ -18,7 +18,10 @@
 package alice.tuprolog;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -135,7 +138,7 @@ public abstract class TuLibrary implements Serializable, IPrimitives {
         if (term == null)
             return null;
         Term val = term.getTerm();
-        if (val instanceof TuStruct) {
+        if (val .isStruct()) {
             TuStruct t = (TuStruct) val;
             if (term != t)
                 if (!t.isPrimitive())
@@ -146,7 +149,7 @@ public abstract class TuLibrary implements Serializable, IPrimitives {
                 if (bt.isFunctor())
                     return bt.evalAsFunctor(t);
             }
-        } else if (val instanceof TuNumber) {
+        } else if (val .isNumber()) {
             return val;
         }
         return null;

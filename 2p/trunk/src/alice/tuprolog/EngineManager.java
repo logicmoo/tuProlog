@@ -38,7 +38,7 @@ public class EngineManager implements java.io.Serializable {
 		id = id+1;
 		
 		if (goal == null) return false;
-		if (goal instanceof TuVar) 
+		if (goal .isVar()) 
 			goal = goal.getTerm();
 		
 		EngineRunner er = new EngineRunner(id);

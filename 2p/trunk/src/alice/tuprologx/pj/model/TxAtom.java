@@ -41,7 +41,7 @@ public class TxAtom extends TxTerm<TxAtom> {
         }
         
         static boolean matches(alice.tuprolog.Term t) {
-            return (!(t instanceof alice.tuprolog.TuVar) && t.isAtom() && !t.isList() && !TxBool.matches(t));
+            return (!(t instanceof alice.tuprolog.TuVar) && t.isAtomSymbol() && !t.isList() && !TxBool.matches(t));
         }
         
         public TxList<TxAtom> toCharList() {

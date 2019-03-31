@@ -18,7 +18,13 @@
 package alice.tuprolog;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import alice.tuprolog.interfaces.IPrimitiveManager;
 
@@ -123,7 +129,7 @@ public class PrimitiveManager /*Castagna 06/2011*/implements IPrimitiveManager/*
             return;
         }
         term = term.getTerm();
-        if (!(term instanceof TuStruct)) {
+        if (!(term .isStruct())) {
             return;
         }
         TuStruct t = (TuStruct) term;

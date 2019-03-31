@@ -42,7 +42,7 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
       for(int i=0; i<levels; i++){
         ExecutionContext ec=eclist.get(i);
         Term c=ec.getClause();
-        if(c instanceof TuStruct){
+        if(c .isStruct()){
           TuStruct s=(TuStruct)c;
           String name=s.getName();
           ArrayList<Term> sub=new ArrayList<Term>();

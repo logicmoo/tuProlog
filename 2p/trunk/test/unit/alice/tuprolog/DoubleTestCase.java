@@ -9,7 +9,7 @@ public class DoubleTestCase extends TestCase {
 	}
 	
 	public void testIsAtom() {
-		assertFalse(new alice.tuprolog.TuDouble(0).isAtom());
+		assertFalse(new alice.tuprolog.TuDouble(0).isAtomSymbol());
 	}
 	
 	public void testIsCompound() {

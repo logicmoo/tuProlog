@@ -17,11 +17,9 @@
  */
 package alice.tuprolog;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-import alice.tuprolog.ClauseInfo;
-import alice.tuprolog.TuStruct;
 import alice.util.OneWayList;
 
 /**

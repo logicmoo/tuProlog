@@ -17,9 +17,8 @@
  */
 package alice.tuprolog;
 
-import java.util.*;
+import java.util.List;
 
-import alice.tuprolog.SubGoalId;
 import alice.util.OneWayList;
 
 
@@ -53,7 +52,7 @@ public class StateBacktrack extends TuState {
         //deunify variables and reload old goal
         e.currentContext = curChoice.executionContext;
         Term curGoal = e.currentContext.goalsToEval.backTo(curChoice.indexSubGoal).getTerm();
-        if (!(curGoal instanceof TuStruct)) {
+        if (!(curGoal .isStruct())) {
             e.nextState = c.END_FALSE;
             return;
         }
@@ -81,7 +80,7 @@ public class StateBacktrack extends TuState {
             fatherIndex = curCtx.fatherGoalId;
             curCtx = curCtx.fatherCtx;
             curGoal = curCtx.goalsToEval.backTo(fatherIndex).getTerm();
-            if (!(curGoal instanceof TuStruct)) {
+            if (!(curGoal .isStruct())) {
                 e.nextState = c.END_FALSE;
                 return;
             }
