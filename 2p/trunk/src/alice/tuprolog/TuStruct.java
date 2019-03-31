@@ -31,6 +31,7 @@ import static alice.tuprolog.TuFactory.*;
  */
 public class TuStruct extends TuTerm {
 
+
     private static final long serialVersionUID = 1L;
 
     @SuppressWarnings("unused")
@@ -215,7 +216,7 @@ public class TuStruct extends TuTerm {
     /**
      * Gets the number of elements of this structure
      */
-    public int getArity() {
+    public int getPlArity() {
         return arity;
     }
 
@@ -504,7 +505,7 @@ public class TuStruct extends TuTerm {
      */
     @Override
     public boolean isEmptyList() {
-        return fname().equals("[]") && getArity() == 0;
+        return fname().equals("[]") && getPlArity() == 0;
     }
 
     /**
@@ -515,7 +516,7 @@ public class TuStruct extends TuTerm {
      * If the callee structure is not a list, throws an <code>UnsupportedOperationException</code>
      * </p>
      */
-    public Term listHead() {
+    public Term getPlHead() {
         if (!isPlList())
             throw new UnsupportedOperationException("The structure " + this + " is not a list.");
         return arg[0].dref();
@@ -529,7 +530,7 @@ public class TuStruct extends TuTerm {
      * If the callee structure is not a list, throws an <code>UnsupportedOperationException</code>
      * </p>
      */
-    public TuStruct listTail() {
+    public TuTerm getPlTail() {
         if (!isPlList())
             throw new UnsupportedOperationException("The structure " + this + " is not a list.");
         return (TuStruct) arg[1].dref();
@@ -563,7 +564,7 @@ public class TuStruct extends TuTerm {
      * If the callee structure is not a list, throws an <code>UnsupportedOperationException</code>
      * </p>
      */
-    public Iterator<? extends Term> listIterator() {
+    public Iterator<? extends Term> listIteratorProlog() {
         if (!isPlList())
             throw new UnsupportedOperationException("The structure " + this + " is not a list.");
         return new StructIterator(this);

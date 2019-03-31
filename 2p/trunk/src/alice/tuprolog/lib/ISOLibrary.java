@@ -89,7 +89,7 @@ public class ISOLibrary extends TuLibrary {
             for (int i = 0; i < st.length(); i++) {
                 tlist[i] = createTuAtom(new String(new char[] { st.charAt(i) }));
             }
-            TuStruct list = createTuListStruct(tlist);
+            Term list = createTuListStruct(tlist);
             /*
              * for (int i=0; i<st.length(); i++){ Struct ch=new Struct(new
              * String(new char[]{ st.charAt(st.length()-i-1)} )); list=new

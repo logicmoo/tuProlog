@@ -169,7 +169,7 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 			 * If no arguments no optimization can be applied
 			 * (and probably no optimization is needed)
 			 */
-			if(g.getArity() == 0){
+			if(g.getPlArity() == 0){
 				return new ReadOnlyLinkedList<ClauseInfo>(this);
 			}
 
@@ -241,7 +241,7 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 		 * A list can be an empty list, or a Struct with name equals to "."
 		 * and arity equals to 2.
 		 */
-		return t.isEmptyList() || (t.fname().equals(".") && t.getArity() == 2);
+		return t.isEmptyList() || (t.fname().equals(".") && t.getPlArity() == 2);
 
 	}
 
@@ -252,7 +252,7 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 		if(clause .isTuStruct()){
 			TuStruct g = (TuStruct) clause.dref();
 
-			if(g.getArity() == 0){
+			if(g.getPlArity() == 0){
 				return;
 			}
 
@@ -293,7 +293,7 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 		if(clause .isTuStruct()){
 			TuStruct g = (TuStruct) clause.dref();
 
-			if(g.getArity() == 0){
+			if(g.getPlArity() == 0){
 				return;
 			}
 

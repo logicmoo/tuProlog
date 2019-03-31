@@ -7,7 +7,7 @@ import static alice.tuprolog.TuFactory.*;
 public class BuiltInTestCase extends TestCase {
 	
 	public void testConvertTermToGoal() throws InvalidTermException {
-		Term t = new TuVar("T");
+		Term t = createTuVarNamed("T");
 		TuStruct result = S("call", t);
 		assertEquals(result, BuiltIn.convertTermToGoal(t));
 		assertEquals(result, BuiltIn.convertTermToGoal(TuFactory.S("call", t)));
@@ -15,14 +15,14 @@ public class BuiltInTestCase extends TestCase {
 		t = createTuInt(2);
 		assertNull(BuiltIn.convertTermToGoal(t));
 		
-		t = S("p", createTuAtom("a"), new TuVar("B"), createTuAtom("c"));
+		t = S("p", createTuAtom("a"), createTuVarNamed("B"), createTuAtom("c"));
 		result = (TuStruct) t;
 		assertEquals(result, BuiltIn.convertTermToGoal(t));
 		
-		TuVar linked = new TuVar("X");
+		TuVar linked = createTuVarNamed("X");
 		linked.setLink(TuFactory.createTuAtom("!"));
-		Term[] arguments = new Term[] { linked, new TuVar("Y") };
-		Term[] results = new Term[] { createTuAtom("!"), S("call", new TuVar("Y")) };
+		Term[] arguments = new Term[] { linked, createTuVarNamed("Y") };
+		Term[] results = new Term[] { createTuAtom("!"), S("call", createTuVarNamed("Y")) };
 		assertEquals(TuFactory.createTuStructA(";", results), BuiltIn.convertTermToGoal(TuFactory.createTuStructA(";", arguments)));
 		assertEquals(TuFactory.createTuStructA(",", results), BuiltIn.convertTermToGoal(TuFactory.createTuStructA(",", arguments)));
 		assertEquals(TuFactory.createTuStructA("->", results), BuiltIn.convertTermToGoal(TuFactory.createTuStructA("->", arguments)));

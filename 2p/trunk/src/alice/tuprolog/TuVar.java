@@ -70,7 +70,7 @@ public class TuVar extends TuTerm {
      * @param n is the name
      * @throws InvalidTermException if n is not a valid Prolog variable name
      */
-    public TuVar(String n) {
+    TuVar(String n) {
         link = null;
         ctxid = TuVar.ORIGINAL; //no execCtx owners
         internalTimestamp = 0;
@@ -91,7 +91,7 @@ public class TuVar extends TuTerm {
      *
      *  This is equivalent to build a variable with name _
      */
-    public TuVar() {
+    TuVar() {
         name = null;
         completeName = new StringBuilder();
         link = null;
@@ -392,7 +392,7 @@ public class TuVar extends TuTerm {
      * @param choice 
      */
     private boolean occurCheck(List<TuVar> vl, TuStruct t) {
-        int arity = t.getArity();
+        int arity = t.getPlArity();
         for (int c = 0; c < arity; c++) {
             Term at = t.getDerefArg(c);
             if (at .isTuStruct()) {
@@ -493,7 +493,7 @@ public class TuVar extends TuTerm {
     //Alberto
     private void checkVar(List<TuVar> vl, Term t) {
         TuStruct st = (TuStruct) t;
-        int arity = st.getArity();
+        int arity = st.getPlArity();
         for (int c = 0; c < arity; c++) {
             Term at = st.getDerefArg(c);
             if (at .isVar()) {

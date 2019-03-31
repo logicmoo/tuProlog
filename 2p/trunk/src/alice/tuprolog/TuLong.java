@@ -109,7 +109,7 @@ public class TuLong extends TuNumber {
     /** is a float Real number?
      * Was <tt>instanceof alice.tuprolog.Float</tt> instead. */
     @Override
-    final public boolean isFloat() {
+    final public boolean isSingle() {
         return false;
     }
 

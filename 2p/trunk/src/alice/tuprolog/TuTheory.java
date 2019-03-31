@@ -34,7 +34,7 @@ import alice.tuprolog.json.JSONSerializerManager;
 public class TuTheory implements Serializable {
 	private static final long serialVersionUID = 1L;
     private String theory;
-    private TuStruct clauseList;
+    private Term clauseList;
 
     /**
      * Creates a theory getting its source text from an input stream
@@ -70,7 +70,7 @@ public class TuTheory implements Serializable {
      * @param clauseList the source text
      * @throws s InvalidTheoryException if clauseList is null or is not a prolog list
      */
-    public TuTheory(TuStruct clauseList) throws InvalidTheoryException {
+    public TuTheory(Term clauseList) throws InvalidTheoryException {
         if (clauseList==null || !clauseList.isPlList()) {
             throw new InvalidTheoryException();
         }
@@ -81,7 +81,7 @@ public class TuTheory implements Serializable {
         if (isTextual())
             return new TuParser(engine.getOperatorManager(), theory).iterator();
         else
-            return clauseList.listIterator();
+            return clauseList.listIteratorProlog();
     }
 
     /**
@@ -95,11 +95,11 @@ public class TuTheory implements Serializable {
         if (th.isTextual() && isTextual()) {
             theory += th.theory;
         } else if (!th.isTextual() && !isTextual()) {
-            TuStruct otherClauseList = th.getClauseListRepresentation();
+            Term otherClauseList = th.getClauseListRepresentation();
             if (clauseList.isEmptyList())
                 clauseList = otherClauseList;
             else {
-                TuStruct p = clauseList, q;
+                Term p = clauseList, q;
                 while (!(q = (TuStruct) p.getPlainArg(1)).isEmptyList())
                     p = q;
                 p.setArg(1, otherClauseList);
@@ -124,7 +124,7 @@ public class TuTheory implements Serializable {
         return theory != null;
     }
 
-    TuStruct getClauseListRepresentation() {
+    Term getClauseListRepresentation() {
         return clauseList;
     }
 

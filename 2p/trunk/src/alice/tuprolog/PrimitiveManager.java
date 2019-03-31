@@ -134,7 +134,7 @@ public class PrimitiveManager /*Castagna 06/2011*/implements IPrimitiveManager/*
         }
         TuStruct t = (TuStruct) term;
         
-        int arity = t.getArity();
+        int arity = t.getPlArity();
         String name = t.fname();
         //------------------------------------------
         if (name.equals(",") || name.equals("':-'") || name.equals(":-")) {

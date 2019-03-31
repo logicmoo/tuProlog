@@ -9,11 +9,11 @@ public class SolveInfoTestCase extends TestCase {
 
 	public void testGetSubsequentQuery() {
 		TuProlog engine = new TuProlog();
-		Term query = createTuStruct2("is", new TuVar("X"), createTuStruct2("+", createTuInt(1), createTuInt(2)));
+		Term query = createTuStruct2("is", createTuVarNamed("X"), createTuStruct2("+", createTuInt(1), createTuInt(2)));
 		SolveInfo result = engine.solve(query);
 		assertTrue(result.isSuccess());
 		assertEquals(query, result.getQuery());
-		query = S("functor", createTuAtom("p"), new TuVar("Name"), new TuVar("Arity"));
+		query = S("functor", createTuAtom("p"), createTuVarNamed("Name"), createTuVarNamed("Arity"));
 		result = engine.solve(query);
 		assertTrue(result.isSuccess());
 		assertEquals(query, result.getQuery());

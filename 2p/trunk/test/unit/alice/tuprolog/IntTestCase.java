@@ -25,7 +25,7 @@ public class IntTestCase extends TestCase {
 	}
 	
 	public void testEqualsToVar() throws InvalidTermException {
-		TuVar x = new TuVar("X");
+		TuVar x = createTuVarNamed("X");
 		TuInt one = createTuInt(1);
 		assertFalse(one.equals(x));
 	}

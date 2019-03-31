@@ -33,7 +33,7 @@ public class TuFloat extends TuNumber {
     @SuppressWarnings("unused")
     private String type = "Float";
 
-    public TuFloat(float v) {
+    TuFloat(float v) {
         value = v;
     }
 
@@ -109,7 +109,7 @@ public class TuFloat extends TuNumber {
     /** is a float Real number?
      * Was <tt>instanceof alice.tuprolog.Float</tt> instead. */
     @Override
-    final public boolean isFloat() {
+    final public boolean isSingle() {
         return true;
     }
 

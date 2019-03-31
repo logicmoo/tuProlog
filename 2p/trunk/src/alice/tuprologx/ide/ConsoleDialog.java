@@ -7,6 +7,7 @@ import alice.tuprolog.event.ExceptionListener;
 import alice.tuprolog.event.OutputListener;
 import alice.tuprolog.event.ReadListener;
 import alice.tuprolog.SolveInfo;
+import alice.tuprolog.TuFactory;
 //import alice.tuprolog.Term;
 import alice.tuprolog.TuVar;
 
@@ -30,7 +31,8 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.net.URL;
 import java.util.ArrayList;
-
+import static alice.tuprolog.TuPrologError.*;
+import static alice.tuprolog.TuFactory.*;
 public class ConsoleDialog
     extends JPanel
     implements OutputListener, ReadListener, InformationToDisplayListener, PropertyChangeListener, MouseListener, ChangeListener/*Castagna 06/2011*/,	ExceptionListener/**/
@@ -533,7 +535,7 @@ public class ConsoleDialog
                             if (!v.isAnonymous()) {
                                 String value = v.dref().toString();;
                                 if (v == v.dref())
-                                    value = new TuVar().getName();
+                                    value = createTuVar().getName();
                                 tableModelList.add(value);
                             }
                         }
@@ -623,7 +625,7 @@ public class ConsoleDialog
                 for(TuVar v:bindings){
                     String value = v.dref().toString();;
                     if (v == v.dref())
-                        value = new TuVar().getName();
+                        value = createTuVar().getName();
                     tableModelList.add(value);
                 }
                 tableModel = new String[tableModelList.size() / variables.length][variables.length];
@@ -636,7 +638,7 @@ public class ConsoleDialog
                 for(TuVar v:bindings){
                     String value = v.dref().toString();
                     if (v == v.dref())
-                        value = new TuVar().getName();
+                        value = createTuVar().getName();
                     tableModelList.add(v.getName());
                     tableModelList.add(value);
                 }

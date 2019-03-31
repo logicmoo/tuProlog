@@ -24,15 +24,15 @@ package alice.tuprolog;
  * Template for states of Core Engine
  */
 abstract class TuState {
-    
+
     protected EngineRunner c;
     protected String stateName;
-    
+
     abstract void doJob(TuEngine e);
-    
+
     @Override
-	public String toString() {
+    public String toString() {
         return stateName;
     }
-    
+
 }

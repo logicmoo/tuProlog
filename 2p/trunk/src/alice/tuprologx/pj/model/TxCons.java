@@ -147,7 +147,7 @@ public class TxCons<H extends TxTerm<?>, R extends TxCompound<?>> extends TxComp
         if (!matches(s))
             throw new UnsupportedOperationException();
         Vector<TxTerm<?>> termList = new Vector<TxTerm<?>>();
-        for (int i=0;i<s.getArity();i++) {       
+        for (int i=0;i<s.getPlArity();i++) {       
             termList.add(TxTerm.unmarshal(s.getPlainArg(i)));
         }
         //return (Z)new Cons(s.getName(),termList);

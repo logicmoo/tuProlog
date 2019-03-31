@@ -415,7 +415,7 @@ public class OOLibrary extends TuLibrary {
             String fullClassName = alice.util.Tools.removeApices(className.toString());
 
             String fullClassPath = fullClassName.replace('.', '/');
-            Iterator<? extends Term> it = classPathes.listIterator();
+            Iterator<? extends Term> it = classPathes.listIteratorProlog();
             String cp = "";
             while (it.hasNext()) {
                 if (cp.length() > 0) {
@@ -513,8 +513,8 @@ public class OOLibrary extends TuLibrary {
 							.toString()));
 				}
 				TuStruct sel = (TuStruct) objId;
-				if (sel.fname().equals(".") && sel.getArity() == 2
-						&& method.getArity() == 1) {
+				if (sel.fname().equals(".") && sel.getPlArity() == 2
+						&& method.getPlArity() == 1) {
 					if (methodName.equals("set")) {
 						return java_set(sel.getDerefArg(0), sel.getDerefArg(1), method
 								.getDerefArg(0));
@@ -556,7 +556,7 @@ public class OOLibrary extends TuLibrary {
 				if (objId.isCompound()) {
 					TuStruct id = (TuStruct) objId;
 
-					if (id.getArity() == 1 && id.fname().equals("class")) {
+					if (id.getPlArity() == 1 && id.fname().equals("class")) {
 						try {
 							String clName = alice.util.Tools
 									.removeApices(id.getPlainArg(0).toString());
@@ -700,7 +700,7 @@ public class OOLibrary extends TuLibrary {
             {
             	String clName = null;
             	// Case: class(className)
-            	if(((TuStruct) objId).getArity() == 1)         	
+            	if(((TuStruct) objId).getPlArity() == 1)         	
             		 clName = alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString());
             	if(clName != null)
             	{
@@ -782,7 +782,7 @@ public class OOLibrary extends TuLibrary {
             if(objId.isCompound() && ((TuStruct) objId).fname().equals("class"))
             {
             	String clName = null;
-            	if(((TuStruct) objId).getArity() == 1)         	
+            	if(((TuStruct) objId).getPlArity() == 1)         	
             		 clName = alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString());
             	if(clName != null)
             	{
@@ -823,7 +823,7 @@ public class OOLibrary extends TuLibrary {
                 return unify(what, createTuLong(value));
             } else if (fc.equals(java.lang.Float.TYPE)) {
                 float value = field.getFloat(obj);
-                return unify(what, new alice.tuprolog.TuFloat(value));
+                return unify(what, createTuFloat(value));
             } else if (fc.equals(java.lang.Double.TYPE)) {
                 double value = field.getDouble(obj);
                 return unify(what, createTuDouble(value));
@@ -978,7 +978,7 @@ public class OOLibrary extends TuLibrary {
                     throw new TuJavaException(new IllegalArgumentException(what
                             .toString()));
             } else if (name.equals("class [F")) {
-                Term value = new alice.tuprolog.TuFloat(Array.getFloat(obj, index
+                Term value = createTuFloat(Array.getFloat(obj, index
                         .intValue()));
                 if (unify(what, value))
                     return true;
@@ -1109,7 +1109,7 @@ public class OOLibrary extends TuLibrary {
     
     private String[] getStringArrayFromStruct(TuStruct list) {
         String args[] = new String[list.listSize()];
-        Iterator<? extends Term> it = list.listIterator();
+        Iterator<? extends Term> it = list.listIteratorProlog();
         int count = 0;
         while (it.hasNext()) {
         	String path = alice.util.Tools.removeApices(it.next().toString());
@@ -1123,9 +1123,9 @@ public class OOLibrary extends TuLibrary {
      * creation of method signature from prolog data
      */
     private Signature parseArg(TuStruct method) {
-        Object[] values = new Object[method.getArity()];
-        Class<?>[] types = new Class[method.getArity()];
-        for (int i = 0; i < method.getArity(); i++) {
+        Object[] values = new Object[method.getPlArity()];
+        Class<?>[] types = new Class[method.getPlArity()];
+        for (int i = 0; i < method.getPlArity(); i++) {
             if (!parse_arg(values, types, i, method.getDerefArg(i)))
                 return null;
         }
@@ -1349,7 +1349,7 @@ public class OOLibrary extends TuLibrary {
     private boolean parseResult(Term id, Object obj) {
         if (obj == null) {
             // return unify(id,Term.TRUE);
-            return unify(id, new TuVar());
+            return unify(id, createTuVar());
         }
         try {
             if (Boolean.class.isInstance(obj)) {
@@ -1368,8 +1368,7 @@ public class OOLibrary extends TuLibrary {
                 return unify(id, createTuLong(((java.lang.Long) obj)
                         .longValue()));
             } else if (java.lang.Float.class.isInstance(obj)) {
-                return unify(id, new alice.tuprolog.TuFloat(
-                        ((java.lang.Float) obj).floatValue()));
+                return unify(id, createTuFloat(((java.lang.Float) obj).floatValue()));
             } else if (java.lang.Double.class.isInstance(obj)) {
                 return unify(id, createTuDouble(((java.lang.Double) obj).doubleValue()));
             } else if (String.class.isInstance(obj)) {
@@ -1387,7 +1386,7 @@ public class OOLibrary extends TuLibrary {
 
     private Object[] getArrayFromList(TuStruct list) {
         Object args[] = new Object[list.listSize()];
-        Iterator<? extends Term> it = list.listIterator();
+        Iterator<? extends Term> it = list.listIteratorProlog();
         int count = 0;
         while (it.hasNext()) {
             args[count++] = it.next();
@@ -1647,7 +1646,7 @@ public class OOLibrary extends TuLibrary {
     protected boolean bindDynamicObject(Term id, Object obj) {
         // null object are considered to _ variable
         if (obj == null) {
-            return unify(id, new TuVar());
+            return unify(id, createTuVar());
         }
         // already registered object?
         synchronized (currentObjects) {

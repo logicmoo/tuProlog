@@ -42,7 +42,7 @@ public class TermPanel extends JPanel implements ActionListener{
       } else if(term .isTuStruct()){
         TuStruct struct=(TuStruct)term;
         node.text=struct.fname();
-        int n=struct.getArity();
+        int n=struct.getPlArity();
         node.kids=new Node[n];
         for(int i=0; i<n; i++)
           node.kids[i]=makeTreeFrom(struct.getPlainArg(i));

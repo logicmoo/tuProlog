@@ -108,7 +108,7 @@ public class TuTheoryManager implements Serializable {
      * removing from dbase the first clause with head unifying with clause
      */
     public synchronized ClauseInfo retract(TuStruct cl) {
-        TuStruct clause = toClause(cl);
+        TuTerm clause = toClause(cl);
         TuStruct struct = ((TuStruct) clause.getPlainArg(0));
         FamilyClausesList family = dynamicDBase.get(struct.getPredicateIndicator());
         ExecutionContext ctx = engine.getEngineManager().getCurrentContext();
@@ -157,8 +157,8 @@ public class TuTheoryManager implements Serializable {
      * removing from dbase all the clauses corresponding to the
      * predicate indicator passed as a parameter
      */
-    public synchronized boolean abolish(TuStruct pi) {
-        if (!(pi.isTuStruct()) || !pi.isGround() || !(pi.getArity() == 2))
+    public synchronized boolean abolish(TuTerm pi) {
+        if (!(pi.isTuStruct()) || !pi.isGround() || !(pi.getPlArity() == 2))
             throw new IllegalArgumentException(pi + " is not a valid Struct");
         if (!pi.fname().equals("/"))
             throw new IllegalArgumentException(
@@ -257,7 +257,7 @@ public class TuTheoryManager implements Serializable {
     }
 
     private boolean runDirective(TuStruct c) {
-        if ("':-'".equals(c.fname()) || ":-".equals(c.fname()) && c.getArity() == 1 && c.getDerefArg(0).isTuStruct()) {
+        if ("':-'".equals(c.fname()) || ":-".equals(c.fname()) && c.getPlArity() == 1 && c.getDerefArg(0).isTuStruct()) {
             TuStruct dir = (TuStruct) c.getDerefArg(0);
             try {
                 if (!primitiveManager.evalAsDirective(dir))
@@ -274,19 +274,19 @@ public class TuTheoryManager implements Serializable {
     /**
      * Gets a clause from a generic Term
      */
-    private TuStruct toClause(TuStruct t) { //PRIMITIVE
+    private TuTerm toClause(Term tin) { //PRIMITIVE
         // TODO bad, slow way of cloning. requires approx twice the time necessary
-        t = (TuStruct) createTerm(t.toString(), this.engine.getOperatorManager());
-        if (!t.isClause())
+        TuTerm t = (TuTerm) createTerm(tin.toString(), this.engine.getOperatorManager());
+        if (!((TuStruct) t).isClause())
             t = createTuStruct2(":-", t, createTuAtom("true"));
         primitiveManager.identifyPredicate(t);
         return t;
     }
 
     public synchronized void solveTheoryGoal() {
-        TuStruct s = null;
+        Term s = null;
         while (!startGoalStack.empty()) {
-            s = (s == null) ? (TuStruct) startGoalStack.pop() : TuFactory.createTuStruct2(",", startGoalStack.pop(), s);
+            s = (s == null) ? (TuStruct) startGoalStack.pop() : createTuStruct2(",", startGoalStack.pop(), s);
         }
         if (s != null) {
             try {

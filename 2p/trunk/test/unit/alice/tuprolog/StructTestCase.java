@@ -43,7 +43,7 @@ public class StructTestCase extends TestCase {
         } catch (InvalidTermException expected) {
         }
         try {
-            Term[] args = new Term[] { createTuAtom("a"), null, new TuVar("P") };
+            Term[] args = new Term[] { createTuAtom("a"), null, createTuVarNamed("P") };
             createTuStructA("p", args);
             fail();
         } catch (InvalidTermException expected) {
@@ -74,7 +74,7 @@ public class StructTestCase extends TestCase {
         assertTrue(list.isEmptyList());
         assertEquals(0, list.listSize());
         assertEquals("[]", list.fname());
-        assertEquals(0, list.getArity());
+        assertEquals(0, list.getPlArity());
     }
 
     /** Another correct method of building an empty list */
@@ -83,7 +83,7 @@ public class StructTestCase extends TestCase {
         assertTrue(emptyList.isPlList());
         assertTrue(emptyList.isEmptyList());
         assertEquals("[]", emptyList.fname());
-        assertEquals(0, emptyList.getArity());
+        assertEquals(0, emptyList.getPlArity());
         assertEquals(0, emptyList.listSize());
     }
 
@@ -93,7 +93,7 @@ public class StructTestCase extends TestCase {
         assertFalse(notAnEmptyList.isPlList());
         assertFalse(notAnEmptyList.isEmptyList());
         assertEquals(".", notAnEmptyList.fname());
-        assertEquals(0, notAnEmptyList.getArity());
+        assertEquals(0, notAnEmptyList.getPlArity());
     }
 
     /** Use dotted structs to build lists with content */
@@ -102,7 +102,7 @@ public class StructTestCase extends TestCase {
         assertTrue(notAnEmptyList.isPlList());
         assertFalse(notAnEmptyList.isEmptyList());
         assertEquals(".", notAnEmptyList.fname());
-        assertEquals(2, notAnEmptyList.getArity());
+        assertEquals(2, notAnEmptyList.getPlArity());
     }
 
     public void testListFromArgumentArray() {
@@ -111,8 +111,8 @@ public class StructTestCase extends TestCase {
         Term[] args = new Term[2];
         args[0] = createTuAtom("a");
         args[1] = createTuAtom("b");
-        TuStruct list = createTuListStruct(args);
-        assertEquals(TuFactory.createTuEmpty(), list.listTail().listTail());
+        TuTerm list = createTuListStruct(args);
+        assertEquals(TuFactory.createTuEmpty(), list.getPlTail().getPlTail());
     }
 
     public void testListSize() {
@@ -123,9 +123,9 @@ public class StructTestCase extends TestCase {
     }
 
     public void testNonListHead() throws InvalidTermException {
-        TuStruct s = S("f", new TuVar("X"));
+        TuStruct s = S("f", createTuVarNamed("X"));
         try {
-            assertNotNull(s.listHead()); // just to make an assertion...
+            assertNotNull(s.getPlHead()); // just to make an assertion...
             fail();
         } catch (UnsupportedOperationException e) {
             assertEquals("The structure " + s + " is not a list.", e.getMessage());
@@ -135,7 +135,7 @@ public class StructTestCase extends TestCase {
     public void testNonListTail() {
         TuStruct s = S("h", createTuInt(1));
         try {
-            assertNotNull(s.listTail()); // just to make an assertion...
+            assertNotNull(s.getPlTail()); // just to make an assertion...
             fail();
         } catch (UnsupportedOperationException e) {
             assertEquals("The structure " + s + " is not a list.", e.getMessage());
@@ -143,7 +143,7 @@ public class StructTestCase extends TestCase {
     }
 
     public void testNonListSize() throws InvalidTermException {
-        TuStruct s = S("f", new TuVar("X"));
+        TuStruct s = S("f", createTuVarNamed("X"));
         try {
             assertEquals(0, s.listSize()); // just to make an assertion...
             fail();
@@ -155,7 +155,7 @@ public class StructTestCase extends TestCase {
     public void testNonListIterator() {
         TuStruct s = S("f", createTuInt(2));
         try {
-            assertNotNull(s.listIterator()); // just to make an assertion...
+            assertNotNull(s.listIteratorProlog()); // just to make an assertion...
             fail();
         } catch (UnsupportedOperationException e) {
             assertEquals("The structure " + s + " is not a list.", e.getMessage());
@@ -171,7 +171,7 @@ public class StructTestCase extends TestCase {
     public void testToString() throws InvalidTermException {
         TuTerm emptyList = createTuEmpty();
         assertEquals("[]", emptyList.toString());
-        TuStruct s = S("f", new TuVar("X"));
+        TuStruct s = S("f", createTuVarNamed("X"));
         assertEquals("f(X)", s.toString());
         TuTerm list = createTuCons(TuFactory.createTuAtom("a"), createTuCons(TuFactory.createTuAtom("b"), createTuCons(TuFactory.createTuAtom("c"), createTuEmpty())));
         assertEquals("[a,b,c]", list.toString());
@@ -185,7 +185,7 @@ public class StructTestCase extends TestCase {
         emptyList.appendDestructive(TuFactory.createTuAtom("c"));
         assertEquals(list, emptyList);
         TuTerm tail = createTuCons(TuFactory.createTuAtom("b"), createTuCons(TuFactory.createTuAtom("c"), createTuEmpty()));
-        assertEquals(tail, emptyList.listTail());
+        assertEquals(tail, emptyList.getPlTail());
 
         emptyList = createStructEmpty();
         emptyList.appendDestructive(TuFactory.createTuEmpty());
@@ -193,13 +193,13 @@ public class StructTestCase extends TestCase {
 
         TuStruct anotherList = createTuCons(TuFactory.createTuAtom("d"), createTuCons(TuFactory.createTuAtom("e"), createTuEmpty()));
         list.appendDestructive(anotherList);
-        assertEquals(anotherList, list.listTail().listTail().listTail().listHead());
+        assertEquals(anotherList, list.getPlTail().getPlTail().getPlTail().getPlHead());
     }
 
     public void testIteratedGoalTerm() throws Exception {
-        TuVar x = new TuVar("X");
+        TuVar x = createTuVarNamed("X");
         TuStruct foo = S("foo", x);
-        TuStruct term = createTuStruct2("^", x, foo);
+        Term term = createTuStruct2("^", x, foo);
         assertEquals(foo, term.iteratedGoalTerm());
     }
 
@@ -213,9 +213,9 @@ public class StructTestCase extends TestCase {
         assertTrue(emptyList.isAtomic());
         TuTerm atom = createTuAtom("atom");
         assertTrue(atom.isAtomic());
-        TuStruct list = createTuListStruct(new Term[] { createTuInt(0), createTuInt(1) });
+        TuTerm list = createTuListStruct(new Term[] { createTuInt(0), createTuInt(1) });
         assertFalse(list.isAtomic());
-        TuStruct compound = createTuStruct2("f", createTuAtom("a"), createTuAtom("b"));
+        Term compound = createTuStruct2("f", createTuAtom("a"), createTuAtom("b"));
         assertFalse(compound.isAtomic());
         TuTerm singleQuoted = createTuAtom("'atom'");
         assertTrue(singleQuoted.isAtomic());
@@ -228,9 +228,9 @@ public class StructTestCase extends TestCase {
         assertTrue(emptyList.isAtomSymbol());
         TuTerm atom = createTuAtom("atom");
         assertTrue(atom.isAtomSymbol());
-        TuStruct list = createTuListStruct(new Term[] { createTuInt(0), createTuInt(1) });
+        Term list = createTuListStruct(new Term[] { createTuInt(0), createTuInt(1) });
         assertFalse(list.isAtomSymbol());
-        TuStruct compound = createTuStruct2("f", createTuAtom("a"), createTuAtom("b"));
+        Term compound = createTuStruct2("f", createTuAtom("a"), createTuAtom("b"));
         assertFalse(compound.isAtomSymbol());
         TuTerm singleQuoted = createTuAtom("'atom'");
         assertTrue(singleQuoted.isAtomSymbol());
@@ -243,9 +243,9 @@ public class StructTestCase extends TestCase {
         assertFalse(emptyList.isCompound());
         Term atom = createTuAtom("atom");
         assertFalse(atom.isCompound());
-        TuStruct list = createTuListStruct(new Term[] { createTuInt(0), createTuInt(1) });
+        TuTerm list = createTuListStruct(new Term[] { createTuInt(0), createTuInt(1) });
         assertTrue(list.isCompound());
-        TuStruct compound = createTuStruct2("f", createTuAtom("a"), createTuAtom("b"));
+        Term compound = createTuStruct2("f", createTuAtom("a"), createTuAtom("b"));
         assertTrue(compound.isCompound());
         Term singleQuoted = createTuAtom("'atom'");
         assertFalse(singleQuoted.isCompound());

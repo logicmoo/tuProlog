@@ -23,6 +23,7 @@ import static alice.tuprolog.TuFactory.*;
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import alice.tuprolog.json.JSONSerializerManager;
@@ -32,7 +33,7 @@ import alice.tuprolog.json.JSONSerializerManager;
  * @see TuStruct
  * @see TuVar
  * @see  TuNumber
- */ 
+ */
 public abstract interface Term extends Serializable {
 
     // true and false constants
@@ -47,7 +48,7 @@ public abstract interface Term extends Serializable {
      * is this term a prolog numeric term?
      * Was <tt>instanceof Number</tt> instead.
      */
-   // @Deprecated
+    // @Deprecated
     public abstract boolean isNumber();
 
     /**
@@ -210,7 +211,6 @@ public abstract interface Term extends Serializable {
      */
     abstract boolean unify(List<TuVar> varsUnifiedArg1, List<TuVar> varsUnifiedArg2, Term t);
 
-
     // term representation
 
     /**
@@ -287,5 +287,37 @@ public abstract interface Term extends Serializable {
      * @return
      */
     String fname();
+
+    /**
+     * @return
+     */
+    public abstract Iterator<? extends Term> listIteratorProlog();
+
+    /**
+     * @return
+     */
+    public abstract int getPlArity();
+
+    /**
+     * @param z
+     * @return
+     */
+    public abstract Term getPlainArg(int z);
+
+    /**
+     * @param i
+     * @param otherClauseList
+     */
+    public abstract void setArg(int i, Term otherClauseList);
+
+    /**
+     * @return
+     */
+    public abstract boolean isInteger();
+
+    /**
+     * @return
+     */
+    public abstract long longValue();
 
 }

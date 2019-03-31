@@ -148,7 +148,7 @@ public class BuiltIn extends TuLibrary {
         ClauseInfo c = theoryManager.retract(sarg0);
         // if clause to retract found -> retract + true
         if (c != null) {
-            TuStruct clause = null;
+            TuTerm clause = null;
             if (!sarg0.isClause()) {
                 clause = createTuStruct2(":-", arg0, createTuAtom("true"));
             } else {
@@ -248,7 +248,7 @@ public class BuiltIn extends TuLibrary {
 
     private String[] getStringArrayFromStruct(TuStruct list) {
         String args[] = new String[list.listSize()];
-        Iterator<? extends Term> it = list.listIterator();
+        Iterator<? extends Term> it = list.listIteratorProlog();
         int count = 0;
         while (it.hasNext()) {
             String path = alice.util.Tools.removeApices(it.next().toString());
@@ -288,7 +288,7 @@ public class BuiltIn extends TuLibrary {
     public boolean comma_2(Term arg0, Term arg1) {
         arg0 = arg0.dref();
         arg1 = arg1.dref();
-        TuStruct s = createTuStruct2(",", arg0, arg1);
+        TuTerm s = createTuStruct2(",", arg0, arg1);
         engineManager.pushSubGoal(ClauseInfo.extractBody(s));
         return true;
     }
@@ -343,7 +343,7 @@ public class BuiltIn extends TuLibrary {
             TuStruct s = (TuStruct) term;
             String pi = s.getPredicateIndicator();
             if (pi.equals(";/2") || pi.equals(",/2") || pi.equals("->/2")) {
-                for (int i = 0; i < s.getArity(); i++) {
+                for (int i = 0; i < s.getPlArity(); i++) {
                     Term t = s.getPlainArg(i);
                     Term arg = convertTermToGoal(t);
                     if (arg == null)
@@ -540,7 +540,7 @@ public class BuiltIn extends TuLibrary {
                 && !specifier.equals("xfx") && !specifier.equals("yfx") && !specifier.equals("xfy"))
             throw domain_error(engineManager, 2, "operator_specifier", arg1);
         if (arg2.isPlList()) {
-            for (Iterator<? extends Term> operators = ((TuStruct) arg2).listIterator(); operators.hasNext();) {
+            for (Iterator<? extends Term> operators = ((TuStruct) arg2).listIteratorProlog(); operators.hasNext();) {
                 TuStruct operator = (TuStruct) operators.next();
                 operatorManager.opNew(operator.fname(), specifier, priority);
             }

@@ -18,7 +18,7 @@ public class ISOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("atom_length", new TuVar("X"), new TuVar("Y"))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("atom_length", createTuVarNamed("X"), createTuVarNamed("Y"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -30,7 +30,7 @@ public class ISOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("atom_length", createTuInt(1), new TuVar("Y"))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("atom_length", createTuInt(1), createTuVarNamed("Y"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
@@ -46,7 +46,7 @@ public class ISOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("atom_chars", createTuInt(1), new TuVar("X"))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("atom_chars", createTuInt(1), createTuVarNamed("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
@@ -62,7 +62,7 @@ public class ISOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("atom_chars", new TuVar("X"), createTuAtom("a"))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("atom_chars", createTuVarNamed("X"), createTuAtom("a"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
@@ -78,7 +78,7 @@ public class ISOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("char_code", createTuAtom("ab"), new TuVar("X"))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("char_code", createTuAtom("ab"), createTuVarNamed("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
@@ -94,7 +94,7 @@ public class ISOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("char_code", new TuVar("X"), createTuAtom("a"))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("char_code", createTuVarNamed("X"), createTuAtom("a"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
@@ -110,7 +110,7 @@ public class ISOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("sub_atom_guard", createTuInt(1), new TuVar("B"), new TuVar("C"), new TuVar("D"), new TuVar("E"))));
+		assertTrue(g.isEqual(TuFactory.S("sub_atom_guard", createTuInt(1), createTuVarNamed("B"), createTuVarNamed("C"), createTuVarNamed("D"), createTuVarNamed("E"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");

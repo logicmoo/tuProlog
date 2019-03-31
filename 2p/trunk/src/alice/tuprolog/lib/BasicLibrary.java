@@ -506,7 +506,7 @@ public class BasicLibrary extends TuLibrary {
             } else if (val0n instanceof alice.tuprolog.TuLong) {
                 return createTuLong(val0n.longValue() * -1);
             } else if (val0n instanceof alice.tuprolog.TuFloat) {
-                return new alice.tuprolog.TuFloat(val0n.floatValue() * -1);
+                return createTuFloat(val0n.floatValue() * -1);
             } else {
                 return null;
             }
@@ -1342,7 +1342,7 @@ public class BasicLibrary extends TuLibrary {
     public boolean $wt_unify_3(Term witness, Term wtList, Term tList) {
         TuStruct list = (TuStruct) wtList.dref();
         TuStruct result = createStructEmpty();
-        for (java.util.Iterator<? extends Term> it = list.listIterator(); it.hasNext();) {
+        for (java.util.Iterator<? extends Term> it = list.listIteratorProlog(); it.hasNext();) {
             TuStruct element = (TuStruct) it.next();
             Term w = element.getPlainArg(0);
             Term t = element.getPlainArg(1);
@@ -1355,7 +1355,7 @@ public class BasicLibrary extends TuLibrary {
     public boolean $s_next0_3(Term witness, Term wtList, Term sNext) {
         TuStruct list = (TuStruct) wtList.dref();
         TuStruct result = createStructEmpty();
-        for (java.util.Iterator<? extends Term> it = list.listIterator(); it.hasNext();) {
+        for (java.util.Iterator<? extends Term> it = list.listIteratorProlog(); it.hasNext();) {
             TuStruct element = (TuStruct) it.next();
             Term w = element.getPlainArg(0);
             if (!unify(witness, w))

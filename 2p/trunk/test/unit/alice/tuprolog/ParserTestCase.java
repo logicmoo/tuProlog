@@ -48,7 +48,7 @@ public class ParserTestCase extends TestCase {
 	
 	public void testListWithTail() throws InvalidTermException {
 		TuParser p = new TuParser("[p|Y]");
-		TuTerm result = createTuCons(TuFactory.createTuAtom("p"), new TuVar("Y"));
+		TuTerm result = createTuCons(TuFactory.createTuAtom("p"), createTuVarNamed("Y"));
 		result.resolveTerm();
 		assertEquals(result, p.nextTerm(false));
 	}
@@ -61,7 +61,7 @@ public class ParserTestCase extends TestCase {
 	
 	public void testUnivOperator() throws InvalidTermException {
 		TuParser p = new TuParser("p =.. q.");
-		TuStruct result = createTuStruct2("=..", createTuAtom("p"), createTuAtom("q"));
+		TuTerm result = createTuStruct2("=..", createTuAtom("p"), createTuAtom("q"));
 		assertEquals(result, p.nextTerm(true));
 	}
 	
@@ -82,7 +82,7 @@ public class ParserTestCase extends TestCase {
 		om.opNew("b2", "yfx", 500);
 		om.opNew("b3", "yfx", 300);
 		TuParser p = new TuParser(om, s);
-		TuStruct result = createTuStruct2("b2", S("u", createTuAtom("b1")), createTuAtom("b3"));
+		TuTerm result = createTuStruct2("b2", S("u", createTuAtom("b1")), createTuAtom("b3"));
 		assertEquals(result, p.nextTerm(false));
 	}
 	
@@ -94,7 +94,7 @@ public class ParserTestCase extends TestCase {
 		om.opNew("b2", "yfx", 500);
 		om.opNew("b3", "yfx", 300);
 		TuParser p = new TuParser(om, s);
-		TuStruct result = createTuStruct2("b1", createTuAtom("u"), createTuStruct2("b3", createTuAtom("b2"), createTuAtom("a")));
+		Term result = createTuStruct2("b1", createTuAtom("u"), createTuStruct2("b3", createTuAtom("b2"), createTuAtom("a")));
 		assertEquals(result, p.nextTerm(false));
 	}
 	

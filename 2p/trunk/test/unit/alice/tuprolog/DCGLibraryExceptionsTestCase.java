@@ -20,7 +20,7 @@ public class DCGLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("phrase_guard", new TuVar("X"), createTuEmpty())));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("phrase_guard", createTuVarNamed("X"), createTuEmpty())));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -33,7 +33,7 @@ public class DCGLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("phrase_guard", new TuVar("X"), createTuEmpty(), createTuEmpty())));
+		assertTrue(g.isEqual(TuFactory.S("phrase_guard", createTuVarNamed("X"), createTuEmpty(), createTuEmpty())));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}

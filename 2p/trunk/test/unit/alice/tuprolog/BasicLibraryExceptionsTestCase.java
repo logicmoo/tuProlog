@@ -19,7 +19,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("set_theory", new TuVar("X"))));
+		assertTrue(g.isEqual(TuFactory.S("set_theory", createTuVarNamed("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -63,7 +63,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("add_theory", new TuVar("X"))));
+		assertTrue(g.isEqual(TuFactory.S("add_theory", createTuVarNamed("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -107,7 +107,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("agent", new TuVar("X"))));
+		assertTrue(g.isEqual(TuFactory.S("agent", createTuVarNamed("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -136,7 +136,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
 		assertTrue(g
-				.isEqual(TuFactory.createTuStruct2("agent", new TuVar("X"), createTuAtom("a"))));
+				.isEqual(TuFactory.createTuStruct2("agent", createTuVarNamed("X"), createTuAtom("a"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -149,7 +149,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
 		assertTrue(g
-				.isEqual(TuFactory.createTuStruct2("agent", createTuAtom("a"), new TuVar("X"))));
+				.isEqual(TuFactory.createTuStruct2("agent", createTuAtom("a"), createTuVarNamed("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -193,7 +193,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_equality", new TuVar("X"), createTuInt(1))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_equality", createTuVarNamed("X"), createTuInt(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -205,7 +205,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_equality", createTuInt(1), new TuVar("X"))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_equality", createTuInt(1), createTuVarNamed("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -249,7 +249,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_equality", new TuVar("X"), createTuInt(1))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_equality", createTuVarNamed("X"), createTuInt(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -261,7 +261,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_equality", createTuInt(1), new TuVar("X"))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_equality", createTuInt(1), createTuVarNamed("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -305,7 +305,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_greater_than", new TuVar("X"), createTuInt(1))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_greater_than", createTuVarNamed("X"), createTuInt(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -317,7 +317,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_greater_than", createTuInt(1), new TuVar("X"))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_greater_than", createTuInt(1), createTuVarNamed("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -361,7 +361,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_less_than", new TuVar("X"), createTuInt(1))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_less_than", createTuVarNamed("X"), createTuInt(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -373,7 +373,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_less_than", createTuInt(1), new TuVar("X"))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_less_than", createTuInt(1), createTuVarNamed("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -417,7 +417,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_greater_or_equal_than", new TuVar("X"), createTuInt(1))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_greater_or_equal_than", createTuVarNamed("X"), createTuInt(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -429,7 +429,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_greater_or_equal_than", createTuInt(1), new TuVar("X"))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_greater_or_equal_than", createTuInt(1), createTuVarNamed("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -473,7 +473,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_less_or_equal_than", new TuVar("X"), createTuInt(1))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_less_or_equal_than", createTuVarNamed("X"), createTuInt(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -485,7 +485,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_less_or_equal_than", createTuInt(1), new TuVar("X"))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("expression_less_or_equal_than", createTuInt(1), createTuVarNamed("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -787,7 +787,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("text_concat", new TuVar("X"), createTuAtom("a"), createTuAtom("b"))));
+		assertTrue(g.isEqual(TuFactory.S("text_concat", createTuVarNamed("X"), createTuAtom("a"), createTuAtom("b"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -799,7 +799,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("text_concat", createTuAtom("a"), new TuVar("X"), createTuAtom("b"))));
+		assertTrue(g.isEqual(TuFactory.S("text_concat", createTuAtom("a"), createTuVarNamed("X"), createTuAtom("b"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -843,8 +843,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("num_atom", createTuAtom("a"), new TuVar(
-				"X"))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("num_atom", createTuAtom("a"), createTuVarNamed("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
@@ -893,7 +892,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("arg_guard", new TuVar("X"), S("p", createTuInt(1)), createTuInt(1))));
+		assertTrue(g.isEqual(TuFactory.S("arg_guard", createTuVarNamed("X"), S("p", createTuInt(1)), createTuInt(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -905,7 +904,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("arg_guard", createTuInt(1), new TuVar("X"), createTuInt(1))));
+		assertTrue(g.isEqual(TuFactory.S("arg_guard", createTuInt(1), createTuVarNamed("X"), createTuInt(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -965,7 +964,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.createTuStruct2("clause_guard", new TuVar("X"), createTuAtom("true"))));
+		assertTrue(g.isEqual(TuFactory.createTuStruct2("clause_guard", createTuVarNamed("X"), createTuAtom("true"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -977,7 +976,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("call_guard", new TuVar("X"))));
+		assertTrue(g.isEqual(TuFactory.S("call_guard", createTuVarNamed("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -1005,7 +1004,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("all_solutions_predicates_guard", createTuAtom("a"), new TuVar("X"), new TuVar("L"))));
+		assertTrue(g.isEqual(TuFactory.S("all_solutions_predicates_guard", createTuAtom("a"), createTuVarNamed("X"), createTuVarNamed("L"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -1017,7 +1016,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("all_solutions_predicates_guard", createTuAtom("a"), createTuInt(1), new TuVar("L"))));
+		assertTrue(g.isEqual(TuFactory.S("all_solutions_predicates_guard", createTuAtom("a"), createTuInt(1), createTuVarNamed("L"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
@@ -1033,7 +1032,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("all_solutions_predicates_guard", createTuAtom("a"), new TuVar("X"), new TuVar("L"))));
+		assertTrue(g.isEqual(TuFactory.S("all_solutions_predicates_guard", createTuAtom("a"), createTuVarNamed("X"), createTuVarNamed("L"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -1045,7 +1044,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("all_solutions_predicates_guard", createTuAtom("a"), createTuInt(1), new TuVar("L"))));
+		assertTrue(g.isEqual(TuFactory.S("all_solutions_predicates_guard", createTuAtom("a"), createTuInt(1), createTuVarNamed("L"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
@@ -1061,7 +1060,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("all_solutions_predicates_guard", createTuAtom("a"), new TuVar("X"), new TuVar("L"))));
+		assertTrue(g.isEqual(TuFactory.S("all_solutions_predicates_guard", createTuAtom("a"), createTuVarNamed("X"), createTuVarNamed("L"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -1073,7 +1072,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("all_solutions_predicates_guard", createTuAtom("a"), createTuInt(1), new TuVar("L"))));
+		assertTrue(g.isEqual(TuFactory.S("all_solutions_predicates_guard", createTuAtom("a"), createTuInt(1), createTuVarNamed("L"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
@@ -1089,7 +1088,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("assertz", new TuVar("X"))));
+		assertTrue(g.isEqual(TuFactory.S("assertz", createTuVarNamed("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -1117,7 +1116,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("retract_guard", new TuVar("X"))));
+		assertTrue(g.isEqual(TuFactory.S("retract_guard", createTuVarNamed("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -1145,7 +1144,7 @@ public class BasicLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuFactory.S("retract_guard", new TuVar("X"))));
+		assertTrue(g.isEqual(TuFactory.S("retract_guard", createTuVarNamed("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}

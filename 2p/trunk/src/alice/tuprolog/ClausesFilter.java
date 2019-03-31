@@ -45,7 +45,7 @@ class ClausesFilter {
             TuStruct g = (TuStruct) goal.dref();
 
             /* If no arguments no optimization can be applied */
-            if(g.getArity() < 2){
+            if(g.getPlArity() < 2){
                 return returnAllClauses(familyClauses);
             }
 
@@ -152,7 +152,7 @@ class ClausesFilter {
          */
         if(t .isTuStruct()){
             TuStruct s = (TuStruct) t;
-            return s.isEmptyList() || (s.fname().equals(".") && s.getArity() == 2);
+            return s.isEmptyList() || (s.fname().equals(".") && s.getPlArity() == 2);
         }
 
         return false;

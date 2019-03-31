@@ -77,7 +77,7 @@ class TuFlag implements java.io.Serializable {
      * @return flag validity
      */
     public boolean isValidValue(Term value) {
-        java.util.Iterator<? extends Term> it=valueList.listIterator();
+        java.util.Iterator<? extends Term> it=valueList.listIteratorProlog();
         while (it.hasNext()) {
             Term t=it.next();
             if (value.match(t)) {

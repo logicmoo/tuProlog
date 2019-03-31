@@ -455,7 +455,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser, /**/ Serializable 
         }
 
         if (t1.isType(TuTokenizer.VARIABLE)) {
-            Term v = new TuVar(t1.seq);
+            Term v = createTuVarNamed(t1.seq);
             map(v, tokenizer.tokenStart());
             return v; //todo switched to use the internal check for "_" in Var(String)
         }

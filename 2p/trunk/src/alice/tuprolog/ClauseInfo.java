@@ -56,8 +56,8 @@ public class ClauseInfo {
     /**
      * building a valid clause with a time stamp = original time stamp + NumVar in clause
      */
-    ClauseInfo(TuTerm clause_, String lib) {
-        clause = clause_;
+    ClauseInfo(TuTerm term, String lib) {
+        clause = term;
         head = extractHead(clause);
         body = extractBody(clause.getPlainArg(1));
         libName = lib;

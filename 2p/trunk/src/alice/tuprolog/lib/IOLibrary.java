@@ -440,8 +440,8 @@ public class IOLibrary extends TuLibrary {
         if (!file_name.isAtomSymbol())
             throw type_error(engine.getEngineManager(), 1, "atom",
                     file_name);
-        TuStruct fileName = (TuStruct) file_name.dref();
-        TuTerm goal = null;
+        Term fileName = (TuStruct) file_name.dref();
+        Term goal = null;
         String path = alice.util.Tools.removeApices(fileName.toString());
         if(! new File(path).isAbsolute()) {
             path = engine.getCurrentDirectory()  + File.separator + path;
@@ -468,7 +468,7 @@ public class IOLibrary extends TuLibrary {
         if( !(t .isNumber()) ) {
             throw type_error(engine.getEngineManager(), 1, "Integer Number", t);
         }
-        TuNumber seed = (TuNumber)t;
+        Term seed = (TuNumber)t;
         if( !seed.isInteger() ){
             throw type_error(engine.getEngineManager(), 1, "Integer Number", t);
         }

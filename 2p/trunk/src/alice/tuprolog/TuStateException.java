@@ -203,7 +203,7 @@ public class TuStateException extends TuState {
         TuStruct list = (TuStruct) arg1;
         if (list.isEmptyList())
             return false;
-        Iterator<? extends Term> it = list.listIterator();
+        Iterator<? extends Term> it = list.listIteratorProlog();
         while (it.hasNext()) {
             Term nextTerm = it.next();
             if (!nextTerm.isCompound())
@@ -211,7 +211,7 @@ public class TuStateException extends TuState {
             TuStruct element = (TuStruct) nextTerm;
             if (!element.fname().equals(","))
                 continue;
-            if (element.getArity() != 2)
+            if (element.getPlArity() != 2)
                 continue;
             if (element.getPlainArg(0).match(exceptionTerm)) {
                 return true;
@@ -224,7 +224,7 @@ public class TuStateException extends TuState {
     // l'handler corrispondente
     private Term javaUnify(Term arg1, Term exceptionTerm, List<TuVar> unifiedVars) {
         TuStruct list = (TuStruct) arg1;
-        Iterator<? extends Term> it = list.listIterator();
+        Iterator<? extends Term> it = list.listIteratorProlog();
         while (it.hasNext()) {
             Term nextTerm = it.next();
             if (!nextTerm.isCompound())
@@ -232,7 +232,7 @@ public class TuStateException extends TuState {
             TuStruct element = (TuStruct) nextTerm;
             if (!element.fname().equals(","))
                 continue;
-            if (element.getArity() != 2)
+            if (element.getPlArity() != 2)
                 continue;
             if (element.getPlainArg(0).match(exceptionTerm)) {
                 element.getPlainArg(0)

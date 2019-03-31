@@ -41,7 +41,7 @@ public class TheoryManagerTestCase extends TestCase {
 		String theory = "test(A, B) :- A is 1+2, B is 2+3.";
 		engine.setTheory(new TuTheory(theory));
 		TuTheoryManager manager = engine.getTheoryManager();
-		TuStruct testTerm = createTuStruct2("test", createTuAtom("a"), createTuAtom("b"));
+		Term testTerm = createTuStruct2("test", createTuAtom("a"), createTuAtom("b"));
 		List<ClauseInfo> testClauses = manager.find(testTerm);
 		assertEquals(1, testClauses.size());
 		manager.abolish(TuFactory.createTuStruct2("/", createTuAtom("test"), createTuInt(2)));

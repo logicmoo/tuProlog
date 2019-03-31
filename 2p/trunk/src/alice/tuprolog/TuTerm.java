@@ -17,6 +17,7 @@
  */
 
 package alice.tuprolog;
+
 import static alice.tuprolog.TuPrologError.*;
 import static alice.tuprolog.TuFactory.*;
 
@@ -41,6 +42,24 @@ import static alice.tuprolog.TuFactory.*;
  */
 public abstract class TuTerm implements Term {
 
+    /* (non-Javadoc)
+     * @see alice.tuprolog.Term#isInteger()
+     */
+    @Override
+    public boolean isInteger() {
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see alice.tuprolog.Term#longValue()
+     */
+    @Override
+    public long longValue() {
+        // TODO Auto-generated method stub
+        if (true)
+            throw new AbstractMethodError("TuTerm.longValue");
+        return 0;
+    }
 
     /* (non-Javadoc)
      * @see alice.tuprolog.Term#intValue()
@@ -48,10 +67,11 @@ public abstract class TuTerm implements Term {
     @Override
     public int intValue() {
         // TODO Auto-generated method stub
-        if (!isInt()) throw new AbstractMethodError("TuTerm.intValue");
+        if (!isInt())
+            throw new AbstractMethodError("TuTerm.intValue");
         return 0;
     }
-    
+
     /* (non-Javadoc)
      * @see alice.tuprolog.Term#isInt()
      */
@@ -158,7 +178,7 @@ public abstract class TuTerm implements Term {
      * @param count new starting time count for resolving process
      * @return the new time count, after resolving process
      */
-    public  abstract long resolveTerm(long count);
+    public abstract long resolveTerm(long count);
 
     /**
      * Resolves variables inside the term
@@ -183,9 +203,9 @@ public abstract class TuTerm implements Term {
     public Term copyResult(Collection<TuVar> goalVars, List<TuVar> resultVars) {
         IdentityHashMap<TuVar, TuVar> originals = new IdentityHashMap<TuVar, TuVar>();
         for (TuVar key : goalVars) {
-            TuVar clone = new TuVar();
+            TuVar clone = createTuVar();
             if (!key.isAnonymous()) {
-                clone = new TuVar(key.getOriginalName());
+                clone = createTuVarNamed(key.getOriginalName());
             }
             originals.put(key, clone);
             resultVars.add(clone);
@@ -298,7 +318,8 @@ public abstract class TuTerm implements Term {
      * @param varsUnifiedArg2 Vars unified in term t
      * @param isOccursCheckEnabled
      */
-    public abstract boolean unify(List<TuVar> varsUnifiedArg1, List<TuVar> varsUnifiedArg2, Term t, boolean isOccursCheckEnabled);
+    public abstract boolean unify(List<TuVar> varsUnifiedArg1, List<TuVar> varsUnifiedArg2, Term t,
+            boolean isOccursCheckEnabled);
 
     /**
      * Tries to unify two terms, given a demonstration context
@@ -308,7 +329,7 @@ public abstract class TuTerm implements Term {
      * @param varsUnifiedArg1 Vars unified in myself
      * @param varsUnifiedArg2 Vars unified in term t
      */
-    public  abstract boolean unify(List<TuVar> varsUnifiedArg1, List<TuVar> varsUnifiedArg2, Term t);
+    public abstract boolean unify(List<TuVar> varsUnifiedArg1, List<TuVar> varsUnifiedArg2, Term t);
 
     /**
      * Static service to create a Term from a string.
@@ -434,7 +455,8 @@ public abstract class TuTerm implements Term {
     @Override
     public String fname() {
         // TODO Auto-generated method stub
-        if (true) throw new AbstractMethodError("TuTerm.fname");
+        if (true)
+            throw new AbstractMethodError("TuTerm.fname");
         return null;
     }
 
@@ -443,25 +465,28 @@ public abstract class TuTerm implements Term {
      */
     public int listSize() {
         // TODO Auto-generated method stub
-        if (true) throw new AbstractMethodError("TuTerm.listSize");
+        if (true)
+            throw new AbstractMethodError("TuTerm.listSize");
         return Integer.MIN_VALUE;
     }
 
     /**
      * @return
      */
-    public int getArity() {
+    public int getPlArity() {
         // TODO Auto-generated method stub
-        if (true) throw new AbstractMethodError("TuTerm.getArity");
+        if (true)
+            throw new AbstractMethodError("TuTerm.getArity");
         return -1;
     }
 
     /**
      * @return
      */
-    public Iterator<? extends Term> listIterator() {
+    public Iterator<? extends Term> listIteratorProlog() {
         // TODO Auto-generated method stub
-        if (true) throw new AbstractMethodError("TuTerm.listIterator");
+        if (true)
+            throw new AbstractMethodError("TuTerm.listIterator");
         return null;
     }
 
@@ -470,7 +495,8 @@ public abstract class TuTerm implements Term {
      */
     Object toList() {
         // TODO Auto-generated method stub
-        if (true) throw new AbstractMethodError("TuTerm.toList");
+        if (true)
+            throw new AbstractMethodError("TuTerm.toList");
         return null;
     }
 
@@ -480,7 +506,8 @@ public abstract class TuTerm implements Term {
      */
     public Term getDerefArg(int i) {
         // TODO Auto-generated method stub
-        if (true) throw new AbstractMethodError("TuTerm.getTerm");
+        if (true)
+            throw new AbstractMethodError("TuTerm.getTerm");
         return null;
     }
 
@@ -490,7 +517,39 @@ public abstract class TuTerm implements Term {
      */
     public Term getPlainArg(int i) {
         // TODO Auto-generated method stub
-        if (true) throw new AbstractMethodError("TuTerm.getPlainArg");
+        if (true)
+            throw new AbstractMethodError("TuTerm.getPlainArg");
+        return null;
+    }
+
+    /**
+     * @return
+     */
+    public TuTerm getPlTail() {
+        // TODO Auto-generated method stub
+        if (true)
+            throw new AbstractMethodError("TuTerm.listTail");
+        return null;
+    }
+
+    /**
+     * @param i
+     * @param otherClauseList
+     */
+    public void setArg(int i, Term otherClauseList) {
+        // TODO Auto-generated method stub
+        if (true)
+            throw new AbstractMethodError("TuTerm.setArg");
+
+    }
+
+    /**
+     * @return
+     */
+    public Term getPlHead() {
+        // TODO Auto-generated method stub
+        if (true)
+            throw new AbstractMethodError("TuTerm.listHead");
         return null;
     }
 }

@@ -250,8 +250,8 @@ public class PJLibraryNew extends OOLibrary {
         if (! (term.dref() .isTuStruct()) )
             return false;
         TuStruct methodInfo = (TuStruct)term.dref();
-        Term[] terms = new Term[methodInfo.getArity()];
-        for (int i = 0 ; i < methodInfo.getArity() ; i ++) {
+        Term[] terms = new Term[methodInfo.getPlArity()];
+        for (int i = 0 ; i < methodInfo.getPlArity() ; i ++) {
             terms[i] = registerDynamic(alice.tuprologx.pj.model.TxTerm.unmarshal(methodInfo.getDerefArg(i).dref()));
         }
         return unify(unmarshalledTerm, createTuStructA(methodInfo.fname(), terms));
@@ -311,7 +311,7 @@ public class PJLibraryNew extends OOLibrary {
 
     private Object[] getArrayFromList(TuStruct list) {
 		Object args[] = new Object[list.listSize()];
-		Iterator<? extends Term> it = list.listIterator();
+		Iterator<? extends Term> it = list.listIteratorProlog();
 		int count = 0;
 		while (it.hasNext()) {
 			args[count++] = it.next();
@@ -409,7 +409,7 @@ public class PJLibraryNew extends OOLibrary {
 		try {
 			Class<?> cl = null;
 			if (objId.isCompound() &&
-					((TuStruct) objId).getArity() == 1 && ((TuStruct) objId).fname().equals("class")) {
+					((TuStruct) objId).getPlArity() == 1 && ((TuStruct) objId).fname().equals("class")) {
 				String clName = alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString());
 				try {
 					cl = Class.forName(clName);
@@ -535,7 +535,7 @@ public class PJLibraryNew extends OOLibrary {
 		try {
 			Class<?> cl = null;
 			if (objId.isCompound() &&
-					((TuStruct) objId).getArity() == 1 && ((TuStruct) objId).fname().equals("class")) {
+					((TuStruct) objId).getPlArity() == 1 && ((TuStruct) objId).fname().equals("class")) {
 				String clName = alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString());
 				try {
 					cl = Class.forName(clName);
@@ -568,7 +568,7 @@ public class PJLibraryNew extends OOLibrary {
 				return unify(what, createTuLong(value));
 			} else if (fc.equals(java.lang.Float.TYPE)) {
 				float value = field.getFloat(obj);
-				return unify(what, new alice.tuprolog.TuFloat(value));
+				return unify(what, createTuFloat(value));
 			} else if (fc.equals(java.lang.Double.TYPE)) {
 				double value = field.getDouble(obj);
 				return unify(what, createTuDouble(value));
@@ -595,9 +595,9 @@ public class PJLibraryNew extends OOLibrary {
 	 * creation of method signature from prolog data
 	 */
 	private Signature parseArg(TuStruct method) {
-		Object[] values = new Object[method.getArity()];
-		Class<?>[] types = new Class[method.getArity()];
-		for (int i = 0; i < method.getArity(); i++) {
+		Object[] values = new Object[method.getPlArity()];
+		Class<?>[] types = new Class[method.getPlArity()];
+		for (int i = 0; i < method.getPlArity(); i++) {
 			if (!parse_arg(values, types, i, method.getDerefArg(i)))
 				return null;
 		}
@@ -684,7 +684,7 @@ public class PJLibraryNew extends OOLibrary {
 	private boolean parseResult(Term id, Object obj) {
 		if (obj == null) {
 			//return unify(id,Term.TRUE);
-			return unify(id, new TuVar());
+			return unify(id, createTuVar());
 		}
 		try {
 			if (Boolean.class.isInstance(obj)) {
@@ -702,7 +702,7 @@ public class PJLibraryNew extends OOLibrary {
 			} else if (java.lang.Long.class.isInstance(obj)) {
 				return unify(id, createTuLong(((java.lang.Long) obj).longValue()));
 			} else if (java.lang.Float.class.isInstance(obj)) {
-				return unify(id, new alice.tuprolog.TuFloat(((java.lang.Float) obj).floatValue()));
+				return unify(id, createTuFloat(((java.lang.Float) obj).floatValue()));
 			} else if (java.lang.Double.class.isInstance(obj)) {
 				return unify(id, createTuDouble(((java.lang.Double) obj).doubleValue()));
 			} else if (String.class.isInstance(obj)) {

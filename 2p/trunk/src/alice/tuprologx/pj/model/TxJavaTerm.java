@@ -8,9 +8,11 @@
  */
 
 package alice.tuprologx.pj.model;
+
 import java.util.Vector;
 import java.util.HashMap;
 import alice.tuprologx.pj.annotations.Termifiable;
+
 /**
  *
  * @author maurizio
@@ -20,7 +22,7 @@ public class TxJavaTerm<O> extends TxCompound<TxJavaTerm<O>> {
     public static HashMap<String, Class<?>> hashtable = new HashMap<String, Class<?>>();
 
     @SuppressWarnings("serial")
-	static class TermifiableStruct<O> extends alice.tuprolog.TuStruct {
+    static class TermifiableStruct<O> extends alice.tuprolog.TuStruct {
         TxJavaTerm<O> _term;
 
         TermifiableStruct(String name, alice.tuprolog.Term[] arr) {
@@ -40,7 +42,7 @@ public class TxJavaTerm<O> extends TxCompound<TxJavaTerm<O>> {
     Class<?> _class;
     java.util.Collection<TxTerm<?>> _properties;
 
-    public TxJavaTerm(O o) {        
+    public TxJavaTerm(O o) {
         this(o.getClass(), getProperties(o));
     }
 
@@ -48,7 +50,7 @@ public class TxJavaTerm<O> extends TxCompound<TxJavaTerm<O>> {
         this._class = _class;
         _properties = properties;
     }
-    
+
     /** Creates a new instance of JavaTerm */
     /*private static List<Compound2<Atom,Term<?>>> getTermList(Object po) {
         try {
@@ -71,7 +73,7 @@ public class TxJavaTerm<O> extends TxCompound<TxJavaTerm<O>> {
             throw new UnsupportedOperationException(e);
         }
     }*/
-    private static Vector<TxTerm<?>>  getProperties(Object _object) {
+    private static Vector<TxTerm<?>> getProperties(Object _object) {
         Vector<TxTerm<?>> termArr = null;
         try {
             termArr = new java.util.Vector<TxTerm<?>>();
@@ -79,32 +81,31 @@ public class TxJavaTerm<O> extends TxCompound<TxJavaTerm<O>> {
             int count = 0;
             for (java.beans.PropertyDescriptor pdesc : binfo.getPropertyDescriptors()) {
                 //only read-write properties are translated into a compound
-                if (pdesc.getReadMethod()!=null && pdesc.getWriteMethod()!=null) {
+                if (pdesc.getReadMethod() != null && pdesc.getWriteMethod() != null) {
                     Object o = pdesc.getReadMethod().invoke(_object);
-                    TxTerm<?> t = o != null ? TxTerm.fromJava(o) : new TxVar<TxTerm<?>>("X"+count);
+                    TxTerm<?> t = o != null ? TxTerm.fromJava(o) : new TxVar<TxTerm<?>>("X" + count);
                     termArr.add(t);
                     count++;
                 }
             }
             //System.out.println(termArr);
-            
-        }
-        catch (Exception e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
             throw new UnsupportedOperationException(e);
         }
         if (termArr == null || termArr.size() == 0) {
-                throw new IllegalArgumentException();
+            throw new IllegalArgumentException();
 
-            }
+        }
         return termArr;
     }
 
     /** Creates a new instance of JavaTerm */
     @Override
-	public alice.tuprolog.TuStruct marshal() {
+    public alice.tuprolog.TuStruct marshal() {
         try {
-            
+
             alice.tuprolog.Term[] termArr = new alice.tuprolog.Term[_properties.size()];
             int count = 0;
             for (TxTerm<?> term : _properties) {
@@ -115,8 +116,7 @@ public class TxJavaTerm<O> extends TxCompound<TxJavaTerm<O>> {
             //System.out.println(java.util.Arrays.asList(termArr));
             hashtable.put(getName(), this._class);
             return new TermifiableStruct<O>(getName(), termArr).setJavaTerm(this);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new UnsupportedOperationException(e);
         }
@@ -136,7 +136,7 @@ public class TxJavaTerm<O> extends TxCompound<TxJavaTerm<O>> {
     */
 
     @Override
-	public String getName() {
+    public String getName() {
         return _class.getAnnotation(Termifiable.class).predicate();
     }
 
@@ -145,59 +145,59 @@ public class TxJavaTerm<O> extends TxCompound<TxJavaTerm<O>> {
     }
 
     @Override
-	public int arity() {
+    public int arity() {
         return _properties.size();
     }
 
     @Override
-	public <Z> Z toJava() {       
-        try {                
+    public <Z> Z toJava() {
+        try {
             Object po = _class.newInstance();
             java.beans.BeanInfo binfo = java.beans.Introspector.getBeanInfo(_class);
             //int i = 0;
             java.util.Iterator<TxTerm<?>> it = _properties.iterator();
             for (java.beans.PropertyDescriptor pdesc : binfo.getPropertyDescriptors()) {
-                if (pdesc.getReadMethod()!=null && pdesc.getWriteMethod()!=null) {
+                if (pdesc.getReadMethod() != null && pdesc.getWriteMethod() != null) {
                     TxTerm<?> property = it.next();
                     /* ED 2013-05-21 */ TxVar<TxTerm<?>> auxProperty = uncheckedCast(property);
                     //if (!((property instanceof Var) && ((Var<Term<?>>)property).getValue()==null)) {
-                    if (!((property instanceof TxVar) && (auxProperty).getValue()==null)) {
+                    if (!((property instanceof TxVar) && (auxProperty).getValue() == null)) {
                         //System.out.println(property.toJava().getClass() + " " + pdesc.getWriteMethod().getName());
                         pdesc.getWriteMethod().invoke(po, property.toJava());
                     }
                 }
-            }            
+            }
             // return (Z)po;
             return uncheckedCast(po);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new UnsupportedOperationException(e);
-        }            
+        }
     }
 
     static boolean matches(alice.tuprolog.Term t) {
-//        try {
-//            return (!(t instanceof alice.tuprolog.Var) && t.isCompound() && !t.isList() && Class.forName(((alice.tuprolog.Struct)t).getName())!=null);
-//        }
-//        catch (Exception e) {
-//            return false;
-//        }
-        return (t instanceof TermifiableStruct<?>) || ((t.dref() instanceof alice.tuprolog.TuStruct) && hashtable.containsKey(((alice.tuprolog.TuStruct)t.dref()).fname()));
+        //        try {
+        //            return (!(t instanceof alice.tuprolog.Var) && t.isCompound() && !t.isList() && Class.forName(((alice.tuprolog.Struct)t).getName())!=null);
+        //        }
+        //        catch (Exception e) {
+        //            return false;
+        //        }
+        return (t instanceof TermifiableStruct<?>) || ((t.dref() instanceof alice.tuprolog.TuStruct)
+                && hashtable.containsKey(((alice.tuprolog.TuStruct) t.dref()).fname()));
     }
-    
+
     static <Z> TxJavaTerm<Z> unmarshalObject(alice.tuprolog.TuStruct s) {
         if (!matches(s))
             throw new UnsupportedOperationException();
         Class<?> termKlass = hashtable.get(s.fname());
         Vector<TxTerm<?>> terms = new Vector<TxTerm<?>>();
-        for (int i = 0; i < s.getArity() ; i ++) {
+        for (int i = 0; i < s.getPlArity(); i++) {
             terms.add(TxTerm.unmarshal(s.getPlainArg(i)));
         }
         return new TxJavaTerm<Z>(termKlass, terms);
     }
 
     @Override
-	public String toString() {
+    public String toString() {
         return getName() + _properties;
     }
 }

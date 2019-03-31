@@ -75,7 +75,7 @@ public abstract class TuNumber extends TuTerm implements Comparable<TuNumber> {
 
     /** is a float Real number?
      * Was <tt>instanceof alice.tuprolog.Float</tt> instead. */
-    public abstract boolean isFloat();
+    public abstract boolean isSingle();
 
     /** is a double Real number? 
      * Was <tt>instanceof alice.tuprolog.Double</tt> instead.*/

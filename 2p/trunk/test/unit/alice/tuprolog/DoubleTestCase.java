@@ -26,7 +26,7 @@ public class DoubleTestCase extends TestCase {
 	
 	public void testEqualsToVar() throws InvalidTermException {
 		alice.tuprolog.TuDouble one = createTuDouble(1);
-		TuVar x = new TuVar("X");
+		TuVar x = createTuVarNamed("X");
 		assertFalse(one.equals(x));
 	}
 	

@@ -85,7 +85,7 @@ public class StateRuleSelection extends TuState {
             int depth = alternative.executionContext.depth;
             ec.choicePointAfterCut = choicePoint.prevChoicePointContext;
             TuStruct currentGoal = choicePoint.executionContext.currentGoal;
-            while (currentGoal.fname().equals(";") && currentGoal.getArity() == 2) {
+            while (currentGoal.fname().equals(";") && currentGoal.getPlArity() == 2) {
                 if (choicePoint.prevChoicePointContext != null) {
                     int distance = depth - choicePoint.prevChoicePointContext.executionContext.depth;
                     while (distance == 0 && choicePoint.prevChoicePointContext != null) {

@@ -90,12 +90,24 @@ public class TuFactory {
         return new TuStruct(f, argList);
     }
 
-    public static TuStruct createTuStruct2(String f, Term at0, Term at1) {
+    public static TuTerm createTuStruct2(String f, Term at0, Term at1) {
         return S(f, at0, at1);
     }
 
-    public static TuStruct createTuListStruct(Term[] argList) {
+    public static TuTerm createTuListStruct(Term[] argList) {
         return new TuStruct(argList);
+    }
+
+    public static TuFloat createTuFloat(float v) {
+        return new TuFloat(v);
+    }
+
+    public static TuVar createTuVarNamed(String n) {
+        return new TuVar(n);
+    }
+
+    public static TuVar createTuVar() {
+        return new TuVar();
     }
 
 }

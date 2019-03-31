@@ -251,7 +251,7 @@ public class PJLibrary extends TuLibrary {
             String fullClassName = alice.util.Tools.removeApices(className.toString());
 
             String fullClassPath = fullClassName.replace('.', '/');
-            Iterator<? extends Term> it = classPathes.listIterator();
+            Iterator<? extends Term> it = classPathes.listIteratorProlog();
             String cp = "";
             while (it.hasNext()) {
                 if (cp.length() > 0) {
@@ -328,7 +328,7 @@ public class PJLibrary extends TuLibrary {
                     return false;
                 }
                 TuTerm sel = (TuTerm) objId;
-                if (sel.fname().equals(".") && sel.getArity() == 2 && method.getArity() == 1) {
+                if (sel.fname().equals(".") && sel.getPlArity() == 2 && method.getPlArity() == 1) {
                     if (methodName.equals("set"))
                         return java_set(sel.getDerefArg(0), sel.getDerefArg(1), method.getDerefArg(0));
                     else if (methodName.equals("get"))
@@ -359,7 +359,7 @@ public class PJLibrary extends TuLibrary {
                     Object[] newValues = new Object[args_values.length];
                     Class<?>[] newTypes = new Class<?>[args_values.length];
                     //boolean ok = true;
-                    for (int i = 0; i < method.getArity(); i++) {
+                    for (int i = 0; i < method.getPlArity(); i++) {
                         newValues[i] = alice.tuprologx.pj.model.TxTerm.unmarshal(method.getPlainArg(i));
                         newTypes[i] = newValues[i].getClass();
                     }
@@ -385,7 +385,7 @@ public class PJLibrary extends TuLibrary {
             } else {
                 if (objId.isCompound()) {
                     TuTerm id = (TuTerm) objId;
-                    if (id.getArity() == 1 && id.fname().equals("class")) {
+                    if (id.getPlArity() == 1 && id.fname().equals("class")) {
                         try {
                             Class<?> cl = Class.forName(alice.util.Tools.removeApices(id.getPlainArg(0).toString()));
                             Method m = cl.getMethod(methodName, args.getTypes());
@@ -444,7 +444,7 @@ public class PJLibrary extends TuLibrary {
         Object obj = null;
         try {
             Class<?> cl = null;
-            if (objId.isCompound() && ((TuTerm) objId).getArity() == 1 && ((TuTerm) objId).fname().equals("class")) {
+            if (objId.isCompound() && ((TuTerm) objId).getPlArity() == 1 && ((TuTerm) objId).fname().equals("class")) {
                 String clName = alice.util.Tools.removeApices(((TuTerm) objId).getPlainArg(0).toString());
                 try {
                     cl = Class.forName(clName);
@@ -519,7 +519,7 @@ public class PJLibrary extends TuLibrary {
         Object obj = null;
         try {
             Class<?> cl = null;
-            if (objId.isCompound() && ((TuTerm) objId).getArity() == 1 && ((TuTerm) objId).fname().equals("class")) {
+            if (objId.isCompound() && ((TuTerm) objId).getPlArity() == 1 && ((TuTerm) objId).fname().equals("class")) {
                 String clName = alice.util.Tools.removeApices(((TuTerm) objId).getPlainArg(0).toString());
                 try {
                     cl = Class.forName(clName);
@@ -554,7 +554,7 @@ public class PJLibrary extends TuLibrary {
                 return unify(what, createTuLong(value));
             } else if (fc.equals(java.lang.Float.TYPE)) {
                 float value = field.getFloat(obj);
-                return unify(what, new alice.tuprolog.TuFloat(value));
+                return unify(what, createTuFloat(value));
             } else if (fc.equals(java.lang.Double.TYPE)) {
                 double value = field.getDouble(obj);
                 return unify(what, createTuDouble(value));
@@ -688,7 +688,7 @@ public class PJLibrary extends TuLibrary {
                 Term value = createTuDouble(Array.getDouble(obj, index.intValue()));
                 return unify(what, value);
             } else if (name.equals("class [F")) {
-                Term value = new alice.tuprolog.TuFloat(Array.getFloat(obj, index.intValue()));
+                Term value = createTuFloat(Array.getFloat(obj, index.intValue()));
                 return unify(what, value);
             } else if (name.equals("class [L")) {
                 Term value = createTuLong(Array.getLong(obj, index.intValue()));
@@ -754,9 +754,9 @@ public class PJLibrary extends TuLibrary {
      * creation of method signature from prolog data
      */
     private Signature parseArg(TuTerm method) {
-        Object[] values = new Object[method.getArity()];
-        Class<?>[] types = new Class[method.getArity()];
-        for (int i = 0; i < method.getArity(); i++) {
+        Object[] values = new Object[method.getPlArity()];
+        Class<?>[] types = new Class[method.getPlArity()];
+        for (int i = 0; i < method.getPlArity(); i++) {
             if (!parse_arg(values, types, i, method.getDerefArg(i)))
                 return null;
         }
@@ -968,7 +968,7 @@ public class PJLibrary extends TuLibrary {
     private boolean parseResult(Term id, Object obj) {
         if (obj == null) {
             //return unify(id,Term.TRUE);
-            return unify(id, new TuVar());
+            return unify(id, createTuVar());
         }
         try {
             if (Boolean.class.isInstance(obj)) {
@@ -986,7 +986,7 @@ public class PJLibrary extends TuLibrary {
             } else if (java.lang.Long.class.isInstance(obj)) {
                 return unify(id, createTuLong(((java.lang.Long) obj).longValue()));
             } else if (java.lang.Float.class.isInstance(obj)) {
-                return unify(id, new alice.tuprolog.TuFloat(((java.lang.Float) obj).floatValue()));
+                return unify(id, createTuFloat(((java.lang.Float) obj).floatValue()));
             } else if (java.lang.Double.class.isInstance(obj)) {
                 return unify(id, createTuDouble(((java.lang.Double) obj).doubleValue()));
             } else if (String.class.isInstance(obj)) {
@@ -1004,7 +1004,7 @@ public class PJLibrary extends TuLibrary {
 
     private Object[] getArrayFromList(TuTerm list) {
         Object args[] = new Object[list.listSize()];
-        Iterator<? extends Term> it = list.listIterator();
+        Iterator<? extends Term> it = list.listIteratorProlog();
         int count = 0;
         while (it.hasNext()) {
             args[count++] = it.next();
@@ -1201,7 +1201,7 @@ public class PJLibrary extends TuLibrary {
     protected boolean bindDynamicObject(Term id, Object obj) {
         // null object are considered to _ variable
         if (obj == null) {
-            return unify(id, new TuVar());
+            return unify(id, createTuVar());
         }
         /*if (obj instanceof alice.tuprologx.pj.model.Term<?>) {
             alice.tuprologx.pj.model.Term<?> t = (alice.tuprologx.pj.model.Term<?>)obj;
