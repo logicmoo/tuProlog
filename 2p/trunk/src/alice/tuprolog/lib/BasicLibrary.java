@@ -17,6 +17,7 @@
  */
 package alice.tuprolog.lib;
 
+import static alice.tuprolog.TuPrologError.*;
 import java.util.IdentityHashMap;
 
 import alice.tuprolog.*;
@@ -48,16 +49,16 @@ public class BasicLibrary extends TuLibrary {
     public boolean set_theory_1(Term th) throws TuPrologError {
         th = th.dref();
         if (th .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
+            throw instantiation_error(engine.getEngineManager(), 1);
         if (!th.isAtomSymbol()) {
-            throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom", th);
+            throw type_error(engine.getEngineManager(), 1, "atom", th);
         }
         try {
             TuStruct theory = (TuStruct) th;
             getEngine().setTheory(new TuTheory(theory.fname()));
             return true;
         } catch (InvalidTheoryException ex) {
-			throw TuPrologError.syntax_error(engine.getEngineManager(), ex.clause, ex.line, ex.pos, new TuStruct(ex.getMessage()));
+			throw syntax_error(engine.getEngineManager(), ex.clause, ex.line, ex.pos, new TuStruct(ex.getMessage()));
         }
     }
 
@@ -69,9 +70,9 @@ public class BasicLibrary extends TuLibrary {
     public boolean add_theory_1(Term th) throws TuPrologError {
         th = th.dref();
         if (th .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
+            throw instantiation_error(engine.getEngineManager(), 1);
         if (!th.isAtomSymbol()) {
-            throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",
+            throw type_error(engine.getEngineManager(), 1, "atom",
                     th);
         }
         try {
@@ -79,7 +80,7 @@ public class BasicLibrary extends TuLibrary {
             getEngine().addTheory(new TuTheory(theory.fname()));
             return true;
         } catch (InvalidTheoryException ex) {
-        	throw TuPrologError.syntax_error(engine.getEngineManager(), ex.clause, ex.line, ex.pos, new TuStruct(ex.getMessage()));
+        	throw syntax_error(engine.getEngineManager(), ex.clause, ex.line, ex.pos, new TuStruct(ex.getMessage()));
         }
     }
 
@@ -142,9 +143,9 @@ public class BasicLibrary extends TuLibrary {
     public boolean agent_1(Term th) throws TuPrologError {
         th = th.dref();
         if (th .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
+            throw instantiation_error(engine.getEngineManager(), 1);
         if (!(th.isAtomSymbol()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",
+            throw type_error(engine.getEngineManager(), 1, "atom",
                     th);
         TuStruct theory = (TuStruct) th;
         try {
@@ -165,14 +166,14 @@ public class BasicLibrary extends TuLibrary {
         th = th.dref();
         g = g.dref();
         if (th .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
+            throw instantiation_error(engine.getEngineManager(), 1);
         if (g .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
+            throw instantiation_error(engine.getEngineManager(), 2);
         if (!(th.isAtomSymbol()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",
+            throw type_error(engine.getEngineManager(), 1, "atom",
                     th);
         if (!(g .isTuStruct()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 2,
+            throw type_error(engine.getEngineManager(), 2,
                     "struct", g);
         TuStruct theory = (TuStruct) th;
         TuStruct goal = (TuStruct) g;
@@ -287,7 +288,7 @@ public class BasicLibrary extends TuLibrary {
         if (t instanceof ArithmeticException) {
             ArithmeticException cause = (ArithmeticException) t;
             if (cause.getMessage().equals("/ by zero"))
-                throw TuPrologError.evaluation_error(engine.getEngineManager(),
+                throw evaluation_error(engine.getEngineManager(),
                         arg, "zero_divisor");
         }
     }
@@ -295,9 +296,9 @@ public class BasicLibrary extends TuLibrary {
     public boolean expression_equality_2(Term arg0, Term arg1)
             throws TuPrologError {
         if (arg0.dref() .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
+            throw instantiation_error(engine.getEngineManager(), 1);
         if (arg1.dref() .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
+            throw instantiation_error(engine.getEngineManager(), 2);
         Term val0 = null;
         Term val1 = null;
         try {
@@ -311,10 +312,10 @@ public class BasicLibrary extends TuLibrary {
             handleError(e, 2);
         }
         if (val0 == null || !(val0 .isNumber()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 1,
+            throw type_error(engine.getEngineManager(), 1,
                     "evaluable", arg0.dref());
         if (val1 == null || !(val1 .isNumber()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 2,
+            throw type_error(engine.getEngineManager(), 2,
                     "evaluable", arg1.dref());
         alice.tuprolog.TuNumber val0n = (alice.tuprolog.TuNumber) val0;
         alice.tuprolog.TuNumber val1n = (alice.tuprolog.TuNumber) val1;
@@ -331,9 +332,9 @@ public class BasicLibrary extends TuLibrary {
     public boolean expression_greater_than_2(Term arg0, Term arg1)
             throws TuPrologError {
         if (arg0.dref() .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
+            throw instantiation_error(engine.getEngineManager(), 1);
         if (arg1.dref() .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
+            throw instantiation_error(engine.getEngineManager(), 2);
         Term val0 = null;
         Term val1 = null;
         try {
@@ -347,10 +348,10 @@ public class BasicLibrary extends TuLibrary {
             handleError(e, 2);
         }
         if (val0 == null || !(val0 .isNumber()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 1,
+            throw type_error(engine.getEngineManager(), 1,
                     "evaluable", arg0.dref());
         if (val1 == null || !(val1 .isNumber()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 2,
+            throw type_error(engine.getEngineManager(), 2,
                     "evaluable", arg1.dref());
         return expression_greater_than((alice.tuprolog.TuNumber) val0,
                 (alice.tuprolog.TuNumber) val1);
@@ -359,9 +360,9 @@ public class BasicLibrary extends TuLibrary {
     public boolean expression_less_or_equal_than_2(Term arg0, Term arg1)
             throws TuPrologError {
         if (arg0.dref() .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
+            throw instantiation_error(engine.getEngineManager(), 1);
         if (arg1.dref() .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
+            throw instantiation_error(engine.getEngineManager(), 2);
         Term val0 = null;
         Term val1 = null;
         try {
@@ -375,10 +376,10 @@ public class BasicLibrary extends TuLibrary {
             handleError(e, 2);
         }
         if (val0 == null || !(val0 .isNumber()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 1,
+            throw type_error(engine.getEngineManager(), 1,
                     "evaluable", arg0.dref());
         if (val1 == null || !(val1 .isNumber()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 2,
+            throw type_error(engine.getEngineManager(), 2,
                     "evaluable", arg1.dref());
         return !expression_greater_than((alice.tuprolog.TuNumber) val0,
                 (alice.tuprolog.TuNumber) val1);
@@ -396,9 +397,9 @@ public class BasicLibrary extends TuLibrary {
     public boolean expression_less_than_2(Term arg0, Term arg1)
             throws TuPrologError {
         if (arg0.dref() .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
+            throw instantiation_error(engine.getEngineManager(), 1);
         if (arg1.dref() .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
+            throw instantiation_error(engine.getEngineManager(), 2);
         Term val0 = null;
         Term val1 = null;
         try {
@@ -412,10 +413,10 @@ public class BasicLibrary extends TuLibrary {
             handleError(e, 2);
         }
         if (val0 == null || !(val0 .isNumber()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 1,
+            throw type_error(engine.getEngineManager(), 1,
                     "evaluable", arg0.dref());
         if (val1 == null || !(val1 .isNumber()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 2,
+            throw type_error(engine.getEngineManager(), 2,
                     "evaluable", arg1.dref());
         return expression_less_than((alice.tuprolog.TuNumber) val0,
                 (alice.tuprolog.TuNumber) val1);
@@ -424,9 +425,9 @@ public class BasicLibrary extends TuLibrary {
     public boolean expression_greater_or_equal_than_2(Term arg0, Term arg1)
             throws TuPrologError {
         if (arg0.dref() .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
+            throw instantiation_error(engine.getEngineManager(), 1);
         if (arg1.dref() .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
+            throw instantiation_error(engine.getEngineManager(), 2);
         Term val0 = null;
         Term val1 = null;
         try {
@@ -440,10 +441,10 @@ public class BasicLibrary extends TuLibrary {
             handleError(e, 2);
         }
         if (val0 == null || !(val0 .isNumber()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 1,
+            throw type_error(engine.getEngineManager(), 1,
                     "evaluable", arg0.dref());
         if (val1 == null || !(val1 .isNumber()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 2,
+            throw type_error(engine.getEngineManager(), 2,
                     "evaluable", arg1.dref());
         return !expression_less_than((alice.tuprolog.TuNumber) val0,
                 (alice.tuprolog.TuNumber) val1);
@@ -769,14 +770,14 @@ public class BasicLibrary extends TuLibrary {
         source2 = source2.dref();
         dest = dest.dref();
         if (source1 .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
+            throw instantiation_error(engine.getEngineManager(), 1);
         if (source2 .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
+            throw instantiation_error(engine.getEngineManager(), 2);
         if (!source1.isAtomSymbol())
-            throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",
+            throw type_error(engine.getEngineManager(), 1, "atom",
                     source1);
         if (!source2.isAtomSymbol())
-            throw TuPrologError.type_error(engine.getEngineManager(), 2, "atom",
+            throw type_error(engine.getEngineManager(), 2, "atom",
                     source2);
         return unify(dest, new TuStruct(((TuStruct) source1).fname()
                 + ((TuStruct) source2).fname()));
@@ -787,7 +788,7 @@ public class BasicLibrary extends TuLibrary {
         arg1 = arg1.dref();
         if (arg1 .isVar()) {
             if (!(arg0 .isNumber())) {
-                throw TuPrologError.type_error(engine.getEngineManager(), 1,
+                throw type_error(engine.getEngineManager(), 1,
                         "number", arg0);
             }
             alice.tuprolog.TuNumber n0 = (alice.tuprolog.TuNumber) arg0;
@@ -801,7 +802,7 @@ public class BasicLibrary extends TuLibrary {
             return (unify(arg1, new TuStruct(st)));
         } else {
             if (!arg1.isAtomSymbol()) {
-                throw TuPrologError.type_error(engine.getEngineManager(), 2,
+                throw type_error(engine.getEngineManager(), 2,
                         "atom", arg1);
             }
             String st = ((TuStruct) arg1).fname();
@@ -910,7 +911,7 @@ public class BasicLibrary extends TuLibrary {
                 }
             }
             if (term == null) {
-                throw TuPrologError.domain_error(engine.getEngineManager(), 2,
+                throw domain_error(engine.getEngineManager(), 2,
                         "num_atom", arg1);
             }
             return (unify(arg0, term));
@@ -1237,18 +1238,18 @@ public class BasicLibrary extends TuLibrary {
         arg0 = arg0.dref();
         arg1 = arg1.dref();
         if (arg0 .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
+            throw instantiation_error(engine.getEngineManager(), 1);
         if (arg1 .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
+            throw instantiation_error(engine.getEngineManager(), 2);
         if (!(arg0 .isInt()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 1,
+            throw type_error(engine.getEngineManager(), 1,
                     "integer", arg0);
         if (!arg1.isCompound())
-            throw TuPrologError.type_error(engine.getEngineManager(), 2,
+            throw type_error(engine.getEngineManager(), 2,
                     "compound", arg1);
         TuInt arg0int = (TuInt) arg0;
         if (arg0int.intValue() < 1)
-            throw TuPrologError.domain_error(engine.getEngineManager(), 1,
+            throw domain_error(engine.getEngineManager(), 1,
                     "greater_than_zero", arg0);
         return true;
     }
@@ -1256,16 +1257,16 @@ public class BasicLibrary extends TuLibrary {
     public boolean clause_guard_2(Term arg0, Term arg1) throws TuPrologError {
         arg0 = arg0.dref();
         if (arg0 .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
+            throw instantiation_error(engine.getEngineManager(), 1);
         return true;
     }
 
     public boolean call_guard_1(Term arg0) throws TuPrologError {
         arg0 = arg0.dref();
         if (arg0 .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
+            throw instantiation_error(engine.getEngineManager(), 1);
         if (!arg0.isAtomSymbol() && !arg0.isCompound())
-            throw TuPrologError.type_error(engine.getEngineManager(), 1,
+            throw type_error(engine.getEngineManager(), 1,
                     "callable", arg0);
         return true;
     }
@@ -1275,10 +1276,10 @@ public class BasicLibrary extends TuLibrary {
         arg1 = arg1.dref();
         
         if (arg1 .isVar()){
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
+            throw instantiation_error(engine.getEngineManager(), 2);
         }
         if (!arg1.isAtomSymbol() && !arg1.isCompound()){
-            throw TuPrologError.type_error(engine.getEngineManager(), 2,
+            throw type_error(engine.getEngineManager(), 2,
                     "callable", arg1); 
          }
         return true;
@@ -1287,9 +1288,9 @@ public class BasicLibrary extends TuLibrary {
     public boolean retract_guard_1(Term arg0) throws TuPrologError {
         arg0 = arg0.dref();
         if (arg0 .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
+            throw instantiation_error(engine.getEngineManager(), 1);
         if (!(arg0 .isTuStruct()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 1,
+            throw type_error(engine.getEngineManager(), 1,
                     "clause", arg0);
         return true;
     }
@@ -1297,7 +1298,7 @@ public class BasicLibrary extends TuLibrary {
     public boolean member_guard_2(Term arg0, Term arg1) throws TuPrologError {
         arg1 = arg1.dref();
         if (!(arg1 .isVar()) && !(arg1.isConsList()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 2, "list",
+            throw type_error(engine.getEngineManager(), 2, "list",
                     arg1);
         return true;
     }
@@ -1305,7 +1306,7 @@ public class BasicLibrary extends TuLibrary {
     public boolean reverse_guard_2(Term arg0, Term arg1) throws TuPrologError {
         arg0 = arg0.dref();
         if (!(arg0 .isVar()) && !(arg0.isConsList()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 1, "list",
+            throw type_error(engine.getEngineManager(), 1, "list",
                     arg0);
         return true;
     }
@@ -1314,7 +1315,7 @@ public class BasicLibrary extends TuLibrary {
             throws TuPrologError {
         arg1 = arg1.dref();
         if (!(arg1 .isVar()) && !(arg1.isConsList()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 2, "list",
+            throw type_error(engine.getEngineManager(), 2, "list",
                     arg1);
         return true;
     }
@@ -1323,7 +1324,7 @@ public class BasicLibrary extends TuLibrary {
             throws TuPrologError {
         arg1 = arg1.dref();
         if (!(arg1 .isVar()) && !(arg1.isConsList()))
-            throw TuPrologError.type_error(engine.getEngineManager(), 2, "list",
+            throw type_error(engine.getEngineManager(), 2, "list",
                     arg1);
         return true;
     }

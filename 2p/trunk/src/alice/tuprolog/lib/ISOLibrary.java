@@ -20,6 +20,9 @@ package alice.tuprolog.lib;
 import alice.tuprolog.*;
 import alice.tuprolog.TuNumber;
 
+import static alice.tuprolog.TuPrologError.*;
+
+
 /**
  * This class represents a tuProlog library providing most of the built-ins
  * predicates and functors defined by ISO standard.
@@ -37,9 +40,9 @@ public class ISOLibrary extends TuLibrary {
     public boolean atom_length_2(Term arg0, Term len) throws TuPrologError {
         arg0 = arg0.dref();
         if (arg0 .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
+            throw instantiation_error(engine.getEngineManager(), 1);
         if (!arg0.isAtomSymbol())
-            throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",
+            throw type_error(engine.getEngineManager(), 1, "atom",
                     arg0);
         TuStruct atom = (TuStruct) arg0;
         return unify(len, new TuInt(atom.fname().length()));
@@ -50,7 +53,7 @@ public class ISOLibrary extends TuLibrary {
         arg1 = arg1.dref();
         if (arg0 .isVar()) {
             if (!arg1.isConsList()) {
-                throw TuPrologError.type_error(engine.getEngineManager(), 2,
+                throw type_error(engine.getEngineManager(), 2,
                         "list", arg1);
             }
             TuStruct list = (TuStruct) arg1;
@@ -79,7 +82,7 @@ public class ISOLibrary extends TuLibrary {
             return unify(arg0, new TuStruct(st));
         } else {
             if (!arg0.isAtomSymbol()) {
-                throw TuPrologError.type_error(engine.getEngineManager(), 1,
+                throw type_error(engine.getEngineManager(), 1,
                         "atom", arg0);
             }
             String st = ((TuStruct) arg0).fname();
@@ -107,17 +110,17 @@ public class ISOLibrary extends TuLibrary {
                 if (st.length() <= 1)
                     return unify(arg1, new TuInt(st.charAt(0)));
                 else
-                    throw TuPrologError.type_error(engine.getEngineManager(), 1,
+                    throw type_error(engine.getEngineManager(), 1,
                             "character", arg0);
             } else
-                throw TuPrologError.type_error(engine.getEngineManager(), 1,
+                throw type_error(engine.getEngineManager(), 1,
                         "character", arg0);
         } else if ((arg1 .isInt())
                 || (arg1 instanceof alice.tuprolog.TuLong)) {
             char c = (char) ((TuNumber) arg1).intValue();
             return unify(arg0, new TuStruct("" + c));
         } else
-            throw TuPrologError.type_error(engine.getEngineManager(), 2,
+            throw type_error(engine.getEngineManager(), 2,
                     "integer", arg1);
     }
 
@@ -461,7 +464,7 @@ public class ISOLibrary extends TuLibrary {
             throws TuPrologError {
         arg0 = arg0.dref();
         if (!arg0.isAtomSymbol())
-            throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom", arg0);
+            throw type_error(engine.getEngineManager(), 1, "atom", arg0);
         return true;
     }
 

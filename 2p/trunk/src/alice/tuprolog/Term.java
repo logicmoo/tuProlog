@@ -30,7 +30,7 @@ import alice.tuprolog.json.JSONSerializerManager;
  * @see TuStruct
  * @see TuVar
  * @see  TuNumber
- */
+ */ 
 public abstract interface Term extends Serializable {
 
     // true and false constants

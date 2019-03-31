@@ -17,6 +17,9 @@
  */
 package alice.tuprolog.lib;
 
+
+import static alice.tuprolog.TuPrologError.*;
+
 import alice.tuprolog.*;
 
 /**
@@ -57,14 +60,14 @@ public class DCGLibrary extends TuLibrary {
     public boolean phrase_guard_2(Term arg0, Term arg1) throws TuPrologError {
         arg0 = arg0.dref();
         if (arg0 .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
+            throw instantiation_error(engine.getEngineManager(), 1);
         return true;
     }
 
     public boolean phrase_guard_3(Term arg0, Term arg1, Term arg2) throws TuPrologError {
         arg0 = arg0.dref();
         if (arg0 .isVar())
-            throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
+            throw instantiation_error(engine.getEngineManager(), 1);
         return true;
     }
 
