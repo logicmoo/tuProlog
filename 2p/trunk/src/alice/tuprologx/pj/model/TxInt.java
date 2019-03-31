@@ -9,8 +9,6 @@
 
 package alice.tuprologx.pj.model;
 
-import alice.tuprolog.TuTerm;
-
 /**
  *
  * @author maurizio
@@ -28,7 +26,7 @@ public class TxInt extends TxTerm<TxInt> {
         
         @Override
 		public alice.tuprolog.TuInt marshal() {
-            return TuTerm.i32(_theInt);
+            return new alice.tuprolog.TuInt(_theInt);
         }
         
         static TxInt unmarshal(alice.tuprolog.TuInt i) {
@@ -38,7 +36,7 @@ public class TxInt extends TxTerm<TxInt> {
         }
         
         static boolean matches(alice.tuprolog.Term t) {
-            return (t .isInt());
+            return (t instanceof alice.tuprolog.TuInt);
         }
         
 	@Override

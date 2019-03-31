@@ -39,10 +39,10 @@ public class TheoryManagerTestCase extends TestCase {
 		String theory = "test(A, B) :- A is 1+2, B is 2+3.";
 		engine.setTheory(new TuTheory(theory));
 		TuTheoryManager manager = engine.getTheoryManager();
-		TuStruct testTerm = TuStruct.createTuStruct2("test", TuTerm.createAtomTerm("a"), TuTerm.createAtomTerm("b"));
+		TuStruct testTerm = new TuStruct("test", new TuStruct("a"), new TuStruct("b"));
 		List<ClauseInfo> testClauses = manager.find(testTerm);
 		assertEquals(1, testClauses.size());
-		manager.abolish(TuStruct.createTuStruct2("/", TuTerm.createAtomTerm("test"), TuTerm.i32(2)));
+		manager.abolish(new TuStruct("/", new TuStruct("test"), new TuInt(2)));
 		testClauses = manager.find(testTerm);
 		// The predicate should also disappear completely from the clause
 		// database, i.e. ClauseDatabase#get(f/a) should return null

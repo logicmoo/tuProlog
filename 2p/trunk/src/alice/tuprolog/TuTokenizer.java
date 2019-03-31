@@ -361,7 +361,7 @@ public class TuTokenizer extends StreamTokenizer implements Serializable {
 
             qType = qType == '\'' ? SQ_SEQUENCE : qType == '\"' ? DQ_SEQUENCE : SQ_SEQUENCE;
             if (qType == SQ_SEQUENCE) {
-                if (TuParser.isAtomSymbol(quoteBody))
+                if (TuParser.isAtom(quoteBody))
                     qType = ATOM;
                 /*Castagna 06/2011*/
                 //int typeb = super.nextToken(); // lookahead 1 to identify what type of quote

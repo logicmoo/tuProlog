@@ -92,14 +92,14 @@ class Node<K extends Comparable<? super K>,V>
  * @param <K>   It's the type of the key used to recall values
  * @param <V>   It's the type of the values stored in the tree
  */
-public class RBTree<K extends Comparable<? super K>,V>
+public class TuRBTree<K extends Comparable<? super K>,V>
 {
     public static final boolean VERIFY_RBTREE = false;
     private static final int INDENT_STEP = 4;
 
     public Node<K,V> root;
 
-    public RBTree() {
+    public TuRBTree() {
         root = null;
         verifyProperties();
     }

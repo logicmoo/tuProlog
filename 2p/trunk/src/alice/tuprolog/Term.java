@@ -42,8 +42,8 @@ import nu.xom.xslt.XSLException;
 public abstract interface Term extends Serializable {
 
     // true and false constants
-    public static final Term TRUE = TuTerm.createAtomTerm("true");
-    public static final Term FALSE = TuTerm.createAtomTerm("false");
+    public static final Term TRUE = new TuStruct("true");
+    public static final Term FALSE = new TuStruct("false");
 
     //boolean isCyclic = false; //Alberto -> da usare quando si supporteranno i termini ciclici
 
@@ -53,12 +53,13 @@ public abstract interface Term extends Serializable {
      * is this term a prolog numeric term?
      * Was <tt>instanceof Number</tt> instead.
      */
+   // @Deprecated
     public abstract boolean isNumber();
 
     /**
      * is this term a struct?
-     * Was <tt>.isCallable()</tt> instead. */
-    public abstract boolean isCallable();
+     * Was <tt>instanceof Struct</tt> instead. */
+    public abstract boolean isStruct();
 
     /**
      * is this term a variable?
@@ -75,7 +76,7 @@ public abstract interface Term extends Serializable {
     public abstract boolean isCompound();
 
     /** is this term a prolog (alphanumeric) atom? */
-    public abstract boolean isAtomSymbol();
+    public abstract boolean isAtom();
 
     /** is this term a prolog list? */
     public abstract boolean isList();
@@ -322,36 +323,5 @@ public abstract interface Term extends Serializable {
         } else
             return null;
     }
-
-    /**
-     * @return
-     */
-    public abstract boolean isInt();
-
-    /**
-     * @return
-     */
-    public abstract boolean isAbstractSocket();
-
-    /**
-     * @return
-     */
-    public abstract boolean isLong();
-
-    /**
-     * @return
-     */
-    public abstract boolean isFloat();
-
-    /**
-     * @return
-     */
-    public abstract boolean isDouble();
-
-    /**
-     * @return
-     */
-    public abstract int intValue();
-
 
 }

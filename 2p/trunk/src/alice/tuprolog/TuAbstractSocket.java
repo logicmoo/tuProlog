@@ -3,7 +3,6 @@ package alice.tuprolog;
 import java.net.InetAddress;
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.List;
 
 import nu.xom.xslt.XSLException;
 
@@ -20,30 +19,57 @@ public abstract class TuAbstractSocket extends TuTerm {
 
     public abstract InetAddress getAddress();
 
+    @Override
+    public boolean isNumber() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean isStruct() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
     @Override
     public boolean isVar() {
+        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
-    public boolean isCompound() {
-        return false;
-    }
-
-    @Override
-    public boolean isList() {
-        return false;
-    }
-
-    @Override
-    public boolean isGround() {
+    public boolean isEmptyList() {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean isAtomic() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean isCompound() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean isAtom() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean isList() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean isGround() {
+        // TODO Auto-generated method stub
         return false;
     }
 
@@ -101,10 +127,5 @@ public abstract class TuAbstractSocket extends TuTerm {
         // TODO Auto-generated method stub
 
     }
-    @Override
-    public boolean isAbstractSocket() {
-        return true;
-    }
-    
 
 }

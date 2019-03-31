@@ -37,7 +37,7 @@ public class TxBool extends TxTerm<TxBool> {
         }
         
         static boolean matches(alice.tuprolog.Term t) {            
-            return (!(t .isVar()) && (t.isEqual(alice.tuprolog.Term.TRUE) || t.isEqual(alice.tuprolog.Term.FALSE)));
+            return (!(t instanceof alice.tuprolog.TuVar) && (t.isEqual(alice.tuprolog.Term.TRUE) || t.isEqual(alice.tuprolog.Term.FALSE)));
         }
         
 	@Override

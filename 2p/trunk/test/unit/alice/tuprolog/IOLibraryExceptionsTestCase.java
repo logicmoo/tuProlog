@@ -20,7 +20,7 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct1("see", TuTerm.createTuVar("X"))));
+		assertTrue(g.isEqual(new TuStruct("see", new TuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -32,11 +32,11 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct1("see", TuTerm.i32(1))));
+		assertTrue(g.isEqual(new TuStruct("see", new TuInt(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(TuTerm.createAtomTerm("atom")));
+		assertTrue(validType.isEqual(new TuStruct("atom")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -49,13 +49,13 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct1("see", TuTerm.createAtomTerm("a"))));
+		assertTrue(g.isEqual(new TuStruct("see", new TuStruct("a"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validDomain = (TuStruct) info.getTerm("ValidDomain");
-		assertTrue(validDomain.isEqual(TuTerm.createAtomTerm("stream")));
+		assertTrue(validDomain.isEqual(new TuStruct("stream")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("a")));
+		assertTrue(culprit.isEqual(new TuStruct("a")));
 	}
 
 	// verifico che tell(X) lancia un errore di instanziazione
@@ -65,7 +65,7 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct1("tell", TuTerm.createTuVar("X"))));
+		assertTrue(g.isEqual(new TuStruct("tell", new TuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -77,11 +77,11 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct1("tell", TuTerm.i32(1))));
+		assertTrue(g.isEqual(new TuStruct("tell", new TuInt(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(TuTerm.createAtomTerm("atom")));
+		assertTrue(validType.isEqual(new TuStruct("atom")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -93,7 +93,7 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct1("put", TuTerm.createTuVar("X"))));
+		assertTrue(g.isEqual(new TuStruct("put", new TuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -105,11 +105,11 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct1("put", TuTerm.i32(1))));
+		assertTrue(g.isEqual(new TuStruct("put", new TuInt(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(TuTerm.createAtomTerm("character")));
+		assertTrue(validType.isEqual(new TuStruct("character")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -121,13 +121,13 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct1("put", TuTerm.createAtomTerm("aa"))));
+		assertTrue(g.isEqual(new TuStruct("put", new TuStruct("aa"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(TuTerm.createAtomTerm("character")));
+		assertTrue(validType.isEqual(new TuStruct("character")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("aa")));
+		assertTrue(culprit.isEqual(new TuStruct("aa")));
 	}
 
 	// verifico che tab(X) lancia un errore di instanziazione
@@ -137,7 +137,7 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct1("tab", TuTerm.createTuVar("X"))));
+		assertTrue(g.isEqual(new TuStruct("tab", new TuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -149,13 +149,13 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct1("tab", TuTerm.createAtomTerm("a"))));
+		assertTrue(g.isEqual(new TuStruct("tab", new TuStruct("a"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(TuTerm.createAtomTerm("integer")));
+		assertTrue(validType.isEqual(new TuStruct("integer")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("a")));
+		assertTrue(culprit.isEqual(new TuStruct("a")));
 	}
 
 	// verifico che set_read_1 lancia un errore di sintassi se si verifica un
@@ -169,13 +169,13 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct1("read", TuTerm.createTuVar("X"))));
+		assertTrue(g.isEqual(new TuStruct("read", new TuVar("X"))));
 		TuInt line = (TuInt) info.getTerm("Line");
 		assertTrue(line.intValue() == 1);
 		TuInt position = (TuInt) info.getTerm("Line");
 		assertTrue(position.intValue() == 1);
 		TuStruct message = (TuStruct) info.getTerm("Message");
-		assertTrue(message.isEqual(TuTerm.createAtomTerm("@term")));
+		assertTrue(message.isEqual(new TuStruct("@term")));
 		File f = new File("read");
 		f.delete();
 	}
@@ -187,7 +187,7 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct1("write", TuTerm.createTuVar("X"))));
+		assertTrue(g.isEqual(new TuStruct("write", new TuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -199,7 +199,7 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct1("print", TuTerm.createTuVar("X"))));
+		assertTrue(g.isEqual(new TuStruct("print", new TuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -211,7 +211,8 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct2("text_from_file", TuTerm.createTuVar("X"), TuTerm.createTuVar("Y"))));
+		assertTrue(g.isEqual(new TuStruct("text_from_file", new TuVar("X"),
+				new TuVar("Y"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -223,11 +224,12 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct2("text_from_file", TuTerm.i32(1), TuTerm.createTuVar("Y"))));
+		assertTrue(g.isEqual(new TuStruct("text_from_file", new TuInt(1), new TuVar(
+				"Y"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(TuTerm.createAtomTerm("atom")));
+		assertTrue(validType.isEqual(new TuStruct("atom")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -240,15 +242,16 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct2("text_from_file", TuTerm.createAtomTerm("text"), TuTerm.createTuVar("Y"))));
+		assertTrue(g.isEqual(new TuStruct("text_from_file", new TuStruct("text"),
+				new TuVar("Y"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ObjectType");
-		assertTrue(validType.isEqual(TuTerm.createAtomTerm("stream")));
+		assertTrue(validType.isEqual(new TuStruct("stream")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("text")));
+		assertTrue(culprit.isEqual(new TuStruct("text")));
 		Term message = info.getTerm("Message");
-		assertTrue(message.isEqual(TuTerm.createAtomTerm("File not found.")));
+		assertTrue(message.isEqual(new TuStruct("File not found.")));
 	}
 
 	// verifico che agent_file(X) lancia un errore di instanziazione
@@ -258,7 +261,8 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.match(TuStruct.createTuStruct2("text_from_file", TuTerm.createTuVar("X"), TuTerm.createTuVar("Y"))));
+		assertTrue(g.match(new TuStruct("text_from_file", new TuVar("X"), new TuVar(
+				"Y"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -270,11 +274,12 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.match(TuStruct.createTuStruct2("text_from_file", TuTerm.i32(1), TuTerm.createTuVar("Y"))));
+		assertTrue(g.match(new TuStruct("text_from_file", new TuInt(1),
+				new TuVar("Y"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(TuTerm.createAtomTerm("atom")));
+		assertTrue(validType.isEqual(new TuStruct("atom")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -287,15 +292,16 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.match(TuStruct.createTuStruct2("text_from_file", TuTerm.createAtomTerm("text"), TuTerm.createTuVar("Y"))));
+		assertTrue(g.match(new TuStruct("text_from_file", new TuStruct("text"),
+				new TuVar("Y"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ObjectType");
-		assertTrue(validType.isEqual(TuTerm.createAtomTerm("stream")));
+		assertTrue(validType.isEqual(new TuStruct("stream")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("text")));
+		assertTrue(culprit.isEqual(new TuStruct("text")));
 		Term message = info.getTerm("Message");
-		assertTrue(message.isEqual(TuTerm.createAtomTerm("File not found.")));
+		assertTrue(message.isEqual(new TuStruct("File not found.")));
 	}
 
 	// verifico che solve_file(X, g) lancia un errore di instanziazione
@@ -305,7 +311,8 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.match(TuStruct.createTuStruct2("text_from_file", TuTerm.createTuVar("X"), TuTerm.createTuVar("Y"))));
+		assertTrue(g.match(new TuStruct("text_from_file", new TuVar("X"), new TuVar(
+				"Y"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -317,11 +324,12 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.match(TuStruct.createTuStruct2("text_from_file", TuTerm.i32(1), TuTerm.createTuVar("Y"))));
+		assertTrue(g.match(new TuStruct("text_from_file", new TuInt(1),
+				new TuVar("Y"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(TuTerm.createAtomTerm("atom")));
+		assertTrue(validType.isEqual(new TuStruct("atom")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -334,15 +342,16 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.match(TuStruct.createTuStruct2("text_from_file", TuTerm.createAtomTerm("text"), TuTerm.createTuVar("Y"))));
+		assertTrue(g.match(new TuStruct("text_from_file", new TuStruct("text"),
+				new TuVar("Y"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ObjectType");
-		assertTrue(validType.isEqual(TuTerm.createAtomTerm("stream")));
+		assertTrue(validType.isEqual(new TuStruct("stream")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("text")));
+		assertTrue(culprit.isEqual(new TuStruct("text")));
 		Term message = info.getTerm("Message");
-		assertTrue(message.isEqual(TuTerm.createAtomTerm("File not found.")));
+		assertTrue(message.isEqual(new TuStruct("File not found.")));
 	}
 
 	// verifico che solve_file(text, X) lancia un errore di instanziazione
@@ -352,7 +361,8 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct2("solve_file_goal_guard", TuTerm.createAtomTerm("text"), TuTerm.createTuVar("X"))));
+		assertTrue(g.isEqual(new TuStruct("solve_file_goal_guard", new TuStruct(
+				"text"), new TuVar("X"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 	}
@@ -364,11 +374,12 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.isEqual(TuStruct.createTuStruct2("solve_file_goal_guard", TuTerm.createAtomTerm("text"), TuTerm.i32(1))));
+		assertTrue(g.isEqual(new TuStruct("solve_file_goal_guard", new TuStruct(
+				"text"), new TuInt(1))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 2);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(TuTerm.createAtomTerm("callable")));
+		assertTrue(validType.isEqual(new TuStruct("callable")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -380,7 +391,8 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.match(TuStruct.createTuStruct2("text_from_file", TuTerm.createTuVar("X"), TuTerm.createTuVar("Y"))));
+		assertTrue(g.match(new TuStruct("text_from_file", new TuVar("X"), new TuVar(
+				"Y"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 	}
@@ -392,11 +404,12 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.match(TuStruct.createTuStruct2("text_from_file", TuTerm.i32(1), TuTerm.createTuVar("Y"))));
+		assertTrue(g.match(new TuStruct("text_from_file", new TuInt(1),
+				new TuVar("Y"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ValidType");
-		assertTrue(validType.isEqual(TuTerm.createAtomTerm("atom")));
+		assertTrue(validType.isEqual(new TuStruct("atom")));
 		TuInt culprit = (TuInt) info.getTerm("Culprit");
 		assertTrue(culprit.intValue() == 1);
 	}
@@ -409,15 +422,16 @@ public class IOLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		TuStruct g = (TuStruct) info.getTerm("Goal");
-		assertTrue(g.match(TuStruct.createTuStruct2("text_from_file", TuTerm.createAtomTerm("text"), TuTerm.createTuVar("Y"))));
+		assertTrue(g.match(new TuStruct("text_from_file", new TuStruct("text"),
+				new TuVar("Y"))));
 		TuInt argNo = (TuInt) info.getTerm("ArgNo");
 		assertTrue(argNo.intValue() == 1);
 		TuStruct validType = (TuStruct) info.getTerm("ObjectType");
-		assertTrue(validType.isEqual(TuTerm.createAtomTerm("stream")));
+		assertTrue(validType.isEqual(new TuStruct("stream")));
 		TuStruct culprit = (TuStruct) info.getTerm("Culprit");
-		assertTrue(culprit.isEqual(TuTerm.createAtomTerm("text")));
+		assertTrue(culprit.isEqual(new TuStruct("text")));
 		Term message = info.getTerm("Message");
-		assertTrue(message.isEqual(TuTerm.createAtomTerm("File not found.")));
+		assertTrue(message.isEqual(new TuStruct("File not found.")));
 	}
 
 }

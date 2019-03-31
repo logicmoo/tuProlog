@@ -9,8 +9,6 @@
 
 package alice.tuprologx.pj.model;
 import java.util.*;
-
-import alice.tuprolog.TuStruct;
 /**
  *
  * @author maurizio
@@ -67,7 +65,7 @@ public class TxList<X extends TxTerm<?>> extends TxTerm<TxList<X>> implements It
             for (TxTerm<?> t : _theList) {
                 termArray[i++]=t.marshal();
             }
-            return TuStruct.createTuList(termArray);
+            return new alice.tuprolog.TuStruct(termArray);
         }
         
         static <Z extends TxTerm<?>> TxList<Z> unmarshal(alice.tuprolog.TuStruct s) {
@@ -81,7 +79,7 @@ public class TxList<X extends TxTerm<?>> extends TxTerm<TxList<X>> implements It
         }
         
         static boolean matches(alice.tuprolog.Term t) {
-            return (!(t .isVar()) && t.isList() && t .isCallable());
+            return (!(t instanceof alice.tuprolog.TuVar) && t.isList() && t instanceof alice.tuprolog.TuStruct);
         }
 
         @Override

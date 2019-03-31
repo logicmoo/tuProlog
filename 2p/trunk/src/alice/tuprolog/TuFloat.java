@@ -33,7 +33,7 @@ public class TuFloat extends TuNumber {
     @SuppressWarnings("unused")
     private String type = "Float";
 
-    TuFloat(float v) {
+    public TuFloat(float v) {
         value = v;
     }
 
@@ -148,11 +148,11 @@ public class TuFloat extends TuNumber {
     @Override
     public boolean isGreater(Term t) {
         t = t.getTerm();
-        if (t .isNumber()) {
+        if (t instanceof TuNumber) {
             return value > ((TuNumber) t).floatValue();
-        } else if (t .isCallable()) {
+        } else if (t instanceof TuStruct) {
             return false;
-        } else if (t .isVar()) {
+        } else if (t instanceof TuVar) {
             return true;
         } else {
             return false;
@@ -166,9 +166,9 @@ public class TuFloat extends TuNumber {
     @Override
     public boolean unify(List<TuVar> vl1, List<TuVar> vl2, Term t, boolean isOccursCheckEnabled) {
         t = t.getTerm();
-        if (t .isVar()) {
+        if (t instanceof TuVar) {
             return t.unify(vl2, vl1, this, isOccursCheckEnabled);
-        } else if (t .isNumber() && ((TuNumber) t).isReal()) {
+        } else if (t instanceof TuNumber && ((TuNumber) t).isReal()) {
             return value == ((TuNumber) t).floatValue();
         } else {
             return false;

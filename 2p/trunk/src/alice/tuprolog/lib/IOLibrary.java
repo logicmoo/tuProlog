@@ -18,6 +18,7 @@
 package alice.tuprolog.lib;
 
 import alice.tuprolog.*;
+import alice.tuprolog.TuNumber;
 
 import java.util.*;
 import java.io.*;
@@ -123,9 +124,9 @@ public class IOLibrary extends TuLibrary {
     
     public boolean see_1(Term arg) throws TuPrologError {
         arg = arg.getTerm();
-        if (arg .isVar())
+        if (arg instanceof TuVar)
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (!arg.isAtomSymbol()) {
+        if (!arg.isAtom()) {
             throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",
                     arg);
         }
@@ -166,14 +167,14 @@ public class IOLibrary extends TuLibrary {
     }
 
     public boolean seeing_1(Term t) {
-        return unify(t, TuTerm.createAtomTerm(inputStreamName));
+        return unify(t, new TuStruct(inputStreamName));
     }
 
     public boolean tell_1(Term arg) throws TuPrologError {
         arg = arg.getTerm();
-        if (arg .isVar())
+        if (arg instanceof TuVar)
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (!arg.isAtomSymbol()) {
+        if (!arg.isAtom()) {
             throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",
                     arg);
         }
@@ -213,14 +214,14 @@ public class IOLibrary extends TuLibrary {
     }
 
     public boolean telling_1(Term arg0) {
-        return unify(arg0, TuTerm.createAtomTerm(outputStreamName));
+        return unify(arg0, new TuStruct(outputStreamName));
     }
 
     public boolean put_1(Term arg) throws TuPrologError {
         arg = arg.getTerm();
-        if (arg .isVar())
+        if (arg instanceof TuVar)
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (!arg.isAtomSymbol()) {
+        if (!arg.isAtom()) {
             throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "character", arg);
         } else {
@@ -238,7 +239,7 @@ public class IOLibrary extends TuLibrary {
                     } catch (IOException e) {
                         throw TuPrologError.permission_error(engine
                                 .getEngineManager(), "output", "stream",
-                                TuTerm.createAtomTerm(outputStreamName), TuTerm.createAtomTerm(e
+                                new TuStruct(outputStreamName), new TuStruct(e
                                         .getMessage()));
                     }
                 }
@@ -253,12 +254,13 @@ public class IOLibrary extends TuLibrary {
             ch = inputStream.read();
         } catch (IOException e) {
             throw TuPrologError.permission_error(engine.getEngineManager(),
-                    "input", "stream", TuTerm.createAtomTerm(inputStreamName), TuTerm.createAtomTerm(e.getMessage()));
+                    "input", "stream", new TuStruct(inputStreamName), new TuStruct(
+                            e.getMessage()));
         }
         if (ch == -1) {
-            return unify(arg0, TuTerm.i32(-1));
+            return unify(arg0, new TuInt(-1));
         } else {
-            return unify(arg0, TuTerm.createAtomTerm(new Character((char) ch).toString()));
+            return unify(arg0, new TuStruct(new Character((char) ch).toString()));
         }
     }
 
@@ -269,23 +271,23 @@ public class IOLibrary extends TuLibrary {
                 ch = inputStream.read();
             } catch (IOException e) {
                 throw TuPrologError.permission_error(engine.getEngineManager(),
-                        "input", "stream", TuTerm.createAtomTerm(inputStreamName),
-                        TuTerm.createAtomTerm(e.getMessage()));
+                        "input", "stream", new TuStruct(inputStreamName),
+                        new TuStruct(e.getMessage()));
             }
         } while (ch < 0x20 && ch >= 0);
         if (ch == -1) {
-            return unify(arg0, TuTerm.i32(-1));
+            return unify(arg0, new TuInt(-1));
         } else {
             return unify(arg0,
-                    TuTerm.createAtomTerm(new Character(((char) ch)).toString()));
+                    new TuStruct(new Character(((char) ch)).toString()));
         }
     }
 
     public boolean tab_1(Term arg) throws TuPrologError {
         arg = arg.getTerm();
-        if (arg .isVar())
+        if (arg instanceof TuVar)
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (!(arg .isInt()))
+        if (!(arg instanceof TuInt))
             throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "integer", arg);
         // int n = ((Int)arg).intValue(); // OLD BUGGED  VERSION (signaled by MViroli) 
@@ -301,7 +303,7 @@ public class IOLibrary extends TuLibrary {
                 } catch (IOException e) {
                     throw TuPrologError.permission_error(engine
                             .getEngineManager(), "output", "stream",
-                            TuTerm.createAtomTerm(outputStreamName), TuTerm.createAtomTerm(e
+                            new TuStruct(outputStreamName), new TuStruct(e
                                     .getMessage()));
                 }
             }
@@ -324,8 +326,8 @@ public class IOLibrary extends TuLibrary {
                 ch = inputStream.read();
             } catch (IOException e) {
                 throw TuPrologError.permission_error(engine.getEngineManager(),
-                        "input", "stream", TuTerm.createAtomTerm(inputStreamName),
-                        TuTerm.createAtomTerm(e.getMessage()));
+                        "input", "stream", new TuStruct(inputStreamName),
+                        new TuStruct(e.getMessage()));
             }
 
             if (ch == -1) {
@@ -362,7 +364,7 @@ public class IOLibrary extends TuLibrary {
         } catch (InvalidTermException e) {
             /*Castagna 06/2011*/
         	//throw PrologError.syntax_error(engine.getEngineManager(), -1, -1, new Struct(st));
-        	throw TuPrologError.syntax_error(engine.getEngineManager(),-1, e.line, e.pos, TuTerm.createAtomTerm(st));
+        	throw TuPrologError.syntax_error(engine.getEngineManager(),-1, e.line, e.pos, new TuStruct(st));
         	/**/
         }
         return true;
@@ -370,7 +372,7 @@ public class IOLibrary extends TuLibrary {
 
     public boolean write_1(Term arg0) throws TuPrologError {
         arg0 = arg0.getTerm();
-        if (arg0 .isVar())
+        if (arg0 instanceof TuVar)
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (outputStreamName.equals(STDOUT_NAME)) { /* Changed from "stdout" to STDOUT_NAME */
             getEngine().stdOutput(arg0.toString());
@@ -379,8 +381,8 @@ public class IOLibrary extends TuLibrary {
                 outputStream.write(arg0.toString().getBytes());
             } catch (IOException e) {
                 throw TuPrologError.permission_error(engine.getEngineManager(),
-                        "output", "stream", TuTerm.createAtomTerm(outputStreamName),
-                        TuTerm.createAtomTerm(e.getMessage()));
+                        "output", "stream", new TuStruct(outputStreamName),
+                        new TuStruct(e.getMessage()));
             }
         }
         return true;
@@ -388,7 +390,7 @@ public class IOLibrary extends TuLibrary {
 
     public boolean print_1(Term arg0) throws TuPrologError {
         arg0 = arg0.getTerm();
-        if (arg0 .isVar())
+        if (arg0 instanceof TuVar)
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (outputStreamName.equals(STDOUT_NAME)) { /* Changed from "stdout" to STDOUT_NAME */
             getEngine().stdOutput(
@@ -399,8 +401,8 @@ public class IOLibrary extends TuLibrary {
                         arg0.toString()).getBytes());
             } catch (IOException e) {
                 throw TuPrologError.permission_error(engine.getEngineManager(),
-                        "output", "stream", TuTerm.createAtomTerm(outputStreamName),
-                        TuTerm.createAtomTerm(e.getMessage()));
+                        "output", "stream", new TuStruct(outputStreamName),
+                        new TuStruct(e.getMessage()));
             }
         }
         return true;
@@ -415,8 +417,8 @@ public class IOLibrary extends TuLibrary {
                 outputStream.write('\n');
             } catch (IOException e) {
                 throw TuPrologError.permission_error(engine.getEngineManager(),
-                        "output", "stream", TuTerm.createAtomTerm(outputStreamName),
-                        TuTerm.createAtomTerm(e.getMessage()));
+                        "output", "stream", new TuStruct(outputStreamName),
+                        new TuStruct(e.getMessage()));
             }
         }
         return true;
@@ -433,9 +435,9 @@ public class IOLibrary extends TuLibrary {
     public boolean text_from_file_2(Term file_name, Term text)
             throws TuPrologError {
         file_name = file_name.getTerm();
-        if (file_name .isVar())
+        if (file_name instanceof TuVar)
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (!file_name.isAtomSymbol())
+        if (!file_name.isAtom())
             throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",
                     file_name);
         TuStruct fileName = (TuStruct) file_name.getTerm();
@@ -445,10 +447,10 @@ public class IOLibrary extends TuLibrary {
             path = engine.getCurrentDirectory()  + File.separator + path;
         }
         try {
-            goal = TuTerm.createAtomTerm(alice.util.Tools.loadText(path));
+            goal = new TuStruct(alice.util.Tools.loadText(path));
         } catch (IOException e) {
             throw TuPrologError.existence_error(engine.getEngineManager(), 1,
-                    "stream", file_name, TuTerm.createAtomTerm(e.getMessage()));
+                    "stream", file_name, new TuStruct(e.getMessage()));
         }
         engine.resetDirectoryList(new File(path).getParent());
         return unify(text, goal);
@@ -463,7 +465,7 @@ public class IOLibrary extends TuLibrary {
      */
     public boolean set_seed_1(Term t) throws TuPrologError {
         t = t.getTerm();
-        if( !(t .isNumber()) ) {
+        if( !(t instanceof TuNumber) ) {
             throw TuPrologError.type_error(engine.getEngineManager(), 1, "Integer Number", t);
         }
         TuNumber seed = (TuNumber)t;
@@ -475,12 +477,12 @@ public class IOLibrary extends TuLibrary {
     }
 
     public boolean rand_float_1(Term t) {
-        return unify(t, TuTerm.f64(gen.nextFloat()));
+        return unify(t, new alice.tuprolog.TuDouble(gen.nextFloat()));
     }
 
     public boolean rand_int_2(Term argNum, Term num) {
         alice.tuprolog.TuNumber arg = (alice.tuprolog.TuNumber) argNum.getTerm();
-        return unify(num, TuTerm.i32(gen.nextInt(arg.intValue())));
+        return unify(num, new TuInt(gen.nextInt(arg.intValue())));
     }
 
     @Override
@@ -497,9 +499,9 @@ public class IOLibrary extends TuLibrary {
             throws TuPrologError {
         arg0 = arg0.getTerm();
         arg1 = arg1.getTerm();
-        if (arg1 .isVar())
+        if (arg1 instanceof TuVar)
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
-        if (!arg1.isAtomSymbol() && !arg1.isCompound()) {
+        if (!arg1.isAtom() && !arg1.isCompound()) {
             throw TuPrologError.type_error(engine.getEngineManager(), 2,
                     "callable", arg1);
         }
@@ -539,7 +541,7 @@ public class IOLibrary extends TuLibrary {
     public boolean write_base_1(Term arg0) throws TuPrologError {
         arg0 = arg0.getTerm();
         
-        if (arg0 .isVar())
+        if (arg0 instanceof TuVar)
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (outputStreamName.equals(STDOUT_NAME)) { /* Changed from "stdout" to STDOUT_NAME */
             getEngine().stdOutput(arg0.toString());
@@ -548,8 +550,8 @@ public class IOLibrary extends TuLibrary {
                 outputStream.write(arg0.toString().getBytes());
             } catch (IOException e) {
                 throw TuPrologError.permission_error(engine.getEngineManager(),
-                        "output", "stream", TuTerm.createAtomTerm(outputStreamName),
-                        TuTerm.createAtomTerm(e.getMessage()));
+                        "output", "stream", new TuStruct(outputStreamName),
+                        new TuStruct(e.getMessage()));
             }
         }
         return true;

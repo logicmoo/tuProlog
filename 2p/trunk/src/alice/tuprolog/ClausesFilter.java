@@ -41,7 +41,7 @@ class ClausesFilter {
      *                      match with <code>goal</code>
      */
     public static OneWayList<ClauseInfo> filterClauses(List<ClauseInfo> familyClauses, Term goal){
-        if(OPTIMIZATION_ENABLED && goal .isCallable()){
+        if(OPTIMIZATION_ENABLED && goal instanceof TuStruct){
             TuStruct g = (TuStruct) goal.getTerm();
 
             /* If no arguments no optimization can be applied */
@@ -51,21 +51,21 @@ class ClausesFilter {
 
             /* Retrieves first argument and checks type */
             Term t = g.getArg(1).getTerm();
-            if(t .isVar()){
+            if(t instanceof TuVar){
                 /* 
                  * if first argument is an unbounded variable,
                  * no reasoning is possible
                  */
                 return returnAllClauses(familyClauses);
             } else if(t.isAtomic()){
-                if(t .isNumber()){
+                if(t instanceof TuNumber){
                     /* selects clauses which has a numeric first argument */
                     return selectNumeric(familyClauses, (TuNumber) t);
                 }
 
                 /* selects clauses which has an atomic first argument */
                 return selectConstant(familyClauses, t);
-            } else if(t .isCallable()){
+            } else if(t instanceof TuStruct){
                 if(isAList(t)){
                     /* select clauses which has a list as first argument */
                     return selectList(familyClauses);
@@ -100,8 +100,8 @@ class ClausesFilter {
             ClauseInfo clause = (ClauseInfo) obj;
             Term arg = clause.getHead().getArg(0).getTerm();
 
-            if((arg .isVar()) ||
-                    (arg .isNumber() && ((TuNumber) arg).isEqual(t))){
+            if((arg instanceof TuVar) ||
+                    (arg instanceof TuNumber && ((TuNumber) arg).isEqual(t))){
                 OneWayList<ClauseInfo> l = new OneWayList<ClauseInfo>(clause, null);
             
                 if(result == null){
@@ -128,7 +128,7 @@ class ClausesFilter {
             ClauseInfo clause = (ClauseInfo) obj;
             Term arg = clause.getHead().getArg(0).getTerm();
 
-            if(arg .isVar() ||
+            if(arg instanceof TuVar ||
                     ((TuStruct) arg).getPredicateIndicator().equals(predIndicator)){
                 OneWayList<ClauseInfo> l = new OneWayList<ClauseInfo>(clause, null);
 
@@ -150,7 +150,7 @@ class ClausesFilter {
          * A list can be an empty list, or a Struct with name equals to "."
          * and arity equals to 2.
          */
-        if(t .isCallable()){
+        if(t instanceof TuStruct){
             TuStruct s = (TuStruct) t;
             return s.isEmptyList() || (s.getName().equals(".") && s.getArity() == 2);
         }
@@ -171,7 +171,7 @@ class ClausesFilter {
             ClauseInfo clause = (ClauseInfo) obj;
             Term arg = clause.getHead().getArg(0).getTerm();
 
-            if(arg .isVar() || isAList(arg)){
+            if(arg instanceof TuVar || isAList(arg)){
                 OneWayList<ClauseInfo> l = new OneWayList<ClauseInfo>(clause, null);
 
                 if(result == null){
@@ -198,7 +198,7 @@ class ClausesFilter {
             ClauseInfo clause = (ClauseInfo) obj;
             Term arg = clause.getHead().getArg(0).getTerm();
 
-            if(arg .isVar() || arg.isAtomic()){
+            if(arg instanceof TuVar || arg.isAtomic()){
                 OneWayList<ClauseInfo> l = new OneWayList<ClauseInfo>(clause, null);
 
                 if(result == null){

@@ -19,23 +19,24 @@ public class TuJavaException extends Throwable {
         Term causeTerm = null;
         Throwable cause = e.getCause();
         if (cause != null)
-            causeTerm = TuTerm.createAtomTerm(cause.toString());
+            causeTerm = new TuStruct(cause.toString());
         else
-            causeTerm = TuTerm.i32(0);
+            causeTerm = new TuInt(0);
         // Message
         Term messageTerm = null;
         String message = e.getMessage();
         if (message != null)
-            messageTerm = TuTerm.createAtomTerm(message);
+            messageTerm = new TuStruct(message);
         else
-            messageTerm = TuTerm.i32(0);
+            messageTerm = new TuInt(0);
         // StackTrace
-        TuStruct stackTraceTerm = TuTerm.createAppendableStruct();
+        TuStruct stackTraceTerm = new TuStruct();
         StackTraceElement[] elements = e.getStackTrace();
         for (StackTraceElement element : elements)
-            stackTraceTerm.append(TuTerm.createAtomTerm(element.toString()));
+            stackTraceTerm.append(new TuStruct(element.toString()));
         // return
-        return TuStruct.createSTRUCT(java_exception, causeTerm, messageTerm, stackTraceTerm);
+        return new TuStruct(java_exception, causeTerm, messageTerm,
+                stackTraceTerm);
     }
 
 }

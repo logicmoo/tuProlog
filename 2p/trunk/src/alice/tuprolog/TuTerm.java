@@ -40,44 +40,27 @@ import nu.xom.xslt.XSLException;
  */
 public abstract class TuTerm implements Term {
 
-    /* (non-Javadoc)
-     * @see alice.tuprolog.Term#intValue()
-     */
-    @Override
-    public int intValue() {
-        // TODO Auto-generated method stub
-        if (true) throw new AbstractMethodError("TuTerm.intValue");
-        return 0;
-    }
-    
-   
     private static final long serialVersionUID = 1L;
 
     // true and false constants
-    public static final Term TRUE = createAtomTerm("true");
-    public static final Term FALSE = createAtomTerm("false");
+    public static final Term TRUE = new TuStruct("true");
+    public static final Term FALSE = new TuStruct("false");
 
     //boolean isCyclic = false; //Alberto -> da usare quando si supporteranno i termini ciclici
 
     // checking type and properties of the Term
 
-    @Override
-
-
     /**
      * is this term a prolog numeric term?
      * Was <tt>instanceof Number</tt> instead.
      */
-    public boolean isNumber(){
-        return false;
-    }
+    @Deprecated
+    public abstract boolean isNumber();
 
     /**
      * is this term a struct?
-     * Was <tt>.isCallable()</tt> instead. */
-    public boolean isCallable(){
-        return false;
-    }
+     * Was <tt>instanceof Struct</tt> instead. */
+    public abstract boolean isStruct();
 
     /**
      * is this term a variable?
@@ -85,9 +68,7 @@ public abstract class TuTerm implements Term {
     public abstract boolean isVar();
 
     /** is this term a null term?*/
-    public boolean isEmptyList() {
-        return false;
-    }
+    public abstract boolean isEmptyList();
 
     /** is this term a constant prolog term? */
     public abstract boolean isAtomic();
@@ -96,9 +77,7 @@ public abstract class TuTerm implements Term {
     public abstract boolean isCompound();
 
     /** is this term a prolog (alphanumeric) atom? */
-    public boolean isAtomSymbol() {
-        return false;
-    }
+    public abstract boolean isAtom();
 
     /** is this term a prolog list? */
     public abstract boolean isList();
@@ -159,7 +138,7 @@ public abstract class TuTerm implements Term {
      * @param count new starting time count for resolving process
      * @return the new time count, after resolving process
      */
-    public abstract long resolveTerm(long count);
+    public  abstract long resolveTerm(long count);
 
     /**
      * Resolves variables inside the term
@@ -184,9 +163,9 @@ public abstract class TuTerm implements Term {
     public Term copyResult(Collection<TuVar> goalVars, List<TuVar> resultVars) {
         IdentityHashMap<TuVar, TuVar> originals = new IdentityHashMap<TuVar, TuVar>();
         for (TuVar key : goalVars) {
-            TuVar clone = createTuVar();
+            TuVar clone = new TuVar();
             if (!key.isAnonymous()) {
-                clone = createTuVar(key.getOriginalName());
+                clone = new TuVar(key.getOriginalName());
             }
             originals.put(key, clone);
             resultVars.add(clone);
@@ -299,8 +278,7 @@ public abstract class TuTerm implements Term {
      * @param varsUnifiedArg2 Vars unified in term t
      * @param isOccursCheckEnabled
      */
-    public abstract boolean unify(List<TuVar> varsUnifiedArg1, List<TuVar> varsUnifiedArg2, Term t,
-            boolean isOccursCheckEnabled);
+    public abstract boolean unify(List<TuVar> varsUnifiedArg1, List<TuVar> varsUnifiedArg2, Term t, boolean isOccursCheckEnabled);
 
     /**
      * Tries to unify two terms, given a demonstration context
@@ -310,7 +288,7 @@ public abstract class TuTerm implements Term {
      * @param varsUnifiedArg1 Vars unified in myself
      * @param varsUnifiedArg2 Vars unified in term t
      */
-    public abstract boolean unify(List<TuVar> varsUnifiedArg1, List<TuVar> varsUnifiedArg2, Term t);
+    public  abstract boolean unify(List<TuVar> varsUnifiedArg1, List<TuVar> varsUnifiedArg2, Term t);
 
     /**
      * Static service to create a Term from a string.
@@ -412,14 +390,6 @@ public abstract class TuTerm implements Term {
         return JSONSerializerManager.toJSON(this);
     }
 
-    public static Term createNilStruct() {
-        return new TuStruct();
-    }
-
-    public static TuStruct createAppendableStruct() {
-        return new TuStruct();
-    }
-
     //Alberto
     public static Term fromJSON(String jsonString) {
         if (jsonString.contains("Var")) {
@@ -436,62 +406,5 @@ public abstract class TuTerm implements Term {
             return JSONSerializerManager.fromJSON(jsonString, TuFloat.class);
         } else
             return null;
-    }
-
-    @Override
-    public boolean isDouble() {
-        return false;
-    }
-
-    @Override
-    public boolean isFloat() {
-        return false;
-    }
-
-    @Override
-    public boolean isInt() {
-        return false;
-    }
-
-    @Override
-    public boolean isLong() {
-        return false;
-    }
-
-    @Override
-    public boolean isAbstractSocket() {
-        return false;
-    }
-
-    public static TuStruct createAtomTerm(String f) {
-        return new TuStruct(f);
-    }
-
-    public static TuStruct createTuCons(Term h, Term t) {
-        return new TuStruct(h, t);
-    }
-
-    public static TuDouble f64(double v) {
-        return new TuDouble(v);
-    }
-
-    public static TuInt i32(int v) {
-        return new TuInt(v);
-    }
-
-    public static TuFloat f32(float v) {
-        return new TuFloat(v);
-    }
-
-    public static TuLong i64(long v) {
-        return new TuLong(v);
-    }
-
-    public static TuVar createTuVar(String n) {
-        return new TuVar(n);
-    }
-
-    public static TuVar createTuVar() {
-        return new TuVar();
     }
 }

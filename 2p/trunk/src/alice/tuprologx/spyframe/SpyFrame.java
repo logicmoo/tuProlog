@@ -42,7 +42,7 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
       for(int i=0; i<levels; i++){
         ExecutionContext ec=eclist.get(i);
         Term c=ec.getClause();
-        if(c .isCallable()){
+        if(c instanceof TuStruct){
           TuStruct s=(TuStruct)c;
           String name=s.getName();
           ArrayList<Term> sub=new ArrayList<Term>();
@@ -72,7 +72,7 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
           if(name==null) bottom=sub.get(0);
           else{
             Term[] subt=new Term[sub.size()];
-            bottom=TuStruct.createTuStructA(name, sub.toArray(subt));
+            bottom=new TuStruct(name, sub.toArray(subt));
           }
         } else bottom=c;
       }

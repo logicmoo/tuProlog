@@ -6,7 +6,7 @@ public class TestEinsteinRiddle {
         String[] str = new String[2];
         str[0] = "./alice/tuprolog/einsteinsRiddle.pl";
         str[1] = "einstein(_,X), write(X).";
-        Agent.main(str);
+        TuAgent.main(str);
     }
     
 }

@@ -33,7 +33,7 @@ public class TestLibrary extends StringLibrary {
 	public Term sum_2(TuNumber arg0, TuNumber arg1){
 		int a0 = arg0.intValue();
 		int a1 = arg1.intValue();
-		return TuTerm.i32(a0+a1);
+		return new TuInt(a0+a1);
 	}
 	
 	public boolean println_1(Term arg0){

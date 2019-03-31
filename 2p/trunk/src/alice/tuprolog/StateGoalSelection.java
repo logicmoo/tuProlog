@@ -51,7 +51,7 @@ public class StateGoalSelection extends TuState {
             } else {
                 // Caso di individuazione curGoal
                 Term goal_app = curGoal.getTerm();
-                if (!(goal_app .isCallable())) {
+                if (!(goal_app instanceof TuStruct)) {
                     e.nextState = c.END_FALSE;
                     return;
                 }
@@ -62,7 +62,7 @@ public class StateGoalSelection extends TuState {
                 // This enables the dynamic linking of built-ins for
                 // terms coming from outside the demonstration context.
                 if (curGoal != goal_app)
-                    curGoal = TuStruct.createTuStruct1("call", goal_app);
+                    curGoal = new TuStruct("call", goal_app);
                 
                 e.currentContext.currentGoal = (TuStruct) curGoal;
                 e.nextState = c.GOAL_EVALUATION;

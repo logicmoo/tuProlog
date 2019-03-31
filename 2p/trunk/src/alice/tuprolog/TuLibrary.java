@@ -20,6 +20,7 @@ package alice.tuprolog;
 import java.io.Serializable;
 import java.util.*;
 
+
 /**
  *
  * This abstract class is the base class for developing
@@ -39,21 +40,21 @@ import java.util.*;
  * <p>
  */
 public abstract class TuLibrary implements Serializable, IPrimitives {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
     /**
-     * prolog core which loaded the library
-     */
+	 * prolog core which loaded the library
+	 */
     protected TuProlog engine;
-
+    
     /**
-     * operator mapping
-     */
+	 * operator mapping
+	 */
     private String[][] opMappingCached;
-
-    public TuLibrary() {
+    
+    public TuLibrary(){
         opMappingCached = getSynonymMap();
     }
-
+    
     /**
      * Gets the name of the library. 
      * 
@@ -64,7 +65,7 @@ public abstract class TuLibrary implements Serializable, IPrimitives {
     public String getName() {
         return getClass().getName();
     }
-
+    
     /**
      * Gets the theory provided with the library
      *
@@ -73,11 +74,11 @@ public abstract class TuLibrary implements Serializable, IPrimitives {
     public String getTheory() {
         return "";
     }
-
+    
     public String getTheory(int a) {
-        return "";
+    	return "";
     }
-
+    
     /**
      * Gets the synonym mapping, as array of
      * elements like  { synonym, original name}
@@ -85,42 +86,43 @@ public abstract class TuLibrary implements Serializable, IPrimitives {
     public String[][] getSynonymMap() {
         return null;
     }
-
+    
     /**
-     * Gets the engine to which the library is bound
-     * @return  the engine
-     */
+	 * Gets the engine to which the library is bound
+	 * @return  the engine
+	 */
     public TuProlog getEngine() {
         return engine;
     }
-
+    
     /**
-     * @param en
-     */
-    public void setEngine(TuProlog en) {
+	 * @param en
+	 */
+    public void setEngine(TuProlog en) {	
         engine = en;
     }
-
+    
     /**
      * tries to unify two terms
      *
      * The runtime (demonstration) context currently used by the engine
      * is deployed and altered.
      */
-    protected boolean unify(Term a0, Term a1) {
-        return engine.unify(a0, a1);
+    protected boolean unify(Term a0,Term a1) {
+        return engine.unify(a0,a1);
     }
-
+    
     /**
      * tries to unify two terms
      *
      * The runtime (demonstration) context currently used by the engine
      * is deployed and altered.
      */
-    protected boolean match(Term a0, Term a1) {
-        return engine.match(a0, a1);
+    protected boolean match(Term a0,Term a1) {
+        return engine.match(a0,a1);
     }
-
+    
+    
     /**
      * Evaluates an expression. Returns null value if the argument
      * is not an evaluable expression
@@ -133,7 +135,7 @@ public abstract class TuLibrary implements Serializable, IPrimitives {
         if (term == null)
             return null;
         Term val = term.getTerm();
-        if (val.isCallable()) {
+        if (val instanceof TuStruct) {
             TuStruct t = (TuStruct) val;
             if (term != t)
                 if (!t.isPrimitive())
@@ -144,93 +146,86 @@ public abstract class TuLibrary implements Serializable, IPrimitives {
                 if (bt.isFunctor())
                     return bt.evalAsFunctor(t);
             }
-        } else if (val .isNumber()) {
+        } else if (val instanceof TuNumber) {
             return val;
         }
         return null;
     }
-
+    
+    
     /**
      * method invoked by prolog engine when library is
      * going to be removed
      */
-    public void dismiss() {
-    }
-
+    public void dismiss() {}
+    
     /**
      * method invoked when the engine is going
      * to demonstrate a goal
      */
-    public void onSolveBegin(Term goal) {
-    }
-
+    public void onSolveBegin(Term goal) {}
+    
     /**
      * method invoked when the engine has
      * finished a demostration
      */
-
-    public void onSolveHalt() {
-    }
-
-    public void onSolveEnd() {
-    }
-
+    
+    public void onSolveHalt(){}
+    
+    public void onSolveEnd() {}
+    
     /**
      * gets the list of predicates defined in the library
      */
     @Override
-    public Map<Integer, List<PrimitiveInfo>> getPrimitives() {
+	public Map<Integer,List<PrimitiveInfo>> getPrimitives() {
         try {
             java.lang.reflect.Method[] mlist = this.getClass().getMethods();
-            Map<Integer, List<PrimitiveInfo>> mapPrimitives = new HashMap<Integer, List<PrimitiveInfo>>();
-            mapPrimitives.put(PrimitiveInfo.DIRECTIVE, new ArrayList<PrimitiveInfo>());
-            mapPrimitives.put(PrimitiveInfo.FUNCTOR, new ArrayList<PrimitiveInfo>());
-            mapPrimitives.put(PrimitiveInfo.PREDICATE, new ArrayList<PrimitiveInfo>());
+            Map<Integer,List<PrimitiveInfo>> mapPrimitives = new HashMap<Integer, List<PrimitiveInfo>>();
+            mapPrimitives.put(PrimitiveInfo.DIRECTIVE,new ArrayList<PrimitiveInfo>());
+            mapPrimitives.put(PrimitiveInfo.FUNCTOR,new ArrayList<PrimitiveInfo>());
+            mapPrimitives.put(PrimitiveInfo.PREDICATE,new ArrayList<PrimitiveInfo>());
             //{new ArrayList<PrimitiveInfo>(), new ArrayList<PrimitiveInfo>(), new ArrayList<PrimitiveInfo>()};
-
+            
             for (int i = 0; i < mlist.length; i++) {
                 String name = mlist[i].getName();
-
+                
                 Class<?>[] clist = mlist[i].getParameterTypes();
                 Class<?> rclass = mlist[i].getReturnType();
                 String returnTypeName = rclass.getName();
-
+                
                 int type;
-                if (returnTypeName.equals("boolean"))
-                    type = PrimitiveInfo.PREDICATE;
-                else if (returnTypeName.equals("alice.tuprolog.Term"))
-                    type = PrimitiveInfo.FUNCTOR;
-                else if (returnTypeName.equals("void"))
-                    type = PrimitiveInfo.DIRECTIVE;
-                else
-                    continue;
-
-                int index = name.lastIndexOf('_');
-                if (index != -1) {
+                if (returnTypeName.equals("boolean")) type = PrimitiveInfo.PREDICATE;
+                else if (returnTypeName.equals("alice.tuprolog.Term")) type = PrimitiveInfo.FUNCTOR;
+                else if (returnTypeName.equals("void")) type = PrimitiveInfo.DIRECTIVE;
+                else continue;
+                
+                int index=name.lastIndexOf('_');
+                if (index!=-1) {
                     try {
                         int arity = Integer.parseInt(name.substring(index + 1, name.length()));
                         // check arg number
                         if (clist.length == arity) {
                             boolean valid = true;
-                            for (int j = 0; j < arity; j++) {
+                            for (int j=0; j<arity; j++) {
                                 if (!(Term.class.isAssignableFrom(clist[j]))) {
                                     valid = false;
                                     break;
                                 }
                             }
                             if (valid) {
-                                String rawName = name.substring(0, index);
+                                String rawName = name.substring(0,index);
                                 String key = rawName + "/" + arity;
                                 PrimitiveInfo prim = new PrimitiveInfo(type, key, this, mlist[i], arity);
                                 mapPrimitives.get(type).add(prim);
                                 //
                                 // adding also or synonims
                                 //
-                                String[] stringFormat = { "directive", "predicate", "functor" };
+                                String[] stringFormat = {"directive","predicate","functor"};
                                 if (opMappingCached != null) {
-                                    for (int j = 0; j < opMappingCached.length; j++) {
+                                    for (int j=0; j<opMappingCached.length; j++){
                                         String[] map = opMappingCached[j];
-                                        if (map[2].equals(stringFormat[type]) && map[1].equals(rawName)) {
+                                        if (map[2].equals(stringFormat[type]) && map[1].equals(rawName)){
                                             key = map[0] + "/" + arity;
                                             prim = new PrimitiveInfo(type, key, this, mlist[i], arity);
                                             mapPrimitives.get(type).add(prim);
@@ -239,17 +234,17 @@ public abstract class TuLibrary implements Serializable, IPrimitives {
                                 }
                             }
                         }
-                    } catch (Exception ex) {
-                    }
+                    } catch (Exception ex) {}
                 }
-
+                
             }
             return mapPrimitives;
         } catch (Exception ex) {
             return null;
         }
     }
-
+    
+    
     /**
      * Gets the method linked to a builtin (null value if
      * the builtin has not any linked service)
@@ -300,5 +295,6 @@ public abstract class TuLibrary implements Serializable, IPrimitives {
         return null;
         }
         */
-
+    
+    
 }

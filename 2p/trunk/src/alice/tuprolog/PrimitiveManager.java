@@ -123,7 +123,7 @@ public class PrimitiveManager /*Castagna 06/2011*/implements IPrimitiveManager/*
             return;
         }
         term = term.getTerm();
-        if (!(term .isCallable())) {
+        if (!(term instanceof TuStruct)) {
             return;
         }
         TuStruct t = (TuStruct) term;

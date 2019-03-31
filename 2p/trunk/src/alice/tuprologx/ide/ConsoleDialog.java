@@ -7,7 +7,6 @@ import alice.tuprolog.event.ExceptionListener;
 import alice.tuprolog.event.OutputListener;
 import alice.tuprolog.event.ReadListener;
 import alice.tuprolog.SolveInfo;
-import alice.tuprolog.TuTerm;
 //import alice.tuprolog.Term;
 import alice.tuprolog.TuVar;
 
@@ -534,7 +533,7 @@ public class ConsoleDialog
                             if (!v.isAnonymous()) {
                                 String value = v.getTerm().toString();;
                                 if (v == v.getTerm())
-                                    value = TuTerm.createTuVar().getName();
+                                    value = new TuVar().getName();
                                 tableModelList.add(value);
                             }
                         }
@@ -624,7 +623,7 @@ public class ConsoleDialog
                 for(TuVar v:bindings){
                     String value = v.getTerm().toString();;
                     if (v == v.getTerm())
-                        value = TuTerm.createTuVar().getName();
+                        value = new TuVar().getName();
                     tableModelList.add(value);
                 }
                 tableModel = new String[tableModelList.size() / variables.length][variables.length];
@@ -637,7 +636,7 @@ public class ConsoleDialog
                 for(TuVar v:bindings){
                     String value = v.getTerm().toString();
                     if (v == v.getTerm())
-                        value = TuTerm.createTuVar().getName();
+                        value = new TuVar().getName();
                     tableModelList.add(v.getName());
                     tableModelList.add(value);
                 }

@@ -54,7 +54,7 @@ public class StateGoalEvaluation extends TuState {
 					TuPrologError error = (TuPrologError) t;
 					// sostituisco il gol in cui si ? verificato l'errore con il
 					// subgoal throw/1
-					e.currentContext.currentGoal = TuStruct.createTuStruct1("throw", error.getError());
+					e.currentContext.currentGoal = new TuStruct("throw", error.getError());
 					/*Castagna 06/2011*/					
 					e.manager.exception(error.toString());
 					/**/
@@ -64,7 +64,7 @@ public class StateGoalEvaluation extends TuState {
 
 					// sostituisco il gol in cui si ? verificato l'errore con il
 					// subgoal java_throw/1
-					e.currentContext.currentGoal = TuStruct.createTuStruct1("java_throw", exception.getException());
+					e.currentContext.currentGoal = new TuStruct("java_throw", exception.getException());
 					/*Castagna 06/2011*/					
 					e.manager.exception(exception.getException().toString());
 					/**/

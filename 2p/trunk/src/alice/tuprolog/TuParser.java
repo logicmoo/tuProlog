@@ -241,7 +241,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 				if (ta != null) {
 					/*Castagna 06/2011*/
 					//leftSide = new IdentifiedTerm(YFX, new Struct(t.seq, leftSide.result, ta.result));
-					 leftSide = identifyTerm(YFX, TuStruct.createTuStruct2(t.seq, leftSide.result, ta.result), tokenStart);
+					 leftSide = identifyTerm(YFX, new TuStruct(t.seq, leftSide.result, ta.result), tokenStart);
 					/**/
 					continue;
 				}
@@ -250,7 +250,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 			if (YF >= OperatorManager.OP_LOW) {
 				/*Castagna 06/2011*/
 				//leftSide = new IdentifiedTerm(YF, new Struct(t.seq, leftSide.result));
-				 leftSide = identifyTerm(YF, TuStruct.createTuStruct1(t.seq, leftSide.result), tokenStart);
+				 leftSide = identifyTerm(YF, new TuStruct(t.seq, leftSide.result), tokenStart);
 				/**/
 				continue;
 			}
@@ -286,7 +286,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 					/*Castagna 06/2011*/
 					//Struct xfx = new Struct(operator.seq, left.result, found.result);
 					//left = new IdentifiedTerm(XFX, xfx);
-					left = identifyTerm(XFX, TuStruct.createTuStruct2(operator.seq, left.result, found.result), tokenStart);
+					left = identifyTerm(XFX, new TuStruct(operator.seq, left.result, found.result), tokenStart);
 					/**/
 					continue;
 				} else
@@ -299,7 +299,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 					/*Castagna 06/2011*/
 					//Struct xfy = new Struct(operator.seq, left.result, found.result);
 					//left = new IdentifiedTerm(XFY, xfy);
-					left = identifyTerm(XFY, TuStruct.createTuStruct2(operator.seq, left.result, found.result), tokenStart);
+					left = identifyTerm(XFY, new TuStruct(operator.seq, left.result, found.result), tokenStart);
 					/**/
 					continue;
 				}
@@ -308,7 +308,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 			if (XF >= left.priority)                   //XF has priority, or XFX and/or XFY has failed
 				/*Castagna 06/2011*/
 				//return new IdentifiedTerm(XF, new Struct(operator.seq, left.result));
-				return identifyTerm(XF, TuStruct.createTuStruct1(operator.seq, left.result), tokenStart);
+				return identifyTerm(XF, new TuStruct(operator.seq, left.result), tokenStart);
 				/**/
 
 			//XFX did not have top priority, but XFY failed
@@ -318,7 +318,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 					/*Castagna 06/2011*/
 					//Struct xfx = new Struct(operator.seq, left.result, found.result);
 					//left = new IdentifiedTerm(XFX, xfx);
-					left = identifyTerm(XFX, TuStruct.createTuStruct2(operator.seq, left.result, found.result), tokenStart);
+					left = identifyTerm(XFX, new TuStruct(operator.seq, left.result, found.result), tokenStart);
 					/**/
 					continue;
 				}
@@ -369,7 +369,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 				if (found != null)
 					/*Castagna 06/2011*/
 					//return new IdentifiedTerm(FX, new Struct(f.seq, found.result));
-					return identifyTerm(FX, TuStruct.createTuStruct1(f.seq, found.result), tokenStart);
+					return identifyTerm(FX, new TuStruct(f.seq, found.result), tokenStart);
 					/**/
 				else
 					haveAttemptedFX = true;
@@ -380,7 +380,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 				if (found != null)
 					/*Castagna 06/2011*/
 					//return new IdentifiedTerm(FY, new Struct(f.seq, found.result));
-					return identifyTerm(FY, TuStruct.createTuStruct1(f.seq, found.result), tokenStart);
+					return identifyTerm(FY, new TuStruct(f.seq, found.result), tokenStart);
 				/**/
 			}
 			//FY has priority over FX, but FY failed
@@ -389,7 +389,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 				if (found != null)
 					/*Castagna 06/2011*/
 					//return new IdentifiedTerm(FX, new Struct(f.seq, found.result));
-					return identifyTerm(FX, TuStruct.createTuStruct1(f.seq, found.result), tokenStart);
+					return identifyTerm(FX, new TuStruct(f.seq, found.result), tokenStart);
 					/**/
 			}
 		}
@@ -438,7 +438,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
         }
 
         if (t1.isType(TuTokenizer.VARIABLE)) {
-        	Term v = TuTerm.createTuVar(t1.seq);
+        	Term v = new TuVar(t1.seq);
         	map(v, tokenizer.tokenStart());
             return v;             //todo switched to use the internal check for "_" in Var(String)
         }
@@ -449,7 +449,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 			/*Castagna 06/2011*/
 			{
 				//return new Struct(t1.seq);
-				Term f = TuTerm.createAtomTerm(t1.seq);
+				Term f = new TuStruct(t1.seq);
         		map(f, tokenizer.tokenStart());
         		return f;
 			}
@@ -493,7 +493,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 		if (t1.isType(TuTokenizer.LBRA)) {
 			TuToken t2 = tokenizer.readToken();
 			if (t2.isType(TuTokenizer.RBRA))
-				return TuTerm.createNilStruct();
+				return new TuStruct();
 
 			tokenizer.unreadToken(t2);
 			Term term = expr0_list();
@@ -513,7 +513,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 			/*Castagna 06/2011*/
 			{
 				//return new Struct("{}");
-				Term b = TuTerm.createAtomTerm("{}");
+				Term b = new TuStruct("{}");
             	map(b, tempStart);
                 return b;
 			}
@@ -525,7 +525,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 			/*Castagna 06/2011*/
 			{
 				//return new Struct("{}", arg);
-				Term b = TuStruct.createTuStruct1("{}", arg);
+				Term b = new TuStruct("{}", arg);
 				map(b, tempStart);
 				return b;
 			}
@@ -549,12 +549,12 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 		Term head = expr(true);
 		TuToken t = tokenizer.readToken();
 		if (",".equals(t.seq))
-			return TuTerm.createTuCons(head, expr0_list());
+			return new TuStruct(head, expr0_list());
 		if ("|".equals(t.seq))
-			return TuTerm.createTuCons(head, expr(true));
+			return new TuStruct(head, expr(true));
 		if ("]".equals(t.seq)) {
 			tokenizer.unreadToken(t);
-			return TuTerm.createTuCons(head, TuTerm.createNilStruct());
+			return new TuStruct(head, new TuStruct());
 		}
 		/*Castagna 06/2011*/
         //throw new InvalidTermException("The expression: " + head + " is not followed by either a ',' or '|'  or ']'.");
@@ -595,14 +595,14 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 	static TuNumber parseInteger(String s) {
 		long num = java.lang.Long.parseLong(s);
 		if (num > Integer.MIN_VALUE && num < Integer.MAX_VALUE)
-			return TuTerm.i32((int) num);
+			return new TuInt((int) num);
 		else
-			return TuTerm.i64(num);
+			return new TuLong(num);
 	}
 
 	static TuDouble parseFloat(String s) {
 		double num = java.lang.Double.parseDouble(s);
-		return TuTerm.f64(num);
+		return new TuDouble(num);
 	}
 
 	static TuNumber createNumber(String s){
@@ -661,7 +661,7 @@ public class TuParser implements /*Castagna 06/2011*/IParser,/**/ Serializable
 	/**
 	 * @return true if the String could be a prolog atom
 	 */
-	 public static boolean isAtomSymbol(String s) {
+	 public static boolean isAtom(String s) {
 		 return atom.matcher(s).matches();
 	 }
 

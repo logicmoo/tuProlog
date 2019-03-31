@@ -98,7 +98,7 @@ public abstract class TuNumber extends TuTerm implements Comparable<TuNumber> {
 
     public static TuNumber createNumber(String s) {
         Term t = Term.createTerm(s);
-        if (t .isNumber())
+        if (t instanceof TuNumber)
             return (TuNumber) t;
         throw new InvalidTermException("Term " + t + " is not a number.");
     }
@@ -121,7 +121,7 @@ public abstract class TuNumber extends TuTerm implements Comparable<TuNumber> {
 
     /** is this term a struct  */
     @Override
-    final public boolean isCallable() {
+    final public boolean isStruct() {
         return false;
     }
 
@@ -152,7 +152,7 @@ public abstract class TuNumber extends TuTerm implements Comparable<TuNumber> {
 
     /** is this term a prolog (alphanumeric) atom? */
     @Override
-    final public boolean isAtomSymbol() {
+    final public boolean isAtom() {
         return false;
     }
 

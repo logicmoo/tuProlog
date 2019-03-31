@@ -33,7 +33,7 @@ public class TuLong extends TuNumber {
     @SuppressWarnings("unused")
     private String type = "Long";
 
-    TuLong(long v) {
+    public TuLong(long v) {
         value = v;
     }
 
@@ -148,11 +148,11 @@ public class TuLong extends TuNumber {
     @Override
     public boolean isGreater(Term t) {
         t = t.getTerm();
-        if (t .isNumber()) {
+        if (t instanceof TuNumber) {
             return value > ((TuNumber) t).longValue();
-        } else if (t .isCallable()) {
+        } else if (t instanceof TuStruct) {
             return false;
-        } else if (t .isVar()) {
+        } else if (t instanceof TuVar) {
             return true;
         } else {
             return false;
@@ -166,9 +166,9 @@ public class TuLong extends TuNumber {
     @Override
     public boolean unify(List<TuVar> vl1, List<TuVar> vl2, Term t, boolean isOccursCheckEnabled) {
         t = t.getTerm();
-        if (t .isVar()) {
+        if (t instanceof TuVar) {
             return t.unify(vl1, vl2, this, isOccursCheckEnabled);
-        } else if (t .isNumber() && ((TuNumber) t).isInteger()) {
+        } else if (t instanceof TuNumber && ((TuNumber) t).isInteger()) {
             return value == ((TuNumber) t).longValue();
         } else {
             return false;

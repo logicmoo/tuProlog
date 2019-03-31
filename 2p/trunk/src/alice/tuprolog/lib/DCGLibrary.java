@@ -56,14 +56,14 @@ public class DCGLibrary extends TuLibrary {
 
     public boolean phrase_guard_2(Term arg0, Term arg1) throws TuPrologError {
         arg0 = arg0.getTerm();
-        if (arg0 .isVar())
+        if (arg0 instanceof TuVar)
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         return true;
     }
 
     public boolean phrase_guard_3(Term arg0, Term arg1, Term arg2) throws TuPrologError {
         arg0 = arg0.getTerm();
-        if (arg0 .isVar())
+        if (arg0 instanceof TuVar)
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         return true;
     }

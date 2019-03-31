@@ -6,7 +6,7 @@ public class ParserTestCase extends TestCase {
 	
 	public void testReadingTerms() throws InvalidTermException {
 		TuParser p = new TuParser("hello.");
-		TuStruct result = TuTerm.createAtomTerm("hello");
+		TuStruct result = new TuStruct("hello");
 		assertEquals(result, p.nextTerm(true));
 	}
 	
@@ -32,7 +32,7 @@ public class ParserTestCase extends TestCase {
 		// SICStus Prolog interprets "n(+100)" as "n(100)"
 		// GNU Prolog interprets "n(+100)" as "n(+(100))"
 		// What does the ISO Standard say about that?
-		TuStruct result = TuStruct.createTuStruct1("n", TuTerm.i32(-100));
+		TuStruct result = new TuStruct("n", new TuInt(-100));
 		result.resolveTerm();
 		assertEquals(result, p.nextTerm(true));
 	}
@@ -40,13 +40,13 @@ public class ParserTestCase extends TestCase {
 	public void testBinaryMinusOperator() throws InvalidTermException {
 		String s = "abs(3-11)";
 		TuParser p = new TuParser(s);
-		TuStruct result = TuStruct.createTuStruct1("abs", TuStruct.createTuStruct2("-", TuTerm.i32(3), TuTerm.i32(11)));
+		TuStruct result = new TuStruct("abs", new TuStruct("-", new TuInt(3), new TuInt(11)));
 		assertEquals(result, p.nextTerm(false));
 	}
 	
 	public void testListWithTail() throws InvalidTermException {
 		TuParser p = new TuParser("[p|Y]");
-		TuStruct result = TuTerm.createTuCons(TuTerm.createAtomTerm("p"), TuTerm.createTuVar("Y"));
+		TuStruct result = new TuStruct(new TuStruct("p"), new TuVar("Y"));
 		result.resolveTerm();
 		assertEquals(result, p.nextTerm(false));
 	}
@@ -59,7 +59,7 @@ public class ParserTestCase extends TestCase {
 	
 	public void testUnivOperator() throws InvalidTermException {
 		TuParser p = new TuParser("p =.. q.");
-		TuStruct result = TuStruct.createTuStruct2("=..", TuTerm.createAtomTerm("p"), TuTerm.createAtomTerm("q"));
+		TuStruct result = new TuStruct("=..", new TuStruct("p"), new TuStruct("q"));
 		assertEquals(result, p.nextTerm(true));
 	}
 	
@@ -68,7 +68,8 @@ public class ParserTestCase extends TestCase {
 		DefaultOperatorManager om = new DefaultOperatorManager();
 		om.opNew(".", "xfx", 600);
 		TuParser p = new TuParser(om, s);
-		TuStruct result = TuStruct.createTuStruct2(".", TuStruct.createTuStruct1("class", TuTerm.createAtomTerm("java.lang.Integer")), TuTerm.createAtomTerm("MAX_VALUE"));
+		TuStruct result = new TuStruct(".", new TuStruct("class", new TuStruct("java.lang.Integer")),
+				                        new TuStruct("MAX_VALUE"));
 		assertEquals(result, p.nextTerm(false));
 	}
 	
@@ -80,7 +81,7 @@ public class ParserTestCase extends TestCase {
 		om.opNew("b2", "yfx", 500);
 		om.opNew("b3", "yfx", 300);
 		TuParser p = new TuParser(om, s);
-		TuStruct result = TuStruct.createTuStruct2("b2", TuStruct.createTuStruct1("u", TuTerm.createAtomTerm("b1")), TuTerm.createAtomTerm("b3"));
+		TuStruct result = new TuStruct("b2", new TuStruct("u", new TuStruct("b1")), new TuStruct("b3"));
 		assertEquals(result, p.nextTerm(false));
 	}
 	
@@ -92,14 +93,14 @@ public class ParserTestCase extends TestCase {
 		om.opNew("b2", "yfx", 500);
 		om.opNew("b3", "yfx", 300);
 		TuParser p = new TuParser(om, s);
-		TuStruct result = TuStruct.createTuStruct2("b1", TuTerm.createAtomTerm("u"), TuStruct.createTuStruct2("b3", TuTerm.createAtomTerm("b2"), TuTerm.createAtomTerm("a")));
+		TuStruct result = new TuStruct("b1", new TuStruct("u"), new TuStruct("b3", new TuStruct("b2"), new TuStruct("a")));
 		assertEquals(result, p.nextTerm(false));
 	}
 	
 	public void testIntegerBinaryRepresentation() throws InvalidTermException {
 		String n = "0b101101";
 		TuParser p = new TuParser(n);
-		alice.tuprolog.TuNumber result = TuTerm.i32(45);
+		alice.tuprolog.TuNumber result = new TuInt(45);
 		assertEquals(result, p.nextTerm(false));
 		String invalid = "0b101201";
 		try {
@@ -111,7 +112,7 @@ public class ParserTestCase extends TestCase {
 	public void testIntegerOctalRepresentation() throws InvalidTermException {
 		String n = "0o77351";
 		TuParser p = new TuParser(n);
-		alice.tuprolog.TuNumber result = TuTerm.i32(32489);
+		alice.tuprolog.TuNumber result = new TuInt(32489);
 		assertEquals(result, p.nextTerm(false));
 		String invalid = "0o78351";
 		try {
@@ -123,7 +124,7 @@ public class ParserTestCase extends TestCase {
 	public void testIntegerHexadecimalRepresentation() throws InvalidTermException {
 		String n = "0xDECAF";
 		TuParser p = new TuParser(n);
-		alice.tuprolog.TuNumber result = TuTerm.i32(912559);
+		alice.tuprolog.TuNumber result = new TuInt(912559);
 		assertEquals(result, p.nextTerm(false));
 		String invalid = "0xG";
 		try {
@@ -135,22 +136,23 @@ public class ParserTestCase extends TestCase {
 	public void testEmptyDCGAction() throws InvalidTermException {
 		String s = "{}";
 		TuParser p = new TuParser(s);
-		TuStruct result = TuTerm.createAtomTerm("{}");
+		TuStruct result = new TuStruct("{}");
 		assertEquals(result, p.nextTerm(false));
 	}
 	
 	public void testSingleDCGAction() throws InvalidTermException {
 		String s = "{hello}";
 		TuParser p = new TuParser(s);
-		TuStruct result = TuStruct.createTuStruct1("{}", TuTerm.createAtomTerm("hello"));
+		TuStruct result = new TuStruct("{}", new TuStruct("hello"));
 		assertEquals(result, p.nextTerm(false));
 	}
 	
 	public void testMultipleDCGAction() throws InvalidTermException {
 		String s = "{a, b, c}";
 		TuParser p = new TuParser(s);
-		TuStruct result = TuStruct.createTuStruct1("{}", TuStruct.createTuStruct2(",", TuTerm.createAtomTerm("a"), TuStruct
-                .createTuStruct2(",", TuTerm.createAtomTerm("b"), TuTerm.createAtomTerm("c"))));
+		TuStruct result = new TuStruct("{}",
+                                   new TuStruct(",", new TuStruct("a"),
+                                       new TuStruct(",", new TuStruct("b"), new TuStruct("c"))));
 		assertEquals(result, p.nextTerm(false));
 	}
 	
@@ -206,8 +208,8 @@ public class ParserTestCase extends TestCase {
 		                "*/" + "\n" +
 		                "t3." + "\n";
 		TuParser p = new TuParser(theory);
-		assertEquals(TuTerm.createAtomTerm("t1"), p.nextTerm(true));
-		assertEquals(TuTerm.createAtomTerm("t3"), p.nextTerm(true));
+		assertEquals(new TuStruct("t1"), p.nextTerm(true));
+		assertEquals(new TuStruct("t3"), p.nextTerm(true));
 	}
 	
 	public void testSingleQuotedTermWithInvalidLineBreaks() {

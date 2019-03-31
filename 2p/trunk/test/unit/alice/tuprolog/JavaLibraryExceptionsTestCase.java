@@ -20,9 +20,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -35,9 +35,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -50,9 +50,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -65,9 +65,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -80,9 +80,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -95,9 +95,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -110,9 +110,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -125,9 +125,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -141,9 +141,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 		new File("Counter.java").delete();
@@ -158,9 +158,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 		new File("Counter.java").delete();
@@ -176,9 +176,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -191,9 +191,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -206,9 +206,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -222,9 +222,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -237,9 +237,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -252,9 +252,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -267,9 +267,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -282,9 +282,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -298,9 +298,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -313,9 +313,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}
@@ -329,9 +329,9 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		SolveInfo info = engine.solve(goal);
 		assertTrue(info.isSuccess());
 		Term cause = info.getTerm("Cause");
-		assertFalse(cause .isVar());
+		assertFalse(cause instanceof TuVar);
 		Term message = info.getTerm("Message");
-		assertFalse(message .isVar());
+		assertFalse(message instanceof TuVar);
 		Term stackTrace = info.getTerm("StackTrace");
 		assertTrue(stackTrace.isList());
 	}

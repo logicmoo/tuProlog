@@ -61,7 +61,7 @@ public class TuStateException extends TuState {
                 // secondo argomento di catch/3
                 Term handlerTerm = e.currentContext.currentGoal.getArg(2);
                 Term curHandlerTerm = handlerTerm.getTerm();
-                if (!(curHandlerTerm .isCallable())) {
+                if (!(curHandlerTerm instanceof TuStruct)) {
                     e.nextState = c.END_FALSE;
                     return;
                 }
@@ -71,7 +71,7 @@ public class TuStateException extends TuState {
                 // This enables the dynamic linking of built-ins for
                 // terms coming from outside the demonstration context.
                 if (handlerTerm != curHandlerTerm)
-                    handlerTerm = TuStruct.createTuStruct1("call", curHandlerTerm);
+                    handlerTerm = new TuStruct("call", curHandlerTerm);
                 TuStruct handler = (TuStruct) handlerTerm;
                 c.identify(handler);
                 SubGoalTree sgt = new SubGoalTree();
@@ -134,7 +134,7 @@ public class TuStateException extends TuState {
                 // effettuate durante il processo di unificazione tra
                 // l'eccezione e il catcher
                 Term curHandlerTerm = handlerTerm.getTerm();
-                if (!(curHandlerTerm .isCallable())) {
+                if (!(curHandlerTerm instanceof TuStruct)) {
                     e.nextState = c.END_FALSE;
                     return;
                 }
@@ -142,7 +142,7 @@ public class TuStateException extends TuState {
                 Term curFinallyTerm = finallyTerm.getTerm();
                 // verifico se c'? il blocco finally
                 boolean isFinally = true;
-                if (curFinallyTerm .isInt()) {
+                if (curFinallyTerm instanceof TuInt) {
                     TuInt finallyInt = (TuInt) curFinallyTerm;
                     if (finallyInt.intValue() == 0)
                         isFinally = false;
@@ -151,7 +151,7 @@ public class TuStateException extends TuState {
                         e.nextState = c.END_FALSE;
                         return;
                     }
-                } else if (!(curFinallyTerm .isCallable())) {
+                } else if (!(curFinallyTerm instanceof TuStruct)) {
                     e.nextState = c.END_FALSE;
                     return;
                 }
@@ -161,9 +161,9 @@ public class TuStateException extends TuState {
                 // This enables the dynamic linking of built-ins for
                 // terms coming from outside the demonstration context.
                 if (handlerTerm != curHandlerTerm)
-                    handlerTerm = TuStruct.createTuStruct1("call", curHandlerTerm);
+                    handlerTerm = new TuStruct("call", curHandlerTerm);
                 if (finallyTerm != curFinallyTerm)
-                    finallyTerm = TuStruct.createTuStruct1("call", curFinallyTerm);
+                    finallyTerm = new TuStruct("call", curFinallyTerm);
 
                 TuStruct handler = (TuStruct) handlerTerm;
                 c.identify(handler);

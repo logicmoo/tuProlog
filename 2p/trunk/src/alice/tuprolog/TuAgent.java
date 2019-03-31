@@ -1,0 +1,175 @@
+/*
+ * tuProlog - Copyright (C) 2001-2002  aliCE team at deis.unibo.it
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+package alice.tuprolog;
+
+import java.io.*;
+
+import alice.util.Tools;
+import alice.tuprolog.event.OutputEvent;
+import alice.tuprolog.event.OutputListener;
+
+/**
+ * Provides a prolog virtual machine embedded in a separate thread.
+ * It needs a theory and optionally a goal.
+ * It parses the theory, solves the goal and stops.
+ *
+ * @see alice.tuprolog.TuProlog
+ *
+ */
+public class TuAgent {
+    
+    private TuProlog core;
+    private String theoryText;
+    private InputStream theoryInputStream;
+    private String goalText;
+    
+  
+    private OutputListener defaultOutputListener = new OutputListener() {
+        @Override
+		public void onOutput(OutputEvent ev) {
+            System.out.print(ev.getMsg());
+        }
+    };
+    
+    
+    /**
+     * Builds a prolog agent providing it a theory
+     *
+     * @param theory the text representing the theory
+     */
+    public TuAgent(String theory){
+        theoryText=theory;
+        core=new TuProlog();
+        core.addOutputListener(defaultOutputListener);
+    }
+    
+    /**
+     * Builds a prolog agent providing it a theory and a goal
+     */
+    public TuAgent(String theory,String goal){
+        theoryText=theory;
+        goalText=goal;
+        core=new TuProlog();
+        core.addOutputListener(defaultOutputListener);
+    }
+    
+    /**
+     * Constructs the Agent with a theory provided
+     * by an input stream
+     */
+    public TuAgent(InputStream is){
+        theoryInputStream=is;
+        core=new TuProlog();
+        core.addOutputListener(defaultOutputListener);
+    }
+    
+    /**
+     * Constructs the Agent with a theory provided
+     * by an input stream and a goal
+     */
+    public TuAgent(InputStream is,String goal){
+        theoryInputStream=is;
+        goalText=goal;
+        core=new TuProlog();
+        core.addOutputListener(defaultOutputListener);
+    }
+    
+    /**
+     * Starts agent execution
+     */
+    final  public void spawn(){
+        new TuAgent.AgentThread(this).start();
+    }
+    
+    /**
+     * Adds a listener to ouput events
+     *
+     * @param l the listener
+     */
+    public synchronized void addOutputListener(OutputListener l) {
+        core.addOutputListener(l);
+    }
+    
+    /**
+     * Removes a listener to ouput events
+     *
+     * @param l the listener
+     */
+    public synchronized void removeOutputListener(OutputListener l) {
+        core.removeOutputListener(l);
+    }
+    
+    /**
+     * Removes all output event listeners
+     */
+    public void removeAllOutputListener(){
+        core.removeAllOutputListeners();
+    }
+    
+    
+    private void body(){
+        try {
+            if (theoryText==null){
+                core.setTheory(new TuTheory(theoryInputStream));
+            } else {
+                core.setTheory(new TuTheory(theoryText));
+            }
+            if (goalText!=null){
+                core.solve(goalText);
+            }
+        } catch (Exception ex){
+            System.err.println("invalid theory or goal.");
+            ex.printStackTrace();
+        }
+    }
+    
+    
+    final class AgentThread extends Thread {
+        TuAgent agent;
+        AgentThread(TuAgent agent){
+            this.agent=agent;
+        }
+        @Override
+		final public void run(){
+            agent.body();
+        }
+    }
+    
+    
+    public static void main(String args[]){
+        if (args.length==1 || args.length==2){
+            
+            //FileReader fr;
+            try {
+                String text = Tools.loadText(args[0]);
+                if (args.length==1){
+                    new TuAgent(text).spawn();
+                } else {
+                    new TuAgent(text,args[1]).spawn();
+                }
+            } catch (Exception ex){
+                System.err.println("invalid theory.");
+            }
+        } else {
+            System.err.println("args: <theory file> { goal }");
+            System.exit(-1);
+        }
+    }
+    
+    
+}

@@ -5,26 +5,25 @@ import junit.framework.TestCase;
 public class BuiltInTestCase extends TestCase {
 	
 	public void testConvertTermToGoal() throws InvalidTermException {
-		Term t = TuTerm.createTuVar("T");
-		final TuStruct createTuStruct1 = TuStruct.createTuStruct1("call", t);
-        TuStruct result = createTuStruct1;
+		Term t = new TuVar("T");
+		TuStruct result = new TuStruct("call", t);
 		assertEquals(result, BuiltIn.convertTermToGoal(t));
-		assertEquals(result, BuiltIn.convertTermToGoal(createTuStruct1));
+		assertEquals(result, BuiltIn.convertTermToGoal(new TuStruct("call", t)));
 		
-		t = TuTerm.i32(2);
+		t = new TuInt(2);
 		assertNull(BuiltIn.convertTermToGoal(t));
 		
-		t = TuStruct.createSTRUCT("p", TuTerm.createAtomTerm("a"), TuTerm.createTuVar("B"), TuTerm.createAtomTerm("c"));
+		t = new TuStruct("p", new TuStruct("a"), new TuVar("B"), new TuStruct("c"));
 		result = (TuStruct) t;
 		assertEquals(result, BuiltIn.convertTermToGoal(t));
 		
-		TuVar linked = TuTerm.createTuVar("X");
-		linked.setLink(TuTerm.createAtomTerm("!"));
-		Term[] arguments = new Term[] { linked, TuTerm.createTuVar("Y") };
-		Term[] results = new Term[] { TuTerm.createAtomTerm("!"), TuStruct.createTuStruct1("call", TuTerm.createTuVar("Y")) };
-		assertEquals(TuStruct.createTuStructA(";", results), BuiltIn.convertTermToGoal(TuStruct.createTuStructA(";", arguments)));
-		assertEquals(TuStruct.createTuStructA(",", results), BuiltIn.convertTermToGoal(TuStruct.createTuStructA(",", arguments)));
-		assertEquals(TuStruct.createTuStructA("->", results), BuiltIn.convertTermToGoal(TuStruct.createTuStructA("->", arguments)));
+		TuVar linked = new TuVar("X");
+		linked.setLink(new TuStruct("!"));
+		Term[] arguments = new Term[] { linked, new TuVar("Y") };
+		Term[] results = new Term[] { new TuStruct("!"), new TuStruct("call", new TuVar("Y")) };
+		assertEquals(new TuStruct(";", results), BuiltIn.convertTermToGoal(new TuStruct(";", arguments)));
+		assertEquals(new TuStruct(",", results), BuiltIn.convertTermToGoal(new TuStruct(",", arguments)));
+		assertEquals(new TuStruct("->", results), BuiltIn.convertTermToGoal(new TuStruct("->", arguments)));
 	}
 	
 	//Based on the bug #59 Grouping conjunctions in () changes result on sourceforge

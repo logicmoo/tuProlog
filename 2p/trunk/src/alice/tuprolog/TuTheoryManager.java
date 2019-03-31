@@ -157,7 +157,7 @@ public class TuTheoryManager implements Serializable {
 	 * predicate indicator passed as a parameter
 	 */
 	public synchronized boolean abolish(TuStruct pi) {		
-		if (!(pi .isCallable()) || !pi.isGround() || !(pi.getArity() == 2))
+		if (!(pi instanceof TuStruct) || !pi.isGround() || !(pi.getArity() == 2))
 			throw new IllegalArgumentException(pi + " is not a valid Struct");
 		if(!pi.getName().equals("/"))
 				throw new IllegalArgumentException(pi + " has not the valid predicate name. Espected '/' but was " + pi.getName());
@@ -179,14 +179,14 @@ public class TuTheoryManager implements Serializable {
 	 * implementation
 	 */
 	public synchronized List<ClauseInfo> find(Term headt) {
-		if (headt .isCallable()) {
+		if (headt instanceof TuStruct) {
 			List<ClauseInfo> list = dynamicDBase.getPredicates(headt);
 			if (list.isEmpty())
 				list = staticDBase.getPredicates(headt);
 			return list;
 		}
 
-		if (headt .isVar()){
+		if (headt instanceof TuVar){
 			throw new RuntimeException();
 		}
 		return new LinkedList<ClauseInfo>();
@@ -257,7 +257,7 @@ public class TuTheoryManager implements Serializable {
 
 
 	private boolean runDirective(TuStruct c) {
-		if ("':-'".equals(c.getName()) || ":-".equals(c.getName()) && c.getArity() == 1 && c.getTerm(0) .isCallable()) {
+		if ("':-'".equals(c.getName()) || ":-".equals(c.getName()) && c.getArity() == 1 && c.getTerm(0) instanceof TuStruct) {
 			TuStruct dir = (TuStruct) c.getTerm(0);
 			try {
 				if (!primitiveManager.evalAsDirective(dir))
@@ -278,7 +278,7 @@ public class TuTheoryManager implements Serializable {
 		// TODO bad, slow way of cloning. requires approx twice the time necessary
 		t = (TuStruct) Term.createTerm(t.toString(), this.engine.getOperatorManager());
 		if (!t.isClause())
-			t = TuStruct.createTuStruct2(":-", t, TuTerm.createAtomTerm("true"));
+			t = new TuStruct(":-", t, new TuStruct("true"));
 		primitiveManager.identifyPredicate(t);
 		return t;
 	}
@@ -288,7 +288,7 @@ public class TuTheoryManager implements Serializable {
 		while (!startGoalStack.empty()) {
 			s = (s == null) ?
 					(TuStruct) startGoalStack.pop() :
-						TuStruct.createTuStruct2(",", startGoalStack.pop(), s);
+						new TuStruct(",", startGoalStack.pop(), s);
 		}
 		if (s != null) {
 			try {

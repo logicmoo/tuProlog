@@ -10,7 +10,7 @@ import java.util.LinkedList;
  * @since 2.2
  */
 class FamilyClausesIndex<K extends Comparable<? super K>>
-        extends RBTree<K, LinkedList<ClauseInfo>> {
+        extends TuRBTree<K, LinkedList<ClauseInfo>> {
 
     private LinkedList<ClauseInfo> varsClauses;
 

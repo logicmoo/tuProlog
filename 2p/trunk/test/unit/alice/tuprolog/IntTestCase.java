@@ -5,34 +5,34 @@ import junit.framework.TestCase;
 public class IntTestCase extends TestCase {
 	
 	public void testIsAtomic() {
-		assertTrue(TuTerm.i32(0).isAtomic());
+		assertTrue(new TuInt(0).isAtomic());
 	}
 	
 	public void testIsAtom() {
-		assertFalse(TuTerm.i32(0).isAtomSymbol());
+		assertFalse(new TuInt(0).isAtom());
 	}
 	
 	public void testIsCompound() {
-		assertFalse(TuTerm.i32(0).isCompound());
+		assertFalse(new TuInt(0).isCompound());
 	}
 	
 	public void testEqualsToStruct() {
-		Term s = TuTerm.createNilStruct();
-		TuInt zero = TuTerm.i32(0);
+		TuStruct s = new TuStruct();
+		TuInt zero = new TuInt(0);
 		assertFalse(zero.equals(s));
 	}
 	
 	public void testEqualsToVar() throws InvalidTermException {
-		TuVar x = TuTerm.createTuVar("X");
-		TuInt one = TuTerm.i32(1);
+		TuVar x = new TuVar("X");
+		TuInt one = new TuInt(1);
 		assertFalse(one.equals(x));
 	}
 	
 	public void testEqualsToInt() {
-		TuInt zero = TuTerm.i32(0);
-		TuInt one = TuTerm.i32(1);
+		TuInt zero = new TuInt(0);
+		TuInt one = new TuInt(1);
 		assertFalse(zero.equals(one));
-		TuInt anotherZero = TuTerm.i32(1-1);
+		TuInt anotherZero = new TuInt(1-1);
 		assertTrue(anotherZero.equals(zero));
 	}
 	
@@ -41,8 +41,8 @@ public class IntTestCase extends TestCase {
 	}
 	
 	public void testEqualsToDouble() {
-		TuInt integerOne = TuTerm.i32(1);
-		alice.tuprolog.TuDouble doubleOne = TuTerm.f64(1);
+		TuInt integerOne = new TuInt(1);
+		alice.tuprolog.TuDouble doubleOne = new alice.tuprolog.TuDouble(1);
 		assertFalse(integerOne.equals(doubleOne));
 	}
 	

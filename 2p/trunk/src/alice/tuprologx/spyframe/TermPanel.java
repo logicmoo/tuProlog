@@ -28,7 +28,7 @@ public class TermPanel extends JPanel implements ActionListener{
       Node node=new Node(""+term);
       node.textcolor=node.bordercolor=Color.BLACK;
       //make it more specific if possible
-      if(term .isVar()){
+      if(term instanceof TuVar){
         TuVar var=(TuVar)term;
         node.text=var.getName();
         node.textcolor=node.bordercolor=Color.BLUE;
@@ -36,9 +36,9 @@ public class TermPanel extends JPanel implements ActionListener{
           node.kids=new Node[1];
           node.kids[0]=makeTreeFrom(var.getTerm());
         }
-      } else if(term .isNumber()){
+      } else if(term instanceof alice.tuprolog.TuNumber){
         node.textcolor=node.bordercolor=Color.MAGENTA;
-      } else if(term .isCallable()){
+      } else if(term instanceof TuStruct){
         TuStruct struct=(TuStruct)term;
         node.text=struct.getName();
         int n=struct.getArity();

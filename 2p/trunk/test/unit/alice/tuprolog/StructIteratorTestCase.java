@@ -12,7 +12,7 @@ import junit.framework.TestCase;
 public class StructIteratorTestCase extends TestCase {
 	
 	public void testEmptyIterator() {
-		TuStruct list = TuTerm.createAppendableStruct();
+		TuStruct list = new TuStruct();
 		Iterator<? extends Term> i = list.listIterator();
 		assertFalse(i.hasNext());
 		try {
@@ -22,7 +22,7 @@ public class StructIteratorTestCase extends TestCase {
 	}
 	
 	public void testIteratorCount() {
-		TuStruct list = TuStruct.createTuList(new Term[] {TuTerm.i32(1), TuTerm.i32(2), TuTerm.i32(3), TuTerm.i32(5), TuTerm.i32(7)});
+		TuStruct list = new TuStruct(new Term[] {new TuInt(1), new TuInt(2), new TuInt(3), new TuInt(5), new TuInt(7)});
 		Iterator<? extends Term> i = list.listIterator();
 		int count = 0;
 		for (; i.hasNext(); count++)
@@ -32,24 +32,24 @@ public class StructIteratorTestCase extends TestCase {
 	}
 	
 	public void testMultipleHasNext() {
-		TuStruct list = TuStruct.createTuList(new Term[] {TuTerm.createAtomTerm("p"), TuTerm.createAtomTerm("q"), TuTerm.createAtomTerm("r")});
+		TuStruct list = new TuStruct(new Term[] {new TuStruct("p"), new TuStruct("q"), new TuStruct("r")});
 		Iterator<? extends Term> i = list.listIterator();
 		assertTrue(i.hasNext());
 		assertTrue(i.hasNext());
 		assertTrue(i.hasNext());
-		assertEquals(TuTerm.createAtomTerm("p"), i.next());
+		assertEquals(new TuStruct("p"), i.next());
 	}
 	
 	public void testMultipleNext() {
-		TuStruct list = TuStruct.createTuList(new Term[] {TuTerm.i32(0), TuTerm.i32(1), TuTerm.i32(2), TuTerm.i32(3), TuTerm.i32(5), TuTerm.i32(7)});
+		TuStruct list = new TuStruct(new Term[] {new TuInt(0), new TuInt(1), new TuInt(2), new TuInt(3), new TuInt(5), new TuInt(7)});
 		Iterator<? extends Term> i = list.listIterator();
 		assertTrue(i.hasNext());
 		i.next(); // skip the first term
-		assertEquals(TuTerm.i32(1), i.next());
-		assertEquals(TuTerm.i32(2), i.next());
-		assertEquals(TuTerm.i32(3), i.next());
-		assertEquals(TuTerm.i32(5), i.next());
-		assertEquals(TuTerm.i32(7), i.next());
+		assertEquals(new TuInt(1), i.next());
+		assertEquals(new TuInt(2), i.next());
+		assertEquals(new TuInt(3), i.next());
+		assertEquals(new TuInt(5), i.next());
+		assertEquals(new TuInt(7), i.next());
 		// no more terms
 		assertFalse(i.hasNext());
 		try {
@@ -59,7 +59,7 @@ public class StructIteratorTestCase extends TestCase {
 	}
 	
 	public void testRemoveOperationNotSupported() {
-		TuStruct list = TuTerm.createTuCons(TuTerm.i32(1), TuTerm.createNilStruct());
+		TuStruct list = new TuStruct(new TuInt(1), new TuStruct());
 		Iterator<? extends Term> i = list.listIterator();
 		assertNotNull(i.next());
 		try {
