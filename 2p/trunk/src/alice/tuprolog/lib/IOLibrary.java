@@ -123,32 +123,32 @@ public class IOLibrary extends TuLibrary {
     /************************************************************/
     
     public boolean see_1(Term arg) throws TuPrologError {
-        arg = arg.getTerm();
+        arg = arg.dref();
         if (arg .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (!arg.isAtomSymbol()) {
             throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",
                     arg);
         }
-        TuStruct arg0 = (TuStruct) arg.getTerm();
+        TuStruct arg0 = (TuStruct) arg.dref();
         if (inputStream != stdIn) /* If the current inputStream is the StandardInput it will not be closed */
             try {
                 inputStream.close();
             } catch (IOException e) {
                 return false;
             }
-        if (arg0.getName().equals(STDIN_NAME)) { /*No matter what is the StandardInput ("console", "graphic", etc.). The user does not know what it is*/
+        if (arg0.fname().equals(STDIN_NAME)) { /*No matter what is the StandardInput ("console", "graphic", etc.). The user does not know what it is*/
         	inputStream = stdIn;
         	inputStreamName = STDIN_NAME;
         } else {
             try {
-                inputStream = new FileInputStream(arg0.getName());
+                inputStream = new FileInputStream(arg0.fname());
             } catch (FileNotFoundException e) {
                 throw TuPrologError.domain_error(engine.getEngineManager(), 1,
                         "stream", arg0);
             }
         }
-        inputStreamName = arg0.getName();
+        inputStreamName = arg0.fname();
         return true;
     }
 
@@ -171,32 +171,32 @@ public class IOLibrary extends TuLibrary {
     }
 
     public boolean tell_1(Term arg) throws TuPrologError {
-        arg = arg.getTerm();
+        arg = arg.dref();
         if (arg .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (!arg.isAtomSymbol()) {
             throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",
                     arg);
         }
-        TuStruct arg0 = (TuStruct) arg.getTerm();
+        TuStruct arg0 = (TuStruct) arg.dref();
         if (outputStream != stdOut) /* If the current outputStream is the StandardOutput it will not be closed */
             try {
                 outputStream.close();
             } catch (IOException e) {
                 return false;
             }
-        if (arg0.getName().equals(STDOUT_NAME)) { /*No matter what is the StandardOutput ("console", "graphic", etc.). The user does not know what it is*/
+        if (arg0.fname().equals(STDOUT_NAME)) { /*No matter what is the StandardOutput ("console", "graphic", etc.). The user does not know what it is*/
             outputStream = stdOut;
             outputStreamName = STDOUT_NAME;
         } else {
             try {
-                outputStream = new FileOutputStream(arg0.getName());
+                outputStream = new FileOutputStream(arg0.fname());
             } catch (FileNotFoundException e) {
                 throw TuPrologError.domain_error(engine.getEngineManager(), 1,
                         "stream", arg);
             }
         }
-        outputStreamName = arg0.getName();
+        outputStreamName = arg0.fname();
         return true;
     }
 
@@ -218,15 +218,15 @@ public class IOLibrary extends TuLibrary {
     }
 
     public boolean put_1(Term arg) throws TuPrologError {
-        arg = arg.getTerm();
+        arg = arg.dref();
         if (arg .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (!arg.isAtomSymbol()) {
             throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "character", arg);
         } else {
-            TuStruct arg0 = (TuStruct) arg.getTerm();
-            String ch = arg0.getName();
+            TuStruct arg0 = (TuStruct) arg.dref();
+            String ch = arg0.fname();
             if (ch.length() > 1) {
                 throw TuPrologError.type_error(engine.getEngineManager(), 1,
                         "character", arg);
@@ -284,14 +284,14 @@ public class IOLibrary extends TuLibrary {
     }
 
     public boolean tab_1(Term arg) throws TuPrologError {
-        arg = arg.getTerm();
+        arg = arg.dref();
         if (arg .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (!(arg .isInt()))
             throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "integer", arg);
         // int n = ((Int)arg).intValue(); // OLD BUGGED  VERSION (signaled by MViroli) 
-        int n = ((TuInt)arg.getTerm()).intValue(); // NEW CORRECT VERSION (by MViroli, EDenti)
+        int n = ((TuInt)arg.dref()).intValue(); // NEW CORRECT VERSION (by MViroli, EDenti)
         if (outputStreamName.equals(STDOUT_NAME)) { /* Changed from STDOUT_NAME to STDOUT_NAME */
             for (int i = 0; i < n; i++) {
                 getEngine().stdOutput(" ");
@@ -312,7 +312,7 @@ public class IOLibrary extends TuLibrary {
     }
 
     public boolean read_1(Term arg0) throws TuPrologError {
-        arg0 = arg0.getTerm();
+        arg0 = arg0.dref();
         int ch = 0;
 
         boolean open_apices = false;
@@ -371,7 +371,7 @@ public class IOLibrary extends TuLibrary {
     }
 
     public boolean write_1(Term arg0) throws TuPrologError {
-        arg0 = arg0.getTerm();
+        arg0 = arg0.dref();
         if (arg0 .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (outputStreamName.equals(STDOUT_NAME)) { /* Changed from "stdout" to STDOUT_NAME */
@@ -389,7 +389,7 @@ public class IOLibrary extends TuLibrary {
     }
 
     public boolean print_1(Term arg0) throws TuPrologError {
-        arg0 = arg0.getTerm();
+        arg0 = arg0.dref();
         if (arg0 .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (outputStreamName.equals(STDOUT_NAME)) { /* Changed from "stdout" to STDOUT_NAME */
@@ -434,13 +434,13 @@ public class IOLibrary extends TuLibrary {
      */
     public boolean text_from_file_2(Term file_name, Term text)
             throws TuPrologError {
-        file_name = file_name.getTerm();
+        file_name = file_name.dref();
         if (file_name .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (!file_name.isAtomSymbol())
             throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",
                     file_name);
-        TuStruct fileName = (TuStruct) file_name.getTerm();
+        TuStruct fileName = (TuStruct) file_name.dref();
         TuStruct goal = null;
         String path = alice.util.Tools.removeApices(fileName.toString());
         if(! new File(path).isAbsolute()) {
@@ -464,7 +464,7 @@ public class IOLibrary extends TuLibrary {
      * @return true if seed Term has a valid long value, false otherwise
      */
     public boolean set_seed_1(Term t) throws TuPrologError {
-        t = t.getTerm();
+        t = t.dref();
         if( !(t .isNumber()) ) {
             throw TuPrologError.type_error(engine.getEngineManager(), 1, "Integer Number", t);
         }
@@ -481,7 +481,7 @@ public class IOLibrary extends TuLibrary {
     }
 
     public boolean rand_int_2(Term argNum, Term num) {
-        alice.tuprolog.TuNumber arg = (alice.tuprolog.TuNumber) argNum.getTerm();
+        alice.tuprolog.TuNumber arg = (alice.tuprolog.TuNumber) argNum.dref();
         return unify(num, new TuInt(gen.nextInt(arg.intValue())));
     }
 
@@ -497,8 +497,8 @@ public class IOLibrary extends TuLibrary {
 
     public boolean solve_file_goal_guard_2(Term arg0, Term arg1)
             throws TuPrologError {
-        arg0 = arg0.getTerm();
-        arg1 = arg1.getTerm();
+        arg0 = arg0.dref();
+        arg1 = arg1.dref();
         if (arg1 .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
         if (!arg1.isAtomSymbol() && !arg1.isCompound()) {
@@ -539,7 +539,7 @@ public class IOLibrary extends TuLibrary {
     
 
     public boolean write_base_1(Term arg0) throws TuPrologError {
-        arg0 = arg0.getTerm();
+        arg0 = arg0.dref();
         
         if (arg0 .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);

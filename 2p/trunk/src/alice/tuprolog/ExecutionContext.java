@@ -115,7 +115,7 @@ public class ExecutionContext {
     //Alberto
     boolean tryToPerformTailRecursionOptimization(TuEngine e)
     {
-    	if(!haveAlternatives && e.currentContext.goalsToEval.getCurSGId() == null && !e.currentContext.goalsToEval.haveSubGoals() && !(e.currentContext.currentGoal.getName().equalsIgnoreCase("catch") || e.currentContext.currentGoal.getName().equalsIgnoreCase("java_catch")))
+    	if(!haveAlternatives && e.currentContext.goalsToEval.getCurSGId() == null && !e.currentContext.goalsToEval.haveSubGoals() && !(e.currentContext.currentGoal.fname().equalsIgnoreCase("catch") || e.currentContext.currentGoal.fname().equalsIgnoreCase("java_catch")))
     	{
     		fatherCtx = e.currentContext.fatherCtx;
     		depth = e.currentContext.depth;

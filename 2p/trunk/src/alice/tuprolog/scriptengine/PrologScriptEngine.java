@@ -204,7 +204,7 @@ public class PrologScriptEngine implements ScriptEngine, ExceptionListener, Outp
             if(info.isSuccess()) {
                 solveVars = info.getBindingVars();
                 for(TuVar v : solveVars)            
-                    bindings.put(v.getName(), v.getTerm().toString());             
+                    bindings.put(v.getName(), v.dref().toString());             
             }
             
             useSolveNext = info.hasOpenAlternatives();

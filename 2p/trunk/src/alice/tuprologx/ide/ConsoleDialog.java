@@ -531,8 +531,8 @@ public class ConsoleDialog
                     try {
                         for (TuVar v: solution.getBindingVars()) {
                             if (!v.isAnonymous()) {
-                                String value = v.getTerm().toString();;
-                                if (v == v.getTerm())
+                                String value = v.dref().toString();;
+                                if (v == v.dref())
                                     value = new TuVar().getName();
                                 tableModelList.add(value);
                             }
@@ -621,8 +621,8 @@ public class ConsoleDialog
             if (selectDisplayModality == 0) {
                 ArrayList<String> tableModelList = new ArrayList<String>();
                 for(TuVar v:bindings){
-                    String value = v.getTerm().toString();;
-                    if (v == v.getTerm())
+                    String value = v.dref().toString();;
+                    if (v == v.dref())
                         value = new TuVar().getName();
                     tableModelList.add(value);
                 }
@@ -634,8 +634,8 @@ public class ConsoleDialog
             if (selectDisplayModality == 1 || selectDisplayModality == 2) {
                 ArrayList<String> tableModelList = new ArrayList<String>();
                 for(TuVar v:bindings){
-                    String value = v.getTerm().toString();
-                    if (v == v.getTerm())
+                    String value = v.dref().toString();
+                    if (v == v.dref())
                         value = new TuVar().getName();
                     tableModelList.add(v.getName());
                     tableModelList.add(value);

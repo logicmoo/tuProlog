@@ -2,14 +2,15 @@ package alice.tuprolog;
 
 import java.util.Iterator;
 import java.util.List;
+import static alice.tuprolog.TuFactory.*;
 
 /**
  * @author Matteo Iuliani
  */
 public class TuStateException extends TuState {
 
-    final Term catchTerm = Term.createTerm("catch(Goal, Catcher, Handler)");
-    final Term javaCatchTerm = Term.createTerm("java_catch(Goal, List, Finally)");
+    final Term catchTerm = createTerm("catch(Goal, Catcher, Handler)");
+    final Term javaCatchTerm = createTerm("java_catch(Goal, List, Finally)");
 
     public TuStateException(EngineRunner c) {
         this.c = c;
@@ -18,7 +19,7 @@ public class TuStateException extends TuState {
 
     @Override
 	void doJob(TuEngine e) {
-        String errorType = e.currentContext.currentGoal.getName();
+        String errorType = e.currentContext.currentGoal.fname();
         if (errorType.equals("throw"))
             prologError(e);
         else
@@ -26,7 +27,7 @@ public class TuStateException extends TuState {
     }
 
     private void prologError(TuEngine e) {
-        Term errorTerm = e.currentContext.currentGoal.getArg(0);
+        Term errorTerm = e.currentContext.currentGoal.getPlainArg(0);
         e.currentContext = e.currentContext.fatherCtx;
         if (e.currentContext == null) {
             // passo nello stato HALT se l?errore non pu? essere gestito (sono
@@ -39,7 +40,7 @@ public class TuStateException extends TuState {
             // subgoal catch/3 il cui secondo argomento unifica con l?argomento
             // dell?eccezione lanciata
             if (e.currentContext.currentGoal.match(catchTerm)
-                    && e.currentContext.currentGoal.getArg(1).match(errorTerm)) {
+                    && e.currentContext.currentGoal.getPlainArg(1).match(errorTerm)) {
                 // ho identificato l?ExecutionContext con il corretto subgoal
                 // catch/3
 
@@ -50,7 +51,7 @@ public class TuStateException extends TuState {
                 // catch/3
                 List<TuVar> unifiedVars = e.currentContext.trailingVars
                         .getHead();
-                e.currentContext.currentGoal.getArg(1).unify(unifiedVars,
+                e.currentContext.currentGoal.getPlainArg(1).unify(unifiedVars,
                         unifiedVars, errorTerm, c.getMediator().getFlagManager().isOccursCheckEnabled());
 
                 // inserisco il gestore dell?errore in testa alla lista dei
@@ -59,9 +60,9 @@ public class TuStateException extends TuState {
                 // l?esecuzione, mantenendo le sostituzioni effettuate durante
                 // il processo di unificazione tra l?argomento di throw/1 e il
                 // secondo argomento di catch/3
-                Term handlerTerm = e.currentContext.currentGoal.getArg(2);
-                Term curHandlerTerm = handlerTerm.getTerm();
-                if (!(curHandlerTerm .isStruct())) {
+                Term handlerTerm = e.currentContext.currentGoal.getPlainArg(2);
+                Term curHandlerTerm = handlerTerm.dref();
+                if (!(curHandlerTerm .isTuStruct())) {
                     e.nextState = c.END_FALSE;
                     return;
                 }
@@ -96,7 +97,7 @@ public class TuStateException extends TuState {
     }
 
     private void javaException(TuEngine e) {
-        Term exceptionTerm = e.currentContext.currentGoal.getArg(0);
+        Term exceptionTerm = e.currentContext.currentGoal.getPlainArg(0);
         e.currentContext = e.currentContext.fatherCtx;
         if (e.currentContext == null) {
             // passo nello stato HALT se l?errore non pu? essere gestito (sono
@@ -109,7 +110,7 @@ public class TuStateException extends TuState {
             // subgoal java_catch/3 che abbia un catcher unificabile con
             // l'argomento dell'eccezione lanciata
         	if (e.currentContext.currentGoal.match(javaCatchTerm)
-                    && javaMatch(e.currentContext.currentGoal.getArg(1),
+                    && javaMatch(e.currentContext.currentGoal.getPlainArg(1),
                             exceptionTerm)) {
                 // ho identificato l?ExecutionContext con il corretto subgoal
                 // java_catch/3
@@ -122,7 +123,7 @@ public class TuStateException extends TuState {
                 List<TuVar> unifiedVars = e.currentContext.trailingVars
                         .getHead();
                 Term handlerTerm = javaUnify(e.currentContext.currentGoal
-                        .getArg(1), exceptionTerm, unifiedVars);
+                        .getPlainArg(1), exceptionTerm, unifiedVars);
                 if (handlerTerm == null) {
                     e.nextState = c.END_FALSE;
                     return;
@@ -133,13 +134,13 @@ public class TuStateException extends TuState {
                 // essere preparati per l?esecuzione, mantenendo le sostituzioni
                 // effettuate durante il processo di unificazione tra
                 // l'eccezione e il catcher
-                Term curHandlerTerm = handlerTerm.getTerm();
-                if (!(curHandlerTerm .isStruct())) {
+                Term curHandlerTerm = handlerTerm.dref();
+                if (!(curHandlerTerm .isTuStruct())) {
                     e.nextState = c.END_FALSE;
                     return;
                 }
-                Term finallyTerm = e.currentContext.currentGoal.getArg(2);
-                Term curFinallyTerm = finallyTerm.getTerm();
+                Term finallyTerm = e.currentContext.currentGoal.getPlainArg(2);
+                Term curFinallyTerm = finallyTerm.dref();
                 // verifico se c'? il blocco finally
                 boolean isFinally = true;
                 if (curFinallyTerm .isInt()) {
@@ -151,7 +152,7 @@ public class TuStateException extends TuState {
                         e.nextState = c.END_FALSE;
                         return;
                     }
-                } else if (!(curFinallyTerm .isStruct())) {
+                } else if (!(curFinallyTerm .isTuStruct())) {
                     e.nextState = c.END_FALSE;
                     return;
                 }
@@ -197,7 +198,7 @@ public class TuStateException extends TuState {
     // verifica se c'? un catcher unificabile con l'argomento dell'eccezione
     // lanciata
     private boolean javaMatch(Term arg1, Term exceptionTerm) {
-        if (!arg1.isList())
+        if (!arg1.isConsList())
             return false;
         TuStruct list = (TuStruct) arg1;
         if (list.isEmptyList())
@@ -208,11 +209,11 @@ public class TuStateException extends TuState {
             if (!nextTerm.isCompound())
                 continue;
             TuStruct element = (TuStruct) nextTerm;
-            if (!element.getName().equals(","))
+            if (!element.fname().equals(","))
                 continue;
             if (element.getArity() != 2)
                 continue;
-            if (element.getArg(0).match(exceptionTerm)) {
+            if (element.getPlainArg(0).match(exceptionTerm)) {
                 return true;
             }
         }
@@ -229,14 +230,14 @@ public class TuStateException extends TuState {
             if (!nextTerm.isCompound())
                 continue;
             TuStruct element = (TuStruct) nextTerm;
-            if (!element.getName().equals(","))
+            if (!element.fname().equals(","))
                 continue;
             if (element.getArity() != 2)
                 continue;
-            if (element.getArg(0).match(exceptionTerm)) {
-                element.getArg(0)
+            if (element.getPlainArg(0).match(exceptionTerm)) {
+                element.getPlainArg(0)
                         .unify(unifiedVars, unifiedVars, exceptionTerm, c.getMediator().getFlagManager().isOccursCheckEnabled());
-                return element.getArg(1);
+                return element.getPlainArg(1);
             }
         }
         return null;

@@ -35,21 +35,21 @@ public class ISOLibrary extends TuLibrary {
     }
 
     public boolean atom_length_2(Term arg0, Term len) throws TuPrologError {
-        arg0 = arg0.getTerm();
+        arg0 = arg0.dref();
         if (arg0 .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (!arg0.isAtomSymbol())
             throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",
                     arg0);
         TuStruct atom = (TuStruct) arg0;
-        return unify(len, new TuInt(atom.getName().length()));
+        return unify(len, new TuInt(atom.fname().length()));
     }
 
     public boolean atom_chars_2(Term arg0, Term arg1) throws TuPrologError {
-        arg0 = arg0.getTerm();
-        arg1 = arg1.getTerm();
+        arg0 = arg0.dref();
+        arg1 = arg1.dref();
         if (arg0 .isVar()) {
-            if (!arg1.isList()) {
+            if (!arg1.isConsList()) {
                 throw TuPrologError.type_error(engine.getEngineManager(), 2,
                         "list", arg1);
             }
@@ -82,7 +82,7 @@ public class ISOLibrary extends TuLibrary {
                 throw TuPrologError.type_error(engine.getEngineManager(), 1,
                         "atom", arg0);
             }
-            String st = ((TuStruct) arg0).getName();
+            String st = ((TuStruct) arg0).fname();
             Term[] tlist = new Term[st.length()];
             for (int i = 0; i < st.length(); i++) {
                 tlist[i] = new TuStruct(new String(new char[] { st.charAt(i) }));
@@ -99,11 +99,11 @@ public class ISOLibrary extends TuLibrary {
     }
 
     public boolean char_code_2(Term arg0, Term arg1) throws TuPrologError {
-        arg0 = arg0.getTerm();
-        arg1 = arg1.getTerm();
+        arg0 = arg0.dref();
+        arg1 = arg1.dref();
         if (arg1 .isVar()) {
             if (arg0.isAtomSymbol()) {
-                String st = ((TuStruct) arg0).getName();
+                String st = ((TuStruct) arg0).fname();
                 if (st.length() <= 1)
                     return unify(arg1, new TuInt(st.charAt(0)));
                 else
@@ -459,7 +459,7 @@ public class ISOLibrary extends TuLibrary {
 
     public boolean sub_atom_guard_5(Term arg0, Term arg1, Term arg2, Term arg3, Term arg4)
             throws TuPrologError {
-        arg0 = arg0.getTerm();
+        arg0 = arg0.dref();
         if (!arg0.isAtomSymbol())
             throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom", arg0);
         return true;

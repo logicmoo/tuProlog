@@ -157,7 +157,7 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/ {
             while (it.hasNext()) {
                 TuVar v = it.next();
                 if (v != null && v.getName().equals(varName)) {
-                    return v.getTerm();
+                    return v.dref();
                 }
             }
             return null;
@@ -185,7 +185,7 @@ public class SolveInfo implements Serializable/*, ISolution<Term,Term,Term>*/ {
             while (it.hasNext()) {
                 TuVar v = it.next();
                 if (v != null && !v.isAnonymous() && v.isBound()
-                        && (!(v.getTerm().isVar()) || (!((TuVar) (v.getTerm())).getName().startsWith("_")))) {
+                        && (!(v.dref().isVar()) || (!((TuVar) (v.dref())).getName().startsWith("_")))) {
                     st.append(v);
                     st.append("  ");
                 }

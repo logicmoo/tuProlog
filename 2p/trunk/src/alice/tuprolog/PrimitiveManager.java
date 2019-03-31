@@ -128,22 +128,22 @@ public class PrimitiveManager /*Castagna 06/2011*/implements IPrimitiveManager/*
         if (term == null) {
             return;
         }
-        term = term.getTerm();
-        if (!(term .isStruct())) {
+        term = term.dref();
+        if (!(term .isTuStruct())) {
             return;
         }
         TuStruct t = (TuStruct) term;
         
         int arity = t.getArity();
-        String name = t.getName();
+        String name = t.fname();
         //------------------------------------------
         if (name.equals(",") || name.equals("':-'") || name.equals(":-")) {
             for (int c = 0; c < arity; c++) {
-                identify( t.getArg(c), PrimitiveInfo.PREDICATE);
+                identify( t.getPlainArg(c), PrimitiveInfo.PREDICATE);
             }
         } else {
             for (int c = 0; c < arity; c++) {
-                identify( t.getArg(c), PrimitiveInfo.FUNCTOR);
+                identify( t.getPlainArg(c), PrimitiveInfo.FUNCTOR);
             }                        
         }
         //------------------------------------------

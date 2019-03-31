@@ -28,7 +28,7 @@ public class TxClause<H extends TxTerm<?>, B extends TxTerm<?>> extends TxCompou
     
     @SuppressWarnings("unchecked")
 	public TxClause(TuStruct s) { 
-        this(s.getName().equals(":-") ? (H)TxTerm.unmarshal(s.getArg(0)) : (H)TxTerm.unmarshal(s), s.getName().equals(":-") ? (B)TxTerm.unmarshal(s.getArg(1)) : null);        
+        this(s.fname().equals(":-") ? (H)TxTerm.unmarshal(s.getPlainArg(0)) : (H)TxTerm.unmarshal(s), s.fname().equals(":-") ? (B)TxTerm.unmarshal(s.getPlainArg(1)) : null);        
     }
     /*
     public Clause(String s) {

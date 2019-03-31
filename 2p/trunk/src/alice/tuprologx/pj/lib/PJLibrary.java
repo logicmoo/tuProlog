@@ -162,14 +162,14 @@ public class PJLibrary extends TuLibrary {
      * Creates of a java object - not backtrackable case
      */
     public boolean java_object_3(Term className, Term argl, Term id) {
-        className = className.getTerm();
-        TuStruct arg = (TuStruct) argl.getTerm();
-        id = id.getTerm();
+        className = className.dref();
+        TuStruct arg = (TuStruct) argl.dref();
+        id = id.dref();
         try {
             if (!className.isAtomSymbol()) {
                 return false;
             }
-            String clName = ((TuStruct) className).getName();
+            String clName = ((TuStruct) className).fname();
             // check for array type
             if (clName.endsWith("[]")) {
                 Object[] list = getArrayFromList(arg);
@@ -223,7 +223,7 @@ public class PJLibrary extends TuLibrary {
      * predicate java_object (as second choice, for backtracking)
      */
     public boolean destroy_object_1(Term id) {
-        id = id.getTerm();
+        id = id.dref();
         try {
             if (id.isGround()) {
                 unregisterDynamic((TuStruct) id);
@@ -239,10 +239,10 @@ public class PJLibrary extends TuLibrary {
      * Creates of a java class
      */
     public boolean java_class_4(Term clSource, Term clName, Term clPathes, Term id) {
-        TuStruct classSource = (TuStruct) clSource.getTerm();
-        TuStruct className = (TuStruct) clName.getTerm();
-        TuStruct classPathes = (TuStruct) clPathes.getTerm();
-        id = id.getTerm();
+        TuStruct classSource = (TuStruct) clSource.dref();
+        TuStruct className = (TuStruct) clName.dref();
+        TuStruct classPathes = (TuStruct) clPathes.dref();
+        id = id.dref();
         try {
             String fullClassName = alice.util.Tools.removeApices(className.toString());
 
@@ -308,14 +308,14 @@ public class PJLibrary extends TuLibrary {
      *
      */
     public boolean java_call_3(Term objId, Term method_name, Term idResult) {
-        objId = objId.getTerm();
-        idResult = idResult.getTerm();
-        TuStruct method = (TuStruct) method_name.getTerm();
+        objId = objId.dref();
+        idResult = idResult.dref();
+        TuStruct method = (TuStruct) method_name.dref();
         Object obj = null;
         Signature args = null;
         String methodName = null;
         try {
-            methodName = method.getName();
+            methodName = method.fname();
             // check for accessing field   Obj.Field <- set/get(X)
             //  in that case: objId is '.'(Obj, Field)
 
@@ -324,7 +324,7 @@ public class PJLibrary extends TuLibrary {
                     return false;
                 }
                 TuStruct sel = (TuStruct) objId;
-                if (sel.getName().equals(".") && sel.getArity() == 2 && method.getArity() == 1) {
+                if (sel.fname().equals(".") && sel.getArity() == 2 && method.getArity() == 1) {
                     if (methodName.equals("set"))
                         return java_set(sel.getTerm(0), sel.getTerm(1), method.getTerm(0));
                     else if (methodName.equals("get"))
@@ -356,7 +356,7 @@ public class PJLibrary extends TuLibrary {
                     Class<?>[] newTypes = new Class<?>[args_values.length];
                     //boolean ok = true;
                     for (int i = 0; i < method.getArity(); i++) {
-                        newValues[i] = alice.tuprologx.pj.model.TxTerm.unmarshal(method.getArg(i));
+                        newValues[i] = alice.tuprologx.pj.model.TxTerm.unmarshal(method.getPlainArg(i));
                         newTypes[i] = newValues[i].getClass();
                     }
                     m = lookupMethod(cl, methodName, newTypes, newValues);
@@ -381,9 +381,9 @@ public class PJLibrary extends TuLibrary {
             } else {
                 if (objId.isCompound()) {
                     TuStruct id = (TuStruct) objId;
-                    if (id.getArity() == 1 && id.getName().equals("class")) {
+                    if (id.getArity() == 1 && id.fname().equals("class")) {
                         try {
-                            Class<?> cl = Class.forName(alice.util.Tools.removeApices(id.getArg(0).toString()));
+                            Class<?> cl = Class.forName(alice.util.Tools.removeApices(id.getPlainArg(0).toString()));
                             Method m = cl.getMethod(methodName, args.getTypes());
                             m.setAccessible(true);
                             res = m.invoke(null, args.getValues());
@@ -433,15 +433,15 @@ public class PJLibrary extends TuLibrary {
      */
     private boolean java_set(Term objId, Term fieldTerm, Term what) {
         //System.out.println("SET "+objId+" "+fieldTerm+" "+what);
-        what = what.getTerm();
+        what = what.dref();
         if (!fieldTerm.isAtomSymbol() || what .isVar())
             return false;
-        String fieldName = ((TuStruct) fieldTerm).getName();
+        String fieldName = ((TuStruct) fieldTerm).fname();
         Object obj = null;
         try {
             Class<?> cl = null;
-            if (objId.isCompound() && ((TuStruct) objId).getArity() == 1 && ((TuStruct) objId).getName().equals("class")) {
-                String clName = alice.util.Tools.removeApices(((TuStruct) objId).getArg(0).toString());
+            if (objId.isCompound() && ((TuStruct) objId).getArity() == 1 && ((TuStruct) objId).fname().equals("class")) {
+                String clName = alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString());
                 try {
                     cl = Class.forName(clName);
                 } catch (ClassNotFoundException ex) {
@@ -449,7 +449,7 @@ public class PJLibrary extends TuLibrary {
                     return false;
                 } catch (Exception ex) {
                     getEngine().warn("Static field " + fieldName + " not found in class "
-                            + alice.util.Tools.removeApices(((TuStruct) objId).getArg(0).toString()));
+                            + alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString()));
                     return false;
                 }
             } else {
@@ -511,12 +511,12 @@ public class PJLibrary extends TuLibrary {
         if (!fieldTerm.isAtomSymbol()) {
             return false;
         }
-        String fieldName = ((TuStruct) fieldTerm).getName();
+        String fieldName = ((TuStruct) fieldTerm).fname();
         Object obj = null;
         try {
             Class<?> cl = null;
-            if (objId.isCompound() && ((TuStruct) objId).getArity() == 1 && ((TuStruct) objId).getName().equals("class")) {
-                String clName = alice.util.Tools.removeApices(((TuStruct) objId).getArg(0).toString());
+            if (objId.isCompound() && ((TuStruct) objId).getArity() == 1 && ((TuStruct) objId).fname().equals("class")) {
+                String clName = alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString());
                 try {
                     cl = Class.forName(clName);
                 } catch (ClassNotFoundException ex) {
@@ -524,7 +524,7 @@ public class PJLibrary extends TuLibrary {
                     return false;
                 } catch (Exception ex) {
                     getEngine().warn("Static field " + fieldName + " not found in class "
-                            + alice.util.Tools.removeApices(((TuStruct) objId).getArg(0).toString()));
+                            + alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString()));
                     return false;
                 }
             } else {
@@ -574,9 +574,9 @@ public class PJLibrary extends TuLibrary {
     }
 
     public boolean java_array_set_primitive_3(Term obj_id, Term i, Term what) {
-        TuStruct objId = (TuStruct) obj_id.getTerm();
-        TuNumber index = (TuNumber) i.getTerm();
-        what = what.getTerm();
+        TuStruct objId = (TuStruct) obj_id.dref();
+        TuNumber index = (TuNumber) i.dref();
+        what = what.dref();
         //System.out.println("SET "+objId+" "+fieldTerm+" "+what);
         Object obj = null;
         if (!index.isInteger()) {
@@ -655,9 +655,9 @@ public class PJLibrary extends TuLibrary {
     }
 
     public boolean java_array_get_primitive_3(Term obj_id, Term i, Term what) {
-        TuStruct objId = (TuStruct) obj_id.getTerm();
-        TuNumber index = (TuNumber) i.getTerm();
-        what = what.getTerm();
+        TuStruct objId = (TuStruct) obj_id.dref();
+        TuNumber index = (TuNumber) i.dref();
+        what = what.dref();
         //System.out.println("SET "+objId+" "+fieldTerm+" "+what);
         Object obj = null;
         if (!index.isInteger()) {
@@ -806,10 +806,10 @@ public class PJLibrary extends TuLibrary {
                     values[i] = new java.lang.Float(t.floatValue());
                     types[i] = java.lang.Float.TYPE;
                 }
-            } else if (term .isStruct()) {
+            } else if (term .isTuStruct()) {
                 // argument descriptors
                 TuStruct tc = (TuStruct) term;
-                if (tc.getName().equals("as")) {
+                if (tc.fname().equals("as")) {
                     return parse_as(values, types, i, tc.getTerm(0), tc.getTerm(1));
                 } else {
                     Object obj = currentObjects.get(alice.util.Tools.removeApices(tc.toString()));
@@ -841,8 +841,8 @@ public class PJLibrary extends TuLibrary {
     private boolean parse_as(Object[] values, Class<?>[] types, int i, Term castWhat, Term castTo) {
         try {
             if (!(castWhat .isNumber())) {
-                String castTo_name = alice.util.Tools.removeApices(((TuStruct) castTo).getName());
-                String castWhat_name = alice.util.Tools.removeApices(castWhat.getTerm().toString());
+                String castTo_name = alice.util.Tools.removeApices(((TuStruct) castTo).fname());
+                String castWhat_name = alice.util.Tools.removeApices(castWhat.dref().toString());
                 //System.out.println(castWhat_name+" "+castTo_name);
                 if (castTo_name.equals("java.lang.String") && castWhat_name.equals("true")) {
                     values[i] = "true";
@@ -927,7 +927,7 @@ public class PJLibrary extends TuLibrary {
                 }
             } else {
                 TuNumber num = (TuNumber) castWhat;
-                String castTo_name = ((TuStruct) castTo).getName();
+                String castTo_name = ((TuStruct) castTo).fname();
                 if (castTo_name.equals("byte")) {
                     values[i] = new Byte((byte) num.intValue());
                     types[i] = Byte.TYPE;
@@ -1036,7 +1036,7 @@ public class PJLibrary extends TuLibrary {
                 // object already referenced
                 return false;
             } else {
-                String raw_name = alice.util.Tools.removeApices(id.getTerm().toString());
+                String raw_name = alice.util.Tools.removeApices(id.dref().toString());
                 staticObjects.put(raw_name, obj);
                 staticObjects_inverse.put(obj, id);
                 return true;
@@ -1066,7 +1066,7 @@ public class PJLibrary extends TuLibrary {
                 return (TuStruct) aKey;
             } else {
                 TuStruct id = generateFreshId();
-                staticObjects.put(id.getName(), obj);
+                staticObjects.put(id.fname(), obj);
                 staticObjects_inverse.put(obj, id);
                 return id;
             }
@@ -1150,7 +1150,7 @@ public class PJLibrary extends TuLibrary {
                 return (TuStruct) aKey;
             } else {
                 TuStruct id = generateFreshId();
-                currentObjects.put(id.getName(), obj);
+                currentObjects.put(id.fname(), obj);
                 currentObjects_inverse.put(obj, id);
                 return id;
             }
@@ -1222,10 +1222,10 @@ public class PJLibrary extends TuLibrary {
                     return true;
                 } else {
                     // verify of the id is already used
-                    String raw_name = alice.util.Tools.removeApices(id.getTerm().toString());
+                    String raw_name = alice.util.Tools.removeApices(id.dref().toString());
                     Object linkedobj = currentObjects.get(raw_name);
                     if (linkedobj == null) {
-                        registerDynamic((TuStruct) (id.getTerm()), obj);
+                        registerDynamic((TuStruct) (id.dref()), obj);
                         //log("ground id for a new obj: "+id+" as ref for "+obj);
                         return true;
                     } else {

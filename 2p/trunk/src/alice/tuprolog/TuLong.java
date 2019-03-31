@@ -147,10 +147,10 @@ public class TuLong extends TuNumber {
      */
     @Override
     public boolean isGreater(Term t) {
-        t = t.getTerm();
+        t = t.dref();
         if (t .isNumber()) {
             return value > ((TuNumber) t).longValue();
-        } else if (t .isStruct()) {
+        } else if (t .isTuStruct()) {
             return false;
         } else if (t .isVar()) {
             return true;
@@ -165,7 +165,7 @@ public class TuLong extends TuNumber {
      */
     @Override
     public boolean unify(List<TuVar> vl1, List<TuVar> vl2, Term t, boolean isOccursCheckEnabled) {
-        t = t.getTerm();
+        t = t.dref();
         if (t .isVar()) {
             return t.unify(vl1, vl2, this, isOccursCheckEnabled);
         } else if (t .isNumber() && ((TuNumber) t).isInteger()) {

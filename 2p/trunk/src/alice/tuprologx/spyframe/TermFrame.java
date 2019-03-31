@@ -1,5 +1,6 @@
 package alice.tuprologx.spyframe;
 
+import static alice.tuprolog.TuFactory.*;
 import alice.tuprolog.TuStruct;
 import alice.tuprolog.Term;
 import alice.tuprolog.TuVar;
@@ -33,17 +34,17 @@ public class TermFrame extends JFrame implements ActionListener{
         node.textcolor=node.bordercolor=Color.BLUE;
         if(var.isBound()){
           node.kids=new Node[1];
-          node.kids[0]=makeTreeFrom(var.getTerm());
+          node.kids[0]=makeTreeFrom(var.dref());
         }
       } else if(term instanceof alice.tuprolog.TuNumber){
         node.textcolor=node.bordercolor=Color.MAGENTA;
-      } else if(term .isStruct()){
+      } else if(term .isTuStruct()){
         TuStruct struct=(TuStruct)term;
-        node.text=struct.getName();
+        node.text=struct.fname();
         int n=struct.getArity();
         node.kids=new Node[n];
         for(int i=0; i<n; i++)
-          node.kids[i]=makeTreeFrom(struct.getArg(i));
+          node.kids[i]=makeTreeFrom(struct.getPlainArg(i));
       }
       return node;
     }
@@ -86,9 +87,9 @@ public class TermFrame extends JFrame implements ActionListener{
    */
   public void setTerm(String sterm){
     Term term;
-    try{term=Term.createTerm(sterm);}
+    try{term=createTerm(sterm);}
     catch(Exception ex){
-      term=Term.createTerm("'>illegal prolog term<'");
+      term=createTerm("'>illegal prolog term<'");
     }
     setTerm(term);
   }
@@ -100,7 +101,7 @@ public class TermFrame extends JFrame implements ActionListener{
     if(args.length!=1)
       System.out.println("Pass exactly one prolog term!");
     else{
-      TermFrame tf=new TermFrame(Term.createTerm(args[0]));
+      TermFrame tf=new TermFrame(createTerm(args[0]));
       tf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
   }

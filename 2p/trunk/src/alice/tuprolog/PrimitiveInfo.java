@@ -117,7 +117,7 @@ public class PrimitiveInfo {
      */
     public synchronized boolean evalAsPredicate(TuStruct g) throws Throwable {
         for (int i=0; i<primitive_args.length; i++) {
-            primitive_args[i] = g.getArg(i);
+            primitive_args[i] = g.getPlainArg(i);
         }
         try {
         	//System.out.println("PRIMITIVE INFO evalAsPredicate sto invocando metodo "+method.getName());

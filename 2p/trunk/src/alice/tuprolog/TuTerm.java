@@ -43,7 +43,7 @@ public abstract class TuTerm implements Term {
     @Override
     public int intValue() {
         // TODO Auto-generated method stub
-        if (true) throw new AbstractMethodError("TuTerm.intValue");
+        if (!isInt()) throw new AbstractMethodError("TuTerm.intValue");
         return 0;
     }
     
@@ -75,7 +75,7 @@ public abstract class TuTerm implements Term {
     /**
      * is this term a struct?
      * Was <tt>instanceof Struct</tt> instead. */
-    public abstract boolean isStruct();
+    public abstract boolean isTuStruct();
 
     /**
      * is this term a variable?
@@ -95,7 +95,7 @@ public abstract class TuTerm implements Term {
     public abstract boolean isAtomSymbol();
 
     /** is this term a prolog list? */
-    public abstract boolean isList();
+    public abstract boolean isConsList();
 
     /** is this term a ground term? */
     public abstract boolean isGround();
@@ -139,7 +139,7 @@ public abstract class TuTerm implements Term {
     /**
      * Gets the actual term referred by this Term. if the Term is a bound variable, the method gets the Term linked to the variable
      */
-    public abstract Term getTerm();
+    public abstract Term dref();
 
     /**
      * Unlink variables inside the term
@@ -320,7 +320,7 @@ public abstract class TuTerm implements Term {
      */
     @Deprecated
     public static Term parse(String st) {
-        return Term.createTerm(st);
+        return createTerm(st);
     }
 
     /**
@@ -340,7 +340,7 @@ public abstract class TuTerm implements Term {
      */
     @Deprecated
     public static Term parse(String st, OperatorManager op) {
-        return Term.createTerm(st, op);
+        return createTerm(st, op);
     }
 
     /**

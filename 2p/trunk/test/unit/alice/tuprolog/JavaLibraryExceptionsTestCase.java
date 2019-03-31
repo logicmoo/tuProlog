@@ -24,7 +24,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che java_object(ClassName, ArgList, ObjId) lancia una
@@ -39,7 +39,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che java_object(ClassName, ArgList, ObjId) lancia una
@@ -54,7 +54,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che java_object(ClassName, ArgList, ObjId) lancia una
@@ -69,7 +69,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che java_object_bt(ClassName, ArgList, ObjId) lancia una
@@ -84,7 +84,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che java_object_bt(ClassName, ArgList, ObjId) lancia una
@@ -99,7 +99,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che java_object_bt(ClassName, ArgList, ObjId) lancia una
@@ -114,7 +114,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che java_object_bt(ClassName, ArgList, ObjId) lancia una
@@ -129,7 +129,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che java_class(ClassSourceText, FullClassName, ClassPathList,
@@ -145,7 +145,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 		new File("Counter.java").delete();
 	}
 
@@ -162,7 +162,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 		new File("Counter.java").delete();
 		new File("Counter.class").delete();
 	}
@@ -180,7 +180,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che java_call(ObjId, MethodInfo, ObjIdResult) lancia una
@@ -195,7 +195,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che java_call(ObjId, MethodInfo, ObjIdResult) lancia una
@@ -210,7 +210,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che returns('<-'(ObjId, MethodInfo), ObjIdResult) lancia una
@@ -226,7 +226,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che returns('<-'(ObjId, MethodInfo), ObjIdResult) lancia una
@@ -241,7 +241,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che returns('<-'(ObjId, MethodInfo), ObjIdResult) lancia una
@@ -256,7 +256,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che java_array_set(ObjArrayId, Index, ObjId) lancia una
@@ -271,7 +271,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che java_array_set(ObjArrayId, Index, ObjId) lancia una
@@ -286,7 +286,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che java_array_set(ObjArrayId, Index, ObjId) lancia una
@@ -302,7 +302,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che java_array_get(ObjArrayId, Index, ObjIdResult) lancia una
@@ -317,7 +317,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 	// verifico che java_array_get(ObjArrayId, Index, ObjIdResult) lancia una
@@ -333,7 +333,7 @@ public class JavaLibraryExceptionsTestCase extends TestCase {
 		Term message = info.getTerm("Message");
 		assertFalse(message .isVar());
 		Term stackTrace = info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 	}
 
 }

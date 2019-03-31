@@ -39,7 +39,7 @@ public class EngineManager implements java.io.Serializable {
 		
 		if (goal == null) return false;
 		if (goal .isVar()) 
-			goal = goal.getTerm();
+			goal = goal.dref();
 		
 		EngineRunner er = new EngineRunner(id);
 		er.initialize(vm);

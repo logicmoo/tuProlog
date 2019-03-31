@@ -113,7 +113,7 @@ public class PJLibraryNew extends OOLibrary {
             return false;
         Class<?> clazz = null;
         try {
-             clazz = Class.forName(((TuStruct)classname.getTerm()).getName());
+             clazz = Class.forName(((TuStruct)classname.dref()).fname());
         }
         catch (Throwable ex) {
             return false;
@@ -130,7 +130,7 @@ public class PJLibraryNew extends OOLibrary {
             return false;
         Object o = null;
         try {
-             o = getRegisteredDynamicObject((TuStruct)method.getTerm());
+             o = getRegisteredDynamicObject((TuStruct)method.dref());
         }
         catch (InvalidObjectIdException ex) {
             return false;
@@ -153,7 +153,7 @@ public class PJLibraryNew extends OOLibrary {
             return false;
         Object o = null;
         try {
-             o = getRegisteredDynamicObject((TuStruct)method.getTerm());
+             o = getRegisteredDynamicObject((TuStruct)method.dref());
         }
         catch (InvalidObjectIdException ex) {
             return false;
@@ -168,11 +168,11 @@ public class PJLibraryNew extends OOLibrary {
     }
 
     public boolean java_method_1(Term method) {
-        if (!method.getTerm().isAtomSymbol())
+        if (!method.dref().isAtomSymbol())
             return false;
         Object o = null;
         try {
-             o = getRegisteredDynamicObject((TuStruct)method.getTerm());
+             o = getRegisteredDynamicObject((TuStruct)method.dref());
         }
         catch (InvalidObjectIdException ex) {
             return false;
@@ -185,11 +185,11 @@ public class PJLibraryNew extends OOLibrary {
     }
 
     public boolean is_iterable_1(Term method) {
-        if (!method.getTerm().isAtomSymbol())
+        if (!method.dref().isAtomSymbol())
             return false;
         Object o = null;
         try {
-             o = getRegisteredDynamicObject((TuStruct)method.getTerm());
+             o = getRegisteredDynamicObject((TuStruct)method.dref());
         }
         catch (InvalidObjectIdException ex) {
             return false;
@@ -203,11 +203,11 @@ public class PJLibraryNew extends OOLibrary {
     }
 
     public boolean java_field_1(Term method) {
-        if (!method.getTerm().isAtomSymbol())
+        if (!method.dref().isAtomSymbol())
             return false;
         Object o = null;
         try {
-             o = getRegisteredDynamicObject((TuStruct)method.getTerm());
+             o = getRegisteredDynamicObject((TuStruct)method.dref());
         }
         catch (InvalidObjectIdException ex) {
             return false;
@@ -224,7 +224,7 @@ public class PJLibraryNew extends OOLibrary {
             return false;
         Object o = null;
         try {
-             o = getRegisteredDynamicObject((TuStruct)term.getTerm());
+             o = getRegisteredDynamicObject((TuStruct)term.dref());
         }
         catch (InvalidObjectIdException ex) {
             return false;
@@ -239,19 +239,19 @@ public class PJLibraryNew extends OOLibrary {
     }
     
     public boolean unmarshal_2(Term term, Term unmarshalledTerm) {
-        Object o = alice.tuprologx.pj.model.TxTerm.unmarshal(term.getTerm());
+        Object o = alice.tuprologx.pj.model.TxTerm.unmarshal(term.dref());
         return unify(unmarshalledTerm, registerDynamic(o));
     }
 
     public boolean unmarshal_method_2(Term term, Term unmarshalledTerm) {
-        if (! (term.getTerm() .isStruct()) )
+        if (! (term.dref() .isTuStruct()) )
             return false;
-        TuStruct methodInfo = (TuStruct)term.getTerm();
+        TuStruct methodInfo = (TuStruct)term.dref();
         Term[] terms = new Term[methodInfo.getArity()];
         for (int i = 0 ; i < methodInfo.getArity() ; i ++) {
-            terms[i] = registerDynamic(alice.tuprologx.pj.model.TxTerm.unmarshal(methodInfo.getTerm(i).getTerm()));
+            terms[i] = registerDynamic(alice.tuprologx.pj.model.TxTerm.unmarshal(methodInfo.getTerm(i).dref()));
         }
-        return unify(unmarshalledTerm, new TuStruct(methodInfo.getName(), terms));
+        return unify(unmarshalledTerm, new TuStruct(methodInfo.fname(), terms));
     }
 
     
@@ -261,7 +261,7 @@ public class PJLibraryNew extends OOLibrary {
             return false;
         Object o = null;
         try {
-             o = getRegisteredDynamicObject((TuStruct)receiver.getTerm());
+             o = getRegisteredDynamicObject((TuStruct)receiver.dref());
         }
         catch (InvalidObjectIdException ex) {
             return false;
@@ -269,7 +269,7 @@ public class PJLibraryNew extends OOLibrary {
         if (o == null)
             return false;
         else {
-            String fname = ((TuStruct)name.getTerm()).getName();
+            String fname = ((TuStruct)name.dref()).fname();
             try {
                 return bindDynamicObject(result, o.getClass().getField(fname));
             }
@@ -284,7 +284,7 @@ public class PJLibraryNew extends OOLibrary {
             return false;
         Object o = null;
         try {
-             o = getRegisteredDynamicObject((TuStruct)receiver.getTerm());
+             o = getRegisteredDynamicObject((TuStruct)receiver.dref());
         }
         catch (InvalidObjectIdException ex) {
             return false;
@@ -292,8 +292,8 @@ public class PJLibraryNew extends OOLibrary {
         if (o == null)
             return false;
         else {
-            TuStruct methodInfo = (TuStruct)method.getTerm();
-            String mname = methodInfo.getName();
+            TuStruct methodInfo = (TuStruct)method.dref();
+            String mname = methodInfo.fname();
             Signature sig = parseArg(methodInfo);
             Method m = null;
             try {
@@ -318,10 +318,10 @@ public class PJLibraryNew extends OOLibrary {
 
 
     public boolean java_object_std_3(Term className, Term args, Term id) {
-        if (!className.isAtomSymbol() && !args.isList())
+        if (!className.isAtomSymbol() && !args.isConsList())
             return false;
-        String clazz = ((TuStruct)className.getTerm()).getName();
-        Signature sig = parseArg(getArrayFromList((TuStruct)args.getTerm()));
+        String clazz = ((TuStruct)className.dref()).fname();
+        Signature sig = parseArg(getArrayFromList((TuStruct)args.dref()));
         Constructor<?> c = null;
         Object o = null;
         try {
@@ -335,14 +335,14 @@ public class PJLibraryNew extends OOLibrary {
     }
 
     public boolean java_object_prolog_3(Term className, Term args, Term id) {
-        if (!className.isAtomSymbol() && !args.isList())
+        if (!className.isAtomSymbol() && !args.isConsList())
             return false;
-        Signature sig = parseArg(getArrayFromList((TuStruct)args.getTerm()));
+        Signature sig = parseArg(getArrayFromList((TuStruct)args.dref()));
         assert sig.types.length == 0;
         Class<?> clazz = null;
         Object o = null;
         try {
-            clazz = Class.forName(((TuStruct)className.getTerm()).getName());
+            clazz = Class.forName(((TuStruct)className.dref()).fname());
             o = alice.tuprologx.pj.engine.PJ.newInstance(clazz);
         }
         catch (Exception e2) {
@@ -356,7 +356,7 @@ public class PJLibraryNew extends OOLibrary {
             return false;
         Object o = null;
         try {
-             o = getRegisteredDynamicObject((TuStruct)method.getTerm());
+             o = getRegisteredDynamicObject((TuStruct)method.dref());
         }
         catch (InvalidObjectIdException ex) {
             return false;
@@ -370,13 +370,13 @@ public class PJLibraryNew extends OOLibrary {
             Object res = null;
             Object receiver = null;
             try {
-                receiver = getRegisteredDynamicObject((TuStruct)objId.getTerm());
+                receiver = getRegisteredDynamicObject((TuStruct)objId.dref());
             }
             catch (Exception e) {}
             try {
-                Object[] args = parseArg((TuStruct)method_info.getTerm()).getValues();
-                if (isProlog.isAtomSymbol() && ((TuStruct)isProlog).getName().equals("true")) {
-                    boolean reentrant = isProlog.isAtomSymbol() && ((TuStruct)isReentrant).getName().equals("true");
+                Object[] args = parseArg((TuStruct)method_info.dref()).getValues();
+                if (isProlog.isAtomSymbol() && ((TuStruct)isProlog).fname().equals("true")) {
+                    boolean reentrant = isProlog.isAtomSymbol() && ((TuStruct)isReentrant).fname().equals("true");
                     res = alice.tuprologx.pj.engine.PJ.call(receiver, m, args, reentrant);
                 }
                 else {
@@ -396,29 +396,29 @@ public class PJLibraryNew extends OOLibrary {
 	 */
 	public boolean java_set_3(Term objId, Term fieldTerm, Term what) {
 		//System.out.println("SET "+objId+" "+fieldTerm+" "+what);
-		what = what.getTerm();
+		what = what.dref();
 		if (!fieldTerm.isAtomSymbol() || what .isVar())
 			return false;
-        fieldTerm = fieldTerm.getTerm();
-        objId = objId.getTerm();
-		String fieldName = ((TuStruct) fieldTerm).getName();
+        fieldTerm = fieldTerm.dref();
+        objId = objId.dref();
+		String fieldName = ((TuStruct) fieldTerm).fname();
 		Object obj = null;
 		try {
 			Class<?> cl = null;
 			if (objId.isCompound() &&
-					((TuStruct) objId).getArity() == 1 && ((TuStruct) objId).getName().equals("class")) {
-				String clName = alice.util.Tools.removeApices(((TuStruct) objId).getArg(0).toString());
+					((TuStruct) objId).getArity() == 1 && ((TuStruct) objId).fname().equals("class")) {
+				String clName = alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString());
 				try {
 					cl = Class.forName(clName);
 				} catch (ClassNotFoundException ex) {
 					getEngine().warn("Java class not found: " + clName);
 					return false;
 				} catch (Exception ex) {
-					getEngine().warn("Static field " + fieldName + " not found in class " + alice.util.Tools.removeApices(((TuStruct) objId).getArg(0).toString()));
+					getEngine().warn("Static field " + fieldName + " not found in class " + alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString()));
 					return false;
 				}
 			} else {				
-				obj = getRegisteredDynamicObject((TuStruct)objId.getTerm());
+				obj = getRegisteredDynamicObject((TuStruct)objId.dref());
 				if (obj != null) {
 					cl = obj.getClass();
 				} else {
@@ -443,7 +443,7 @@ public class PJLibraryNew extends OOLibrary {
 				}
 			} 
             else {                    
-                    Object obj2 = getRegisteredDynamicObject((TuStruct)what.getTerm());
+                    Object obj2 = getRegisteredDynamicObject((TuStruct)what.dref());
                     if (obj2 != null) {
                         field.set(obj, obj2);
                     } else {
@@ -467,7 +467,7 @@ public class PJLibraryNew extends OOLibrary {
             return false;
         Object o = null;
         try {
-             o = getRegisteredDynamicObject((TuStruct)obj.getTerm());
+             o = getRegisteredDynamicObject((TuStruct)obj.dref());
         }
         catch (InvalidObjectIdException ex) {
             return false;
@@ -485,7 +485,7 @@ public class PJLibraryNew extends OOLibrary {
             return false;
         Object o = null;
         try {
-             o = getRegisteredDynamicObject((TuStruct)obj.getTerm());
+             o = getRegisteredDynamicObject((TuStruct)obj.dref());
         }
         catch (InvalidObjectIdException ex) {
             return false;
@@ -503,7 +503,7 @@ public class PJLibraryNew extends OOLibrary {
             return false;
         Object o = null;
         try {
-             o = getRegisteredDynamicObject((TuStruct)obj.getTerm());
+             o = getRegisteredDynamicObject((TuStruct)obj.dref());
         }
         catch (InvalidObjectIdException ex) {
             return false;
@@ -524,27 +524,27 @@ public class PJLibraryNew extends OOLibrary {
 		if (!fieldTerm.isAtomSymbol()) {
 			return false;
 		}
-        fieldTerm = fieldTerm.getTerm();
-        objId = objId.getTerm();
+        fieldTerm = fieldTerm.dref();
+        objId = objId.dref();
 
-		String fieldName = ((TuStruct) fieldTerm).getName();
+		String fieldName = ((TuStruct) fieldTerm).fname();
 		Object obj = null;
 		try {
 			Class<?> cl = null;
 			if (objId.isCompound() &&
-					((TuStruct) objId).getArity() == 1 && ((TuStruct) objId).getName().equals("class")) {
-				String clName = alice.util.Tools.removeApices(((TuStruct) objId).getArg(0).toString());
+					((TuStruct) objId).getArity() == 1 && ((TuStruct) objId).fname().equals("class")) {
+				String clName = alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString());
 				try {
 					cl = Class.forName(clName);
 				} catch (ClassNotFoundException ex) {
 					getEngine().warn("Java class not found: " + clName);
 					return false;
 				} catch (Exception ex) {
-					getEngine().warn("Static field " + fieldName + " not found in class " + alice.util.Tools.removeApices(((TuStruct) objId).getArg(0).toString()));
+					getEngine().warn("Static field " + fieldName + " not found in class " + alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString()));
 					return false;
 				}
 			} else {
-				obj = getRegisteredDynamicObject((TuStruct)objId.getTerm());
+				obj = getRegisteredDynamicObject((TuStruct)objId.dref());
 				if (obj == null) {
 					return false;
 				}
@@ -625,7 +625,7 @@ public class PJLibraryNew extends OOLibrary {
 					values[i]=Boolean.FALSE;
 					types[i] = Boolean.TYPE;
 				} else {
-					Object obj = getRegisteredDynamicObject((TuStruct)term.getTerm());
+					Object obj = getRegisteredDynamicObject((TuStruct)term.dref());
 					if (obj == null) {
 						values[i] = name;
 					} else {
@@ -648,13 +648,13 @@ public class PJLibraryNew extends OOLibrary {
 					values[i] = new java.lang.Float(t.floatValue());
 					types[i] = java.lang.Float.TYPE;
 				}
-			} else if (term .isStruct()) {
+			} else if (term .isTuStruct()) {
 				// argument descriptors
 				TuStruct tc = (TuStruct) term;
-				if (tc.getName().equals("as")) {
+				if (tc.fname().equals("as")) {
 					return parse_as(values, types, i, tc.getTerm(0), tc.getTerm(1));
 				} else {
-					Object obj = getRegisteredDynamicObject((TuStruct)tc.getTerm());
+					Object obj = getRegisteredDynamicObject((TuStruct)tc.dref());
 					if (obj == null) {
 						values[i] = alice.util.Tools.removeApices(tc.toString());
 					} else {
@@ -718,8 +718,8 @@ public class PJLibraryNew extends OOLibrary {
     private boolean parse_as(Object[] values, Class<?>[] types, int i, Term castWhat, Term castTo) {
 		try {
 			if (!(castWhat .isNumber())) {
-				String castTo_name = alice.util.Tools.removeApices(((TuStruct) castTo).getName());
-				String castWhat_name = alice.util.Tools.removeApices(castWhat.getTerm().toString());
+				String castTo_name = alice.util.Tools.removeApices(((TuStruct) castTo).fname());
+				String castWhat_name = alice.util.Tools.removeApices(castWhat.dref().toString());
 				//System.out.println(castWhat_name+" "+castTo_name);
 				if (castTo_name.equals("java.lang.String") &&
 						castWhat_name.equals("true")){
@@ -753,7 +753,7 @@ public class PJLibraryNew extends OOLibrary {
 					}
 				}
 				if (!castWhat_name.equals("null")) {
-					Object obj_to_cast = getRegisteredDynamicObject((TuStruct)castWhat.getTerm());
+					Object obj_to_cast = getRegisteredDynamicObject((TuStruct)castWhat.dref());
 					if (obj_to_cast == null) {
 						if (castTo_name.equals("boolean")) {
 							if (castWhat_name.equals("true")) {
@@ -806,7 +806,7 @@ public class PJLibraryNew extends OOLibrary {
 				}
 			} else {
 				TuNumber num = (TuNumber) castWhat;
-				String castTo_name = ((TuStruct) castTo).getName();
+				String castTo_name = ((TuStruct) castTo).fname();
 				if (castTo_name.equals("byte")) {
 					values[i] = new Byte((byte) num.intValue());
 					types[i] = Byte.TYPE;

@@ -22,7 +22,7 @@ public class JavaThrowCatchTestCase extends TestCase {
 		TuStruct message = (TuStruct) info.getTerm("Message");
 		assertTrue(message.isEqual(new TuStruct("Counter")));
 		TuStruct stackTrace = (TuStruct) info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 		TuInt x = (TuInt) info.getTerm("X");
 		assertTrue(x.intValue() == 2);
 		TuInt y = (TuInt) info.getTerm("Y");
@@ -44,7 +44,7 @@ public class JavaThrowCatchTestCase extends TestCase {
 		TuStruct message = (TuStruct) info.getTerm("Message");
 		assertTrue(message.isEqual(new TuStruct("Counter")));
 		TuStruct stackTrace = (TuStruct) info.getTerm("StackTrace");
-		assertTrue(stackTrace.isList());
+		assertTrue(stackTrace.isConsList());
 		TuInt x = (TuInt) info.getTerm("X");
 		assertTrue(x.intValue() == 2);
 	}

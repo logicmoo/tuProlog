@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package alice.tuprolog;
+
 import java.util.*;
 
 /**
@@ -26,32 +27,31 @@ import java.util.*;
  *
  */
 public class ClauseInfo {
-    
+
     /**
-	 * referring clause
-	 */
+     * referring clause
+     */
     private TuStruct clause;
-    
+
     /**
-	 * head of clause
-	 */
+     * head of clause
+     */
     private TuStruct head;
-    
+
     /**
      * body of clause
      */
     private SubGoalTree body;
-    
+
     private TuStruct headCopy;
-    
+
     private SubGoalTree bodyCopy;
-    
+
     /**
-	 * if the clause is part of a theory in a lib (null if not)
-	 */
+     * if the clause is part of a theory in a lib (null if not)
+     */
     String libName;
-    
-    
+
     //usata da Find
     /**
      * building a valid clause with a time stamp = original time stamp + NumVar in clause
@@ -59,18 +59,17 @@ public class ClauseInfo {
     ClauseInfo(TuStruct clause_, String lib) {
         clause = clause_;
         head = extractHead(clause);
-        body = extractBody(clause.getArg(1));
+        body = extractBody(clause.getPlainArg(1));
         libName = lib;
     }
-    
-    
+
     /**
      * Gets a clause from a generic Term
      */
     private TuStruct extractHead(TuStruct clause) {
-        return (TuStruct)clause.getArg(0);
+        return (TuStruct) clause.getPlainArg(0);
     }
-    
+
     /**
      * Gets a clause from a generic Term
      */
@@ -79,21 +78,20 @@ public class ClauseInfo {
         extractBody(r, body);
         return r;
     }
-    
+
     private static void extractBody(SubGoalTree parent, Term body) {
-        while (body .isStruct() && ((TuStruct)body).getName().equals(",")) {
-            Term t = ((TuStruct)body).getArg(0);
-            if (t .isStruct() && ((TuStruct)t).getName().equals(",")) {
-                extractBody(parent.addChild(),t);
+        while (body.isTuStruct() && ((TuStruct) body).fname().equals(",")) {
+            Term t = ((TuStruct) body).getPlainArg(0);
+            if (t.isTuStruct() && ((TuStruct) t).fname().equals(",")) {
+                extractBody(parent.addChild(), t);
             } else {
                 parent.addChild(t);
             }
-            body = ((TuStruct)body).getArg(1);
+            body = ((TuStruct) body).getPlainArg(1);
         }
         parent.addChild(body);
     }
-    
-    
+
     /**
      * Gets the string representation
      * recognizing operators stored by
@@ -101,121 +99,114 @@ public class ClauseInfo {
      */
     public String toString(OperatorManager op) {
         int p;
-        if ((p = op.opPrio(":-","xfx")) >= OperatorManager.OP_LOW) {
-            String st=indentPredicatesAsArgX(clause.getArg(1),op,p);
-            String head = clause.getArg(0).toStringAsArgX(op,p);
+        if ((p = op.opPrio(":-", "xfx")) >= OperatorManager.OP_LOW) {
+            String st = indentPredicatesAsArgX(clause.getPlainArg(1), op, p);
+            String head = clause.getPlainArg(0).toStringAsArgX(op, p);
             if (st.equals("true")) {
-                return head +".\n";
+                return head + ".\n";
             } else {
-                return (head + " :-\n\t" + st +".\n");
+                return (head + " :-\n\t" + st + ".\n");
             }
         }
-        
-        if ((p = op.opPrio(":-","yfx")) >= OperatorManager.OP_LOW) {
-            String st=indentPredicatesAsArgX(clause.getArg(1),op,p);
-            String head = clause.getArg(0).toStringAsArgY(op,p);
+
+        if ((p = op.opPrio(":-", "yfx")) >= OperatorManager.OP_LOW) {
+            String st = indentPredicatesAsArgX(clause.getPlainArg(1), op, p);
+            String head = clause.getPlainArg(0).toStringAsArgY(op, p);
             if (st.equals("true")) {
-                return head +".\n";
+                return head + ".\n";
             } else {
-                return (head + " :-\n\t" + st +".\n");
+                return (head + " :-\n\t" + st + ".\n");
             }
         }
-        
-        if ((p = op.opPrio(":-","xfy")) >= OperatorManager.OP_LOW) {
-            String st=indentPredicatesAsArgY(clause.getArg(1),op,p);
-            String head = clause.getArg(0).toStringAsArgX(op,p);
+
+        if ((p = op.opPrio(":-", "xfy")) >= OperatorManager.OP_LOW) {
+            String st = indentPredicatesAsArgY(clause.getPlainArg(1), op, p);
+            String head = clause.getPlainArg(0).toStringAsArgX(op, p);
             if (st.equals("true")) {
-                return head +".\n";
+                return head + ".\n";
             } else {
-                return (head + " :-\n\t" + st +".\n");
+                return (head + " :-\n\t" + st + ".\n");
             }
         }
         return (clause.toString());
     }
-    
-   
+
     TuStruct getClause() {
         return clause;
     }
-    
-   
+
     TuStruct getHead() {
         return head;
-    }    
-    
-    
+    }
+
     SubGoalTree getBody() {
         return body;
-    }    
-    
+    }
+
     String getLibraryName() {
         return libName;
     }
-    
+
     /**
      * Perform copy for assertion operation
      */
     void performCopy() {
-        AbstractMap<TuVar,TuVar> v = new LinkedHashMap<TuVar,TuVar>();
+        AbstractMap<TuVar, TuVar> v = new LinkedHashMap<TuVar, TuVar>();
         clause = (TuStruct) clause.copy(TuVar.ORIGINAL, v);
-        v = new IdentityHashMap<TuVar,TuVar>();
-        head = (TuStruct)head.copy(TuVar.ORIGINAL,v);
+        v = new IdentityHashMap<TuVar, TuVar>();
+        head = (TuStruct) head.copy(TuVar.ORIGINAL, v);
         body = new SubGoalTree();
-        bodyCopy(body,bodyCopy,v,TuVar.ORIGINAL);
+        bodyCopy(body, bodyCopy, v, TuVar.ORIGINAL);
     }
-    
+
     /**
      * Perform copy for use in current engine's demostration
      * @param idExecCtx Current ExecutionContext id
      */
     void performCopy(int idExecCtx) {
-        IdentityHashMap<TuVar,TuVar> v = new IdentityHashMap<TuVar,TuVar>();
-        headCopy = (TuStruct)head.copy(idExecCtx,v);
+        IdentityHashMap<TuVar, TuVar> v = new IdentityHashMap<TuVar, TuVar>();
+        headCopy = (TuStruct) head.copy(idExecCtx, v);
         bodyCopy = new SubGoalTree();
-        bodyCopy(body,bodyCopy,v,idExecCtx);
+        bodyCopy(body, bodyCopy, v, idExecCtx);
     }
-    
-    private void bodyCopy(SubGoalTree source, SubGoalTree destination, AbstractMap<TuVar,TuVar> map, int id) {
-        for(AbstractSubGoalTree s: source){
+
+    private void bodyCopy(SubGoalTree source, SubGoalTree destination, AbstractMap<TuVar, TuVar> map, int id) {
+        for (AbstractSubGoalTree s : source) {
             if (s.isLeaf()) {
-                SubGoalElement l = (SubGoalElement)s;
-                Term t = l.getValue().copy(id,map);
+                SubGoalElement l = (SubGoalElement) s;
+                Term t = l.getValue().copy(id, map);
                 destination.addChild(t);
             } else {
-                SubGoalTree src  = (SubGoalTree)s; 
+                SubGoalTree src = (SubGoalTree) s;
                 SubGoalTree dest = destination.addChild();
-                bodyCopy(src,dest,map,id);
+                bodyCopy(src, dest, map, id);
             }
         }
     }
-    
-    
+
     TuStruct getHeadCopy() {
         return headCopy;
     }
-    
-    
+
     SubGoalTree getBodyCopy() {
         return bodyCopy;
     }
-    
-    
-    
+
     /**
      * Gets the string representation with default operator representation
      */
     @Override
-	public String toString() {
+    public String toString() {
         // default prio: xfx
-        String st=indentPredicates(clause.getArg(1));
-        return( clause.getArg(0).toString() + " :-\n\t"+st+".\n");
+        String st = indentPredicates(clause.getPlainArg(1));
+        return (clause.getPlainArg(0).toString() + " :-\n\t" + st + ".\n");
     }
-    
+
     static private String indentPredicates(Term t) {
-        if (t .isStruct()) {
-            TuStruct co=(TuStruct)t;
-            if (co.getName().equals(",")){
-                return co.getArg(0).toString()+",\n\t"+indentPredicates(co.getArg(1));
+        if (t.isTuStruct()) {
+            TuStruct co = (TuStruct) t;
+            if (co.fname().equals(",")) {
+                return co.getPlainArg(0).toString() + ",\n\t" + indentPredicates(co.getPlainArg(1));
             } else {
                 return t.toString();
             }
@@ -223,7 +214,7 @@ public class ClauseInfo {
             return t.toString();
         }
     }
-    
+
     /*commented by Roberta Calegari fixed following issue 20 Christian Lemke suggestion
      * static private String indentPredicatesAsArgX(Term t,OperatorManager op,int p) {
         if (t instanceof Struct) {
@@ -253,47 +244,48 @@ public class ClauseInfo {
             return t.toStringAsArgY(op,p);
         }
     }*/
-    
-    static private String indentPredicatesAsArgX(Term t,OperatorManager op,int p) {
-        if (t .isStruct()) {
-            TuStruct co=(TuStruct)t;
-            if (co.getName().equals(",")) {
-               int prio = op.opPrio(",","xfy");
-               StringBuilder sb = new StringBuilder(prio >= p ? "(" : "");
-               sb.append(co.getArg(0).toStringAsArgX(op,prio));
-               sb.append(",\n\t");
-               sb.append(indentPredicatesAsArgY(co.getArg(1),op,prio));
-               if (prio >= p) sb.append(")");
 
-               return sb.toString();
+    static private String indentPredicatesAsArgX(Term t, OperatorManager op, int p) {
+        if (t.isTuStruct()) {
+            TuStruct co = (TuStruct) t;
+            if (co.fname().equals(",")) {
+                int prio = op.opPrio(",", "xfy");
+                StringBuilder sb = new StringBuilder(prio >= p ? "(" : "");
+                sb.append(co.getPlainArg(0).toStringAsArgX(op, prio));
+                sb.append(",\n\t");
+                sb.append(indentPredicatesAsArgY(co.getPlainArg(1), op, prio));
+                if (prio >= p)
+                    sb.append(")");
 
-           } else {
-               return t.toStringAsArgX(op,p);
-           }
-       } else {
-           return t.toStringAsArgX(op,p);
-       }
-    }
+                return sb.toString();
 
-    static private String indentPredicatesAsArgY(Term t,OperatorManager op,int p) {
-        if (t .isStruct()) {
-            TuStruct co=(TuStruct)t;
-            if (co.getName().equals(",")) {
-               int prio = op.opPrio(",","xfy");
-               StringBuilder sb = new StringBuilder(prio > p ? "(" : "");
-               sb.append(co.getArg(0).toStringAsArgX(op,prio));
-               sb.append(",\n\t");
-               sb.append(indentPredicatesAsArgY(co.getArg(1),op,prio));
-               if (prio > p) sb.append(")");
-
-               return sb.toString();
             } else {
-               return t.toStringAsArgY(op,p);
+                return t.toStringAsArgX(op, p);
             }
         } else {
-           return t.toStringAsArgY(op,p);
+            return t.toStringAsArgX(op, p);
         }
     }
-    
-    
+
+    static private String indentPredicatesAsArgY(Term t, OperatorManager op, int p) {
+        if (t.isTuStruct()) {
+            TuStruct co = (TuStruct) t;
+            if (co.fname().equals(",")) {
+                int prio = op.opPrio(",", "xfy");
+                StringBuilder sb = new StringBuilder(prio > p ? "(" : "");
+                sb.append(co.getPlainArg(0).toStringAsArgX(op, prio));
+                sb.append(",\n\t");
+                sb.append(indentPredicatesAsArgY(co.getPlainArg(1), op, prio));
+                if (prio > p)
+                    sb.append(")");
+
+                return sb.toString();
+            } else {
+                return t.toStringAsArgY(op, p);
+            }
+        } else {
+            return t.toStringAsArgY(op, p);
+        }
+    }
+
 }

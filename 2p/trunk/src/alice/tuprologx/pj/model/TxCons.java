@@ -145,14 +145,14 @@ public class TxCons<H extends TxTerm<?>, R extends TxCompound<?>> extends TxComp
             throw new UnsupportedOperationException();
         Vector<TxTerm<?>> termList = new Vector<TxTerm<?>>();
         for (int i=0;i<s.getArity();i++) {       
-            termList.add(TxTerm.unmarshal(s.getArg(i)));
+            termList.add(TxTerm.unmarshal(s.getPlainArg(i)));
         }
         //return (Z)new Cons(s.getName(),termList);
-        return TxCons.<Z>make(s.getName(),termList.toArray(new TxTerm<?>[termList.size()]));
+        return TxCons.<Z>make(s.fname(),termList.toArray(new TxTerm<?>[termList.size()]));
     }
 
     static boolean matches(alice.tuprolog.Term t) {
-        return (!(t instanceof alice.tuprolog.TuVar) && t.isCompound() && !t.isList());
+        return (!(t instanceof alice.tuprolog.TuVar) && t.isCompound() && !t.isConsList());
     }
     
     @Override

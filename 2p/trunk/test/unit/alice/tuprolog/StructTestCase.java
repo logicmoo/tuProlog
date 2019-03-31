@@ -53,24 +53,24 @@ public class StructTestCase extends TestCase {
 			new TuStruct("", new TuInt(1), new TuInt(2));
 			fail();
 		} catch (InvalidTermException expected) {}
-		assertEquals(0, new TuStruct("").getName().length());
+		assertEquals(0, new TuStruct("").fname().length());
 	}
 	
 	public void testEmptyList() {
 		TuStruct list = new TuStruct();
-		assertTrue(list.isList());
+		assertTrue(list.isConsList());
 		assertTrue(list.isEmptyList());
 		assertEquals(0, list.listSize());
-		assertEquals("[]", list.getName());
+		assertEquals("[]", list.fname());
 		assertEquals(0, list.getArity());
 	}
 
 	/** Another correct method of building an empty list */
 	public void testEmptyListAsSquaredStruct() {
 		TuStruct emptyList = new TuStruct("[]");
-		assertTrue(emptyList.isList());
+		assertTrue(emptyList.isConsList());
 		assertTrue(emptyList.isEmptyList());
-		assertEquals("[]", emptyList.getName());
+		assertEquals("[]", emptyList.fname());
 		assertEquals(0, emptyList.getArity());
 		assertEquals(0, emptyList.listSize());
 	}
@@ -78,18 +78,18 @@ public class StructTestCase extends TestCase {
 	/** A wrong method of building an empty list */
 	public void testEmptyListAsDottedStruct() {
 		TuStruct notAnEmptyList = new TuStruct(".");
-		assertFalse(notAnEmptyList.isList());
+		assertFalse(notAnEmptyList.isConsList());
 		assertFalse(notAnEmptyList.isEmptyList());
-		assertEquals(".", notAnEmptyList.getName());
+		assertEquals(".", notAnEmptyList.fname());
 		assertEquals(0, notAnEmptyList.getArity());
 	}
 	
 	/** Use dotted structs to build lists with content */
 	public void testListAsDottedStruct() {
 		TuStruct notAnEmptyList = new TuStruct(".", new TuStruct("a"), new TuStruct(".", new TuStruct("b"), new TuStruct()));
-		assertTrue(notAnEmptyList.isList());
+		assertTrue(notAnEmptyList.isConsList());
 		assertFalse(notAnEmptyList.isEmptyList());
-		assertEquals(".", notAnEmptyList.getName());
+		assertEquals(".", notAnEmptyList.fname());
 		assertEquals(2, notAnEmptyList.getArity());
 	}
 	
@@ -107,7 +107,7 @@ public class StructTestCase extends TestCase {
 		TuStruct list = new TuStruct(new TuStruct("a"),
 				       new TuStruct(new TuStruct("b"),
 				           new TuStruct(new TuStruct("c"), new TuStruct())));
-		assertTrue(list.isList());
+		assertTrue(list.isConsList());
 		assertFalse(list.isEmptyList());
 		assertEquals(3, list.listSize());
 	}
@@ -174,21 +174,21 @@ public class StructTestCase extends TestCase {
 		TuStruct list = new TuStruct(new TuStruct("a"),
 				          new TuStruct(new TuStruct("b"),
 				        	  new TuStruct(new TuStruct("c"), new TuStruct())));
-		emptyList.append(new TuStruct("a"));
-		emptyList.append(new TuStruct("b"));
-		emptyList.append(new TuStruct("c"));
+		emptyList.appendDestructive(new TuStruct("a"));
+		emptyList.appendDestructive(new TuStruct("b"));
+		emptyList.appendDestructive(new TuStruct("c"));
 		assertEquals(list, emptyList);
 		TuStruct tail = new TuStruct(new TuStruct("b"),
                           new TuStruct(new TuStruct("c"), new TuStruct()));
 		assertEquals(tail, emptyList.listTail());
 		
 		emptyList = new TuStruct();
-		emptyList.append(new TuStruct());
+		emptyList.appendDestructive(new TuStruct());
 		assertEquals(new TuStruct(new TuStruct(), new TuStruct()), emptyList);
 		
 		TuStruct anotherList = new TuStruct(new TuStruct("d"),
 				                 new TuStruct(new TuStruct("e"), new TuStruct()));
-		list.append(anotherList);
+		list.appendDestructive(anotherList);
 		assertEquals(anotherList, list.listTail().listTail().listTail().listHead());
 	}
 	
@@ -201,7 +201,7 @@ public class StructTestCase extends TestCase {
 	
 	public void testIsList() {
 		TuStruct notList = new TuStruct(".", new TuStruct("a"), new TuStruct("b"));
-		assertFalse(notList.isList());
+		assertFalse(notList.isConsList());
 	}
 	
 	public void testIsAtomic() {

@@ -125,8 +125,8 @@ public class CUIConsole extends Automaton implements Serializable, OutputListene
         String s = "";
         try {
             for (TuVar v: result.getBindingVars()) {
-                if ( !v.isAnonymous() && v.isBound() && (!(v.getTerm() .isVar()) || (!((TuVar) (v.getTerm())).getName().startsWith("_")))) {
-                    s += v.getName() + " / " + v.getTerm() + "\n";
+                if ( !v.isAnonymous() && v.isBound() && (!(v.dref() .isVar()) || (!((TuVar) (v.dref())).getName().startsWith("_")))) {
+                    s += v.getName() + " / " + v.dref() + "\n";
                 }
             }
             /*Castagna 06/2011*/

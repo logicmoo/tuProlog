@@ -77,7 +77,7 @@ public abstract class TxTerm<X extends TxTerm<?>> {
             return uncheckedCast(TxList.unmarshal((alice.tuprolog.TuStruct) t));
         } else if (TxJavaTerm.matches(t)) {
             //return (Z)JavaTerm.unmarshalObject((alice.tuprolog.Struct)t.getTerm());
-            return uncheckedCast(TxJavaTerm.unmarshalObject((alice.tuprolog.TuStruct) t.getTerm()));
+            return uncheckedCast(TxJavaTerm.unmarshalObject((alice.tuprolog.TuStruct) t.dref()));
         } else if (TxCons.matches(t)) {
             //return (Z)Cons.unmarshal((alice.tuprolog.Struct)t);
             return uncheckedCast(TxCons.unmarshal((alice.tuprolog.TuStruct) t));

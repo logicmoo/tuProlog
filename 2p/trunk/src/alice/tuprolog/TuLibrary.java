@@ -137,8 +137,8 @@ public abstract class TuLibrary implements Serializable, IPrimitives {
     protected Term evalExpression(Term term) throws Throwable {
         if (term == null)
             return null;
-        Term val = term.getTerm();
-        if (val .isStruct()) {
+        Term val = term.dref();
+        if (val .isTuStruct()) {
             TuStruct t = (TuStruct) val;
             if (term != t)
                 if (!t.isPrimitive())

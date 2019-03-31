@@ -17,6 +17,7 @@
  */
 package alice.tuprolog.lib;
 
+import static alice.tuprolog.TuFactory.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -225,15 +226,15 @@ public class OOLibrary extends TuLibrary {
      * @throws TuJavaException
      */
     public boolean new_object_3(Term className, Term argl, Term id) throws TuJavaException {
-        className = className.getTerm();
-        TuStruct arg = (TuStruct) argl.getTerm();
-        id = id.getTerm();
+        className = className.dref();
+        TuStruct arg = (TuStruct) argl.dref();
+        id = id.dref();
         try {
             if (!className.isAtomSymbol()) {
                 throw new TuJavaException(new ClassNotFoundException(
                         "Java class not found: " + className));
             }
-            String clName = ((TuStruct) className).getName();
+            String clName = ((TuStruct) className).fname();
             // check for array type
             if (clName.endsWith("[]")) {
                 Object[] list = getArrayFromList(arg);
@@ -332,7 +333,7 @@ public class OOLibrary extends TuLibrary {
 		    				myLambdaInstance=(T) m.invoke(myLambdaFactory);
 		    		}
 		    		System.out.println("arrivo step 6");
-		    		id = id.getTerm();
+		    		id = id.dref();
 		    		if (bindDynamicObject(id, myLambdaInstance))
 		    			return true;
 		    		else
@@ -374,7 +375,7 @@ public class OOLibrary extends TuLibrary {
      * @throws TuJavaException
      */
     public boolean destroy_object_1(Term id) throws TuJavaException {
-        id = id.getTerm();
+        id = id.dref();
         try {
             if (id.isGround()) {
                 unregisterDynamic((TuStruct) id);
@@ -404,10 +405,10 @@ public class OOLibrary extends TuLibrary {
      * @throws TuJavaException
      */
 	public boolean new_class_4(Term clSource, Term clName, Term clPathes,Term id) throws TuJavaException {
-		TuStruct classSource = (TuStruct) clSource.getTerm();
-		TuStruct className = (TuStruct) clName.getTerm();
-		TuStruct classPathes = (TuStruct) clPathes.getTerm();
-		id = id.getTerm();
+		TuStruct classSource = (TuStruct) clSource.dref();
+		TuStruct className = (TuStruct) clName.dref();
+		TuStruct classPathes = (TuStruct) clPathes.dref();
+		id = id.dref();
 		try {
             String fullClassName = alice.util.Tools.removeApices(className.toString());
 
@@ -496,21 +497,21 @@ public class OOLibrary extends TuLibrary {
 	 */
 	public boolean java_call_3(Term objId, Term method_name, Term idResult)
 			throws TuJavaException {
-		objId = objId.getTerm();
-		idResult = idResult.getTerm();
-		TuStruct method = (TuStruct) method_name.getTerm();
+		objId = objId.dref();
+		idResult = idResult.dref();
+		TuStruct method = (TuStruct) method_name.dref();
 		Object obj = null;
 		Signature args = null;
 		String methodName = null;
 		try {
-			methodName = method.getName();
+			methodName = method.fname();
 			if (!objId.isAtomSymbol()) {
 				if (objId .isVar()) {
 					throw new TuJavaException(new IllegalArgumentException(objId
 							.toString()));
 				}
 				TuStruct sel = (TuStruct) objId;
-				if (sel.getName().equals(".") && sel.getArity() == 2
+				if (sel.fname().equals(".") && sel.getArity() == 2
 						&& method.getArity() == 1) {
 					if (methodName.equals("set")) {
 						return java_set(sel.getTerm(0), sel.getTerm(1), method
@@ -553,10 +554,10 @@ public class OOLibrary extends TuLibrary {
 				if (objId.isCompound()) {
 					TuStruct id = (TuStruct) objId;
 
-					if (id.getArity() == 1 && id.getName().equals("class")) {
+					if (id.getArity() == 1 && id.fname().equals("class")) {
 						try {
 							String clName = alice.util.Tools
-									.removeApices(id.getArg(0).toString());
+									.removeApices(id.getPlainArg(0).toString());
 							Class<?> cl = Class.forName(clName, true, dynamicLoader);
 							
 							Method m = InspectionUtils.searchForMethod(cl, methodName, args.getTypes());
@@ -621,8 +622,8 @@ public class OOLibrary extends TuLibrary {
     public boolean set_classpath_1(Term paths) throws TuJavaException
     {
     	try {
-    		paths = paths.getTerm();
-        	if(!paths.isList())
+    		paths = paths.dref();
+        	if(!paths.isConsList())
         		throw new IllegalArgumentException();
         	String[] listOfPaths = getStringArrayFromStruct((TuStruct) paths);
         	dynamicLoader.removeAllURLs();
@@ -650,7 +651,7 @@ public class OOLibrary extends TuLibrary {
 	public boolean get_classpath_1(Term paths) throws TuJavaException
     {
     	try {
-    		paths = paths.getTerm();
+    		paths = paths.dref();
     		if(!(paths .isVar()))
     			throw new IllegalArgumentException();
     		URL[] urls = dynamicLoader.getURLs();
@@ -670,7 +671,7 @@ public class OOLibrary extends TuLibrary {
         	}
         	else
         		stringURLs = "[]";
-        	pathTerm = Term.createTerm(stringURLs);
+        	pathTerm = createTerm(stringURLs);
         	return unify(paths, pathTerm);
     	}catch(IllegalArgumentException e)
         {
@@ -686,19 +687,19 @@ public class OOLibrary extends TuLibrary {
      * set the field value of an object
      */
     private boolean java_set(Term objId, Term fieldTerm, Term what) {
-        what = what.getTerm();
+        what = what.dref();
         if (!fieldTerm.isAtomSymbol() || what .isVar())
             return false;
-        String fieldName = ((TuStruct) fieldTerm).getName();
+        String fieldName = ((TuStruct) fieldTerm).fname();
         Object obj = null;
         try {
             Class<?> cl = null;
-            if(objId.isCompound() && ((TuStruct) objId).getName().equals("class"))
+            if(objId.isCompound() && ((TuStruct) objId).fname().equals("class"))
             {
             	String clName = null;
             	// Case: class(className)
             	if(((TuStruct) objId).getArity() == 1)         	
-            		 clName = alice.util.Tools.removeApices(((TuStruct) objId).getArg(0).toString());
+            		 clName = alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString());
             	if(clName != null)
             	{
             		try {
@@ -713,7 +714,7 @@ public class OOLibrary extends TuLibrary {
                                         + " not found in class "
                                         + alice.util.Tools
                                                 .removeApices(((TuStruct) objId)
-                                                        .getArg(0).toString()));
+                                                        .getPlainArg(0).toString()));
                         return false;
                     }
             	}
@@ -772,15 +773,15 @@ public class OOLibrary extends TuLibrary {
         if (!fieldTerm.isAtomSymbol()) {
             return false;
         }
-        String fieldName = ((TuStruct) fieldTerm).getName();
+        String fieldName = ((TuStruct) fieldTerm).fname();
         Object obj = null;
         try {
             Class<?> cl = null;
-            if(objId.isCompound() && ((TuStruct) objId).getName().equals("class"))
+            if(objId.isCompound() && ((TuStruct) objId).fname().equals("class"))
             {
             	String clName = null;
             	if(((TuStruct) objId).getArity() == 1)         	
-            		 clName = alice.util.Tools.removeApices(((TuStruct) objId).getArg(0).toString());
+            		 clName = alice.util.Tools.removeApices(((TuStruct) objId).getPlainArg(0).toString());
             	if(clName != null)
             	{
             		try {
@@ -795,7 +796,7 @@ public class OOLibrary extends TuLibrary {
                                         + " not found in class "
                                         + alice.util.Tools
                                                 .removeApices(((TuStruct) objId)
-                                                        .getArg(0).toString()));
+                                                        .getPlainArg(0).toString()));
                         return false;
                     }
             	}
@@ -842,9 +843,9 @@ public class OOLibrary extends TuLibrary {
     
     public boolean java_array_set_primitive_3(Term obj_id, Term i, Term what)
             throws TuJavaException {
-        TuStruct objId = (TuStruct) obj_id.getTerm();
-        TuNumber index = (TuNumber) i.getTerm();
-        what = what.getTerm();
+        TuStruct objId = (TuStruct) obj_id.dref();
+        TuNumber index = (TuNumber) i.dref();
+        what = what.dref();
         Object obj = null;
         if (!index.isInteger()) {
             throw new TuJavaException(new IllegalArgumentException(index
@@ -940,9 +941,9 @@ public class OOLibrary extends TuLibrary {
      * @throws TuJavaException
      */
     public boolean java_array_get_primitive_3(Term obj_id, Term i, Term what) throws TuJavaException {
-        TuStruct objId = (TuStruct) obj_id.getTerm();
-        TuNumber index = (TuNumber) i.getTerm();
-        what = what.getTerm();
+        TuStruct objId = (TuStruct) obj_id.dref();
+        TuNumber index = (TuNumber) i.dref();
+        what = what.dref();
         Object obj = null;
         if (!index.isInteger()) {
             throw new TuJavaException(new IllegalArgumentException(index.toString()));
@@ -1176,10 +1177,10 @@ public class OOLibrary extends TuLibrary {
                     values[i] = new java.lang.Float(t.floatValue());
                     types[i] = java.lang.Float.TYPE;
                 }
-            } else if (term .isStruct()) {
+            } else if (term .isTuStruct()) {
                 // argument descriptors
                 TuStruct tc = (TuStruct) term;
-                if (tc.getName().equals("as")) {
+                if (tc.fname().equals("as")) {
                     return parse_as(values, types, i, tc.getTerm(0), tc
                             .getTerm(1));
                 } else {
@@ -1216,9 +1217,9 @@ public class OOLibrary extends TuLibrary {
         try {
             if (!(castWhat .isNumber())) {
                 String castTo_name = alice.util.Tools
-                        .removeApices(((TuStruct) castTo).getName());
+                        .removeApices(((TuStruct) castTo).fname());
                 String castWhat_name = alice.util.Tools.removeApices(castWhat
-                        .getTerm().toString());
+                        .dref().toString());
                 // System.out.println(castWhat_name+" "+castTo_name);
                 if (castTo_name.equals("java.lang.String")
                         && castWhat_name.equals("true")) {
@@ -1309,7 +1310,7 @@ public class OOLibrary extends TuLibrary {
                 }
             } else {
                 TuNumber num = (TuNumber) castWhat;
-                String castTo_name = ((TuStruct) castTo).getName();
+                String castTo_name = ((TuStruct) castTo).fname();
                 if (castTo_name.equals("byte")) {
                     values[i] = new Byte((byte) num.intValue());
                     types[i] = Byte.TYPE;
@@ -1423,7 +1424,7 @@ public class OOLibrary extends TuLibrary {
                 // object already referenced
                 return false;
             } else {
-                String raw_name = alice.util.Tools.removeApices(id.getTerm()
+                String raw_name = alice.util.Tools.removeApices(id.dref()
                         .toString());
                 staticObjects.put(raw_name, obj);
                 staticObjects_inverse.put(obj, id);
@@ -1447,7 +1448,7 @@ public class OOLibrary extends TuLibrary {
      */
     public boolean register_1(Term id) throws TuJavaException
     {
-    	id = id.getTerm();
+    	id = id.dref();
     	Object obj =  null; 
     	try
         {
@@ -1474,7 +1475,7 @@ public class OOLibrary extends TuLibrary {
      */
     public boolean unregister_1(Term id) throws TuJavaException
     {
-    	id = id.getTerm(); 
+    	id = id.dref(); 
     	try
         {
         	return unregister((TuStruct)id);
@@ -1505,7 +1506,7 @@ public class OOLibrary extends TuLibrary {
                 return (TuStruct) aKey;
             } else {
                 TuStruct id = generateFreshId();
-                staticObjects.put(id.getName(), obj);
+                staticObjects.put(id.fname(), obj);
                 staticObjects_inverse.put(obj, id);
                 return id;
             }
@@ -1596,7 +1597,7 @@ public class OOLibrary extends TuLibrary {
                 return (TuStruct) aKey;
             } else {
                 TuStruct id = generateFreshId();
-                currentObjects.put(id.getName(), obj);
+                currentObjects.put(id.fname(), obj);
                 currentObjects_inverse.put(obj, id);
                 return id;
             }
@@ -1667,10 +1668,10 @@ public class OOLibrary extends TuLibrary {
                 } else {
                     // verify of the id is already used
                     String raw_name = alice.util.Tools.removeApices(id
-                            .getTerm().toString());
+                            .dref().toString());
                     Object linkedobj = currentObjects.get(raw_name);
                     if (linkedobj == null) {
-                        registerDynamic((TuStruct) (id.getTerm()), obj);
+                        registerDynamic((TuStruct) (id.dref()), obj);
                         // log("ground id for a new obj: "+id+" as ref for "+obj);
                         return true;
                     } else {

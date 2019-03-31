@@ -51,7 +51,7 @@ public abstract interface Term extends Serializable {
     /**
      * is this term a struct?
      * Was <tt>instanceof Struct</tt> instead. */
-    public abstract boolean isStruct();
+    public abstract boolean isTuStruct();
 
     /**
      * is this term a variable?
@@ -71,7 +71,7 @@ public abstract interface Term extends Serializable {
     public abstract boolean isAtomSymbol();
 
     /** is this term a prolog list? */
-    public abstract boolean isList();
+    public abstract boolean isConsList();
 
     /** is this term a ground term? */
     public abstract boolean isGround();
@@ -104,7 +104,7 @@ public abstract interface Term extends Serializable {
     /**
      * Gets the actual term referred by this Term. if the Term is a bound variable, the method gets the Term linked to the variable
      */
-    public abstract Term getTerm();
+    public abstract Term dref();
 
     /**
      * Unlink variables inside the term
@@ -208,51 +208,6 @@ public abstract interface Term extends Serializable {
      */
     abstract boolean unify(List<TuVar> varsUnifiedArg1, List<TuVar> varsUnifiedArg2, Term t);
 
-    /**
-     * Static service to create a Term from a string.
-     * @param st the string representation of the term
-     * @return the term represented by the string
-     * @throws InvalidTermException if the string does not represent a valid term
-     */
-    public static Term createTerm(String st) {
-        return TuParser.parseSingleTerm(st);
-    }
-
-    /**
-     * @deprecated Use {@link Term#createTerm(String)} instead.
-     */
-    @Deprecated
-    public static Term parse(String st) {
-        return Term.createTerm(st);
-    }
-
-    /**
-     * Static service to create a Term from a string, providing an
-     * external operator manager.
-     * @param st the string representation of the term
-     * @param op the operator manager used to build the term
-     * @return the term represented by the string
-     * @throws InvalidTermException if the string does not represent a valid term
-     */
-    public static Term createTerm(String st, OperatorManager op) {
-        return TuParser.parseSingleTerm(st, op);
-    }
-
-    /**
-     * @deprecated Use {@link Term#createTerm(String, OperatorManager)} instead.
-     */
-    @Deprecated
-    public static Term parse(String st, OperatorManager op) {
-        return Term.createTerm(st, op);
-    }
-
-    /**
-     * Gets an iterator providing
-     * a term stream from a source text
-     */
-    public static java.util.Iterator<Term> getIterator(String text) {
-        return new TuParser(text).iterator();
-    }
 
     // term representation
 

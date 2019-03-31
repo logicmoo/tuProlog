@@ -182,16 +182,16 @@ public class TxJavaTerm<O> extends TxCompound<TxJavaTerm<O>> {
 //        catch (Exception e) {
 //            return false;
 //        }
-        return (t instanceof TermifiableStruct<?>) || ((t.getTerm() instanceof alice.tuprolog.TuStruct) && hashtable.containsKey(((alice.tuprolog.TuStruct)t.getTerm()).getName()));
+        return (t instanceof TermifiableStruct<?>) || ((t.dref() instanceof alice.tuprolog.TuStruct) && hashtable.containsKey(((alice.tuprolog.TuStruct)t.dref()).fname()));
     }
     
     static <Z> TxJavaTerm<Z> unmarshalObject(alice.tuprolog.TuStruct s) {
         if (!matches(s))
             throw new UnsupportedOperationException();
-        Class<?> termKlass = hashtable.get(s.getName());
+        Class<?> termKlass = hashtable.get(s.fname());
         Vector<TxTerm<?>> terms = new Vector<TxTerm<?>>();
         for (int i = 0; i < s.getArity() ; i ++) {
-            terms.add(TxTerm.unmarshal(s.getArg(i)));
+            terms.add(TxTerm.unmarshal(s.getPlainArg(i)));
         }
         return new TxJavaTerm<Z>(termKlass, terms);
     }

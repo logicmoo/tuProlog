@@ -47,8 +47,8 @@ public class StateGoalSelection extends TuState {
                 e.currentContext = e.currentContext.fatherCtx;
             } else {
                 // Caso di individuazione curGoal
-                Term goal_app = curGoal.getTerm();
-                if (!(goal_app .isStruct())) {
+                Term goal_app = curGoal.dref();
+                if (!(goal_app .isTuStruct())) {
                     e.nextState = c.END_FALSE;
                     return;
                 }

@@ -8,6 +8,7 @@ import java.util.List;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import javax.swing.*;
+import static alice.tuprolog.TuFactory.*;
 
 /** GUI-Window for tracing the solving process of a prolog goal.
  * This Frame runs its own prolog process and is its only SpyListener.
@@ -42,9 +43,9 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
       for(int i=0; i<levels; i++){
         ExecutionContext ec=eclist.get(i);
         Term c=ec.getClause();
-        if(c .isStruct()){
+        if(c .isTuStruct()){
           TuStruct s=(TuStruct)c;
-          String name=s.getName();
+          String name=s.fname();
           ArrayList<Term> sub=new ArrayList<Term>();
           for(AbstractSubGoalTree sgt: ec.getSubGoalStore().getSubGoals())
           {
@@ -64,7 +65,7 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
         	  }
           }
           if(":-".equals(name))
-            sub.add(0, i+1<levels?eclist.get(i+1).getCurrentGoal():s.getArg(0));
+            sub.add(0, i+1<levels?eclist.get(i+1).getCurrentGoal():s.getPlainArg(0));
           else if(",".equals(name)) name=" ";//don't want to build the ,-tree
           else name=null;//indicates that we have a normal compound
           int pos=sub.indexOf(ec.getCurrentGoal());
@@ -223,7 +224,7 @@ public class SpyFrame extends JFrame implements ActionListener, SpyListener{
    */
   public static void main(String[] args) throws Exception{
     TuTheory theory=new TuTheory(new FileInputStream(args[0]));
-    Term goal=Term.createTerm(args[1]);
+    Term goal=createTerm(args[1]);
     System.out.println("goal:"+goal);
     System.out.println("in given theory\n---------------\n"+theory);
     SpyFrame tf=new SpyFrame(theory, goal);

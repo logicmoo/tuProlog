@@ -46,7 +46,7 @@ public class BasicLibrary extends TuLibrary {
      * @throws TuPrologError
      */
     public boolean set_theory_1(Term th) throws TuPrologError {
-        th = th.getTerm();
+        th = th.dref();
         if (th .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (!th.isAtomSymbol()) {
@@ -54,7 +54,7 @@ public class BasicLibrary extends TuLibrary {
         }
         try {
             TuStruct theory = (TuStruct) th;
-            getEngine().setTheory(new TuTheory(theory.getName()));
+            getEngine().setTheory(new TuTheory(theory.fname()));
             return true;
         } catch (InvalidTheoryException ex) {
 			throw TuPrologError.syntax_error(engine.getEngineManager(), ex.clause, ex.line, ex.pos, new TuStruct(ex.getMessage()));
@@ -67,7 +67,7 @@ public class BasicLibrary extends TuLibrary {
      * @throws TuPrologError
      */
     public boolean add_theory_1(Term th) throws TuPrologError {
-        th = th.getTerm();
+        th = th.dref();
         if (th .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (!th.isAtomSymbol()) {
@@ -75,8 +75,8 @@ public class BasicLibrary extends TuLibrary {
                     th);
         }
         try {
-            TuStruct theory = (TuStruct) th.getTerm();
-            getEngine().addTheory(new TuTheory(theory.getName()));
+            TuStruct theory = (TuStruct) th.dref();
+            getEngine().addTheory(new TuTheory(theory.fname()));
             return true;
         } catch (InvalidTheoryException ex) {
         	throw TuPrologError.syntax_error(engine.getEngineManager(), ex.clause, ex.line, ex.pos, new TuStruct(ex.getMessage()));
@@ -85,7 +85,7 @@ public class BasicLibrary extends TuLibrary {
 
     /** gets current theory text */
     public boolean get_theory_1(Term arg) {
-        arg = arg.getTerm();
+        arg = arg.dref();
         try {
             Term theory = new TuStruct(getEngine().getTheory().toString());
             return (unify(arg, theory));
@@ -104,8 +104,8 @@ public class BasicLibrary extends TuLibrary {
      * @return true if the library has been succesfully loaded.
      */
     public boolean load_library_from_theory_2(Term th, Term libName) {
-        TuStruct theory = (TuStruct) th.getTerm();
-        TuStruct libN = (TuStruct) libName.getTerm();
+        TuStruct theory = (TuStruct) th.dref();
+        TuStruct libN = (TuStruct) libName.dref();
         try {
             if (!theory.isAtomSymbol()) {
                 return false;
@@ -113,8 +113,8 @@ public class BasicLibrary extends TuLibrary {
             if (!libN.isAtomSymbol()) {
                 return false;
             }
-            TuTheory t = new TuTheory(theory.getName());
-            TheoryLibrary thlib = new TheoryLibrary(libN.getName(), t);
+            TuTheory t = new TuTheory(theory.fname());
+            TheoryLibrary thlib = new TheoryLibrary(libN.fname(), t);
             getEngine().loadLibrary(thlib);
             return true;
         } catch (Exception ex) {
@@ -123,7 +123,7 @@ public class BasicLibrary extends TuLibrary {
     }
 
     public boolean get_operators_list_1(Term argument) {
-        Term arg = argument.getTerm();
+        Term arg = argument.dref();
         TuStruct list = new TuStruct();
         java.util.Iterator<TuOperator> it = getEngine().getCurrentOperatorList().iterator();
         while (it.hasNext()) {
@@ -140,7 +140,7 @@ public class BasicLibrary extends TuLibrary {
      * @throws TuPrologError
      */
     public boolean agent_1(Term th) throws TuPrologError {
-        th = th.getTerm();
+        th = th.dref();
         if (th .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (!(th.isAtomSymbol()))
@@ -162,8 +162,8 @@ public class BasicLibrary extends TuLibrary {
      * @throws TuPrologError
      */
     public boolean agent_2(Term th, Term g) throws TuPrologError {
-        th = th.getTerm();
-        g = g.getTerm();
+        th = th.dref();
+        g = g.dref();
         if (th .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (g .isVar())
@@ -171,7 +171,7 @@ public class BasicLibrary extends TuLibrary {
         if (!(th.isAtomSymbol()))
             throw TuPrologError.type_error(engine.getEngineManager(), 1, "atom",
                     th);
-        if (!(g .isStruct()))
+        if (!(g .isTuStruct()))
             throw TuPrologError.type_error(engine.getEngineManager(), 2,
                     "struct", g);
         TuStruct theory = (TuStruct) th;
@@ -221,60 +221,60 @@ public class BasicLibrary extends TuLibrary {
     //
 
     public boolean constant_1(Term t) {
-        t = t.getTerm();
+        t = t.dref();
         return (t.isAtomic());
     }
 
     public boolean number_1(Term t) {
-        return (t.getTerm() .isNumber());
+        return (t.dref() .isNumber());
     }
 
     public boolean integer_1(Term t) {
-        if (!(t.getTerm()  .isNumber()))
+        if (!(t.dref()  .isNumber()))
             return false;
-        alice.tuprolog.TuNumber n = (alice.tuprolog.TuNumber) t.getTerm();
+        alice.tuprolog.TuNumber n = (alice.tuprolog.TuNumber) t.dref();
         return (n.isInteger());
     }
 
     public boolean float_1(Term t) {
         if (!(t .isNumber()))
             return false;
-        alice.tuprolog.TuNumber n = (alice.tuprolog.TuNumber) t.getTerm();
+        alice.tuprolog.TuNumber n = (alice.tuprolog.TuNumber) t.dref();
         return (n.isReal());
     }
 
     public boolean atom_1(Term t) {
-        t = t.getTerm();
+        t = t.dref();
         return (t.isAtomSymbol());
     }
 
     public boolean compound_1(Term t) {
-        t = t.getTerm();
+        t = t.dref();
         return t.isCompound();
     }
 
     public boolean list_1(Term t) {
-        t = t.getTerm();
-        return (t.isList());
+        t = t.dref();
+        return (t.isConsList());
     }
 
     public boolean var_1(Term t) {
-        t = t.getTerm();
+        t = t.dref();
         return (t .isVar());
     }
 
     public boolean nonvar_1(Term t) {
-        t = t.getTerm();
+        t = t.dref();
         return !(t .isVar());
     }
 
     public boolean atomic_1(Term t) {
-        t = t.getTerm();
+        t = t.dref();
         return t.isAtomic();
     }
 
     public boolean ground_1(Term t) {
-        t = t.getTerm();
+        t = t.dref();
         return (t.isGround());
     }
 
@@ -294,9 +294,9 @@ public class BasicLibrary extends TuLibrary {
 
     public boolean expression_equality_2(Term arg0, Term arg1)
             throws TuPrologError {
-        if (arg0.getTerm() .isVar())
+        if (arg0.dref() .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (arg1.getTerm() .isVar())
+        if (arg1.dref() .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
         Term val0 = null;
         Term val1 = null;
@@ -312,10 +312,10 @@ public class BasicLibrary extends TuLibrary {
         }
         if (val0 == null || !(val0 .isNumber()))
             throw TuPrologError.type_error(engine.getEngineManager(), 1,
-                    "evaluable", arg0.getTerm());
+                    "evaluable", arg0.dref());
         if (val1 == null || !(val1 .isNumber()))
             throw TuPrologError.type_error(engine.getEngineManager(), 2,
-                    "evaluable", arg1.getTerm());
+                    "evaluable", arg1.dref());
         alice.tuprolog.TuNumber val0n = (alice.tuprolog.TuNumber) val0;
         alice.tuprolog.TuNumber val1n = (alice.tuprolog.TuNumber) val1;
         if (val0n.isInteger() && val1n.isInteger()) {
@@ -330,9 +330,9 @@ public class BasicLibrary extends TuLibrary {
 
     public boolean expression_greater_than_2(Term arg0, Term arg1)
             throws TuPrologError {
-        if (arg0.getTerm() .isVar())
+        if (arg0.dref() .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (arg1.getTerm() .isVar())
+        if (arg1.dref() .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
         Term val0 = null;
         Term val1 = null;
@@ -348,19 +348,19 @@ public class BasicLibrary extends TuLibrary {
         }
         if (val0 == null || !(val0 .isNumber()))
             throw TuPrologError.type_error(engine.getEngineManager(), 1,
-                    "evaluable", arg0.getTerm());
+                    "evaluable", arg0.dref());
         if (val1 == null || !(val1 .isNumber()))
             throw TuPrologError.type_error(engine.getEngineManager(), 2,
-                    "evaluable", arg1.getTerm());
+                    "evaluable", arg1.dref());
         return expression_greater_than((alice.tuprolog.TuNumber) val0,
                 (alice.tuprolog.TuNumber) val1);
     }
 
     public boolean expression_less_or_equal_than_2(Term arg0, Term arg1)
             throws TuPrologError {
-        if (arg0.getTerm() .isVar())
+        if (arg0.dref() .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (arg1.getTerm() .isVar())
+        if (arg1.dref() .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
         Term val0 = null;
         Term val1 = null;
@@ -376,10 +376,10 @@ public class BasicLibrary extends TuLibrary {
         }
         if (val0 == null || !(val0 .isNumber()))
             throw TuPrologError.type_error(engine.getEngineManager(), 1,
-                    "evaluable", arg0.getTerm());
+                    "evaluable", arg0.dref());
         if (val1 == null || !(val1 .isNumber()))
             throw TuPrologError.type_error(engine.getEngineManager(), 2,
-                    "evaluable", arg1.getTerm());
+                    "evaluable", arg1.dref());
         return !expression_greater_than((alice.tuprolog.TuNumber) val0,
                 (alice.tuprolog.TuNumber) val1);
     }
@@ -395,9 +395,9 @@ public class BasicLibrary extends TuLibrary {
 
     public boolean expression_less_than_2(Term arg0, Term arg1)
             throws TuPrologError {
-        if (arg0.getTerm() .isVar())
+        if (arg0.dref() .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (arg1.getTerm() .isVar())
+        if (arg1.dref() .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
         Term val0 = null;
         Term val1 = null;
@@ -413,19 +413,19 @@ public class BasicLibrary extends TuLibrary {
         }
         if (val0 == null || !(val0 .isNumber()))
             throw TuPrologError.type_error(engine.getEngineManager(), 1,
-                    "evaluable", arg0.getTerm());
+                    "evaluable", arg0.dref());
         if (val1 == null || !(val1 .isNumber()))
             throw TuPrologError.type_error(engine.getEngineManager(), 2,
-                    "evaluable", arg1.getTerm());
+                    "evaluable", arg1.dref());
         return expression_less_than((alice.tuprolog.TuNumber) val0,
                 (alice.tuprolog.TuNumber) val1);
     }
 
     public boolean expression_greater_or_equal_than_2(Term arg0, Term arg1)
             throws TuPrologError {
-        if (arg0.getTerm() .isVar())
+        if (arg0.dref() .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (arg1.getTerm() .isVar())
+        if (arg1.dref() .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
         Term val0 = null;
         Term val1 = null;
@@ -441,10 +441,10 @@ public class BasicLibrary extends TuLibrary {
         }
         if (val0 == null || !(val0 .isNumber()))
             throw TuPrologError.type_error(engine.getEngineManager(), 1,
-                    "evaluable", arg0.getTerm());
+                    "evaluable", arg0.dref());
         if (val1 == null || !(val1 .isNumber()))
             throw TuPrologError.type_error(engine.getEngineManager(), 2,
-                    "evaluable", arg1.getTerm());
+                    "evaluable", arg1.dref());
         return !expression_less_than((alice.tuprolog.TuNumber) val0,
                 (alice.tuprolog.TuNumber) val1);
     }
@@ -459,20 +459,20 @@ public class BasicLibrary extends TuLibrary {
     }
 
     public boolean term_equality_2(Term arg0, Term arg1) throws TuPrologError {
-        arg0 = arg0.getTerm();
-        arg1 = arg1.getTerm();
+        arg0 = arg0.dref();
+        arg1 = arg1.dref();
         return arg0.isEqual(arg1);
     }
 
     public boolean term_greater_than_2(Term arg0, Term arg1) throws TuPrologError {
-        arg0 = arg0.getTerm();
-        arg1 = arg1.getTerm();
+        arg0 = arg0.dref();
+        arg1 = arg1.dref();
         return arg0.isGreater(arg1);
     }
 
     public boolean term_less_than_2(Term arg0, Term arg1) throws TuPrologError {
-        arg0 = arg0.getTerm();
-        arg1 = arg1.getTerm();
+        arg0 = arg0.dref();
+        arg1 = arg1.dref();
         return !(arg0.isGreater(arg1) || arg0.isEqual(arg1));
     }
 
@@ -747,8 +747,8 @@ public class BasicLibrary extends TuLibrary {
      * bidirectional text/term conversion.
      */
     public boolean text_term_2(Term arg0, Term arg1) {
-        arg0 = arg0.getTerm();
-        arg1 = arg1.getTerm();
+        arg0 = arg0.dref();
+        arg1 = arg1.dref();
         getEngine().stdOutput(arg0.toString() + 
         "\n" + arg1.toString());
         if (!arg0.isGround()) {
@@ -765,9 +765,9 @@ public class BasicLibrary extends TuLibrary {
 
     public boolean text_concat_3(Term source1, Term source2, Term dest)
             throws TuPrologError {
-        source1 = source1.getTerm();
-        source2 = source2.getTerm();
-        dest = dest.getTerm();
+        source1 = source1.dref();
+        source2 = source2.dref();
+        dest = dest.dref();
         if (source1 .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (source2 .isVar())
@@ -778,13 +778,13 @@ public class BasicLibrary extends TuLibrary {
         if (!source2.isAtomSymbol())
             throw TuPrologError.type_error(engine.getEngineManager(), 2, "atom",
                     source2);
-        return unify(dest, new TuStruct(((TuStruct) source1).getName()
-                + ((TuStruct) source2).getName()));
+        return unify(dest, new TuStruct(((TuStruct) source1).fname()
+                + ((TuStruct) source2).fname()));
     }
 
     public boolean num_atom_2(Term arg0, Term arg1) throws TuPrologError {
-        arg0 = arg0.getTerm();
-        arg1 = arg1.getTerm();
+        arg0 = arg0.dref();
+        arg1 = arg1.dref();
         if (arg1 .isVar()) {
             if (!(arg0 .isNumber())) {
                 throw TuPrologError.type_error(engine.getEngineManager(), 1,
@@ -804,7 +804,7 @@ public class BasicLibrary extends TuLibrary {
                 throw TuPrologError.type_error(engine.getEngineManager(), 2,
                         "atom", arg1);
             }
-            String st = ((TuStruct) arg1).getName();
+            String st = ((TuStruct) arg1).fname();
             String st2="";
             for(int i=0; i<st.length(); i++)
             {
@@ -1234,8 +1234,8 @@ public class BasicLibrary extends TuLibrary {
 
     public boolean arg_guard_3(Term arg0, Term arg1, Term arg2)
             throws TuPrologError {
-        arg0 = arg0.getTerm();
-        arg1 = arg1.getTerm();
+        arg0 = arg0.dref();
+        arg1 = arg1.dref();
         if (arg0 .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (arg1 .isVar())
@@ -1254,14 +1254,14 @@ public class BasicLibrary extends TuLibrary {
     }
 
     public boolean clause_guard_2(Term arg0, Term arg1) throws TuPrologError {
-        arg0 = arg0.getTerm();
+        arg0 = arg0.dref();
         if (arg0 .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         return true;
     }
 
     public boolean call_guard_1(Term arg0) throws TuPrologError {
-        arg0 = arg0.getTerm();
+        arg0 = arg0.dref();
         if (arg0 .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
         if (!arg0.isAtomSymbol() && !arg0.isCompound())
@@ -1272,7 +1272,7 @@ public class BasicLibrary extends TuLibrary {
 
     public boolean all_solutions_predicates_guard_3(Term arg0, Term arg1,
             Term arg2) throws TuPrologError {
-        arg1 = arg1.getTerm();
+        arg1 = arg1.dref();
         
         if (arg1 .isVar()){
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 2);
@@ -1285,26 +1285,26 @@ public class BasicLibrary extends TuLibrary {
     }
 
     public boolean retract_guard_1(Term arg0) throws TuPrologError {
-        arg0 = arg0.getTerm();
+        arg0 = arg0.dref();
         if (arg0 .isVar())
             throw TuPrologError.instantiation_error(engine.getEngineManager(), 1);
-        if (!(arg0 .isStruct()))
+        if (!(arg0 .isTuStruct()))
             throw TuPrologError.type_error(engine.getEngineManager(), 1,
                     "clause", arg0);
         return true;
     }
 
     public boolean member_guard_2(Term arg0, Term arg1) throws TuPrologError {
-        arg1 = arg1.getTerm();
-        if (!(arg1 .isVar()) && !(arg1.isList()))
+        arg1 = arg1.dref();
+        if (!(arg1 .isVar()) && !(arg1.isConsList()))
             throw TuPrologError.type_error(engine.getEngineManager(), 2, "list",
                     arg1);
         return true;
     }
 
     public boolean reverse_guard_2(Term arg0, Term arg1) throws TuPrologError {
-        arg0 = arg0.getTerm();
-        if (!(arg0 .isVar()) && !(arg0.isList()))
+        arg0 = arg0.dref();
+        if (!(arg0 .isVar()) && !(arg0.isConsList()))
             throw TuPrologError.type_error(engine.getEngineManager(), 1, "list",
                     arg0);
         return true;
@@ -1312,8 +1312,8 @@ public class BasicLibrary extends TuLibrary {
 
     public boolean delete_guard_3(Term arg0, Term arg1, Term arg2)
             throws TuPrologError {
-        arg1 = arg1.getTerm();
-        if (!(arg1 .isVar()) && !(arg1.isList()))
+        arg1 = arg1.dref();
+        if (!(arg1 .isVar()) && !(arg1.isConsList()))
             throw TuPrologError.type_error(engine.getEngineManager(), 2, "list",
                     arg1);
         return true;
@@ -1321,8 +1321,8 @@ public class BasicLibrary extends TuLibrary {
 
     public boolean element_guard_3(Term arg0, Term arg1, Term arg2)
             throws TuPrologError {
-        arg1 = arg1.getTerm();
-        if (!(arg1 .isVar()) && !(arg1.isList()))
+        arg1 = arg1.dref();
+        if (!(arg1 .isVar()) && !(arg1.isConsList()))
             throw TuPrologError.type_error(engine.getEngineManager(), 2, "list",
                     arg1);
         return true;
@@ -1333,39 +1333,39 @@ public class BasicLibrary extends TuLibrary {
     
     //Alberto
   	public boolean $wt_copyAndRetainFreeVar_2(Term arg0, Term arg1) {
-  	  	arg0 = arg0.getTerm();
-  	  	arg1 = arg1.getTerm();
+  	  	arg0 = arg0.dref();
+  	  	arg1 = arg1.dref();
   	  	int id = engine.getEngineManager().getEnv().getNDemoSteps();
   	  	return unify(arg1, arg0.copyAndRetainFreeVar(new IdentityHashMap<TuVar,TuVar>(), id));
   	}
 
     public boolean $wt_unify_3(Term witness, Term wtList, Term tList) {
-        TuStruct list = (TuStruct) wtList.getTerm();
+        TuStruct list = (TuStruct) wtList.dref();
         TuStruct result = new TuStruct();
         for (java.util.Iterator<? extends Term> it = list.listIterator(); it.hasNext();) {
             TuStruct element = (TuStruct) it.next();
-            Term w = element.getArg(0);
-            Term t = element.getArg(1);
+            Term w = element.getPlainArg(0);
+            Term t = element.getPlainArg(1);
             if (unify(witness, w))
-                result.append(t);
+                result.appendDestructive(t);
         }
         return unify(tList, result);
     }
    
     public boolean $s_next0_3(Term witness, Term wtList, Term sNext) {
-        TuStruct list = (TuStruct) wtList.getTerm();
+        TuStruct list = (TuStruct) wtList.dref();
         TuStruct result = new TuStruct();
         for (java.util.Iterator<? extends Term> it = list.listIterator(); it.hasNext();) {
             TuStruct element = (TuStruct) it.next();
-            Term w = element.getArg(0);
+            Term w = element.getPlainArg(0);
             if (!unify(witness, w))
-                result.append(element);
+                result.appendDestructive(element);
         }
         return unify(sNext, result);
     }
 
     public boolean iterated_goal_term_2(Term term, Term goal) {
-        Term t = term.getTerm();
+        Term t = term.dref();
         Term igt = t.iteratedGoalTerm();
         return unify(igt, goal);
     }

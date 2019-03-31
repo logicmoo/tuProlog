@@ -51,8 +51,8 @@ public class StateBacktrack extends TuState {
         
         //deunify variables and reload old goal
         e.currentContext = curChoice.executionContext;
-        Term curGoal = e.currentContext.goalsToEval.backTo(curChoice.indexSubGoal).getTerm();
-        if (!(curGoal .isStruct())) {
+        Term curGoal = e.currentContext.goalsToEval.backTo(curChoice.indexSubGoal).dref();
+        if (!(curGoal .isTuStruct())) {
             e.nextState = c.END_FALSE;
             return;
         }
@@ -79,8 +79,8 @@ public class StateBacktrack extends TuState {
             stopDeunify = curCtx.fatherVarsList;
             fatherIndex = curCtx.fatherGoalId;
             curCtx = curCtx.fatherCtx;
-            curGoal = curCtx.goalsToEval.backTo(fatherIndex).getTerm();
-            if (!(curGoal .isStruct())) {
+            curGoal = curCtx.goalsToEval.backTo(fatherIndex).dref();
+            if (!(curGoal .isTuStruct())) {
                 e.nextState = c.END_FALSE;
                 return;
             }

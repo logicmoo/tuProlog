@@ -41,8 +41,8 @@ class ClausesFilter {
      *                      match with <code>goal</code>
      */
     public static OneWayList<ClauseInfo> filterClauses(List<ClauseInfo> familyClauses, Term goal){
-        if(OPTIMIZATION_ENABLED && goal .isStruct()){
-            TuStruct g = (TuStruct) goal.getTerm();
+        if(OPTIMIZATION_ENABLED && goal .isTuStruct()){
+            TuStruct g = (TuStruct) goal.dref();
 
             /* If no arguments no optimization can be applied */
             if(g.getArity() < 2){
@@ -50,7 +50,7 @@ class ClausesFilter {
             }
 
             /* Retrieves first argument and checks type */
-            Term t = g.getArg(1).getTerm();
+            Term t = g.getPlainArg(1).dref();
             if(t .isVar()){
                 /* 
                  * if first argument is an unbounded variable,
@@ -65,7 +65,7 @@ class ClausesFilter {
 
                 /* selects clauses which has an atomic first argument */
                 return selectConstant(familyClauses, t);
-            } else if(t .isStruct()){
+            } else if(t .isTuStruct()){
                 if(isAList(t)){
                     /* select clauses which has a list as first argument */
                     return selectList(familyClauses);
@@ -98,7 +98,7 @@ class ClausesFilter {
 
         for(Object obj : familyClauses){
             ClauseInfo clause = (ClauseInfo) obj;
-            Term arg = clause.getHead().getArg(0).getTerm();
+            Term arg = clause.getHead().getPlainArg(0).dref();
 
             if((arg .isVar()) ||
                     (arg .isNumber() && ((TuNumber) arg).isEqual(t))){
@@ -126,7 +126,7 @@ class ClausesFilter {
 
         for(Object obj : familyClauses){
             ClauseInfo clause = (ClauseInfo) obj;
-            Term arg = clause.getHead().getArg(0).getTerm();
+            Term arg = clause.getHead().getPlainArg(0).dref();
 
             if(arg .isVar() ||
                     ((TuStruct) arg).getPredicateIndicator().equals(predIndicator)){
@@ -150,9 +150,9 @@ class ClausesFilter {
          * A list can be an empty list, or a Struct with name equals to "."
          * and arity equals to 2.
          */
-        if(t .isStruct()){
+        if(t .isTuStruct()){
             TuStruct s = (TuStruct) t;
-            return s.isEmptyList() || (s.getName().equals(".") && s.getArity() == 2);
+            return s.isEmptyList() || (s.fname().equals(".") && s.getArity() == 2);
         }
 
         return false;
@@ -169,7 +169,7 @@ class ClausesFilter {
 
         for(Object obj : familyClauses){
             ClauseInfo clause = (ClauseInfo) obj;
-            Term arg = clause.getHead().getArg(0).getTerm();
+            Term arg = clause.getHead().getPlainArg(0).dref();
 
             if(arg .isVar() || isAList(arg)){
                 OneWayList<ClauseInfo> l = new OneWayList<ClauseInfo>(clause, null);
@@ -196,7 +196,7 @@ class ClausesFilter {
 
         for(Object obj : familyClauses){
             ClauseInfo clause = (ClauseInfo) obj;
-            Term arg = clause.getHead().getArg(0).getTerm();
+            Term arg = clause.getHead().getPlainArg(0).dref();
 
             if(arg .isVar() || arg.isAtomic()){
                 OneWayList<ClauseInfo> l = new OneWayList<ClauseInfo>(clause, null);

@@ -43,8 +43,8 @@ class FlagManager {
         
         //occursCheck flag -> a default è on!
         TuStruct s = new TuStruct();
-        s.append(new TuStruct("on"));
-        s.append(new TuStruct("off"));
+        s.appendDestructive(new TuStruct("on"));
+        s.appendDestructive(new TuStruct("off"));
         this.defineFlag("occursCheck", s, new TuStruct("on"), true, "BuiltIn");
     }
 

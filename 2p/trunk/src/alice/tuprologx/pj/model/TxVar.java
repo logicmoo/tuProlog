@@ -62,7 +62,7 @@ public class TxVar<X extends TxTerm<?>> extends TxTerm<X> {
         if (!matches(a))
             throw new UnsupportedOperationException();
         //return new Var<Term<?>>(a.getName(),a.isBound() ? Term.unmarshal(a.getTerm()) : null);            
-        return a.isBound() ? TxTerm.unmarshal(a.getTerm()) : new TxVar<TxTerm<?>>(a.getName(), null);
+        return a.isBound() ? TxTerm.unmarshal(a.dref()) : new TxVar<TxTerm<?>>(a.getName(), null);
     }
     
     static boolean matches(alice.tuprolog.Term t) {

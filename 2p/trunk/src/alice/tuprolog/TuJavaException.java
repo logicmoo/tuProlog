@@ -33,7 +33,7 @@ public class TuJavaException extends Throwable {
         TuStruct stackTraceTerm = new TuStruct();
         StackTraceElement[] elements = e.getStackTrace();
         for (StackTraceElement element : elements)
-            stackTraceTerm.append(new TuStruct(element.toString()));
+            stackTraceTerm.appendDestructive(new TuStruct(element.toString()));
         // return
         return new TuStruct(java_exception, causeTerm, messageTerm,
                 stackTraceTerm);

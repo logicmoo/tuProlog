@@ -150,7 +150,7 @@ public class TuVar extends TuTerm {
      */
     @Override
     public Term copy(int idExecCtx, AbstractMap<TuVar, TuVar> vMap) {
-        Term tt = getTerm();
+        Term tt = dref();
         if (tt == this) {
             TuVar v = (vMap.get(this));
             if (v == null) {
@@ -166,7 +166,7 @@ public class TuVar extends TuTerm {
 
     @Override //Alberto 
     public Term copyAndRetainFreeVar(AbstractMap<TuVar, TuVar> vMap, int idExecCtx) {
-        Term tt = getTerm();
+        Term tt = dref();
         if (tt == this) {
             TuVar v = (vMap.get(this));
             if (v == null) {
@@ -197,7 +197,7 @@ public class TuVar extends TuTerm {
         //if(v.isCyclic) //Alberto
         //	return v;
 
-        Term t = getTerm();
+        Term t = dref();
         if (t .isVar()) {
             Object tt = substMap.get(t);
             if (tt == null) {
@@ -207,7 +207,7 @@ public class TuVar extends TuTerm {
                 v.link = (tt != v) ? (TuVar) tt : null;
             }
         }
-        if (t .isStruct()) {
+        if (t .isTuStruct()) {
             v.link = t.copy(vMap, substMap);
         }
         if (t .isNumber())
@@ -261,7 +261,7 @@ public class TuVar extends TuTerm {
      *  for bound variable it is the bound term.
      */
     @Override
-    public Term getTerm() {
+    public Term dref() {
         Term tt = this;
         Term t = link;
         while (t != null) {
@@ -302,7 +302,7 @@ public class TuVar extends TuTerm {
     }
 
     @Override
-    public boolean isStruct() {
+    public boolean isTuStruct() {
         return false;
     }
 
@@ -313,7 +313,7 @@ public class TuVar extends TuTerm {
 
     @Override
     public boolean isEmptyList() {
-        Term t = getTerm();
+        Term t = dref();
         if (t == this) {
             return false;
         } else {
@@ -323,7 +323,7 @@ public class TuVar extends TuTerm {
 
     @Override
     public boolean isAtomic() {
-        Term t = getTerm();
+        Term t = dref();
         if (t == this) {
             return false;
         } else {
@@ -333,7 +333,7 @@ public class TuVar extends TuTerm {
 
     @Override
     public boolean isCompound() {
-        Term t = getTerm();
+        Term t = dref();
         if (t == this) {
             return false;
         } else {
@@ -343,7 +343,7 @@ public class TuVar extends TuTerm {
 
     @Override
     public boolean isAtomSymbol() {
-        Term t = getTerm();
+        Term t = dref();
         if (t == this) {
             return false;
         } else {
@@ -352,17 +352,17 @@ public class TuVar extends TuTerm {
     }
 
     @Override
-    public boolean isList() {
-        Term t = getTerm();
+    public boolean isConsList() {
+        Term t = dref();
         if (t == this)
             return false;
         else
-            return t.isList();
+            return t.isConsList();
     }
 
     @Override
     public boolean isGround() {
-        Term t = getTerm();
+        Term t = dref();
         if (t == this) {
             return false;
         } else {
@@ -395,7 +395,7 @@ public class TuVar extends TuTerm {
         int arity = t.getArity();
         for (int c = 0; c < arity; c++) {
             Term at = t.getTerm(c);
-            if (at .isStruct()) {
+            if (at .isTuStruct()) {
                 if (occurCheck(vl, (TuStruct) at)) {
                     return true;
                 }
@@ -417,7 +417,7 @@ public class TuVar extends TuTerm {
      */
     @Override
     public long resolveTerm(long count) {
-        Term tt = getTerm();
+        Term tt = dref();
         if (tt != this) {
             return tt.resolveTerm(count);
         } else {
@@ -455,9 +455,9 @@ public class TuVar extends TuTerm {
      */
     @Override
     public boolean unify(List<TuVar> vl1, List<TuVar> vl2, Term t, boolean isOccursCheckEnabled) {
-        Term tt = getTerm();
+        Term tt = dref();
         if (tt == this) {
-            t = t.getTerm();
+            t = t.dref();
             if (t .isVar()) {
                 ((TuVar) t).fingerPrint = this.fingerPrint; //Alberto
                 if (this == t) {
@@ -467,7 +467,7 @@ public class TuVar extends TuTerm {
                     }
                     return true;
                 }
-            } else if (t .isStruct()) {
+            } else if (t .isTuStruct()) {
                 if (isOccursCheckEnabled) {
                     if (occurCheck(vl2, (TuStruct) t)) {
                         //this.isCyclic = true;  //Alberto -> da usare quando si supporteranno i termini ciclici
@@ -501,7 +501,7 @@ public class TuVar extends TuTerm {
                 if (v.link == null) {
                     vl.add(v);
                 }
-            } else if (at .isStruct()) {
+            } else if (at .isTuStruct()) {
                 checkVar(vl, at);
             }
         }
@@ -509,9 +509,9 @@ public class TuVar extends TuTerm {
 
     @Override
     public boolean isGreater(Term t) {
-        Term tt = getTerm();
+        Term tt = dref();
         if (tt == this) {
-            t = t.getTerm();
+            t = t.dref();
             if (!(t .isVar()))
                 return false;
             return fingerPrint > ((TuVar) t).fingerPrint; //Alberto
@@ -531,7 +531,7 @@ public class TuVar extends TuTerm {
      */
     @Override
     public String toString() {
-        Term tt = getTerm();
+        Term tt = dref();
         if (name != null) {
             if (tt == this/* || this.isCyclic*/) {
                 //if(this.isCyclic) //Alberto
@@ -556,7 +556,7 @@ public class TuVar extends TuTerm {
      *
      */
     public String toStringFlattened() {
-        Term tt = getTerm();
+        Term tt = dref();
         if (name != null) {
             if (tt == this /*|| this.isCyclic*/) {
                 //if(this.isCyclic)

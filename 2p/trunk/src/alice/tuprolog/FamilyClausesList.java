@@ -160,8 +160,8 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 	 */
 	public List<ClauseInfo> get(Term goal){
 		// Gets the correct list and encapsulates it in ReadOnlyLinkedList
-		if(goal .isStruct()){
-			TuStruct g = (TuStruct) goal.getTerm();
+		if(goal .isTuStruct()){
+			TuStruct g = (TuStruct) goal.dref();
 
 			/*
 			 * If no arguments no optimization can be applied
@@ -172,7 +172,7 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 			}
 
 			/* Retrieves first argument and checks type */
-			Term t = g.getArg(0).getTerm();
+			Term t = g.getPlainArg(0).dref();
 			if(t .isVar()){
 				/*
 				 * if first argument is an unbounded variable,
@@ -187,15 +187,15 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 					 * as first argument
 					 */
 					return new ReadOnlyLinkedList<ClauseInfo>(numCompClausesIndex.get((TuNumber) t));
-				} else if(t .isStruct()){
+				} else if(t .isTuStruct()){
 					/* retrieves clauses whose first argument is a constant (or Var)
 					 * and same as goal's first argument, if no clauses
 					 * are retrieved, all clauses with a variable
 					 * as first argument
 					 */
-					return new ReadOnlyLinkedList<ClauseInfo>(constantCompClausesIndex.get(((TuStruct) t).getName()));
+					return new ReadOnlyLinkedList<ClauseInfo>(constantCompClausesIndex.get(((TuStruct) t).fname()));
 				}
-			} else if(t .isStruct()){
+			} else if(t .isTuStruct()){
 				if(isAList((TuStruct) t)){
 					/* retrieves clauses which has a list  (or Var) as first argument */
 					return new ReadOnlyLinkedList<ClauseInfo>(listCompClausesList);
@@ -239,7 +239,7 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 		 * A list can be an empty list, or a Struct with name equals to "."
 		 * and arity equals to 2.
 		 */
-		return t.isEmptyList() || (t.getName().equals(".") && t.getArity() == 2);
+		return t.isEmptyList() || (t.fname().equals(".") && t.getArity() == 2);
 
 	}
 
@@ -247,14 +247,14 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 	private void register(ClauseInfo ci, boolean first){
 		// See FamilyClausesList.get(Term): same concept
 		Term clause = ci.getHead();
-		if(clause .isStruct()){
-			TuStruct g = (TuStruct) clause.getTerm();
+		if(clause .isTuStruct()){
+			TuStruct g = (TuStruct) clause.dref();
 
 			if(g.getArity() == 0){
 				return;
 			}
 
-			Term t = g.getArg(0).getTerm();
+			Term t = g.getPlainArg(0).dref();
 			if(t .isVar()){
 				numCompClausesIndex.insertAsShared(ci, first);
 				constantCompClausesIndex.insertAsShared(ci, first);
@@ -268,10 +268,10 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 			} else if(t.isAtomic()){
 				if(t .isNumber()){
 					numCompClausesIndex.insert((TuNumber) t,ci, first);
-				} else if(t .isStruct()){
-					constantCompClausesIndex.insert(((TuStruct) t).getName(), ci, first);
+				} else if(t .isTuStruct()){
+					constantCompClausesIndex.insert(((TuStruct) t).fname(), ci, first);
 				}
-			} else if(t .isStruct()){
+			} else if(t .isTuStruct()){
 				if(isAList((TuStruct) t)){
 					if(first){
 						listCompClausesList.addFirst(ci);
@@ -288,14 +288,14 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 	// Updates indexes, deleting informations about the last removed clause
 	public void unregister(ClauseInfo ci) {
 		Term clause = ci.getHead();
-		if(clause .isStruct()){
-			TuStruct g = (TuStruct) clause.getTerm();
+		if(clause .isTuStruct()){
+			TuStruct g = (TuStruct) clause.dref();
 
 			if(g.getArity() == 0){
 				return;
 			}
 
-			Term t = g.getArg(0).getTerm();
+			Term t = g.getPlainArg(0).dref();
 			if(t .isVar()){
 				numCompClausesIndex.removeShared(ci);
 				constantCompClausesIndex.removeShared(ci);
@@ -305,11 +305,11 @@ class FamilyClausesList extends LinkedList<ClauseInfo> {
 			} else if(t.isAtomic()){
 				if(t .isNumber()){
 					numCompClausesIndex.delete((TuNumber) t,ci);
-				} else if(t .isStruct()){
-					constantCompClausesIndex.delete(((TuStruct) t).getName(),ci);
+				} else if(t .isTuStruct()){
+					constantCompClausesIndex.delete(((TuStruct) t).fname(),ci);
 				}
-			} else if(t .isStruct()){
-				if(t.isList()){
+			} else if(t .isTuStruct()){
+				if(t.isConsList()){
 					listCompClausesList.remove(ci);
 				} else {
 					structCompClausesIndex.delete(((TuStruct) t).getPredicateIndicator(),ci);

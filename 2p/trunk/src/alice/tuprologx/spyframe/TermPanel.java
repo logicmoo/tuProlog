@@ -1,5 +1,6 @@
 package alice.tuprologx.spyframe;
 
+import static alice.tuprolog.TuFactory.*;
 
 import alice.tuprolog.TuStruct;
 import alice.tuprolog.Term;
@@ -34,17 +35,17 @@ public class TermPanel extends JPanel implements ActionListener{
         node.textcolor=node.bordercolor=Color.BLUE;
         if(var.isBound()){
           node.kids=new Node[1];
-          node.kids[0]=makeTreeFrom(var.getTerm());
+          node.kids[0]=makeTreeFrom(var.dref());
         }
       } else if(term instanceof alice.tuprolog.TuNumber){
         node.textcolor=node.bordercolor=Color.MAGENTA;
-      } else if(term .isStruct()){
+      } else if(term .isTuStruct()){
         TuStruct struct=(TuStruct)term;
-        node.text=struct.getName();
+        node.text=struct.fname();
         int n=struct.getArity();
         node.kids=new Node[n];
         for(int i=0; i<n; i++)
-          node.kids[i]=makeTreeFrom(struct.getArg(i));
+          node.kids[i]=makeTreeFrom(struct.getPlainArg(i));
       }
       return node;
     }
@@ -84,9 +85,9 @@ public class TermPanel extends JPanel implements ActionListener{
    */
   public void setTerm(String sterm){
     Term term;
-    try{term=Term.createTerm(sterm);}
+    try{term=createTerm(sterm);}
     catch(Exception ex){
-      term=Term.createTerm("'>illegal prolog term<'");
+      term=createTerm("'>illegal prolog term<'");
     }
     setTerm(term);
   }

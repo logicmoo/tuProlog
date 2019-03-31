@@ -79,7 +79,7 @@ public class TxList<X extends TxTerm<?>> extends TxTerm<TxList<X>> implements It
         }
         
         static boolean matches(alice.tuprolog.Term t) {
-            return (!(t instanceof alice.tuprolog.TuVar) && t.isList() && t instanceof alice.tuprolog.TuStruct);
+            return (!(t instanceof alice.tuprolog.TuVar) && t.isConsList() && t instanceof alice.tuprolog.TuStruct);
         }
 
         @Override

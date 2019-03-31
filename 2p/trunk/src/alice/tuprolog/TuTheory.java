@@ -71,7 +71,7 @@ public class TuTheory implements Serializable {
      * @throws s InvalidTheoryException if clauseList is null or is not a prolog list
      */
     public TuTheory(TuStruct clauseList) throws InvalidTheoryException {
-        if (clauseList==null || !clauseList.isList()) {
+        if (clauseList==null || !clauseList.isConsList()) {
             throw new InvalidTheoryException();
         }
         this.clauseList = clauseList;
@@ -100,7 +100,7 @@ public class TuTheory implements Serializable {
                 clauseList = otherClauseList;
             else {
                 TuStruct p = clauseList, q;
-                while (!(q = (TuStruct) p.getArg(1)).isEmptyList())
+                while (!(q = (TuStruct) p.getPlainArg(1)).isEmptyList())
                     p = q;
                 p.setArg(1, otherClauseList);
             }

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
+import static alice.tuprolog.TuFactory.*;
 
 /**
  * @author Eleonora Cau
@@ -58,7 +59,7 @@ public class SocketLibTestCase {
 		System.out.println("[SocketLibTest] Server Socket: "+ serverSock);*/
 		
 		TuStruct msg = (TuStruct) result.getTerm("Msg");	
-		assertEquals(Term.createTerm("'msg inviato dal server'"), msg);
+		assertEquals(createTerm("'msg inviato dal server'"), msg);
 	
 	}
 	
@@ -90,7 +91,7 @@ public class SocketLibTestCase {
 		System.out.println("[SocketLibTest] Server Socket: "+ serverSock);*/
 		
 		TuStruct msg = (TuStruct) result.getTerm("Msg");	
-		assertEquals(Term.createTerm("'msg inviato dal client'"), msg);
+		assertEquals(createTerm("'msg inviato dal client'"), msg);
 	}
 }
 

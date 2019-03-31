@@ -24,7 +24,7 @@ public abstract class TuAbstractSocket extends TuTerm {
     }
 
     @Override
-    public boolean isStruct() {
+    public boolean isTuStruct() {
         // TODO Auto-generated method stub
         return false;
     }
@@ -60,7 +60,7 @@ public abstract class TuAbstractSocket extends TuTerm {
     }
 
     @Override
-    public boolean isList() {
+    public boolean isConsList() {
         // TODO Auto-generated method stub
         return false;
     }
@@ -89,7 +89,7 @@ public abstract class TuAbstractSocket extends TuTerm {
     }
 
     @Override
-    public Term getTerm() {
+    public Term dref() {
         return this;
     }
 

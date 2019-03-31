@@ -37,11 +37,11 @@ public class TxAtom extends TxTerm<TxAtom> {
         static TxAtom unmarshal(alice.tuprolog.TuStruct a) {
             if (!matches(a))
                 throw new UnsupportedOperationException();
-            return new TxAtom(a.getName());            
+            return new TxAtom(a.fname());            
         }
         
         static boolean matches(alice.tuprolog.Term t) {
-            return (!(t instanceof alice.tuprolog.TuVar) && t.isAtomSymbol() && !t.isList() && !TxBool.matches(t));
+            return (!(t instanceof alice.tuprolog.TuVar) && t.isAtomSymbol() && !t.isConsList() && !TxBool.matches(t));
         }
         
         public TxList<TxAtom> toCharList() {

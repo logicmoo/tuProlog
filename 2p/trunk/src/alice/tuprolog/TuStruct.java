@@ -220,7 +220,7 @@ public class TuStruct extends TuTerm {
     /**
      * Gets the functor name  of this structure
      */
-    public String getName() {
+    public String fname() {
         return name;
     }
 
@@ -229,7 +229,7 @@ public class TuStruct extends TuTerm {
      *
      * No bound check is done
      */
-    public Term getArg(int index) {
+    public Term getPlainArg(int index) {
         return arg[index];
     }
 
@@ -249,9 +249,10 @@ public class TuStruct extends TuTerm {
      * <code>getArg(index).getTerm()</code>
      */
     public Term getTerm(int index) {
-        if (!(arg[index] .isVar()))
-            return arg[index];
-        return arg[index].getTerm();
+        final Term term = arg[index];
+        if (!(term.isVar()))
+            return term;
+        return term.dref();
     }
 
     // checking type and properties of the Term
@@ -264,9 +265,10 @@ public class TuStruct extends TuTerm {
 
     /** is this term a struct  */
     @Override
-    public boolean isStruct() {
+    public boolean isTuStruct() {
         return true;
     }
+
 
     /** is this term a variable  */
     @Override
@@ -292,8 +294,8 @@ public class TuStruct extends TuTerm {
     }
 
     @Override
-    public boolean isList() {
-        return (name.equals(".") && arity == 2 && arg[1].isList()) || isEmptyList();
+    public boolean isConsList() {
+        return (name.equals(".") && arity == 2 && arg[1].isConsList()) || isEmptyList();
     }
 
     @Override
@@ -310,11 +312,11 @@ public class TuStruct extends TuTerm {
      * Check is this struct is clause or directive
      */
     public boolean isClause() {
-        return (name.equals(":-") && arity > 1 && arg[0].getTerm() .isStruct());
+        return (name.equals(":-") && arity > 1 && arg[0].dref().isTuStruct());
     }
 
     @Override
-    public Term getTerm() {
+    public Term dref() {
         return this;
     }
 
@@ -329,15 +331,15 @@ public class TuStruct extends TuTerm {
             return null;
         }
         for (int i = 0; i < arg.length; i++) {
-            if (arg[i] .isStruct()) {
+            if (arg[i].isTuStruct()) {
                 TuStruct s = (TuStruct) arg[i];
-                if (s.getName().equals(name)) {
+                if (s.fname().equals(name)) {
                     return s;
                 }
             }
         }
         for (int i = 0; i < arg.length; i++) {
-            if (arg[i] .isStruct()) {
+            if (arg[i].isTuStruct()) {
                 TuStruct s = (TuStruct) arg[i];
                 TuStruct sol = s.getArg(name);
                 if (sol != null) {
@@ -353,8 +355,8 @@ public class TuStruct extends TuTerm {
      */
     @Override
     public boolean isGreater(Term t) {
-        t = t.getTerm();
-        if (!(t .isStruct())) {
+        t = t.dref();
+        if (!(t.isTuStruct())) {
             return true;
         } else {
             TuStruct ts = (TuStruct) t;
@@ -383,7 +385,7 @@ public class TuStruct extends TuTerm {
      * @param vMap is needed for register occurence of same variables
      */
     @Override
-    public Term copy(int idExecCtx, AbstractMap<TuVar, TuVar> vMap)  {
+    public Term copy(int idExecCtx, AbstractMap<TuVar, TuVar> vMap) {
         TuStruct t = new TuStruct(arity);
         t.resolved = resolved;
         t.name = name;
@@ -407,7 +409,7 @@ public class TuStruct extends TuTerm {
         t.primitive = primitive;
         for (int c = 0; c < arity; c++) {
             //if(!this.arg[c].isCyclic)
-            t.arg[c] = arg[c].getTerm().copyAndRetainFreeVar(vMap, idExecCtx);
+            t.arg[c] = arg[c].dref().copyAndRetainFreeVar(vMap, idExecCtx);
             //qui una .getTerm() necessaria solo in $wt_list!
             //else
             //	t.arg[c] = this.arg[c];
@@ -462,9 +464,9 @@ public class TuStruct extends TuTerm {
                 //--------------------------------
                 // we want to resolve only not linked variables:
                 // so linked variables must get the linked term
-                term = term.getTerm();
+                term = term.dref();
                 //--------------------------------
-                if (term .isVar()) {
+                if (term.isVar()) {
                     TuVar t = (TuVar) term;
                     t.setInternalTimestamp(newcount++);
                     if (!t.isAnonymous()) {
@@ -485,7 +487,7 @@ public class TuStruct extends TuTerm {
                             vl.add(t);
                         }
                     }
-                } else if (term .isStruct()) {
+                } else if (term.isTuStruct()) {
                     newcount = ((TuStruct) term).resolveTerm(vl, newcount);
                 }
             }
@@ -501,7 +503,7 @@ public class TuStruct extends TuTerm {
      */
     @Override
     public boolean isEmptyList() {
-        return name.equals("[]") && arity == 0;
+        return fname().equals("[]") && getArity() == 0;
     }
 
     /**
@@ -513,9 +515,9 @@ public class TuStruct extends TuTerm {
      * </p>
      */
     public Term listHead() {
-        if (!isList())
+        if (!isConsList())
             throw new UnsupportedOperationException("The structure " + this + " is not a list.");
-        return arg[0].getTerm();
+        return arg[0].dref();
     }
 
     /**
@@ -527,9 +529,9 @@ public class TuStruct extends TuTerm {
      * </p>
      */
     public TuStruct listTail() {
-        if (!isList())
+        if (!isConsList())
             throw new UnsupportedOperationException("The structure " + this + " is not a list.");
-        return (TuStruct) arg[1].getTerm();
+        return (TuStruct) arg[1].dref();
     }
 
     /**
@@ -541,13 +543,13 @@ public class TuStruct extends TuTerm {
      * </p>
      */
     public int listSize() {
-        if (!isList())
+        if (!isConsList())
             throw new UnsupportedOperationException("The structure " + this + " is not a list.");
         TuStruct t = this;
         int count = 0;
         while (!t.isEmptyList()) {
             count++;
-            t = (TuStruct) t.arg[1].getTerm();
+            t = (TuStruct) t.arg[1].dref();
         }
         return count;
     }
@@ -561,7 +563,7 @@ public class TuStruct extends TuTerm {
      * </p>
      */
     public Iterator<? extends Term> listIterator() {
-        if (!isList())
+        if (!isConsList())
             throw new UnsupportedOperationException("The structure " + this + " is not a list.");
         return new StructIterator(this);
     }
@@ -574,7 +576,7 @@ public class TuStruct extends TuTerm {
     TuStruct toList() {
         TuStruct t = new TuStruct();
         for (int c = arity - 1; c >= 0; c--) {
-            t = new TuStruct(arg[c].getTerm(), t);
+            t = new TuStruct(arg[c].dref(), t);
         }
         return new TuStruct(new TuStruct(name), t);
     }
@@ -585,14 +587,14 @@ public class TuStruct extends TuTerm {
      * If this structure is not a list, null object is returned
      */
     TuStruct fromList() {
-        Term ft = arg[0].getTerm();
+        Term ft = arg[0].dref();
         if (!ft.isAtomSymbol()) {
             return null;
         }
-        TuStruct at = (TuStruct) arg[1].getTerm();
+        TuStruct at = (TuStruct) arg[1].dref();
         LinkedList<Term> al = new LinkedList<Term>();
         while (!at.isEmptyList()) {
-            if (!at.isList()) {
+            if (!at.isConsList()) {
                 return null;
             }
             al.addLast(at.getTerm(0));
@@ -604,7 +606,7 @@ public class TuStruct extends TuTerm {
     /**
      * Appends an element to this structure supposed to be a list
      */
-    public void append(Term t) {
+    public void appendDestructive(Term t) {
         if (isEmptyList()) {
             name = ".";
             arity = 2;
@@ -612,8 +614,8 @@ public class TuStruct extends TuTerm {
             arg = new Term[arity];
             arg[0] = t;
             arg[1] = new TuStruct();
-        } else if (arg[1].isList()) {
-            ((TuStruct) arg[1]).append(t);
+        } else if (arg[1].isConsList()) {
+            ((TuStruct) arg[1]).appendDestructive(t);
         } else {
             arg[1] = t;
         }
@@ -622,7 +624,7 @@ public class TuStruct extends TuTerm {
     /**
      * Inserts (at the head) an element to this structure supposed to be a list
      */
-    void insert(Term t) {
+    void insertDestructive(Term t) {
         TuStruct co = new TuStruct();
         co.arg[0] = arg[0];
         co.arg[1] = arg[1];
@@ -640,8 +642,8 @@ public class TuStruct extends TuTerm {
     @Override
     public boolean unify(List<TuVar> vl1, List<TuVar> vl2, Term t, boolean isOccursCheckEnabled) {
         // In fase di unificazione bisogna annotare tutte le variabili della struct completa.
-        t = t.getTerm();
-        if (t .isStruct()) {
+        t = t.dref();
+        if (t.isTuStruct()) {
             TuStruct ts = (TuStruct) t;
             if (arity == ts.arity && name.equals(ts.name)) {
                 for (int c = 0; c < arity; c++) {
@@ -651,7 +653,7 @@ public class TuStruct extends TuTerm {
                 }
                 return true;
             }
-        } else if (t .isVar()) {
+        } else if (t.isVar()) {
             return t.unify(vl2, vl1, this, isOccursCheckEnabled);
         }
         return false;
@@ -704,13 +706,13 @@ public class TuStruct extends TuTerm {
             if (arity > 0) {
                 s = s + "(";
                 for (int c = 1; c < arity; c++) {
-                    if (!(arg[c - 1] .isVar())) {
+                    if (!(arg[c - 1].isVar())) {
                         s = s + arg[c - 1].toString() + ",";
                     } else {
                         s = s + ((TuVar) arg[c - 1]).toStringFlattened() + ",";
                     }
                 }
-                if (!(arg[arity - 1] .isVar())) {
+                if (!(arg[arity - 1].isVar())) {
                     s = s + arg[arity - 1].toString() + ")";
                 } else {
                     s = s + ((TuVar) arg[arity - 1]).toStringFlattened() + ")";
@@ -721,14 +723,14 @@ public class TuStruct extends TuTerm {
     }
 
     private String toString0() {
-        Term h = arg[0].getTerm();
-        Term t = arg[1].getTerm();
-        if (t.isList()) {
+        Term h = arg[0].dref();
+        Term t = arg[1].dref();
+        if (t.isConsList()) {
             TuStruct tl = (TuStruct) t;
             if (tl.isEmptyList()) {
                 return h.toString();
             }
-            if (h .isVar()) {
+            if (h.isVar()) {
                 return (((TuVar) h).toStringFlattened() + "," + tl.toString0());
             } else {
                 return (h.toString() + "," + tl.toString0());
@@ -736,12 +738,12 @@ public class TuStruct extends TuTerm {
         } else {
             String h0;
             String t0;
-            if (h .isVar()) {
+            if (h.isVar()) {
                 h0 = ((TuVar) h).toStringFlattened();
             } else {
                 h0 = h.toString();
             }
-            if (t .isVar()) {
+            if (t.isVar()) {
                 t0 = ((TuVar) t).toStringFlattened();
             } else {
                 t0 = t.toString();
@@ -753,14 +755,14 @@ public class TuStruct extends TuTerm {
     private String toString0_bracket() {
         if (arity == 0) {
             return "";
-        } else if (arity == 1 && !((arg[0] .isStruct()) && ((TuStruct) arg[0]).getName().equals(","))) {
-            return arg[0].getTerm().toString();
+        } else if (arity == 1 && !((arg[0].isTuStruct()) && ((TuStruct) arg[0]).fname().equals(","))) {
+            return arg[0].dref().toString();
         } else {
             // comma case 
             Term head = ((TuStruct) arg[0]).getTerm(0);
             Term tail = ((TuStruct) arg[0]).getTerm(1);
             StringBuffer buf = new StringBuffer(head.toString());
-            while (tail .isStruct() && ((TuStruct) tail).getName().equals(",")) {
+            while (tail.isTuStruct() && ((TuStruct) tail).fname().equals(",")) {
                 head = ((TuStruct) tail).getTerm(0);
                 buf.append("," + head.toString());
                 tail = ((TuStruct) tail).getTerm(1);
@@ -772,8 +774,8 @@ public class TuStruct extends TuTerm {
 
     private String toStringAsList(OperatorManager op) {
         Term h = arg[0];
-        Term t = arg[1].getTerm();
-        if (t.isList()) {
+        Term t = arg[1].dref();
+        if (t.isConsList()) {
             TuStruct tl = (TuStruct) t;
             if (tl.isEmptyList()) {
                 return h.toStringAsArgY(op, 0);

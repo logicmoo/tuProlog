@@ -150,7 +150,7 @@ public class TuPrologError extends Throwable {
 
 		int[] errorInformation = {clause, line, position};
 		String[] nameInformation = {"clause", "line", "position"};
-		String syntaxErrorDescription = message.getTerm().toString();
+		String syntaxErrorDescription = message.dref().toString();
 
 		{
 			//Sostituzione degli eventuali caratteri di nuova linea con uno spazio

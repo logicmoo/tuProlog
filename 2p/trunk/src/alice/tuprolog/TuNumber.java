@@ -95,7 +95,7 @@ public abstract class TuNumber extends TuTerm implements Comparable<TuNumber> {
     public abstract boolean isLong();
 
     public static TuNumber createNumber(String s) {
-        Term t = Term.createTerm(s);
+        Term t = createTerm(s);
         if (t .isNumber())
             return (TuNumber) t;
         throw new InvalidTermException("Term " + t + " is not a number.");
@@ -105,7 +105,7 @@ public abstract class TuNumber extends TuTerm implements Comparable<TuNumber> {
      * Gets the actual term referred by this Term.
      */
     @Override
-    public Term getTerm() {
+    public Term dref() {
         return this;
     }
 
@@ -119,7 +119,7 @@ public abstract class TuNumber extends TuTerm implements Comparable<TuNumber> {
 
     /** is this term a struct  */
     @Override
-    final public boolean isStruct() {
+    final public boolean isTuStruct() {
         return false;
     }
 
@@ -156,7 +156,7 @@ public abstract class TuNumber extends TuTerm implements Comparable<TuNumber> {
 
     /** is this term a prolog list? */
     @Override
-    final public boolean isList() {
+    final public boolean isConsList() {
         return false;
     }
 
